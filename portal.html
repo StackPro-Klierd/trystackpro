@@ -7853,7 +7853,7 @@ function renderInvoiceTab(c){
   return `
     <div style="background:${anet.login||link?'rgba(39,174,96,0.07)':'rgba(201,168,76,0.06)'};border:1px solid ${anet.login||link?'rgba(39,174,96,0.3)':'rgba(201,168,76,0.25)'};border-radius:var(--rs);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
       <div><div style="font-size:11px;font-weight:700;color:${anet.login||link?'var(--green)':'var(--gold)'}">${anet.login||link?'Authorize.net Connected':'Authorize.net Not Configured'}</div><div style="font-size:10px;color:var(--muted)">${anet.login||link?'Payment collection active':'Add credentials in Settings'}</div></div>
-      ${!(anet.login||link)?'<button class="btn bgh bsm" onclick="closeModal();nav('settings')">Setup</button>':'<a href="https://account.authorize.net" target="_blank" style="font-size:10px;color:var(--green);text-decoration:none;background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);border-radius:5px;padding:4px 10px">Dashboard</a>'}
+      ${!(anet.login||link)?'<button class="btn bgh bsm" onclick="closeModal();nav(\'settings\')">Setup</button>':'<a href="https://account.authorize.net" target="_blank" style="font-size:10px;color:var(--green);text-decoration:none;background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);border-radius:5px;padding:4px 10px">Dashboard</a>'}
     </div>
     <div style="background:${c.allowCreditCard?'rgba(142,68,173,0.08)':'rgba(90,86,72,0.1)'};border:1px solid ${c.allowCreditCard?'rgba(142,68,173,0.35)':'var(--border)'};border-radius:var(--rs);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
       <div><div style="font-size:11px;font-weight:700;color:${c.allowCreditCard?'#8E44AD':'var(--muted)'}">Credit Card ${c.allowCreditCard?'ENABLED':'Disabled'}</div><div style="font-size:10px;color:var(--muted)">ACH/Debit default. Owner override per client only.</div></div>
@@ -12295,41 +12295,42 @@ function openComposeEmail(){
 function loadEmailTemplate(val){
   const sub=document.getElementById('email-subject');
   const body=document.getElementById('email-body');
+  const _origin=window.location.origin;
   const templates={
-    welcome:{s:'Welcome to CBG Funds — Your Portal is Ready',b:'Hi [Name],
+    welcome:{s:'Welcome to CBG Funds — Your Portal is Ready',b:`Hi [Name],
 
 Welcome! Your client portal is ready. Log in here to complete your next steps:
-'+window.location.origin+'/client-portal.html
+${_origin}/client-portal.html
 
 We are KLIERing your path.
-— The CBG Funds Team'},
-    docs:{s:'Action Required: Documents Needed',b:'Hi [Name],
+— The CBG Funds Team`},
+    docs:{s:'Action Required: Documents Needed',b:`Hi [Name],
 
 We need a few documents to move forward with your funding. Please log into your portal and upload the requested items.
 
-'+window.location.origin+'/client-portal.html
+${_origin}/client-portal.html
 
-— The CBG Funds Team'},
-    funded:{s:'Congratulations — Your Funding is Complete',b:'Hi [Name],
+— The CBG Funds Team`},
+    funded:{s:'Congratulations — Your Funding is Complete',b:`Hi [Name],
 
 Congratulations! Your funding has been processed successfully. Please log into your portal to review your results and complete your final payment.
 
-'+window.location.origin+'/client-portal.html
+${_origin}/client-portal.html
 
 We are KLIERing your path.
-— The CBG Funds Team'},
-    payment:{s:'Reminder: Payment Due — CBG Funds',b:'Hi [Name],
+— The CBG Funds Team`},
+    payment:{s:'Reminder: Payment Due — CBG Funds',b:`Hi [Name],
 
 This is a reminder that your payment is still outstanding. Please log into your portal to complete your payment.
 
-'+window.location.origin+'/client-portal.html
+${_origin}/client-portal.html
 
-— The CBG Funds Team'},
-    followup:{s:'Checking In — CBG Funds',b:'Hi [Name],
+— The CBG Funds Team`},
+    followup:{s:'Checking In — CBG Funds',b:`Hi [Name],
 
 We wanted to follow up and see how things are going. Please reach out if you have any questions.
 
-— The CBG Funds Team'}
+— The CBG Funds Team`}
   };
   if(templates[val]&&sub&&body){sub.value=templates[val].s;body.value=templates[val].b;}
 }
@@ -12410,13 +12411,13 @@ function scheduleZoomMeeting(){
   const meeting={id:'ZM-'+Date.now(),clientId,clientName:(c?.first||'')+' '+(c?.last||''),clientEmail:c?.email||'',type,date,time,created:new Date().toLocaleString(),status:'scheduled'};
   meetings.unshift(meeting);
   localStorage.setItem('sp_zoom_meetings',JSON.stringify(meetings));
-  if(c?.email){sendSystemEmail(c.email,'Your Consultation is Scheduled — CBG Funds','Hi '+c.first+',
+  if(c?.email){sendSystemEmail(c.email,'Your Consultation is Scheduled — CBG Funds',`Hi ${c.first},
 
-Your '+type+' has been scheduled for '+date+' at '+time+'.
+Your ${type} has been scheduled for ${date} at ${time}.
 
 A Zoom link will be sent to you before the meeting.
 
-— The CBG Funds Team');}
+— The CBG Funds Team`);}
   if(c?.phone){sendSystemSMS(c.phone,'Hi '+c.first+'! Your '+type+' is scheduled for '+date+' at '+time+'. Zoom link coming soon. -CBG Funds');}
   addStaffNoteQuick('status','Zoom meeting scheduled with '+c?.first+' — '+type+' on '+date+' at '+time);
   if(statusMsg){statusMsg.style.display='block';statusMsg.style.color='var(--green)';statusMsg.textContent='Meeting scheduled! Client notified via email + text.';}
