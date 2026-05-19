@@ -233,45 +233,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .an-empty{text-align:center;padding:20px;color:var(--muted);font-size:12px;font-style:italic;}
 .an-actions{display:flex;gap:8px;}
 
-/* BILLING TAB (v3.0) */
-.billing-hero{background:linear-gradient(135deg,var(--dark2),rgba(201,168,76,0.04));border:1px solid var(--border);}
-.bh-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
-.bh-col{flex:1;min-width:140px;}
-.bh-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);font-weight:700;margin-bottom:6px;}
-.bh-val{font-family:'DM Mono',monospace;font-size:32px;color:var(--gold);font-weight:600;line-height:1;}
-.bh-status{text-align:right;}
-.bill-badge{display:inline-block;padding:4px 12px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
-.bill-badge.paid{background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);}
-.bill-badge.due{background:rgba(230,126,34,0.15);color:var(--orange);border:1px solid rgba(230,126,34,0.3);}
-.bill-badge.overdue{background:rgba(231,76,60,0.15);color:var(--red);border:1px solid rgba(231,76,60,0.3);}
-.bill-badge.partial{background:rgba(41,128,185,0.18);color:var(--blue);border:1px solid rgba(41,128,185,0.3);}
-.bh-next{font-size:11px;color:var(--dim);margin-top:6px;}
-.bill-pay-btn{font-size:13px;animation:cta-pulse 2.6s ease-in-out infinite;}
-.bill-line-items{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
-.bill-li{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
-.bill-li-info{flex:1;}
-.bill-li-name{font-size:12.5px;font-weight:600;color:var(--text);line-height:1.3;}
-.bill-li-desc{font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.5;}
-.bill-li-amt{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;}
-.bill-totals{border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:6px;}
-.bill-tot-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--dim);}
-.bill-tot-row.bill-tot-total{font-size:14px;font-weight:600;color:var(--text);padding-top:6px;border-top:1px solid var(--border);margin-top:4px;}
-.bill-tot-val{font-family:'DM Mono',monospace;font-weight:600;}
-.bill-pm-row{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);}
-.bill-pm-icon{font-size:24px;}
-.bill-pm-info{flex:1;}
-.bill-pm-line1{font-size:13px;color:var(--text);font-weight:600;}
-.bill-pm-line2{font-size:11px;color:var(--muted);margin-top:2px;}
-.bill-pm-edit{font-size:11px;color:var(--gold);text-decoration:none;font-weight:600;}
-.bill-pm-edit:hover{text-decoration:underline;}
-.bill-history{display:flex;flex-direction:column;gap:8px;}
-.bill-hist-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:12px;}
-.bill-hist-info{flex:1;}
-.bill-hist-date{color:var(--muted);font-size:10.5px;font-family:'DM Mono',monospace;}
-.bill-hist-method{color:var(--text);font-weight:600;margin-top:2px;}
-.bill-hist-amt{font-family:'DM Mono',monospace;font-weight:600;color:var(--green);}
-.bill-hist-empty{text-align:center;padding:20px;color:var(--muted);font-size:12px;font-style:italic;}
-
 </style>
 </head>
 <body>
@@ -335,7 +296,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       <button class="tab" onclick="showTab('messages',this)">💬 <span id="lbl-tab-msgs">Messages</span></button>
       <button class="tab" onclick="showTab('analysis',this)">📊 <span id="lbl-tab-analysis">My Analysis</span></button>
       <button class="tab" onclick="showTab('agreements',this)">✍ <span id="lbl-tab-agreements">Agreements</span></button>
-      <button class="tab" onclick="showTab('billing',this)" id="tab-btn-billing" style="display:none">💳 <span id="lbl-tab-billing">Billing</span></button>
       <button class="tab" onclick="showTab('scores',this)">📈 <span id="lbl-tab-scores">Credit Profile</span></button>
     </div>
 
@@ -473,59 +433,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
     </div>
 
-    <!-- BILLING TAB (v3.0) -->
-    <div id="tab-billing" style="display:none">
-
-      <!-- BALANCE HERO CARD -->
-      <div class="card billing-hero">
-        <div class="bh-row">
-          <div class="bh-col">
-            <div class="bh-label" id="lbl-balance-due">Balance Due</div>
-            <div class="bh-val" id="bill-balance">$0.00</div>
-          </div>
-          <div class="bh-status">
-            <span class="bill-badge" id="bill-status-badge">—</span>
-            <div class="bh-next" id="bill-next-line"></div>
-          </div>
-        </div>
-        <button class="btn-primary bill-pay-btn" id="btn-make-payment" onclick="makePayment()" style="display:none;width:100%;margin-top:14px">💳 <span id="lbl-make-payment">Make a Payment</span></button>
-      </div>
-
-      <!-- INVOICE SUMMARY -->
-      <div class="card">
-        <div class="card-title" id="lbl-invoice-summary">Invoice Summary</div>
-        <div class="bill-line-items" id="bill-line-items"></div>
-        <div class="bill-totals">
-          <div class="bill-tot-row"><span id="lbl-subtotal">Subtotal</span><span class="bill-tot-val" id="bill-subtotal">$0.00</span></div>
-          <div class="bill-tot-row"><span id="lbl-paid">Paid to date</span><span class="bill-tot-val" id="bill-paid" style="color:var(--green)">$0.00</span></div>
-          <div class="bill-tot-row bill-tot-total"><span id="lbl-balance">Balance</span><span class="bill-tot-val" id="bill-balance-line" style="color:var(--gold)">$0.00</span></div>
-        </div>
-      </div>
-
-      <!-- PAYMENT METHOD ON FILE -->
-      <div class="card" id="bill-pm-card" style="display:none">
-        <div class="card-title" id="lbl-payment-method">Payment Method on File</div>
-        <div class="bill-pm-row">
-          <div class="bill-pm-icon">💳</div>
-          <div class="bill-pm-info">
-            <div class="bill-pm-line1" id="bill-pm-line1">—</div>
-            <div class="bill-pm-line2" id="bill-pm-line2">—</div>
-          </div>
-          <a href="mailto:info@cbgfunds.com?subject=Update%20payment%20method" class="bill-pm-edit" id="lbl-pm-update">Update →</a>
-        </div>
-      </div>
-
-      <!-- PAYMENT HISTORY -->
-      <div class="card">
-        <div class="card-title" id="lbl-payment-history">Payment History</div>
-        <div class="bill-history" id="bill-history"></div>
-      </div>
-
-      <!-- BILLING DISCLAIMER -->
-      <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-billing-note">Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your advisor anytime.</div>
-
-    </div>
-
     <!-- SCORES TAB -->
     <div id="tab-scores" style="display:none">
       <div class="card">
@@ -611,25 +518,6 @@ const T={
     'lbl-agreements-intro':'These legal documents are required before we can fully engage. KLIERD will automatically send each one for your electronic signature.',
     'lbl-agreements-note':'Powered by DocuSign · Your signatures are legally binding and securely stored.',
     'lbl-milestones':'Milestones',
-    'lbl-tab-billing':'Billing',
-    'lbl-balance-due':'Balance Due',
-    'lbl-make-payment':'Make a Payment',
-    'lbl-invoice-summary':'Invoice Summary',
-    'lbl-subtotal':'Subtotal',
-    'lbl-paid':'Paid to date',
-    'lbl-balance':'Balance',
-    'lbl-payment-method':'Payment Method on File',
-    'lbl-pm-update':'Update →',
-    'lbl-payment-history':'Payment History',
-    'lbl-billing-note':'Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your advisor anytime.',
-    'bill-paid':'Paid in full',
-    'bill-due':'Balance due',
-    'bill-partial':'Partially paid',
-    'bill-overdue':'Overdue',
-    'bill-no-charges':'No charges',
-    'bill-next-due':'Next payment due:',
-    'bill-no-items':'No charges yet. Your advisor will add line items after your consultation.',
-    'bill-no-history':'No payments yet.',
   },
   es:{
     'lbl-title':'Bienvenido a Su Portal',
@@ -675,25 +563,6 @@ const T={
     'lbl-agreements-title':'Acuerdos Firmados',
     'lbl-agreements-intro':'Estos documentos legales son necesarios para nuestra contratación completa. KLIERD enviará automáticamente cada uno para su firma electrónica.',
     'lbl-agreements-note':'Con tecnología DocuSign · Sus firmas son legalmente válidas y se guardan de forma segura.',
-    'lbl-tab-billing':'Facturación',
-    'lbl-balance-due':'Saldo Pendiente',
-    'lbl-make-payment':'Hacer un Pago',
-    'lbl-invoice-summary':'Resumen de Factura',
-    'lbl-subtotal':'Subtotal',
-    'lbl-paid':'Pagado a la fecha',
-    'lbl-balance':'Saldo',
-    'lbl-payment-method':'Método de Pago en Archivo',
-    'lbl-pm-update':'Actualizar →',
-    'lbl-payment-history':'Historial de Pagos',
-    'lbl-billing-note':'Los cargos son únicamente por servicios de consultoría. Nunca cobramos tarifas por adelantado por reparación de crédito bajo CROA. ¿Preguntas? Envíe un correo a su asesor en cualquier momento.',
-    'bill-paid':'Pagado en su totalidad',
-    'bill-due':'Saldo Pendiente',
-    'bill-partial':'Parcialmente Pagado',
-    'bill-overdue':'Vencido',
-    'bill-no-charges':'Sin cargos',
-    'bill-next-due':'Próximo pago vence:',
-    'bill-no-items':'Sin cargos aún. Su asesor agregará los conceptos después de su consulta.',
-    'bill-no-history':'Aún sin pagos.',
     'lbl-milestones':'Hitos',
   }
 };
@@ -738,7 +607,6 @@ function showPortal(app){
   document.getElementById('lookupScreen').style.display='none';
   document.getElementById('portalScreen').classList.add('show');
   renderPortal(app);
-  maybeShowBillingTab();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1273,91 +1141,12 @@ function handleDrop(e){
 }
 
 function showTab(tab,btn){
-  ['status','docs','messages','analysis','agreements','billing','scores'].forEach(t=>{
+  ['status','docs','messages','analysis','agreements','scores'].forEach(t=>{
     const el=document.getElementById('tab-'+t);
     if(el)el.style.display=t===tab?'block':'none';
   });
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  if(tab==='billing')renderBilling();
-}
-
-// ═══ BILLING TAB (v3.0) ═══
-function renderBilling(){
-  if(!currentApp)return;
-  const b=currentApp.billing||{};
-  const items=b.lineItems||[];
-  const paid=Number(b.paidToDate||0);
-  const subtotal=items.reduce((s,i)=>s+Number(i.amount||0),0);
-  const balance=Math.max(0,subtotal-paid);
-  const fmt=v=>'$'+Number(v).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
-
-  // Hero values
-  document.getElementById('bill-balance').textContent=fmt(balance);
-
-  // Status badge
-  const badge=document.getElementById('bill-status-badge');
-  let status='due';
-  if(subtotal===0){status='paid';badge.textContent=T[lang]['bill-no-charges']||'No charges';}
-  else if(balance===0){status='paid';badge.textContent=T[lang]['bill-paid']||'Paid';}
-  else if(paid>0&&balance>0){status='partial';badge.textContent=T[lang]['bill-partial']||'Partial';}
-  else if(b.overdue){status='overdue';badge.textContent=T[lang]['bill-overdue']||'Overdue';}
-  else badge.textContent=T[lang]['bill-due']||'Balance Due';
-  badge.className='bill-badge '+status;
-
-  // Next payment line
-  const nextLine=document.getElementById('bill-next-line');
-  if(b.nextDueDate&&balance>0){
-    nextLine.textContent=(T[lang]['bill-next-due']||'Next payment due:')+' '+b.nextDueDate;
-  }else nextLine.textContent='';
-
-  // Make payment button
-  document.getElementById('btn-make-payment').style.display=(balance>0)?'block':'none';
-
-  // Line items
-  const liWrap=document.getElementById('bill-line-items');
-  if(items.length===0){
-    liWrap.innerHTML='<div class="bill-hist-empty">'+(T[lang]['bill-no-items']||'No charges yet. Your advisor will add line items after your consultation.')+'</div>';
-  }else{
-    liWrap.innerHTML=items.map(i=>'<div class="bill-li"><div class="bill-li-info"><div class="bill-li-name">'+(i.name||'')+'</div>'+(i.desc?'<div class="bill-li-desc">'+i.desc+'</div>':'')+'</div><div class="bill-li-amt">'+fmt(i.amount||0)+'</div></div>').join('');
-  }
-
-  // Totals
-  document.getElementById('bill-subtotal').textContent=fmt(subtotal);
-  document.getElementById('bill-paid').textContent=fmt(paid);
-  document.getElementById('bill-balance-line').textContent=fmt(balance);
-
-  // Payment method
-  const pmCard=document.getElementById('bill-pm-card');
-  if(b.paymentMethod){
-    pmCard.style.display='block';
-    document.getElementById('bill-pm-line1').textContent=b.paymentMethod.line1||'—';
-    document.getElementById('bill-pm-line2').textContent=b.paymentMethod.line2||'';
-  }else pmCard.style.display='none';
-
-  // History
-  const hist=b.history||[];
-  const histWrap=document.getElementById('bill-history');
-  if(hist.length===0){
-    histWrap.innerHTML='<div class="bill-hist-empty">'+(T[lang]['bill-no-history']||'No payments yet.')+'</div>';
-  }else{
-    histWrap.innerHTML=hist.map(h=>'<div class="bill-hist-row"><div class="bill-hist-info"><div class="bill-hist-date">'+(h.date||'')+'</div><div class="bill-hist-method">'+(h.method||'')+'</div></div><div class="bill-hist-amt">+'+fmt(h.amount||0)+'</div></div>').join('');
-  }
-}
-
-function makePayment(){
-  // Phase 1 — UI only. Phase 2 will integrate Stripe/payment processor.
-  const subject=encodeURIComponent('Make a payment — '+(currentApp?.trackingId||''));
-  const body=encodeURIComponent((lang==='es'?'Hola, quiero hacer un pago en mi cuenta.':'Hi, I would like to make a payment on my account.')+'\n\nTracking ID: '+(currentApp?.trackingId||''));
-  window.location.href='mailto:info@cbgfunds.com?subject='+subject+'&body='+body;
-}
-
-// Show Billing tab button only if client has billing data
-function maybeShowBillingTab(){
-  const btn=document.getElementById('tab-btn-billing');
-  if(!btn)return;
-  const hasBilling=currentApp&&currentApp.billing&&(((currentApp.billing.lineItems||[]).length>0)||currentApp.billing.paidToDate>0);
-  btn.style.display=hasBilling?'inline-flex':'none';
 }
 
 function goBack(){
