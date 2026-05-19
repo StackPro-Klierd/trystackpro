@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Client Portal — CBG Funds</title>
+<title>KLIERD Client Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -277,7 +277,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <body>
 
 <div class="header">
-  <div class="logo">CBG Funds<span id="lbl-portal-tag">Client Portal</span></div>
+  <div class="logo">KLIERD<span id="lbl-portal-tag">Client Portal</span></div>
   <div class="lang-toggle">
     <span class="lang-label">Idioma / Language</span>
     <button class="lang-btn active" onclick="setLang('en',this)">🇺🇸 EN</button>
@@ -379,7 +379,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <div class="ci-row"><span class="ci-label" id="ci-lbl-phone">Phone</span><span class="ci-val" id="ci-phone">—</span></div>
           <div class="ci-row"><span class="ci-label" id="ci-lbl-biz">Business Name</span><span class="ci-val" id="ci-biz">—</span></div>
         </div>
-        <a href="mailto:info@cbgfunds.com?subject=Update%20my%20information" class="ci-edit" id="ci-edit-link">✎ Need to update your information? Message us →</a>
+        <a href="mailto:info@klierd.com?subject=Update%20my%20information" class="ci-edit" id="ci-edit-link">✎ Need to update your information? Message us →</a>
       </div>
 
       <div class="card">
@@ -393,7 +393,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       <div class="card" style="text-align:center">
         <p style="font-size:12px;color:var(--muted);margin-bottom:12px" id="lbl-contact">Have questions? We are here to help.</p>
         <div class="contact-row">
-          <a href="mailto:info@cbgfunds.com" class="btn-ghost">✉ info@cbgfunds.com</a>
+          <a href="mailto:info@klierd.com" class="btn-ghost">✉ info@klierd.com</a>
           <a href="tel:+1" class="btn-ghost" id="lbl-call">📞 Call Us</a>
           <a href="/apply.html" class="btn-ghost" id="lbl-new-app">+ New Application</a>
         </div>
@@ -511,7 +511,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
             <div class="bill-pm-line1" id="bill-pm-line1">—</div>
             <div class="bill-pm-line2" id="bill-pm-line2">—</div>
           </div>
-          <a href="mailto:info@cbgfunds.com?subject=Update%20payment%20method" class="bill-pm-edit" id="lbl-pm-update">Update →</a>
+          <a href="mailto:info@klierd.com?subject=Update%20payment%20method" class="bill-pm-edit" id="lbl-pm-update">Update →</a>
         </div>
       </div>
 
@@ -557,7 +557,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 </div>
 
 <div class="footer">
-  <div id="lbl-footer-text">CBG Funds © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.</div>
+  <div id="lbl-footer-text">KLIERD © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.</div>
   <div id="lbl-footer-croa" style="margin-top:8px;font-size:9px;color:var(--muted)">This is not a credit repair service. Results are not typical and may vary.</div>
 </div>
 
@@ -589,7 +589,7 @@ const T={
     'lbl-disclaimer':'Estimates based on your profile. Results are not typical and may vary.',
     'lookup-error':'Tracking ID not found. Please check and try again.',
     'lbl-portal-tag':'Client Portal',
-    'lbl-footer-text':'CBG Funds © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.',
+    'lbl-footer-text':'KLIERD © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.',
     'lbl-footer-croa':'This is not a credit repair service. Results are not typical and may vary.',
     'lbl-na':'Your Next Action',
     'lbl-progress-bar':'Your Progress',
@@ -654,7 +654,7 @@ const T={
     'lbl-disclaimer':'Estimados basados en su perfil. Los resultados no son típicos y pueden variar.',
     'lookup-error':'ID de seguimiento no encontrado. Por favor verifique e intente de nuevo.',
     'lbl-portal-tag':'Portal del Cliente',
-    'lbl-footer-text':'CBG Funds © 2026 · Con tecnología KLIERD Intelligent Funding Technology · Estamos despejando su camino.',
+    'lbl-footer-text':'KLIERD © 2026 · Con tecnología KLIERD Intelligent Funding Technology · Estamos despejando su camino.',
     'lbl-footer-croa':'Este no es un servicio de reparación de crédito. Los resultados no son típicos y pueden variar.',
     'lbl-na':'Su Próxima Acción',
     'lbl-progress-bar':'Su Progreso',
@@ -765,18 +765,18 @@ function renderPortal(app){
   document.getElementById('p-lang').textContent=(app.preferredLang||app.lang)==='es'?'Español':'English';
 
   // === WELCOME LETTER (Draft B, bilingual) ===
-  const welcomeTitleEN = `Welcome to CBG Funds, ${first}.`;
-  const welcomeTitleES = `Bienvenido(a) a CBG Funds, ${first}.`;
+  const welcomeTitleEN = `Welcome to KLIERD, ${first}.`;
+  const welcomeTitleES = `Bienvenido(a) a KLIERD, ${first}.`;
   const welcomeBodyEN = `<p>Thank you for trusting our team with your funding journey. Your application has been received and your profile is now in our review queue.</p>
     <p><strong>What happens next:</strong> A funding advisor will contact you within 24–48 business hours to discuss your credit profile, your funding goals, and the strategy best suited to your situation. To accelerate this process, please use the Documents tab to upload your identification, recent bank statements, and credit monitoring access.</p>
     <p>If at any point you have questions, use the Messages tab. Our team responds in English and Spanish within one business day.</p>
-    <p>CBG Funds is committed to serving every entrepreneur with transparent, compliant funding strategies powered by KLIERD Intelligent Funding Technology.</p>
-    <p>— The CBG Funds Team</p>`;
+    <p>KLIERD is committed to serving every entrepreneur with transparent, compliant funding strategies powered by KLIERD Intelligent Funding Technology.</p>
+    <p>— The KLIERD Team</p>`;
   const welcomeBodyES = `<p>Gracias por confiar en nuestro equipo con su camino hacia el financiamiento. Su solicitud ha sido recibida y su perfil está en nuestra cola de revisión.</p>
     <p><strong>Lo que sigue:</strong> Un asesor de financiamiento le contactará dentro de 24–48 horas hábiles para discutir su perfil crediticio, sus metas de financiamiento y la estrategia más adecuada a su situación. Para acelerar el proceso, por favor use la pestaña Documentos para cargar su identificación, estados de cuenta recientes y acceso a monitoreo de crédito.</p>
     <p>Si tiene preguntas en cualquier momento, use la pestaña Mensajes. Nuestro equipo responde en inglés y español dentro de un día hábil.</p>
-    <p>CBG Funds está comprometido con servir a cada emprendedor con estrategias de financiamiento transparentes y conformes, impulsadas por la Tecnología de Financiamiento Inteligente KLIERD.</p>
-    <p>— El Equipo de CBG Funds</p>`;
+    <p>KLIERD está comprometido con servir a cada emprendedor con estrategias de financiamiento transparentes y conformes, impulsadas por la Tecnología de Financiamiento Inteligente KLIERD.</p>
+    <p>— El Equipo de KLIERD</p>`;
   document.getElementById('welcome-title').textContent = lang==='es' ? welcomeTitleES : welcomeTitleEN;
   document.getElementById('welcome-body').innerHTML = lang==='es' ? welcomeBodyES : welcomeBodyEN;
 
@@ -871,8 +871,8 @@ function renderPortal(app){
   // Messages
   const msgs=JSON.parse(localStorage.getItem('msgs_'+app.trackingId)||'[]');
   if(msgs.length===0){
-    const wEN=`Hi ${first}! Welcome to CBG Funds. Your application has been received and our team will review your profile within 24–48 hours. Please upload your documents in the Documents tab and feel free to message us anytime. We are KLIERing your path! — CBG Funds Team`;
-    const wES=`¡Hola ${first}! Bienvenido a CBG Funds. Su solicitud ha sido recibida y nuestro equipo revisará su perfil en 24–48 horas. Por favor cargue sus documentos en la pestaña Documentos y escríbanos cuando tenga preguntas. ¡Estamos despejando su camino! — Equipo CBG Funds`;
+    const wEN=`Hi ${first}! Welcome to KLIERD. Your application has been received and our team will review your profile within 24–48 hours. Please upload your documents in the Documents tab and feel free to message us anytime. We are KLIERing your path! — KLIERD Team`;
+    const wES=`¡Hola ${first}! Bienvenido a KLIERD. Su solicitud ha sido recibida y nuestro equipo revisará su perfil en 24–48 horas. Por favor cargue sus documentos en la pestaña Documentos y escríbanos cuando tenga preguntas. ¡Estamos despejando su camino! — Equipo KLIERD`;
     msgs.push({from:'advisor',text:lang==='es'?wES:wEN,time:new Date().toLocaleString()});
     localStorage.setItem('msgs_'+app.trackingId,JSON.stringify(msgs));
   }
@@ -1220,8 +1220,8 @@ function sendMsg(){
   // Send to Railway
   fetch(`${API}/messages`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({trackingId:currentApp.trackingId,from:'client',text,time:new Date().toLocaleString()})}).catch(()=>{});
   setTimeout(()=>{
-    const autoEN='Thank you for your message! Your advisor will respond within 24 hours. — CBG Funds Team';
-    const autoES='¡Gracias por su mensaje! Su asesor responderá en 24 horas. — Equipo CBG Funds';
+    const autoEN='Thank you for your message! Your advisor will respond within 24 hours. — KLIERD Team';
+    const autoES='¡Gracias por su mensaje! Su asesor responderá en 24 horas. — Equipo KLIERD';
     msgs.push({from:'advisor',text:lang==='es'?autoES:autoEN,time:new Date().toLocaleString()});
     localStorage.setItem('msgs_'+currentApp.trackingId,JSON.stringify(msgs));
     renderMessages(msgs);
@@ -1349,7 +1349,7 @@ function makePayment(){
   // Phase 1 — UI only. Phase 2 will integrate Stripe/payment processor.
   const subject=encodeURIComponent('Make a payment — '+(currentApp?.trackingId||''));
   const body=encodeURIComponent((lang==='es'?'Hola, quiero hacer un pago en mi cuenta.':'Hi, I would like to make a payment on my account.')+'\n\nTracking ID: '+(currentApp?.trackingId||''));
-  window.location.href='mailto:info@cbgfunds.com?subject='+subject+'&body='+body;
+  window.location.href='mailto:info@klierd.com?subject='+subject+'&body='+body;
 }
 
 // Show Billing tab button only if client has billing data

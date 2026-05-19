@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>StackPro v3 — Credit Funding Platform</title>
+<title>KLIERD Staff Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -278,7 +278,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 <!-- ████ LOGIN SCREEN ████ -->
 <div id="login-screen" style="position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;align-items:center;justify-content:center;">
   <div style="width:380px;padding:36px;background:var(--dark2);border:1px solid var(--border-hi);border-radius:var(--r);text-align:center">
-    <div style="font-size:28px;font-weight:700;color:var(--gold);letter-spacing:-.5px;margin-bottom:4px">StackPro™</div>
+    <div style="font-size:28px;font-weight:700;color:var(--gold);letter-spacing:-.5px;margin-bottom:4px">KLIERD</div>
     <div style="font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px">Credit Funding Platform</div>
     <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:16px;text-align:left">Staff Login</div>
     <div style="margin-bottom:12px;text-align:left">
@@ -317,7 +317,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 <!-- SIDEBAR -->
 <div class="sidebar">
   <div class="logo">
-    <div class="logo-name">StackPro™</div>
+    <div class="logo-name">KLIERD</div>
     <div class="logo-sub">Credit Funding Platform</div>
     <div class="logo-v">v3.0</div>
   </div>
@@ -326,7 +326,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
     <div class="ni active" onclick="nav('dashboard',this)"><span class="ni-ico">◈</span><span class="nav-lbl" data-en="Dashboard" data-es="Panel Principal">Dashboard</span></div>
     <div class="ni" onclick="nav('intake',this)"><span class="ni-ico">✦</span><span class="nav-lbl" data-en="New Client" data-es="Nuevo Cliente">New Client</span></div>
     <div class="ni" onclick="nav('pipeline',this)"><span class="ni-ico">⟐</span><span class="nav-lbl" data-en="Pipeline" data-es="Cartera">Pipeline</span></div>
-    <div class="ni" onclick="nav('analytics',this)"><span class="ni-ico">📊</span><span class="nav-lbl" data-en="StackPro Analytics" data-es="Analíticas">StackPro Analytics</span></div>
+    <div class="ni" onclick="nav('analytics',this)"><span class="ni-ico">📊</span><span class="nav-lbl" data-en="KLIERD Analytics" data-es="Analíticas">KLIERD Analytics</span></div>
     <div class="ns">Services</div>
     <div class="ni" onclick="nav('creditenhance',this)"><span class="ni-ico">⚡</span><span class="nav-lbl" data-en="Credit Enhancement" data-es="Mejora de Crédito">Credit Enhancement</span></div>
     <div class="ni" onclick="nav('tradelines',this)"><span class="ni-ico">🔗</span><span class="nav-lbl" data-en="Tradelines" data-es="Líneas de Crédito">Tradelines</span></div>
@@ -405,7 +405,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
         <button class="btn bo" style="text-align:left;padding:11px 14px" onclick="nav('pipeline')">⟐ &nbsp;Pipeline</button>
         <button class="btn bo" style="text-align:left;padding:11px 14px" onclick="nav('reports')">📄 &nbsp;Upload Report</button>
         <button class="btn bo" style="text-align:left;padding:11px 14px" onclick="nav('agreement')">📋 &nbsp;Agreement</button>
-        <button class="btn bo" style="text-align:left;padding:11px 14px" onclick="nav('analytics')">📊 &nbsp;StackPro Analytics</button>
+        <button class="btn bo" style="text-align:left;padding:11px 14px" onclick="nav('analytics')">📊 &nbsp;KLIERD Analytics</button>
         <button class="btn bo" style="text-align:left;padding:11px 14px" onclick="manualSync()">☁ &nbsp;Sync Data</button>
     <a href="https://calendly.com/info-41276/15min" target="_blank" class="btn bo" style="text-align:left;padding:11px 14px;text-decoration:none;display:block">📅 &nbsp;Schedule Meeting</a>
       </div>
@@ -1430,7 +1430,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
             <div class="fhint">Auto-fills from package — edit to override</div>
           </div>
           <div class="fld"><label>Funding Target</label><input type="text" id="ag-target" placeholder="$75,000"/></div>
-          <div class="fld"><label>Your Company Name</label><input type="text" id="ag-co" placeholder="CBG Funds LLC"/></div>
+          <div class="fld"><label>Your Company Name</label><input type="text" id="ag-co" placeholder="KLIERD LLC"/></div>
           <div class="fld"><label>Your Phone</label><input type="text" id="ag-phone" placeholder="(555) 000-0000"/></div>
           <div class="fld"><label>Date</label><input type="text" id="ag-date"/></div>
           <button class="btn bg" onclick="genAg()">Generate Consulting Agreement</button>
@@ -1494,7 +1494,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 
           <!-- COMPANY & DATE -->
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);font-weight:700;margin-top:6px">Your Company</div>
-          <div class="fld"><label>Company Name</label><input type="text" id="fa-co" placeholder="CBG Funds LLC"/></div>
+          <div class="fld"><label>Company Name</label><input type="text" id="fa-co" placeholder="KLIERD LLC"/></div>
           <div class="fld"><label>Phone</label><input type="text" id="fa-phone" placeholder="(555) 000-0000"/></div>
           <div class="fld"><label>Date</label><input type="text" id="fa-date"/></div>
 
@@ -1521,7 +1521,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 
 <!-- ████ STACKPRO ANALYTICS ████ -->
 <div id="panel-analytics" class="panel">
-  <div class="sh"><div><div class="st">StackPro Analytics</div><div class="sub">Live financial tracking — all data calculated from your pipeline in real time</div></div>
+  <div class="sh"><div><div class="st">KLIERD Analytics</div><div class="sub">Live financial tracking — all data calculated from your pipeline in real time</div></div>
   <div style="display:flex;gap:7px;flex-wrap:wrap">
     <button class="btn bg bsm owner-only" onclick="exportAnalyticsPDF()" style="font-size:11px">📄 Export PDF Report</button>
     <button class="btn bgh bsm owner-only" onclick="exportAnalyticsCSV()" style="font-size:11px">📊 Export CSV</button>
@@ -1902,7 +1902,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
             <div style="display:flex;flex-direction:column;gap:10px">
               <div class="fld"><label>Service Package</label><input type="text" id="cef-ag-pkg" placeholder="Credit Profile Optimization — Premium"/></div>
               <div class="fld"><label>Fee Amount</label><input type="text" id="cef-ag-fee" placeholder="$997"/></div>
-              <div class="fld"><label>Your Company Name</label><input type="text" id="cef-ag-co" placeholder="CBG Funds LLC"/></div>
+              <div class="fld"><label>Your Company Name</label><input type="text" id="cef-ag-co" placeholder="KLIERD LLC"/></div>
               <div class="fld"><label>Your Phone</label><input type="text" id="cef-ag-phone" placeholder="(555) 000-0000"/></div>
               <div class="fld"><label>Agreement Date</label><input type="date" id="cef-ag-date"/></div>
               <button class="btn bg" onclick="genCEAgreement()">Generate CE Agreement</button>
@@ -2221,7 +2221,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
             <div style="display:flex;flex-direction:column;gap:10px">
               <div class="fld"><label>Tradeline Package</label><input type="text" id="tlf-ag-pkg" placeholder="AU Bundle — 3 lines $15K avg"/></div>
               <div class="fld"><label>Total Fee</label><input type="text" id="tlf-ag-fee" placeholder="$1,500"/></div>
-              <div class="fld"><label>Your Company</label><input type="text" id="tlf-ag-co" placeholder="CBG Funds LLC"/></div>
+              <div class="fld"><label>Your Company</label><input type="text" id="tlf-ag-co" placeholder="KLIERD LLC"/></div>
               <div class="fld"><label>Your Phone</label><input type="text" id="tlf-ag-phone" placeholder="(555) 000-0000"/></div>
               <div class="fld"><label>Date</label><input type="date" id="tlf-ag-date"/></div>
               <button class="btn bg" onclick="genTLAgreement()">Generate TL Agreement</button>
@@ -2635,7 +2635,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
             <div style="display:flex;flex-direction:column;gap:10px">
               <div class="fld"><label>Corp Being Sold</label><input type="text" id="scf-ag-corp" placeholder="Summit Holdings LLC (WY, 2019)"/></div>
               <div class="fld"><label>Sale Price</label><input type="text" id="scf-ag-price" placeholder="$2,500"/></div>
-              <div class="fld"><label>Your Company</label><input type="text" id="scf-ag-co" placeholder="CBG Funds LLC"/></div>
+              <div class="fld"><label>Your Company</label><input type="text" id="scf-ag-co" placeholder="KLIERD LLC"/></div>
               <div class="fld"><label>Your Phone</label><input type="text" id="scf-ag-phone" placeholder="(555) 000-0000"/></div>
               <div class="fld"><label>Date</label><input type="date" id="scf-ag-date"/></div>
               <button class="btn bg" onclick="genSCAgreement()">Generate SC Agreement</button>
@@ -3130,7 +3130,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
     <div class="fc">
       <div style="font-size:12.5px;font-weight:600;margin-bottom:13px">Brand Settings</div>
       <div style="display:flex;flex-direction:column;gap:11px">
-        <div class="fld"><label>Company Name</label><input type="text" id="set-brand" placeholder="StackPro LLC" oninput="updBrand()"/></div>
+        <div class="fld"><label>Company Name</label><input type="text" id="set-brand" placeholder="KLIERD" oninput="updBrand()"/></div>
         <div class="fld"><label>Tagline</label><input type="text" id="set-tag" placeholder="Business Funding Solutions"/></div>
         <div class="fld"><label>Default Fee</label><input type="text" id="set-fee" placeholder="$1,497"/></div>
         <div class="fld"><label>Monthly Goal ($)</label><input type="number" id="set-goal" placeholder="50000" oninput="updGoal()"/></div>
@@ -3251,7 +3251,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
         </div>
 
         <div style="font-size:11px;color:var(--muted);background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;line-height:1.7">
-          <strong style="color:var(--text)">How it works:</strong> Every time you add/update a client or note, StackPro automatically syncs to the cloud. Any staff member who opens the tool gets the latest data within seconds. Free plan handles up to 10,000 syncs/month — more than enough for your team.
+          <strong style="color:var(--text)">How it works:</strong> Every time you add/update a client or note, KLIERD automatically syncs to the cloud. Any staff member who opens the tool gets the latest data within seconds. Free plan handles up to 10,000 syncs/month — more than enough for your team.
         </div>
       </div>
 
@@ -3284,7 +3284,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
     </div>
     <div class="fc">
       <div style="font-size:12.5px;font-weight:600;margin-bottom:13px">Platform Info</div>
-      <div class="ir"><div class="ik">Platform</div><div class="iv">StackPro™ v3.0</div></div>
+      <div class="ir"><div class="ik">Platform</div><div class="iv">KLIERD v3.0</div></div>
       <div class="ir"><div class="ik">Revenue Share</div><div class="iv g">0% — Keep 100%</div></div>
       <div class="ir"><div class="ik">Monthly Fee</div><div class="iv g">$0</div></div>
       <div class="ir"><div class="ik">Card Database</div><div class="iv">50+ Personal & Business</div></div>
@@ -3295,7 +3295,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
       <!-- DEPLOYMENT GUIDE -->
       <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border)">
         <div style="font-size:12.5px;font-weight:600;margin-bottom:4px">🚀 Go Live — Deploy for Your Team</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:13px;line-height:1.6">Get StackPro on a real URL so your staff can access it from any device.</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:13px;line-height:1.6">Get KLIERD on a real URL so your staff can access it from any device.</div>
         
         <div style="display:flex;flex-direction:column;gap:10px">
           <div style="background:rgba(39,174,96,0.06);border:1px solid rgba(39,174,96,0.25);border-radius:var(--rs);padding:12px 14px">
@@ -3338,7 +3338,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
       </div>
       <div style="margin-top:14px;padding:13px;background:var(--dark3);border-radius:var(--rs);border:1px solid var(--border)">
         <div style="font-size:11px;color:var(--gold);font-weight:600;margin-bottom:5px">Georgia Setup Reminder</div>
-        <div style="font-size:11.5px;color:var(--muted);line-height:1.7">Register StackPro LLC at sos.ga.gov — $100 filing fee, 1–2 business days. Then file federal trademark at USPTO.gov for Class 36 (financial services).</div>
+        <div style="font-size:11.5px;color:var(--muted);line-height:1.7">Register your entity at sos.ga.gov — $100 filing fee, 1–2 business days. Then file federal trademark at USPTO.gov for Class 36 (financial services).</div>
       </div>
     </div>
   </div>
@@ -3520,7 +3520,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
           <div><span style="color:var(--gold);font-weight:600">Success fee:</span> <span style="color:var(--dim)">15–30% — dropdown per client</span></div>
           <div><span style="color:var(--gold);font-weight:600">Dispute payments:</span> <span style="color:var(--dim)">ACH/debit ONLY</span></div>
           <div><span style="color:var(--gold);font-weight:600">$5,000 package:</span> <span style="color:var(--dim)">Management approval only</span></div>
-          <div><span style="color:var(--gold);font-weight:600">Client docs:</span> <span style="color:var(--dim)">CBG Funds only — never Cole Benefit Group</span></div>
+          <div><span style="color:var(--gold);font-weight:600">Client docs:</span> <span style="color:var(--dim)">KLIERD only — never CBG Funds or Cole Benefit Group (legacy brand, internal use only)</span></div>
           <div><span style="color:var(--gold);font-weight:600">Language:</span> <span style="color:var(--dim)">Dispute resolution services — never credit repair</span></div>
           <div><span style="color:var(--gold);font-weight:600">Funding:</span> <span style="color:var(--dim)">KLIERD Intelligent Funding Technology — never humans</span></div>
         </div>
@@ -3536,7 +3536,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
       <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-weight:700;flex-shrink:0">1</span><span style="color:var(--dim)">Deploy portal.html to GoDaddy — cPanel editor, paste and save</span></div>
       <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-weight:700;flex-shrink:0">2</span><span style="color:var(--dim)">Millicent adds ANTHROPIC_API_KEY to Railway → activates AI assistant</span></div>
       <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-weight:700;flex-shrink:0">3</span><span style="color:var(--dim)">Millicent regenerates Supabase key → updates Railway variable</span></div>
-      <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-weight:700;flex-shrink:0">4</span><span style="color:var(--dim)">SendGrid setup → verify cbgfunds.com → add SENDGRID_API_KEY to Railway</span></div>
+      <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-weight:700;flex-shrink:0">4</span><span style="color:var(--dim)">SendGrid setup → verify klierd.com → add SENDGRID_API_KEY to Railway</span></div>
       <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-weight:700;flex-shrink:0">5</span><span style="color:var(--dim)">Zoom API credentials → enter in portal Zoom panel</span></div>
       <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-weight:700;flex-shrink:0">6</span><span style="color:var(--dim)">Build klierd.com enterprise/investor landing page</span></div>
       <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-weight:700;flex-shrink:0">7</span><span style="color:var(--dim)">Import 7,000 client CSV</span></div>
@@ -3550,7 +3550,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 
   <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
     <div class="sc"><div class="sl">SendGrid Status</div><div class="sv" id="sg-status" style="font-size:13px;color:var(--orange)">Not Connected</div></div>
-    <div class="sc"><div class="sl">From Address</div><div class="sv" style="font-size:13px">info@cbgfunds.com</div></div>
+    <div class="sc"><div class="sl">From Address</div><div class="sv" style="font-size:13px">info@klierd.com</div></div>
     <div class="sc"><div class="sl">Queued Emails</div><div class="sv" id="email-queue-count">0</div></div>
   </div>
 
@@ -3586,7 +3586,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
   </div>
 
   <div style="margin-top:16px;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:var(--r);padding:16px;font-size:11px;color:var(--muted);line-height:1.8">
-    <strong style="color:var(--text)">To activate SendGrid:</strong> Millicent adds SENDGRID_API_KEY to Railway → verify cbgfunds.com domain in SendGrid → all queued emails fire automatically.
+    <strong style="color:var(--text)">To activate SendGrid:</strong> Millicent adds SENDGRID_API_KEY to Railway → verify klierd.com domain in SendGrid → all queued emails fire automatically.
   </div>
 </div>
 
@@ -3709,7 +3709,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
       </div>
       <div class="fld" style="margin:0"><label>Fee Cap % (max 25)</label><input type="number" id="br-fee-cap" value="20" min="15" max="25"/><div class="fhint">Max % broker can charge on top of CBG 15%</div></div>
     </div>
-    <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:var(--rs);padding:10px 14px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.7">Broker Agreement required before activation. CBG Funds not responsible for broker taxes. DRAFT - pending Melony Frank review.</div>
+    <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:var(--rs);padding:10px 14px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.7">Broker Agreement required before activation. KLIERD not responsible for broker taxes. DRAFT - pending Melony Frank review.</div>
     <div style="display:flex;gap:8px"><button class="btn bg" onclick="addBroker()" style="flex:1">Add Broker</button><button class="btn bgh" onclick="document.getElementById('add-broker-form').style.display='none'">Cancel</button></div>
   </div>
   <div class="fc" id="broker-list-wrap">
@@ -3784,7 +3784,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════
-//  AES-256 ENCRYPTION LAYER — StackPro Security
+//  AES-256 ENCRYPTION LAYER — KLIERD Security
 //  All localStorage data is encrypted at rest.
 //  Transparent wrapper — all existing code unchanged.
 //  Key is derived from a stored device secret + salt.
@@ -3863,7 +3863,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
     return { encrypted: _origGetItem(key), decrypted: raw };
   };
 
-  console.log('%c🔒 StackPro: AES-256 encryption active — all data encrypted at rest', 'color:#27AE60;font-weight:bold;font-size:13px');
+  console.log('%c🔒 KLIERD: AES-256 encryption active — all data encrypted at rest', 'color:#27AE60;font-weight:bold;font-size:13px');
 })();
 </script>
 <script>
@@ -4500,7 +4500,7 @@ let matType='all', matScore='all';
 function nav(id, el){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
-  const titles={dashboard:'Dashboard',funding:'🚀 Funding Hub',resources:'📚 Resources',admin:'🔐 Admin Panel',analytics:'StackPro Analytics',creditenhance:'Credit Enhancement',tradelines:'Tradelines',shelfcorp:'Shelf Corps',intake:'New Client — Instant Decision',pipeline:'Client Pipeline',cards:'Card Matrix',reports:'Credit Reports',calculator:'Fee Calculator',import:'Import Clients',agreement:'Agreement Builder',invoices:'Invoice Center',brokers:'Broker Portal',teamboard:'Team Board',email:'Email Center',sms:'SMS Center',zoom:'Zoom',settings:'Settings',
+  const titles={dashboard:'Dashboard',funding:'🚀 Funding Hub',resources:'📚 Resources',admin:'🔐 Admin Panel',analytics:'KLIERD Analytics',creditenhance:'Credit Enhancement',tradelines:'Tradelines',shelfcorp:'Shelf Corps',intake:'New Client — Instant Decision',pipeline:'Client Pipeline',cards:'Card Matrix',reports:'Credit Reports',calculator:'Fee Calculator',import:'Import Clients',agreement:'Agreement Builder',invoices:'Invoice Center',brokers:'Broker Portal',teamboard:'Team Board',email:'Email Center',sms:'SMS Center',zoom:'Zoom',settings:'Settings',
     applyUrl:'https://www.bcu.org/loans/personal-loans',
     joinUrl:'https://www.bcu.org/membership',
     cardUrl:'https://www.bcu.org/credit-cards',
@@ -4752,12 +4752,12 @@ function addPipeline(){
   const portalUrl = window.location.origin+'/client-portal.html';
   sendSystemEmail(
     email,
-    'Welcome to CBG Funds — Your Portal is Ready',
-    'Hi '+first+',\n\nWelcome! Your application has been received and your client portal is ready.\n\nLog in here to complete your next steps:\n'+portalUrl+'\n\nYour next steps inside the portal:\n1. Review your application\n2. Upload your credit report\n3. Review your analysis\n4. Sign your agreements\n\nOnce complete, KLIERD Intelligent Funding Technology will begin processing your funding automatically.\n\nIf you have any questions, reply to this email.\n\nWe are KLIERing your path.\n— The CBG Funds Team\ninfo@cbgfunds.com'
+    'Welcome to KLIERD — Your Portal is Ready',
+    'Hi '+first+',\n\nWelcome! Your application has been received and your client portal is ready.\n\nLog in here to complete your next steps:\n'+portalUrl+'\n\nYour next steps inside the portal:\n1. Review your application\n2. Upload your credit report\n3. Review your analysis\n4. Sign your agreements\n\nOnce complete, KLIERD Intelligent Funding Technology will begin processing your funding automatically.\n\nIf you have any questions, reply to this email.\n\nWe are KLIERing your path.\n— The KLIERD Team\ninfo@klierd.com'
   );
   sendSystemSMS(
     document.getElementById('f-phone').value,
-    'Hi '+first+'! Welcome to CBG Funds. Your portal is ready — log in to complete your next steps: '+portalUrl+' -CBG Funds'
+    'Hi '+first+'! Welcome to KLIERD. Your portal is ready — log in to complete your next steps: '+portalUrl+' -KLIERD'
   );
   addStaffNoteQuick('status','Welcome email + text sent to '+first+' '+last);
 
@@ -4821,9 +4821,9 @@ function openModal(id){
   const emailBtn = document.getElementById('m-btn-email');
   const callBtn  = document.getElementById('m-btn-call');
   const smsBtn   = document.getElementById('m-btn-sms');
-  if(emailBtn) emailBtn.href = email ? `mailto:${email}?subject=StackPro%20Funding%20Update%20-%20${name}` : '#';
+  if(emailBtn) emailBtn.href = email ? `mailto:${email}?subject=KLIERD%20Funding%20Update%20-%20${name}` : '#';
   if(callBtn)  callBtn.href  = phone ? `tel:+1${phone}` : '#';
-  if(smsBtn)   smsBtn.href   = phone ? `sms:+1${phone}?body=Hi%20${encodeURIComponent(c.first)}%2C%20this%20is%20your%20StackPro%20funding%20advisor.%20` : '#';
+  if(smsBtn)   smsBtn.href   = phone ? `sms:+1${phone}?body=Hi%20${encodeURIComponent(c.first)}%2C%20this%20is%20your%20KLIERD%20funding%20advisor.%20` : '#';
   if(emailBtn) emailBtn.style.opacity = email ? '1' : '0.35';
   if(callBtn)  callBtn.style.opacity  = phone ? '1' : '0.35';
   if(smsBtn)   smsBtn.style.opacity   = phone ? '1' : '0.35';
@@ -5475,7 +5475,7 @@ function genAg(){
   const pk  = document.getElementById('ag-pkg');
   const pkt = pk?.options?.[pk.selectedIndex]?.text || 'Consulting Service';
   const tg  = document.getElementById('ag-target').value||'To be determined';
-  const co  = document.getElementById('ag-co').value||'CBG Funds LLC';
+  const co  = document.getElementById('ag-co').value||'KLIERD LLC';
   const ph  = document.getElementById('ag-phone').value||'(555) 000-0000';
   const dt  = document.getElementById('ag-date').value||new Date().toLocaleDateString();
   const feeDisplay = document.getElementById('ag-fee-display')?.value || (pkt.match(/\$[\d,]+/)||['As agreed'])[0];
@@ -5658,7 +5658,7 @@ function copyAg(){navigator.clipboard.writeText(document.getElementById('ag-prev
 // ═══════════════════════════════════════════════
 //  SETTINGS
 // ═══════════════════════════════════════════════
-function updBrand(){const v=document.getElementById('set-brand').value;document.getElementById('brandName').textContent=v||'CBG Funds LLC';}
+function updBrand(){const v=document.getElementById('set-brand').value;document.getElementById('brandName').textContent=v||'KLIERD LLC';}
 function updGoal(){const g=parseFloat(document.getElementById('set-goal').value)||50000;const cur=18400;const pct=Math.min(Math.round((cur/g)*100),100);document.getElementById('dash-bar').style.width=pct+'%';document.getElementById('dash-rev').textContent='$'+cur.toLocaleString()+' / $'+g.toLocaleString();}
 function saveSettings(){updBrand();toast('✓ Settings saved');}
 function saveDraft(){toast('✓ Draft saved to session');}
@@ -7792,7 +7792,7 @@ function exportPipedrive(){
     'Credit score','Housing','Employment','Taxes filed','IRS debt',
     'Business name','Monthly revenue','Funding goal',
     'NAV status','D&B Paydex','Experian Biz','Equifax Biz','FICO SBSS',
-    'Notes','Date added','StackPro status'
+    'Notes','Date added','KLIERD status'
   ];
 
   const statusMap = {
@@ -7833,7 +7833,7 @@ function exportPipedrive(){
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href     = url;
-  a.download = `StackPro_Pipedrive_Export_${new Date().toISOString().split('T')[0]}.csv`;
+  a.download = `KLIERD_Export_${new Date().toISOString().split('T')[0]}.csv`;
   a.click();
   URL.revokeObjectURL(url);
   toast(`✅ Exported ${clients.length} clients for Pipedrive import`);
@@ -8195,7 +8195,7 @@ function genFeeAg(){
   const fundingDesc= document.getElementById('fa-funding-desc')?.value?.trim() || 'Approved credit facilities';
   const pct        = parseFloat(document.getElementById('fa-pct')?.value||'0');
 
-  const co         = document.getElementById('fa-co')?.value?.trim()      || 'CBG Funds LLC';
+  const co         = document.getElementById('fa-co')?.value?.trim()      || 'KLIERD LLC';
   const ph         = document.getElementById('fa-phone')?.value?.trim()   || '(555) 000-0000';
   const dt         = document.getElementById('fa-date')?.value            || new Date().toLocaleDateString();
 
@@ -8607,8 +8607,8 @@ function markFunded(clientId){
   const inv={id:invId,clientId:c.id,clientName:(c.first||'')+' '+(c.last||''),clientEmail:c.email||'',type:'post_funding',service:pct+'% Success Fee + $500 Technology Fee',successFee,techFee,amount:totalDue,fundedAmount:amt,payMethod:c.allowCreditCard?'cc_enabled':'ach',status:'pending',note:'Auto-generated on funding.',created:new Date().toLocaleString(),paid:null,reminders:[],reminderSchedule:[1,3,7]};
   const allInv=getInvoices();allInv.unshift(inv);saveInvoices(allInv);
   scheduleInvoiceReminders(inv);
-  sendSystemEmail(c.email,'Action Required: Payment Due - CBG Funds','Hi '+c.first+',\n\nCongratulations your funding of $'+amt.toLocaleString()+' has been approved!\n\nPayment due: $'+totalDue.toLocaleString()+'\n- '+pct+'% Success Fee: $'+successFee.toLocaleString()+'\n- Technology Fee: $'+techFee.toLocaleString()+'\n\nLog into your portal to pay:\n'+window.location.origin+'/client-portal.html\n\nWe are KLIERing your path.\n- The CBG Funds Team');
-  sendSystemSMS(c.phone,'Hi '+c.first+'! Funding of $'+amt.toLocaleString()+' approved! Payment of $'+totalDue.toLocaleString()+' due. Pay in portal: '+window.location.origin+'/client-portal.html -CBG Funds');
+  sendSystemEmail(c.email,'Action Required: Payment Due - KLIERD','Hi '+c.first+',\n\nCongratulations your funding of $'+amt.toLocaleString()+' has been approved!\n\nPayment due: $'+totalDue.toLocaleString()+'\n- '+pct+'% Success Fee: $'+successFee.toLocaleString()+'\n- Technology Fee: $'+techFee.toLocaleString()+'\n\nLog into your portal to pay:\n'+window.location.origin+'/client-portal.html\n\nWe are KLIERing your path.\n- The KLIERD Team');
+  sendSystemSMS(c.phone,'Hi '+c.first+'! Funding of $'+amt.toLocaleString()+' approved! Payment of $'+totalDue.toLocaleString()+' due. Pay in portal: '+window.location.origin+'/client-portal.html -KLIERD');
   addStaffNoteQuick('status','Client FUNDED $'+amt.toLocaleString()+' - Invoice '+invId+' $'+totalDue.toLocaleString()+' due - Email+SMS sent');
   saveAll();renderPip();refreshInvPanel();renderModalTab('funding');
   toast('Funded! Invoice sent to '+c.first+' via email + text.');
@@ -9664,7 +9664,7 @@ function genCEAgreement(){
   const em   = c.email||'client@email.com';
   const pkg  = document.getElementById('cef-ag-pkg')?.value||'Credit Enhancement Service';
   const fee  = document.getElementById('cef-ag-fee')?.value||'As agreed';
-  const co   = document.getElementById('cef-ag-co')?.value||'CBG Funds LLC';
+  const co   = document.getElementById('cef-ag-co')?.value||'KLIERD LLC';
   const ph   = document.getElementById('cef-ag-phone')?.value||'(555) 000-0000';
   const dt   = document.getElementById('cef-ag-date')?.value||new Date().toLocaleDateString();
   const agNum= 'CEA-'+Date.now().toString().slice(-6);
@@ -10002,7 +10002,7 @@ function genTLAgreement(){
   const n=`${c.first} ${c.last}`.trim()||'Client'; const em=c.email||'client@email.com';
   const pkg=document.getElementById('tlf-ag-pkg')?.value||'Tradeline Service';
   const fee=document.getElementById('tlf-ag-fee')?.value||'As agreed';
-  const co=document.getElementById('tlf-ag-co')?.value||'CBG Funds LLC';
+  const co=document.getElementById('tlf-ag-co')?.value||'KLIERD LLC';
   const ph=document.getElementById('tlf-ag-phone')?.value||'(555) 000-0000';
   const dt=document.getElementById('tlf-ag-date')?.value||new Date().toLocaleDateString();
   const agNum='TLA-'+Date.now().toString().slice(-6);
@@ -10193,7 +10193,7 @@ function genSCAgreement(){
   const c=activeSCClient; const n=`${c.first} ${c.last}`.trim()||'Client';
   const corp=document.getElementById('scf-ag-corp')?.value||'Shelf Corporation';
   const price=document.getElementById('scf-ag-price')?.value||'As agreed';
-  const co=document.getElementById('scf-ag-co')?.value||'CBG Funds LLC';
+  const co=document.getElementById('scf-ag-co')?.value||'KLIERD LLC';
   const ph=document.getElementById('scf-ag-phone')?.value||'(555) 000-0000';
   const dt=document.getElementById('scf-ag-date')?.value||new Date().toLocaleDateString();
   const agNum='SCA-'+Date.now().toString().slice(-6);
@@ -10930,7 +10930,7 @@ function exportAllData(){
 }
 
 function confirmClearData(){
-  const confirmed = prompt('Type DELETE to clear all StackPro data. This cannot be undone:');
+  const confirmed = prompt('Type DELETE to clear all KLIERD data. This cannot be undone:');
   if(confirmed==='DELETE'){
     ['sp_clients','sp_ce_clients','sp_tl_clients','sp_sc_clients','sp_activity_log'].forEach(k=>localStorage.removeItem(k));
     toast('⚠ All data cleared — please refresh');
@@ -10949,7 +10949,7 @@ function exportAnalyticsCSV(){
   const s    = calcDashboardStats();
   const fmt  = n => n > 0 ? '$'+Math.round(n).toLocaleString() : '—';
   const date = new Date().toLocaleDateString();
-  const company = localStorage.getItem('sp_brand')||'CBG Funds LLC';
+  const company = localStorage.getItem('sp_brand')||'KLIERD LLC';
 
   // Build pipeline rows
   const pipRows = clients.map(c=>[
@@ -10970,10 +10970,10 @@ function exportAnalyticsCSV(){
 
   const csv = [
     // SUMMARY SECTION
-    '"StackPro Analytics Export"',
+    '"KLIERD Analytics Export"',
     '"Company:","'+company+'"',
     '"Date:","'+date+'"',
-    '"Generated by:","StackPro v3 — CBG Funds"',
+    '"Generated by:","KLIERD Staff Portal — KLIERD"',
     '',
     '"=== FINANCIAL SUMMARY ==="',
     '"Metric","Value"',
@@ -11000,13 +11000,13 @@ function exportAnalyticsCSV(){
 
 function exportAnalyticsJSON(){
   const s = calcDashboardStats();
-  const company = localStorage.getItem('sp_brand')||'CBG Funds LLC';
+  const company = localStorage.getItem('sp_brand')||'KLIERD LLC';
   const report = {
     meta: {
       company,
       exportDate: new Date().toISOString(),
       exportedBy: currentStaff?.name||'Owner',
-      platform: 'StackPro v3',
+      platform: 'KLIERD v3',
     },
     summary: {
       totalClients:    s.total,
@@ -11044,7 +11044,7 @@ function exportAnalyticsPDF(){
   const s       = calcDashboardStats();
   const fmt     = n => n > 0 ? '$'+Math.round(n).toLocaleString() : '—';
   const date    = new Date().toLocaleDateString();
-  const company = localStorage.getItem('sp_brand')||'CBG Funds LLC';
+  const company = localStorage.getItem('sp_brand')||'KLIERD LLC';
   const goal    = parseFloat(document.getElementById('set-goal')?.value||'50000')||50000;
   const goalPct = Math.min(100, Math.round((s.totalFees/goal)*100));
 
@@ -11067,7 +11067,7 @@ function exportAnalyticsPDF(){
 <html>
 <head>
 <meta charset="UTF-8"/>
-<title>${company} — StackPro Analytics Report</title>
+<title>${company} — KLIERD Analytics Report</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Helvetica Neue',Arial,sans-serif;color:#1a1a2e;background:#fff;padding:40px;}
@@ -11110,7 +11110,7 @@ function exportAnalyticsPDF(){
   <div class="header">
     <div>
       <div class="company">CBG <span>Funds</span></div>
-      <div style="font-size:12px;color:#888;margin-top:2px">Powered by StackPro™</div>
+      <div style="font-size:12px;color:#888;margin-top:2px">Powered by KLIERD</div>
     </div>
     <div class="report-meta">
       <div class="report-title">📊 Analytics Report</div>
@@ -11205,7 +11205,7 @@ function exportAnalyticsPDF(){
   </div>
 
   <div class="footer">
-    <div><strong>${company}</strong> · StackPro Analytics Report · ${date}</div>
+    <div><strong>${company}</strong> · KLIERD Analytics Report · ${date}</div>
     <div class="confidential">CONFIDENTIAL — For authorized use only</div>
   </div>
 
@@ -11544,7 +11544,7 @@ if(clients.length > 0){
   <div style="background:linear-gradient(135deg,#3D35B8,#1a6bb5);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0">
     <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🤖</div>
     <div style="flex:1">
-      <div style="font-size:13px;font-weight:700;color:white">StackPro AI Assistant</div>
+      <div style="font-size:13px;font-weight:700;color:white">KLIERD AI Assistant</div>
       <div style="font-size:10px;color:rgba(255,255,255,0.7)">Credit strategy, funding guidance & service help</div>
     </div>
     <div style="display:flex;gap:6px">
@@ -11566,7 +11566,7 @@ if(clients.length > 0){
   <!-- MESSAGES -->
   <div id="chat-messages" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px">
     <div class="chat-msg assistant" style="background:rgba(99,91,255,0.1);border:1px solid rgba(99,91,255,0.2);border-radius:10px 10px 10px 2px;padding:11px 13px;font-size:12px;color:var(--dim);line-height:1.7;max-width:90%">
-      👋 Hi! I'm your StackPro AI Assistant powered by Claude.<br><br>
+      👋 Hi! I'm your KLIERD AI Assistant powered by Claude.<br><br>
       I can help with:<br>
       • <strong style="color:var(--text)">Credit strategy</strong> — bureau targeting, score optimization, dispute strategy<br>
       • <strong style="color:var(--text)">Funding guidance</strong> — card stacking, CU stack, business loans<br>
@@ -11591,12 +11591,12 @@ if(clients.length > 0){
 <div id="client-chat-panel" style="display:none;position:fixed;bottom:20px;right:20px;width:380px;height:540px;background:#000000;border:1px solid rgba(201,168,76,0.3);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.8);z-index:9999;flex-direction:column;overflow:hidden">
   <div style="background:linear-gradient(135deg,#C9A84C,#E8CB7A);padding:14px 16px;display:flex;align-items:center;gap:10px">
     <div style="width:34px;height:34px;background:rgba(0,0,0,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px">💬</div>
-    <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#000000">CBG Funds — Ask Us Anything</div><div style="font-size:10px;color:rgba(0,0,0,0.6)">Credit & Funding Assistant</div></div>
+    <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#000000">KLIERD — Ask Us Anything</div><div style="font-size:10px;color:rgba(0,0,0,0.6)">Credit & Funding Assistant</div></div>
     <button onclick="toggleClientChat()" style="background:rgba(0,0,0,0.15);border:none;color:#000000;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px">✕</button>
   </div>
   <div id="client-chat-messages" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px">
     <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:10px 10px 10px 2px;padding:11px 13px;font-size:12px;color:#aaa;line-height:1.7">
-      Hi! 👋 I'm the CBG Funds AI assistant. I can answer questions about credit building, funding options, and our services. What would you like to know?
+      Hi! 👋 I'm the KLIERD AI assistant. I can answer questions about credit building, funding options, and our services. What would you like to know?
     </div>
   </div>
   <div style="padding:10px;border-top:1px solid #1E1E2E;background:#12121C">
@@ -11625,13 +11625,13 @@ if(clients.length > 0){
 // ═══════════════════════════════════════════════════════════
 //  AI CHAT ASSISTANT — Powered by Claude
 // ═══════════════════════════════════════════════════════════
-const STAFF_SYSTEM_PROMPT = `You are the StackPro AI Assistant for CBG Funds LLC. You help staff advisors and VAs with credit strategy, funding guidance, and client scripts.
+const STAFF_SYSTEM_PROMPT = `You are the KLIERD AI Assistant for KLIERD LLC. You help staff advisors and VAs with credit strategy, funding guidance, and client scripts.
 
 CREDIT STRATEGY: Bureau targeting: BCU/Alliant/SchoolsFirst=TransUnion, DCU/Dept of Interior=Equifax, Andrews/NASA/PenFed=Experian. Always use LOWEST of 3 bureau scores. Stack same-bureau CUs same day. ITIN accepted: Capital One, Petal, OpenSky, Chime, Zolve, Discover, BofA, Citi, Wells Fargo. Business credit: Need EIN + bank 90 days + D-U-N-S. PAYDEX 80+ before business cards. AU tradelines add 30-80pts in 30-45 days. Utilization under 9% = fastest score boost.
 
 RULES: Never guarantee results. Clients execute disputes themselves. Be concise. Respond in Spanish if staff writes in Spanish.`;
 
-const CLIENT_SYSTEM_PROMPT = `You are the CBG Funds AI assistant on the client website. Answer questions about credit building and funding simply in 2-4 sentences. Be warm, bilingual (English/Spanish). Always encourage them to fill out the intake form for a personal consultation.`;
+const CLIENT_SYSTEM_PROMPT = `You are the KLIERD AI assistant on the client website. Answer questions about credit building and funding simply in 2-4 sentences. Be warm, bilingual (English/Spanish). Always encourage them to fill out the intake form for a personal consultation.`;
 
 let chatHistory=[],clientChatHistory=[],chatOpen=false,clientChatOpen=false,chatLoading=false,chatMsgId=0,clientMsgId=0;
 
@@ -11793,8 +11793,8 @@ function sendManualInvoice(){
   const inv={id:genInvoiceId(),clientId,clientName:(c?.first||'')+' '+(c?.last||''),clientEmail:c?.email||'',type:'manual',service,amount,payMethod,status:'pending',note,created:new Date().toLocaleString(),paid:null,reminders:[],reminderSchedule:[1,3,7]};
   const all=getInvoices();all.unshift(inv);saveInvoices(all);
   scheduleInvoiceReminders(inv);
-  sendSystemEmail(c?.email,'Invoice from CBG Funds - Payment Due','Hi '+c?.first+',\n\nNew invoice:\nService: '+service+'\nAmount: $'+amount.toLocaleString()+(note?'\nNote: '+note:'')+'\n\nPay in your portal: '+window.location.origin+'/client-portal.html\n\nWe are KLIERing your path.\n- The CBG Funds Team');
-  sendSystemSMS(c?.phone,'Hi '+c?.first+'! Invoice for $'+amount.toLocaleString()+' from CBG Funds. Pay in portal: '+window.location.origin+'/client-portal.html -CBG Funds');
+  sendSystemEmail(c?.email,'Invoice from KLIERD - Payment Due','Hi '+c?.first+',\n\nNew invoice:\nService: '+service+'\nAmount: $'+amount.toLocaleString()+(note?'\nNote: '+note:'')+'\n\nPay in your portal: '+window.location.origin+'/client-portal.html\n\nWe are KLIERing your path.\n- The KLIERD Team');
+  sendSystemSMS(c?.phone,'Hi '+c?.first+'! Invoice for $'+amount.toLocaleString()+' from KLIERD. Pay in portal: '+window.location.origin+'/client-portal.html -KLIERD');
   closeManualInvoice();
   refreshInvPanel();
   toast('Invoice sent to '+(c?.first||'client')+' via email + text');
@@ -11809,8 +11809,8 @@ function sendClientInvoice(clientId){
   const inv={id:genInvoiceId(),clientId:c.id,clientName:(c.first||'')+' '+(c.last||''),clientEmail:c.email||'',type:'manual',service,amount,payMethod:c.allowCreditCard?'cc_enabled':'ach',status:'pending',note,created:new Date().toLocaleString(),paid:null,reminders:[],reminderSchedule:[1,3,7]};
   const all=getInvoices();all.unshift(inv);saveInvoices(all);
   scheduleInvoiceReminders(inv);
-  sendSystemEmail(c.email,'Invoice from CBG Funds - Payment Due','Hi '+c.first+',\n\nService: '+service+'\nAmount: $'+amount.toLocaleString()+(note?'\nNote: '+note:'')+'\n\nPay in your portal: '+window.location.origin+'/client-portal.html\n\nWe are KLIERing your path.\n- The CBG Funds Team');
-  sendSystemSMS(c.phone,'Hi '+c.first+'! Invoice $'+amount.toLocaleString()+' from CBG Funds. Pay in portal: '+window.location.origin+'/client-portal.html -CBG Funds');
+  sendSystemEmail(c.email,'Invoice from KLIERD - Payment Due','Hi '+c.first+',\n\nService: '+service+'\nAmount: $'+amount.toLocaleString()+(note?'\nNote: '+note:'')+'\n\nPay in your portal: '+window.location.origin+'/client-portal.html\n\nWe are KLIERing your path.\n- The KLIERD Team');
+  sendSystemSMS(c.phone,'Hi '+c.first+'! Invoice $'+amount.toLocaleString()+' from KLIERD. Pay in portal: '+window.location.origin+'/client-portal.html -KLIERD');
   addStaffNoteQuick('status','Invoice '+inv.id+' sent: '+service+' $'+amount.toLocaleString());
   saveClients();refreshInvPanel();renderModalTab('invoice');
   toast('Invoice sent to '+c.first+' via email + text');
@@ -11848,12 +11848,12 @@ function triggerFundingEngine(clientId){
   // Notify client — funding has started
   sendSystemEmail(
     c.email,
-    'Your Funding is Underway — CBG Funds',
-    'Hi '+c.first+',\n\nGreat news — your payment has been received and KLIERD Intelligent Funding Technology is now processing your funding.\n\nYou will receive updates as your applications are submitted and decisions come in. Please log into your portal to track your status.\n\n'+window.location.origin+'/client-portal.html\n\nWe are KLIERing your path.\n— The CBG Funds Team'
+    'Your Funding is Underway — KLIERD',
+    'Hi '+c.first+',\n\nGreat news — your payment has been received and KLIERD Intelligent Funding Technology is now processing your funding.\n\nYou will receive updates as your applications are submitted and decisions come in. Please log into your portal to track your status.\n\n'+window.location.origin+'/client-portal.html\n\nWe are KLIERing your path.\n— The KLIERD Team'
   );
   sendSystemSMS(
     c.phone,
-    'Hi '+c.first+'! Payment confirmed. KLIERD Intelligent Funding Technology is now processing your funding. Track status in your portal: '+window.location.origin+'/client-portal.html -CBG Funds'
+    'Hi '+c.first+'! Payment confirmed. KLIERD Intelligent Funding Technology is now processing your funding. Track status in your portal: '+window.location.origin+'/client-portal.html -KLIERD'
   );
 
   // Send funding package to Railway backend for processing
@@ -11942,8 +11942,8 @@ function resendInvoiceNotifications(clientId){
   const pending=getInvoices().filter(x=>x.clientId===clientId&&x.status==='pending');
   if(!pending.length){toast('No pending invoices');return;}
   pending.forEach(inv=>{
-    sendSystemEmail(c.email,'Reminder: Payment Due - CBG Funds','Hi '+c.first+',\n\nPayment of $'+inv.amount.toLocaleString()+' still due.\n\nService: '+inv.service+'\n\nPay in portal: '+window.location.origin+'/client-portal.html\n\n- The CBG Funds Team');
-    sendSystemSMS(c.phone,'Hi '+c.first+'! Reminder: $'+inv.amount.toLocaleString()+' still due. Pay: '+window.location.origin+'/client-portal.html -CBG Funds');
+    sendSystemEmail(c.email,'Reminder: Payment Due - KLIERD','Hi '+c.first+',\n\nPayment of $'+inv.amount.toLocaleString()+' still due.\n\nService: '+inv.service+'\n\nPay in portal: '+window.location.origin+'/client-portal.html\n\n- The KLIERD Team');
+    sendSystemSMS(c.phone,'Hi '+c.first+'! Reminder: $'+inv.amount.toLocaleString()+' still due. Pay: '+window.location.origin+'/client-portal.html -KLIERD');
     inv.reminders=inv.reminders||[];inv.reminders.push({sent:new Date().toLocaleString()});
   });
   saveInvoices(getInvoices().map(x=>pending.find(p=>p.id===x.id)||x));
@@ -12008,8 +12008,8 @@ function scheduleInvoiceReminders(inv){
       const all=getInvoices();const current=all.find(x=>x.id===inv.id);
       if(!current||current.status==='paid')return;
       const c=clients.find(x=>x.id===inv.clientId);if(!c)return;
-      sendSystemEmail(c.email,'Reminder Day '+day+': Payment Due - CBG Funds','Hi '+c.first+',\n\nReminder: $'+inv.amount.toLocaleString()+' still due.\nService: '+inv.service+'\n\nPay: '+window.location.origin+'/client-portal.html\n\n- The CBG Funds Team');
-      sendSystemSMS(c.phone,'Hi '+c.first+'! Day '+day+' reminder: $'+inv.amount.toLocaleString()+' due. Pay: '+window.location.origin+'/client-portal.html -CBG Funds');
+      sendSystemEmail(c.email,'Reminder Day '+day+': Payment Due - KLIERD','Hi '+c.first+',\n\nReminder: $'+inv.amount.toLocaleString()+' still due.\nService: '+inv.service+'\n\nPay: '+window.location.origin+'/client-portal.html\n\n- The KLIERD Team');
+      sendSystemSMS(c.phone,'Hi '+c.first+'! Day '+day+' reminder: $'+inv.amount.toLocaleString()+' due. Pay: '+window.location.origin+'/client-portal.html -KLIERD');
       current.reminders=current.reminders||[];current.reminders.push({day,sent:new Date().toLocaleString()});
       saveInvoices(all);
     },day*86400000);
@@ -12017,7 +12017,7 @@ function scheduleInvoiceReminders(inv){
 }
 
 function sendSystemEmail(to,subject,body){
-  fetch((localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app')+'/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,subject,body,from:'info@cbgfunds.com'})}).catch(()=>{const q=JSON.parse(localStorage.getItem('sp_email_queue')||'[]');q.push({to,subject,body,queued:new Date().toLocaleString()});localStorage.setItem('sp_email_queue',JSON.stringify(q));});
+  fetch((localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app')+'/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,subject,body,from:'info@klierd.com'})}).catch(()=>{const q=JSON.parse(localStorage.getItem('sp_email_queue')||'[]');q.push({to,subject,body,queued:new Date().toLocaleString()});localStorage.setItem('sp_email_queue',JSON.stringify(q));});
 }
 
 function sendSystemSMS(to,body){
@@ -12136,13 +12136,13 @@ const TB_DEFAULT_TASKS = [
   {id:1,text:'Deploy portal.html to GoDaddy',owner:'Teka',priority:'urgent',done:false,ts:Date.now()},
   {id:2,text:'Add ANTHROPIC_API_KEY to Railway',owner:'Millicent',priority:'urgent',done:false,ts:Date.now()},
   {id:3,text:'Regenerate Supabase key + update Railway',owner:'Millicent',priority:'urgent',done:false,ts:Date.now()},
-  {id:4,text:'Setup SendGrid + verify cbgfunds.com',owner:'Millicent',priority:'urgent',done:false,ts:Date.now()},
+  {id:4,text:'Setup SendGrid + verify klierd.com',owner:'Millicent',priority:'urgent',done:false,ts:Date.now()},
   {id:5,text:'Zoom API credentials + enter in portal',owner:'Millicent',priority:'active',done:false,ts:Date.now()},
   {id:6,text:'Apple Developer account ($99)',owner:'Millicent',priority:'active',done:false,ts:Date.now()},
   {id:7,text:'Google Play Developer account ($25)',owner:'Millicent',priority:'active',done:false,ts:Date.now()},
   {id:8,text:'Build klierd.com enterprise landing page',owner:'Claude',priority:'active',done:false,ts:Date.now()},
   {id:9,text:'Import 7,000 client CSV',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
-  {id:10,text:'CBG Funds DBA registration',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
+  {id:10,text:'KLIERD DBA registration',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
   {id:11,text:'File STACKPRO trademark with Melony Frank',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
   {id:12,text:'Teka decides fee structure: Option A/B/C',owner:'Teka',priority:'urgent',done:false,ts:Date.now()},
   {id:13,text:'Confirm monitoring subscription prices ($97/$129/$149)',owner:'Teka',priority:'active',done:false,ts:Date.now()},
@@ -12156,8 +12156,8 @@ const TB_DEFAULT_LOG = [
 
 const TB_FILES = [
   {name:'portal.html',desc:'Staff portal — all panels',status:'pending',url:'Needs upload to GoDaddy'},
-  {name:'client-portal.html',desc:'Client self-service portal',status:'live',url:'trystackpro.com/client-portal.html'},
-  {name:'apply.html',desc:'Client intake + e-sign',status:'live',url:'trystackpro.com/apply.html'},
+  {name:'client-portal.html',desc:'Client self-service portal',status:'live',url:'klierd.com/client-portal'},
+  {name:'apply.html',desc:'Client intake + e-sign',status:'live',url:'klierd.com/apply'},
   {name:'index.html',desc:'Landing page',status:'live',url:'trystackpro.com'},
   {name:'klierd.com',desc:'Enterprise landing page',status:'building',url:'Not built yet'},
 ];
@@ -12297,20 +12297,20 @@ function loadEmailTemplate(val){
   const body=document.getElementById('email-body');
   const _origin=window.location.origin;
   const templates={
-    welcome:{s:'Welcome to CBG Funds — Your Portal is Ready',b:`Hi [Name],
+    welcome:{s:'Welcome to KLIERD — Your Portal is Ready',b:`Hi [Name],
 
 Welcome! Your client portal is ready. Log in here to complete your next steps:
 ${_origin}/client-portal.html
 
 We are KLIERing your path.
-— The CBG Funds Team`},
+— The KLIERD Team`},
     docs:{s:'Action Required: Documents Needed',b:`Hi [Name],
 
 We need a few documents to move forward with your funding. Please log into your portal and upload the requested items.
 
 ${_origin}/client-portal.html
 
-— The CBG Funds Team`},
+— The KLIERD Team`},
     funded:{s:'Congratulations — Your Funding is Complete',b:`Hi [Name],
 
 Congratulations! Your funding has been processed successfully. Please log into your portal to review your results and complete your final payment.
@@ -12318,19 +12318,19 @@ Congratulations! Your funding has been processed successfully. Please log into y
 ${_origin}/client-portal.html
 
 We are KLIERing your path.
-— The CBG Funds Team`},
-    payment:{s:'Reminder: Payment Due — CBG Funds',b:`Hi [Name],
+— The KLIERD Team`},
+    payment:{s:'Reminder: Payment Due — KLIERD',b:`Hi [Name],
 
 This is a reminder that your payment is still outstanding. Please log into your portal to complete your payment.
 
 ${_origin}/client-portal.html
 
-— The CBG Funds Team`},
-    followup:{s:'Checking In — CBG Funds',b:`Hi [Name],
+— The KLIERD Team`},
+    followup:{s:'Checking In — KLIERD',b:`Hi [Name],
 
 We wanted to follow up and see how things are going. Please reach out if you have any questions.
 
-— The CBG Funds Team`}
+— The KLIERD Team`}
   };
   if(templates[val]&&sub&&body){sub.value=templates[val].s;body.value=templates[val].b;}
 }
@@ -12367,11 +12367,11 @@ function openComposeSMS(){
 function loadSMSTemplate(val){
   const body=document.getElementById('sms-body');
   const templates={
-    welcome:'Hi [Name]! Welcome to CBG Funds. Your portal is ready: '+window.location.origin+'/client-portal.html -CBG Funds',
-    docs:'Hi [Name]! We need a few documents to move forward. Log in: '+window.location.origin+'/client-portal.html -CBG Funds',
-    payment:'Hi [Name]! Reminder: payment still due. Pay in portal: '+window.location.origin+'/client-portal.html -CBG Funds',
-    funded:'Hi [Name]! Congratulations — your funding is complete! Log in to see results: '+window.location.origin+'/client-portal.html -CBG Funds',
-    followup:'Hi [Name]! Just checking in from CBG Funds. Any questions? Reply here or log into your portal. -CBG Funds'
+    welcome:'Hi [Name]! Welcome to KLIERD. Your portal is ready: '+window.location.origin+'/client-portal.html -KLIERD',
+    docs:'Hi [Name]! We need a few documents to move forward. Log in: '+window.location.origin+'/client-portal.html -KLIERD',
+    payment:'Hi [Name]! Reminder: payment still due. Pay in portal: '+window.location.origin+'/client-portal.html -KLIERD',
+    funded:'Hi [Name]! Congratulations — your funding is complete! Log in to see results: '+window.location.origin+'/client-portal.html -KLIERD',
+    followup:'Hi [Name]! Just checking in from KLIERD. Any questions? Reply here or log into your portal. -KLIERD'
   };
   if(templates[val]&&body)body.value=templates[val];
 }
@@ -12411,14 +12411,14 @@ function scheduleZoomMeeting(){
   const meeting={id:'ZM-'+Date.now(),clientId,clientName:(c?.first||'')+' '+(c?.last||''),clientEmail:c?.email||'',type,date,time,created:new Date().toLocaleString(),status:'scheduled'};
   meetings.unshift(meeting);
   localStorage.setItem('sp_zoom_meetings',JSON.stringify(meetings));
-  if(c?.email){sendSystemEmail(c.email,'Your Consultation is Scheduled — CBG Funds',`Hi ${c.first},
+  if(c?.email){sendSystemEmail(c.email,'Your Consultation is Scheduled — KLIERD',`Hi ${c.first},
 
 Your ${type} has been scheduled for ${date} at ${time}.
 
 A Zoom link will be sent to you before the meeting.
 
-— The CBG Funds Team`);}
-  if(c?.phone){sendSystemSMS(c.phone,'Hi '+c.first+'! Your '+type+' is scheduled for '+date+' at '+time+'. Zoom link coming soon. -CBG Funds');}
+— The KLIERD Team`);}
+  if(c?.phone){sendSystemSMS(c.phone,'Hi '+c.first+'! Your '+type+' is scheduled for '+date+' at '+time+'. Zoom link coming soon. -KLIERD');}
   addStaffNoteQuick('status','Zoom meeting scheduled with '+c?.first+' — '+type+' on '+date+' at '+time);
   if(statusMsg){statusMsg.style.display='block';statusMsg.style.color='var(--green)';statusMsg.textContent='Meeting scheduled! Client notified via email + text.';}
   refreshZoomMeetings();
