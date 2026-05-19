@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Client Portal — CBG Funds</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#C9A84C;--gold-light:#E8CB7A;--dark:#09090F;--dark2:#0f0f0f;--dark3:#161616;
+  --border:rgba(201,168,76,0.15);--border-hi:rgba(201,168,76,0.4);
+  --text:#F0EDE6;--dim:#9A9580;--muted:#5A5648;
+  --green:#27AE60;--red:#E74C3C;--blue:#2980B9;--orange:#E67E22;
+  --r:12px;--rs:8px;
+}
+body{background:var(--dark);color:var(--text);font-family:'Sora',sans-serif;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 80% 10%,rgba(201,168,76,0.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 28px;height:64px;background:rgba(9,9,15,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold);}
+.logo span{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;font-family:'Sora',sans-serif;font-weight:400;}
+.lang-toggle{display:flex;gap:6px;}
+.lang-btn{padding:4px 12px;border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .15s;font-family:'Sora',sans-serif;}
+.lang-btn.active{background:rgba(201,168,76,0.1);border-color:var(--border-hi);color:var(--gold);}
+.wrap{max-width:680px;margin:0 auto;padding:88px 20px 60px;position:relative;z-index:1;}
+.lookup{background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:40px 32px;text-align:center;}
+.lookup h1{font-family:'DM Serif Display',serif;font-size:28px;color:var(--gold);margin-bottom:8px;letter-spacing:-0.5px;}
+.lookup p{font-size:13px;color:var(--dim);margin-bottom:28px;line-height:1.7;font-family:'Sora',sans-serif;}
+.lookup-row{display:flex;gap:10px;margin-bottom:10px;}
+.lookup-row input{flex:1;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px 16px;color:var(--text);font-family:'DM Mono',monospace;font-size:15px;font-weight:600;letter-spacing:2px;outline:none;transition:border-color .15s;text-transform:uppercase;}
+.lookup-row input:focus{border-color:var(--gold);}
+.lookup-row input::placeholder{font-family:'Sora',sans-serif;font-size:12px;letter-spacing:0;font-weight:400;}
+.btn-primary{padding:12px 22px;background:var(--gold);color:var(--dark);font-family:'Sora',sans-serif;font-size:13px;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;white-space:nowrap;transition:all .15s;}
+.btn-primary:hover{background:var(--gold-light);}
+.btn-ghost{padding:9px 18px;border-radius:var(--rs);font-size:12px;font-weight:600;text-decoration:none;border:1px solid var(--border);color:var(--dim);background:var(--dark3);font-family:'Sora',sans-serif;transition:all .15s;cursor:pointer;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.error-msg{color:var(--red);font-size:12px;margin-top:4px;display:none;}
+.hint{font-size:11px;color:var(--muted);margin-top:10px;}
+.divider{border:none;border-top:1px solid var(--border);margin:24px 0;}
+.portal{display:none;}
+.portal.show{display:block;}
+.client-card{background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.client-name{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);}
+.client-id{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;margin-top:4px;}
+.badge{padding:5px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.badge-new{background:rgba(41,128,185,0.15);color:var(--blue);border:1px solid rgba(41,128,185,0.3);}
+.badge-review{background:rgba(230,126,34,0.15);color:var(--orange);border:1px solid rgba(230,126,34,0.3);}
+.badge-active{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
+.badge-funded{background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);}
+.badge-dispute{background:rgba(142,68,173,0.15);color:#9b59b6;border:1px solid rgba(142,68,173,0.3);}
+.tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.tab{padding:8px 16px;border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--dark2);color:var(--muted);transition:all .15s;font-family:'Sora',sans-serif;}
+.tab.active{background:rgba(201,168,76,0.1);border-color:var(--border-hi);color:var(--gold);}
+.card{background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-weight:700;margin-bottom:14px;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.info-box{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:13px;}
+.info-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px;font-weight:700;}
+.info-val{font-size:13px;font-weight:600;color:var(--text);}
+.timeline{position:relative;padding-left:28px;}
+.timeline::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:var(--border);}
+.tl-step{position:relative;margin-bottom:18px;}
+.tl-step:last-child{margin-bottom:0;}
+.tl-dot{position:absolute;left:-24px;top:3px;width:16px;height:16px;border-radius:50%;border:2px solid var(--border);background:var(--dark);display:flex;align-items:center;justify-content:center;font-size:8px;}
+.tl-dot.done{border-color:var(--green);background:rgba(39,174,96,0.15);color:var(--green);}
+.tl-dot.active{border-color:var(--gold);background:rgba(201,168,76,0.15);}
+.tl-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.tl-label.active{color:var(--gold);}
+.tl-label.pending{color:var(--muted);}
+.tl-sub{font-size:11px;color:var(--muted);line-height:1.5;}
+.score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;}
+.score-box{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:13px;text-align:center;}
+.score-bureau{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.score-val{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--r);padding:28px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px;}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--gold);background:rgba(201,168,76,0.03);}
+.doc-list{display:flex;flex-direction:column;gap:8px;}
+.doc-item{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.doc-name{font-size:12px;color:var(--text);font-weight:600;flex:1;}
+.doc-status{font-size:10px;padding:3px 10px;border-radius:99px;font-weight:600;white-space:nowrap;}
+.doc-received{background:rgba(39,174,96,0.15);color:var(--green);}
+.doc-missing{background:rgba(231,76,60,0.15);color:var(--red);}
+.messages-wrap{max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;padding:4px;}
+.msg{max-width:82%;padding:11px 14px;border-radius:12px;font-size:13px;line-height:1.6;}
+.msg.advisor{background:var(--dark3);border:1px solid var(--border);border-radius:12px 12px 12px 0;color:var(--text);align-self:flex-start;}
+.msg.client{background:rgba(201,168,76,0.12);border:1px solid var(--border-hi);border-radius:12px 12px 0 12px;color:var(--text);align-self:flex-end;}
+.msg-time{font-size:10px;color:var(--muted);margin-top:3px;}
+.msg-row{display:flex;gap:8px;}
+.msg-input{flex:1;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:13px;outline:none;transition:border-color .15s;}
+.msg-input:focus{border-color:var(--gold);}
+.next-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.next-item:last-child{margin-bottom:0;}
+.next-icon{font-size:18px;flex-shrink:0;}
+.next-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.next-body{font-size:12px;color:var(--dim);line-height:1.6;}
+.contact-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
+.back-btn{font-size:12px;color:var(--muted);cursor:pointer;margin-bottom:18px;display:inline-flex;align-items:center;gap:6px;background:none;border:none;font-family:'Sora',sans-serif;}
+.back-btn:hover{color:var(--gold);}
+.footer{text-align:center;padding:28px;font-size:10px;color:var(--muted);border-top:1px solid var(--border);position:relative;z-index:1;}
+@media(max-width:600px){
+  .wrap{padding:80px 14px 50px;}
+  .lookup{padding:28px 18px;}
+  .lookup-row{flex-direction:column;}
+  .info-grid{grid-template-columns:1fr;}
+  .client-card{flex-direction:column;align-items:flex-start;}
+}
+
+/* LANGUAGE LABEL */
+.lang-label{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-right:8px;font-weight:600;align-self:center;}
+
+/* NEXT ACTION BANNER */
+.next-action{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(201,168,76,0.10),rgba(201,168,76,0.03));border:1px solid var(--border-hi);border-radius:var(--r);padding:14px 18px;margin-bottom:14px;animation:fadeUp .35s ease;}
+.na-icon{font-size:24px;flex-shrink:0;}
+.na-text{flex:1;}
+.na-label{font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:3px;}
+.na-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3;}
+.na-body{font-size:11.5px;color:var(--dim);line-height:1.5;}
+.na-cta{padding:8px 16px;background:var(--gold);color:var(--dark);font-family:'Sora',sans-serif;font-size:11.5px;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .15s;}
+.na-cta:hover{background:var(--gold-light);}
+.na-cta.done{background:rgba(39,174,96,0.18);color:var(--green);border:1px solid rgba(39,174,96,0.4);cursor:default;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* WELCOME CARD */
+.welcome-card{background:linear-gradient(135deg,var(--dark2),rgba(201,168,76,0.04));border:1px solid var(--border);}
+.welcome-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold);margin-bottom:12px;line-height:1.2;}
+.welcome-body{font-size:13px;color:var(--dim);line-height:1.75;font-family:'Sora',sans-serif;}
+.welcome-body p{margin-bottom:10px;}
+.welcome-body p:last-child{margin-bottom:0;}
+.welcome-body strong{color:var(--text);font-weight:600;}
+
+/* PROGRESS BAR */
+.progress-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.progress-pct{font-family:'DM Mono',monospace;font-size:22px;color:var(--gold);font-weight:600;}
+.progress-detail{font-size:11px;color:var(--muted);}
+.progress-track{width:100%;height:8px;background:var(--dark3);border-radius:99px;overflow:hidden;border:1px solid var(--border);}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:99px;transition:width .5s ease;}
+
+/* YOUR INFO CARD */
+.ci-grid{display:flex;flex-direction:column;gap:8px;}
+.ci-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);}
+.ci-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+.ci-val{font-size:12.5px;color:var(--text);font-weight:500;text-align:right;}
+.ci-edit{display:inline-block;margin-top:12px;font-size:11px;color:var(--gold);text-decoration:none;font-weight:600;}
+.ci-edit:hover{text-decoration:underline;}
+
+/* DOC TOOLTIP */
+.doc-item{flex-direction:column;align-items:stretch !important;}
+.doc-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.doc-why{font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.5;font-style:italic;}
+
+
+/* MILESTONES CARD */
+.ms-list{display:flex;flex-direction:column;gap:8px;}
+.ms-row{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);transition:all .3s ease;}
+.ms-row.complete{border-color:rgba(39,174,96,0.35);background:rgba(39,174,96,0.06);}
+.ms-icon{font-size:24px;flex-shrink:0;width:36px;text-align:center;}
+.ms-text{flex:1;}
+.ms-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.3;}
+.ms-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* PROGRESS BAR SHIMMER AT 100% */
+.progress-fill.complete{
+  background:linear-gradient(90deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);
+  background-size:200% 100%;
+  animation:shimmer 2.5s linear infinite;
+  box-shadow:0 0 12px rgba(201,168,76,0.5);
+}
+@keyframes shimmer{from{background-position:200% 0;}to{background-position:-200% 0;}}
+
+/* SOFT GLOW ON PROGRESS BAR THAT INTENSIFIES */
+.progress-fill{box-shadow:0 0 6px rgba(201,168,76,0.25);}
+
+/* PULSE ON NEXT ACTION CTA */
+.na-cta:not(.done){
+  animation:cta-pulse 2.6s ease-in-out infinite;
+}
+@keyframes cta-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0.45);}
+  50%{box-shadow:0 0 0 8px rgba(201,168,76,0);}
+}
+
+/* DOC UPLOAD CELEBRATION */
+.doc-item.just-uploaded{animation:doc-celebrate 1.4s ease;border-color:rgba(39,174,96,0.55);background:rgba(39,174,96,0.05);}
+@keyframes doc-celebrate{
+  0%{transform:scale(1);box-shadow:0 0 0 0 rgba(39,174,96,0.4);}
+  35%{transform:scale(1.02);box-shadow:0 0 0 6px rgba(39,174,96,0.2);}
+  100%{transform:scale(1);box-shadow:0 0 0 0 rgba(39,174,96,0);}
+}
+
+/* TOAST */
+.toast-wrap{position:fixed;top:78px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast{background:var(--dark2);border:1px solid var(--border-hi);border-radius:var(--rs);padding:10px 18px;font-size:13px;font-weight:600;color:var(--gold);box-shadow:0 8px 24px rgba(0,0,0,0.45);animation:toast-in .4s ease,toast-out .4s ease 3.6s forwards;display:flex;align-items:center;gap:8px;}
+.toast.success{color:var(--green);border-color:rgba(39,174,96,0.4);}
+@keyframes toast-in{from{opacity:0;transform:translateY(-12px) scale(0.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes toast-out{to{opacity:0;transform:translateY(-12px) scale(0.95);}}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;width:8px;height:14px;top:-20px;z-index:300;border-radius:1px;pointer-events:none;animation:confetti-fall 2.6s linear forwards;}
+
+@keyframes confetti-fall{
+  0%{opacity:1;transform:translateY(0) rotate(0deg);}
+  100%{opacity:0;transform:translateY(110vh) rotate(720deg);}
+}
+
+
+/* AGREEMENTS TAB */
+.ag-list{display:flex;flex-direction:column;gap:10px;}
+.ag-row{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:all .2s;}
+.ag-row.signed{border-color:rgba(39,174,96,0.4);background:rgba(39,174,96,0.04);}
+.ag-row.awaiting{border-color:rgba(230,126,34,0.4);background:rgba(230,126,34,0.04);}
+.ag-head{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ag-name{font-size:13px;font-weight:600;color:var(--text);flex:1;}
+.ag-status-badge{font-size:10px;padding:3px 10px;border-radius:99px;font-weight:600;white-space:nowrap;}
+.ag-status-not{background:rgba(154,149,128,0.15);color:var(--dim);}
+.ag-status-awaiting{background:rgba(230,126,34,0.15);color:var(--orange);}
+.ag-status-signed{background:rgba(39,174,96,0.15);color:var(--green);}
+.ag-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.ag-actions{display:flex;gap:8px;margin-top:4px;}
+.ag-btn{padding:6px 12px;border-radius:var(--rs);font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--dark2);color:var(--gold);font-family:'Sora',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+.ag-btn:hover{border-color:var(--gold);background:rgba(201,168,76,0.06);}
+.ag-btn.primary{background:var(--gold);color:var(--dark);border-color:var(--gold);}
+
+/* MY ANALYSIS TAB */
+.an-card{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:16px;margin-bottom:12px;}
+.an-card.ready{border-color:rgba(39,174,96,0.35);background:rgba(39,174,96,0.04);}
+.an-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.an-title{font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px;}
+.an-status{font-size:10px;padding:3px 10px;border-radius:99px;font-weight:600;}
+.an-status.notstarted{background:rgba(154,149,128,0.15);color:var(--dim);}
+.an-status.inprogress{background:rgba(41,128,185,0.18);color:var(--blue);}
+.an-status.ready{background:rgba(39,174,96,0.18);color:var(--green);}
+.an-desc{font-size:12px;color:var(--dim);line-height:1.65;margin-bottom:10px;}
+.an-empty{text-align:center;padding:20px;color:var(--muted);font-size:12px;font-style:italic;}
+.an-actions{display:flex;gap:8px;}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">CBG Funds<span id="lbl-portal-tag">Client Portal</span></div>
+  <div class="lang-toggle">
+    <span class="lang-label">Idioma / Language</span>
+    <button class="lang-btn active" onclick="setLang('en',this)">🇺🇸 EN</button>
+    <button class="lang-btn" onclick="setLang('es',this)">🇪🇸 ES</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- LOOKUP -->
+  <div id="lookupScreen">
+    <div class="lookup">
+      <h1 id="lbl-title">Welcome to Your Portal</h1>
+      <p id="lbl-subtitle">Please enter your Tracking ID to view your application status, upload documents, and message your advisor.</p>
+      <div class="lookup-row">
+        <input type="text" id="tracking-input" placeholder="CBG-XXXXXXXX" maxlength="12"
+          oninput="this.value=this.value.toUpperCase()"
+          onkeydown="if(event.key==='Enter')lookup()"/>
+        <button class="btn-primary" onclick="lookup()" id="btn-lookup">Check Status</button>
+      </div>
+      <div class="error-msg" id="lookup-error"></div>
+      <p class="hint" id="lbl-hint">Your Tracking ID was in your confirmation. Format: CBG-XXXXXXXX</p>
+      <hr class="divider"/>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px" id="lbl-not-applied">Haven't applied yet?</p>
+      <a href="/apply.html" style="font-size:12px;color:var(--gold);font-weight:600;text-decoration:none" id="lbl-apply-link">Submit Your Application →</a>
+    </div>
+  </div>
+
+  <!-- PORTAL -->
+  <div class="portal" id="portalScreen">
+    <button class="back-btn" onclick="goBack()">← <span id="lbl-back">Back</span></button>
+
+    <!-- NEXT ACTION BANNER -->
+    <div class="next-action" id="next-action-banner" style="display:none">
+      <div class="na-icon" id="na-icon">⚡</div>
+      <div class="na-text">
+        <div class="na-label" id="lbl-na">Your Next Action</div>
+        <div class="na-title" id="na-title">—</div>
+        <div class="na-body" id="na-body">—</div>
+      </div>
+      <button class="na-cta" id="na-cta" onclick="naAction()">—</button>
+    </div>
+
+    <div class="client-card">
+      <div>
+        <div class="client-name" id="p-name">—</div>
+        <div class="client-id" id="p-id">—</div>
+      </div>
+      <div class="badge" id="p-badge">New</div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('status',this)">📊 <span id="lbl-tab-status">Status</span></button>
+      <button class="tab" onclick="showTab('docs',this)">📎 <span id="lbl-tab-docs">Documents</span></button>
+      <button class="tab" onclick="showTab('messages',this)">💬 <span id="lbl-tab-msgs">Messages</span></button>
+      <button class="tab" onclick="showTab('analysis',this)">📊 <span id="lbl-tab-analysis">My Analysis</span></button>
+      <button class="tab" onclick="showTab('agreements',this)">✍ <span id="lbl-tab-agreements">Agreements</span></button>
+      <button class="tab" onclick="showTab('scores',this)">📈 <span id="lbl-tab-scores">Credit Profile</span></button>
+    </div>
+
+    <!-- STATUS TAB -->
+    <div id="tab-status">
+
+      <!-- WELCOME CARD -->
+      <div class="card welcome-card">
+        <div class="welcome-title" id="welcome-title">—</div>
+        <div class="welcome-body" id="welcome-body">—</div>
+      </div>
+
+      <!-- PROGRESS BAR -->
+      <div class="card">
+        <div class="card-title" id="lbl-progress-bar">Your Progress</div>
+        <div class="progress-meta">
+          <span class="progress-pct" id="progress-pct">0%</span>
+          <span class="progress-detail" id="progress-detail">—</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      </div>
+
+      <!-- MILESTONES CARD -->
+      <div class="card">
+        <div class="card-title" id="lbl-milestones">Milestones</div>
+        <div class="ms-list" id="ms-list"></div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-box"><div class="info-label" id="lbl-submitted">Submitted</div><div class="info-val" id="p-submitted">—</div></div>
+        <div class="info-box"><div class="info-label" id="lbl-app-type">Application Type</div><div class="info-val" id="p-type">—</div></div>
+        <div class="info-box"><div class="info-label" id="lbl-goal">Funding Goal</div><div class="info-val" id="p-goal">—</div></div>
+        <div class="info-box"><div class="info-label" id="lbl-lang-pref">Language</div><div class="info-val" id="p-lang">—</div></div>
+      </div>
+
+      <!-- YOUR INFO CARD -->
+      <div class="card">
+        <div class="card-title" id="lbl-your-info">Your Information</div>
+        <div class="ci-grid">
+          <div class="ci-row"><span class="ci-label" id="ci-lbl-email">Email</span><span class="ci-val" id="ci-email">—</span></div>
+          <div class="ci-row"><span class="ci-label" id="ci-lbl-phone">Phone</span><span class="ci-val" id="ci-phone">—</span></div>
+          <div class="ci-row"><span class="ci-label" id="ci-lbl-biz">Business Name</span><span class="ci-val" id="ci-biz">—</span></div>
+        </div>
+        <a href="mailto:info@cbgfunds.com?subject=Update%20my%20information" class="ci-edit" id="ci-edit-link">✎ Need to update your information? Message us →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title" id="lbl-progress">Application Progress</div>
+        <div class="timeline" id="p-timeline"></div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="lbl-next">What Happens Next</div>
+        <div id="p-next"></div>
+      </div>
+      <div class="card" style="text-align:center">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px" id="lbl-contact">Have questions? We are here to help.</p>
+        <div class="contact-row">
+          <a href="mailto:info@cbgfunds.com" class="btn-ghost">✉ info@cbgfunds.com</a>
+          <a href="tel:+1" class="btn-ghost" id="lbl-call">📞 Call Us</a>
+          <a href="/apply.html" class="btn-ghost" id="lbl-new-app">+ New Application</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCS TAB -->
+    <div id="tab-docs" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-upload">Upload Documents</div>
+        <div class="upload-zone" id="upload-zone"
+          onclick="document.getElementById('file-input').click()"
+          ondragover="event.preventDefault();this.classList.add('dragover')"
+          ondragleave="this.classList.remove('dragover')"
+          ondrop="handleDrop(event)">
+          <input type="file" id="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="handleFiles(this.files)" style="display:none"/>
+          <div style="font-size:32px;margin-bottom:8px">📎</div>
+          <div style="font-size:13px;color:var(--dim);margin-bottom:4px" id="lbl-drop">Click to upload or drag and drop</div>
+          <div style="font-size:11px;color:var(--muted)" id="lbl-file-types">PDF, JPG, PNG, DOC — Max 10MB per file</div>
+        </div>
+        <div id="upload-status" style="display:none;padding:10px 14px;background:rgba(39,174,96,0.08);border:1px solid rgba(39,174,96,0.3);border-radius:var(--rs);font-size:12px;color:var(--green);margin-bottom:12px"></div>
+        <div class="card-title" id="lbl-checklist">Document Checklist</div>
+        <div class="doc-list" id="doc-list"></div>
+      </div>
+    </div>
+
+    <!-- MESSAGES TAB -->
+    <div id="tab-messages" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-msgs-title">Messages with Your Advisor</div>
+        <div class="messages-wrap" id="messages-wrap"></div>
+        <div class="msg-row">
+          <input type="text" class="msg-input" id="msg-input" id="lbl-msg-placeholder"
+            placeholder="Type your message..."
+            onkeydown="if(event.key==='Enter')sendMsg()"/>
+          <button class="btn-primary" onclick="sendMsg()" id="btn-send">Send</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- MY ANALYSIS TAB -->
+    <div id="tab-analysis" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-analysis-title">Your Analysis</div>
+        <p style="font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.6" id="lbl-analysis-intro"></p>
+
+        <div class="an-card" id="an-credit">
+          <div class="an-head">
+            <div class="an-title">📋 <span id="lbl-an-credit-title">Credit Analysis</span></div>
+            <span class="an-status notstarted" id="an-credit-status">Not yet started</span>
+          </div>
+          <div class="an-desc" id="lbl-an-credit-desc">A complete review of your credit profile prepared by our team.</div>
+          <div class="an-actions" id="an-credit-actions"></div>
+        </div>
+
+        <div class="an-card" id="an-funding">
+          <div class="an-head">
+            <div class="an-title">💼 <span id="lbl-an-funding-title">Funding Analysis</span></div>
+            <span class="an-status notstarted" id="an-funding-status">Not yet started</span>
+          </div>
+          <div class="an-desc" id="lbl-an-funding-desc">Your personalized funding strategy prepared by our team.</div>
+          <div class="an-actions" id="an-funding-actions"></div>
+        </div>
+
+        <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-analysis-note">Powered by KLIERD Intelligent Funding Technology</div>
+      </div>
+    </div>
+
+    <!-- AGREEMENTS TAB -->
+    <div id="tab-agreements" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-agreements-title">Signed Agreements</div>
+        <p style="font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.6" id="lbl-agreements-intro">These legal documents are required before we can fully engage. KLIERD will automatically send each one for your electronic signature.</p>
+        <div class="ag-list" id="ag-list"></div>
+        <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-agreements-note">Powered by DocuSign · Your signatures are legally binding and securely stored.</div>
+      </div>
+    </div>
+
+    <!-- SCORES TAB -->
+    <div id="tab-scores" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-scores">Your Credit Scores</div>
+        <div class="score-grid">
+          <div class="score-box"><div class="score-bureau" style="color:#41a0e8">TransUnion</div><div class="score-val" style="color:#41a0e8" id="p-tu">—</div></div>
+          <div class="score-box"><div class="score-bureau" style="color:#27AE60">Equifax</div><div class="score-val" style="color:#27AE60" id="p-eq">—</div></div>
+          <div class="score-box"><div class="score-bureau" style="color:var(--gold)">Experian</div><div class="score-val" style="color:var(--gold)" id="p-ex">—</div></div>
+        </div>
+        <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px" id="lbl-scores-note">Scores appear here once your advisor reviews your credit profile.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" id="lbl-funding-range">Estimated Funding Range</div>
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="info-label" id="lbl-personal-range">Personal Funding</div>
+            <div class="info-val" id="p-range-personal" style="color:var(--gold);font-size:20px;font-family:'DM Mono',monospace">—</div>
+          </div>
+          <div class="info-box">
+            <div class="info-label" id="lbl-biz-range">Business Funding</div>
+            <div class="info-val" id="p-range-biz" style="color:var(--blue);font-size:20px;font-family:'DM Mono',monospace">—</div>
+          </div>
+        </div>
+        <p style="font-size:10px;color:var(--muted);margin-top:6px" id="lbl-disclaimer">Estimates based on your profile. Results are not typical and may vary.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  <div id="lbl-footer-text">CBG Funds © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.</div>
+  <div id="lbl-footer-croa" style="margin-top:8px;font-size:9px;color:var(--muted)">This is not a credit repair service. Results are not typical and may vary.</div>
+</div>
+
+<script>
+let lang='en', currentApp=null;
+const API='https://stackpro-api-production.up.railway.app';
+
+const T={
+  en:{
+    'lbl-title':'Welcome to Your Portal',
+    'lbl-subtitle':'Please enter your Tracking ID to view your application status, upload documents, and message your advisor.',
+    'btn-lookup':'Check Status',
+    'lbl-hint':'Your Tracking ID was in your confirmation. Format: CBG-XXXXXXXX',
+    'lbl-not-applied':"Haven't applied yet?",'lbl-apply-link':'Submit Your Application →',
+    'lbl-back':'Back',
+    'lbl-tab-status':'Status','lbl-tab-docs':'Documents','lbl-tab-msgs':'Messages','lbl-tab-scores':'Credit Profile',
+    'lbl-submitted':'Submitted','lbl-app-type':'Application Type','lbl-goal':'Funding Goal','lbl-lang-pref':'Language',
+    'lbl-progress':'Application Progress','lbl-next':'What Happens Next',
+    'lbl-contact':'Have questions? We are here to help.',
+    'lbl-call':'📞 Call Us','lbl-new-app':'+ New Application',
+    'lbl-upload':'Upload Documents','lbl-drop':'Click to upload or drag and drop',
+    'lbl-file-types':'PDF, JPG, PNG, DOC — Max 10MB per file',
+    'lbl-checklist':'Document Checklist',
+    'lbl-msgs-title':'Messages with Your Advisor','btn-send':'Send',
+    'lbl-scores':'Your Credit Scores',
+    'lbl-scores-note':'Scores appear here once your advisor reviews your credit profile.',
+    'lbl-funding-range':'Estimated Funding Range',
+    'lbl-personal-range':'Personal Funding','lbl-biz-range':'Business Funding',
+    'lbl-disclaimer':'Estimates based on your profile. Results are not typical and may vary.',
+    'lookup-error':'Tracking ID not found. Please check and try again.',
+    'lbl-portal-tag':'Client Portal',
+    'lbl-footer-text':'CBG Funds © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.',
+    'lbl-footer-croa':'This is not a credit repair service. Results are not typical and may vary.',
+    'lbl-na':'Your Next Action',
+    'lbl-progress-bar':'Your Progress',
+    'lbl-your-info':'Your Information',
+    'ci-lbl-email':'Email',
+    'ci-lbl-phone':'Phone',
+    'ci-lbl-biz':'Business Name',
+    'ci-edit-link':'✎ Need to update your information? Message us →',
+    'lbl-tab-analysis':'My Analysis',
+    'lbl-tab-agreements':'Agreements',
+    'lbl-analysis-title':'Your Analysis',
+    'lbl-analysis-intro':'After you submit your documents, your advisor will review your profile. We will provide your personalized analysis shortly — you will see it here when it is ready.',
+    'lbl-an-credit-title':'Credit Analysis',
+    'lbl-an-credit-desc':'A complete review of your credit profile prepared by our team.',
+    'lbl-an-funding-title':'Funding Analysis',
+    'lbl-an-funding-desc':'Your personalized funding strategy prepared by our team.',
+    'lbl-analysis-note':'Powered by KLIERD Intelligent Funding Technology',
+    'lbl-agreements-title':'Signed Agreements',
+    'lbl-agreements-intro':'These legal documents are required before we can fully engage. KLIERD will automatically send each one for your electronic signature.',
+    'lbl-agreements-note':'Powered by DocuSign · Your signatures are legally binding and securely stored.',
+    'lbl-milestones':'Milestones',
+  },
+  es:{
+    'lbl-title':'Bienvenido a Su Portal',
+    'lbl-subtitle':'Por favor ingrese su ID de seguimiento para ver su solicitud, cargar documentos y enviar mensajes a su asesor.',
+    'btn-lookup':'Verificar Estado',
+    'lbl-hint':'Su ID de seguimiento estaba en su correo de confirmación. Formato: CBG-XXXXXXXX',
+    'lbl-not-applied':'¿Aún no ha aplicado?','lbl-apply-link':'Enviar Su Solicitud →',
+    'lbl-back':'Regresar',
+    'lbl-tab-status':'Estado','lbl-tab-docs':'Documentos','lbl-tab-msgs':'Mensajes','lbl-tab-scores':'Perfil de Crédito',
+    'lbl-submitted':'Enviado','lbl-app-type':'Tipo de Solicitud','lbl-goal':'Meta de Financiamiento','lbl-lang-pref':'Idioma',
+    'lbl-progress':'Progreso de Solicitud','lbl-next':'Próximos Pasos',
+    'lbl-contact':'¿Preguntas? Estamos aquí para ayudar.',
+    'lbl-call':'📞 Llámenos','lbl-new-app':'+ Nueva Solicitud',
+    'lbl-upload':'Cargar Documentos','lbl-drop':'Haga clic para cargar o arrastre y suelte',
+    'lbl-file-types':'PDF, JPG, PNG, DOC — Máximo 10MB por archivo',
+    'lbl-checklist':'Lista de Documentos Requeridos',
+    'lbl-msgs-title':'Mensajes con Su Asesor','btn-send':'Enviar',
+    'lbl-scores':'Sus Puntajes de Crédito',
+    'lbl-scores-note':'Los puntajes aparecen aquí una vez que su asesor revise su perfil.',
+    'lbl-funding-range':'Rango de Financiamiento Estimado',
+    'lbl-personal-range':'Financiamiento Personal','lbl-biz-range':'Financiamiento Empresarial',
+    'lbl-disclaimer':'Estimados basados en su perfil. Los resultados no son típicos y pueden variar.',
+    'lookup-error':'ID de seguimiento no encontrado. Por favor verifique e intente de nuevo.',
+    'lbl-portal-tag':'Portal del Cliente',
+    'lbl-footer-text':'CBG Funds © 2026 · Con tecnología KLIERD Intelligent Funding Technology · Estamos despejando su camino.',
+    'lbl-footer-croa':'Este no es un servicio de reparación de crédito. Los resultados no son típicos y pueden variar.',
+    'lbl-na':'Su Próxima Acción',
+    'lbl-progress-bar':'Su Progreso',
+    'lbl-your-info':'Su Información',
+    'ci-lbl-email':'Correo',
+    'ci-lbl-phone':'Teléfono',
+    'ci-lbl-biz':'Nombre del Negocio',
+    'ci-edit-link':'✎ ¿Necesita actualizar su información? Escríbanos →',
+    'lbl-tab-analysis':'Mi Análisis',
+    'lbl-tab-agreements':'Acuerdos',
+    'lbl-analysis-title':'Su Análisis',
+    'lbl-analysis-intro':'Después de que envíe sus documentos, su asesor revisará su perfil. Le proporcionaremos su análisis personalizado en breve — lo verá aquí cuando esté listo.',
+    'lbl-an-credit-title':'Análisis de Crédito',
+    'lbl-an-credit-desc':'Una revisión completa de su perfil de crédito preparada por nuestro equipo.',
+    'lbl-an-funding-title':'Análisis de Financiamiento',
+    'lbl-an-funding-desc':'Su estrategia personalizada de financiamiento preparada por nuestro equipo.',
+    'lbl-analysis-note':'Con tecnología KLIERD Intelligent Funding Technology',
+    'lbl-agreements-title':'Acuerdos Firmados',
+    'lbl-agreements-intro':'Estos documentos legales son necesarios para nuestra contratación completa. KLIERD enviará automáticamente cada uno para su firma electrónica.',
+    'lbl-agreements-note':'Con tecnología DocuSign · Sus firmas son legalmente válidas y se guardan de forma segura.',
+    'lbl-milestones':'Hitos',
+  }
+};
+
+function setLang(l,btn){
+  lang=l;
+  localStorage.setItem('cbg_lang_pref',l);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  // sync active state by data-lang value when called from button or programmatically
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    if((l==='en'&&b.textContent.includes('EN'))||(l==='es'&&b.textContent.includes('ES')))b.classList.add('active');
+  });
+  if(btn)btn.classList.add('active');
+  Object.keys(T[l]).forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=T[l][id];});
+  if(currentApp)renderPortal(currentApp);
+}
+
+function lookup(){
+  const id=document.getElementById('tracking-input').value.trim().toUpperCase();
+  if(!id)return;
+  const errEl=document.getElementById('lookup-error');
+  errEl.style.display='none';
+  let found=null;
+  try{
+    const q=JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+    found=q.find(a=>a.trackingId===id);
+    if(!found){const my=JSON.parse(localStorage.getItem('my_applications')||'[]');found=my.find(a=>a.trackingId===id);}
+  }catch(e){}
+  if(found){showPortal(found);return;}
+  // Try Railway API
+  fetch(`${API}/clients?trackingId=${id}`)
+    .then(r=>r.json())
+    .then(data=>{
+      if(data&&data.length>0){showPortal(data[0]);}
+      else{errEl.style.display='block';errEl.textContent='❌ '+T[lang]['lookup-error'];}
+    })
+    .catch(()=>{errEl.style.display='block';errEl.textContent='❌ '+T[lang]['lookup-error'];});
+}
+
+function showPortal(app){
+  currentApp=app;
+  document.getElementById('lookupScreen').style.display='none';
+  document.getElementById('portalScreen').classList.add('show');
+  renderPortal(app);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderPortal(app){
+  const first=app.first||app.firstName||'';
+  const last=app.last||app.lastName||'';
+  document.getElementById('p-name').textContent=first+' '+last;
+  document.getElementById('p-id').textContent=app.trackingId||'—';
+
+  const status=app.status||'new';
+  const badge=document.getElementById('p-badge');
+  const bMapClass={new:'badge-new',review:'badge-review',active:'badge-active',funded:'badge-funded',dispute:'badge-dispute'};
+  const bLabelEN={new:'Application Received',review:'Under Review',active:'In Progress',funded:'Funded ✅',dispute:'Dispute Resolution'};
+  const bLabelES={new:'Solicitud Recibida',review:'En Revisión',active:'En Proceso',funded:'Financiado ✅',dispute:'Resolución de Disputas'};
+  badge.className='badge '+(bMapClass[status]||'badge-new');
+  badge.textContent=(lang==='es'?bLabelES:bLabelEN)[status]||status;
+
+  const typeEN={personal:'Personal Funding',business:'Business Funding',both:'Both Personal + Business',itin:'ITIN Client',dispute:'Dispute Resolution'};
+  const typeES={personal:'Financiamiento Personal',business:'Financiamiento Empresarial',both:'Personal + Empresarial',itin:'Cliente ITIN',dispute:'Resolución de Disputas'};
+  document.getElementById('p-submitted').textContent=app.submitted||'—';
+  document.getElementById('p-type').textContent=(lang==='es'?typeES:typeEN)[app.fundingType||app.clientType]||app.fundingType||'—';
+  const goalAmt=app.goalPersonal?'$'+parseInt(app.goalPersonal).toLocaleString():app.goalBusiness?'$'+parseInt(app.goalBusiness).toLocaleString():app.goal||'—';
+  document.getElementById('p-goal').textContent=goalAmt;
+  document.getElementById('p-lang').textContent=(app.preferredLang||app.lang)==='es'?'Español':'English';
+
+  // === WELCOME LETTER (Draft B, bilingual) ===
+  const welcomeTitleEN = `Welcome to CBG Funds, ${first}.`;
+  const welcomeTitleES = `Bienvenido(a) a CBG Funds, ${first}.`;
+  const welcomeBodyEN = `<p>Thank you for trusting our team with your funding journey. Your application has been received and your profile is now in our review queue.</p>
+    <p><strong>What happens next:</strong> A funding advisor will contact you within 24–48 business hours to discuss your credit profile, your funding goals, and the strategy best suited to your situation. To accelerate this process, please use the Documents tab to upload your identification, recent bank statements, and credit monitoring access.</p>
+    <p>If at any point you have questions, use the Messages tab. Our team responds in English and Spanish within one business day.</p>
+    <p>CBG Funds is committed to serving every entrepreneur with transparent, compliant funding strategies powered by KLIERD Intelligent Funding Technology.</p>
+    <p>— The CBG Funds Team</p>`;
+  const welcomeBodyES = `<p>Gracias por confiar en nuestro equipo con su camino hacia el financiamiento. Su solicitud ha sido recibida y su perfil está en nuestra cola de revisión.</p>
+    <p><strong>Lo que sigue:</strong> Un asesor de financiamiento le contactará dentro de 24–48 horas hábiles para discutir su perfil crediticio, sus metas de financiamiento y la estrategia más adecuada a su situación. Para acelerar el proceso, por favor use la pestaña Documentos para cargar su identificación, estados de cuenta recientes y acceso a monitoreo de crédito.</p>
+    <p>Si tiene preguntas en cualquier momento, use la pestaña Mensajes. Nuestro equipo responde en inglés y español dentro de un día hábil.</p>
+    <p>CBG Funds está comprometido con servir a cada emprendedor con estrategias de financiamiento transparentes y conformes, impulsadas por la Tecnología de Financiamiento Inteligente KLIERD.</p>
+    <p>— El Equipo de CBG Funds</p>`;
+  document.getElementById('welcome-title').textContent = lang==='es' ? welcomeTitleES : welcomeTitleEN;
+  document.getElementById('welcome-body').innerHTML = lang==='es' ? welcomeBodyES : welcomeBodyEN;
+
+  // === YOUR INFORMATION CARD ===
+  document.getElementById('ci-email').textContent = app.email || '—';
+  document.getElementById('ci-phone').textContent = app.phone || '—';
+  document.getElementById('ci-biz').textContent = app.bizName || app.businessName || (lang==='es' ? 'No aplica' : 'N/A');
+
+  // Timeline
+  const stepsEN=[
+    {label:'Application Received',sub:'Your application was successfully submitted'},
+    {label:'Under Review',sub:'Our team is reviewing your credit profile'},
+    {label:'Strategy in Progress',sub:'Your advisor is building your personalized funding strategy'},
+    {label:'Completed',sub:'Funding approved or dispute resolution complete'},
+  ];
+  const stepsES=[
+    {label:'Solicitud Recibida',sub:'Su solicitud fue enviada exitosamente'},
+    {label:'Bajo Revisión',sub:'Nuestro equipo está revisando su perfil crediticio'},
+    {label:'Estrategia en Proceso',sub:'Su asesor está construyendo su estrategia personalizada'},
+    {label:'Completado',sub:'Financiamiento aprobado o resolución completa'},
+  ];
+  const steps=lang==='es'?stepsES:stepsEN;
+  const order=['new','review','active','funded'];
+  const idx=Math.max(0,order.indexOf(status));
+  document.getElementById('p-timeline').innerHTML=steps.map((s,i)=>{
+    const done=i<idx,active=i===idx;
+    return`<div class="tl-step"><div class="tl-dot ${done?'done':active?'active':''}">${done?'✓':active?'●':''}</div><div class="tl-label ${active?'active':done?'':'pending'}">${s.label}</div><div class="tl-sub">${s.sub}</div></div>`;
+  }).join('');
+
+  // Next steps
+  const nextEN=[
+    {icon:'📞',title:'Expect a call within 24–48 hours',body:'One of our funding advisors will reach out to discuss your profile and build your personalized strategy.'},
+    {icon:'📎',title:'Upload your documents',body:'Click the Documents tab above to upload your ID, bank statements, pay stubs, and credit monitoring login.'},
+    {icon:'💬',title:'Message us anytime',body:'Use the Messages tab to ask questions. We speak English and Spanish and reply within 24 hours.'},
+  ];
+  const nextES=[
+    {icon:'📞',title:'Espere una llamada en 24–48 horas',body:'Uno de nuestros asesores se comunicará para discutir su perfil y construir su estrategia personalizada.'},
+    {icon:'📎',title:'Cargue sus documentos',body:'Haga clic en la pestaña Documentos para cargar su identificación, estados de cuenta, talones de pago y acceso a monitoreo de crédito.'},
+    {icon:'💬',title:'Escríbanos en cualquier momento',body:'Use la pestaña Mensajes para hacer preguntas. Hablamos inglés y español y respondemos en 24 horas.'},
+  ];
+  const next=lang==='es'?nextES:nextEN;
+  document.getElementById('p-next').innerHTML=next.map(n=>`<div class="next-item"><div class="next-icon">${n.icon}</div><div><div class="next-title">${n.title}</div><div class="next-body">${n.body}</div></div></div>`).join('');
+
+  // Doc checklist
+  const isITIN=(app.fundingType||app.clientType)==='itin';
+  const isBiz=['business','both'].includes(app.fundingType||app.clientType);
+  const docsEN=[
+    {name:'Government-issued Photo ID',key:'id'},
+    isITIN?{name:'ITIN Letter (IRS CP565)',key:'itin'}:{name:'Social Security Card',key:'ssn'},
+    {name:'Last 3 Months Bank Statements',key:'bank'},
+    {name:'Most Recent Pay Stubs (last 2)',key:'paystubs'},
+    {name:'Credit Monitoring Login',key:'monitoring'},
+    {name:'Voided Check',key:'check'},
+    ...(isBiz?[
+      {name:'EIN Confirmation Letter (IRS CP575)',key:'ein'},
+      {name:'Business Formation Documents',key:'biz_docs'},
+      {name:'Last 3 Months Business Bank Statements',key:'biz_bank'},
+      {name:'NAV.com Account ($79.99/mo plan)',key:'nav'},
+    ]:[]),
+  ];
+  const docsES=[
+    {name:'Identificación oficial con foto',key:'id'},
+    isITIN?{name:'Carta de ITIN (IRS CP565)',key:'itin'}:{name:'Tarjeta de Seguro Social',key:'ssn'},
+    {name:'Estados de cuenta (últimos 3 meses)',key:'bank'},
+    {name:'Talones de pago más recientes (últimos 2)',key:'paystubs'},
+    {name:'Acceso a monitoreo de crédito',key:'monitoring'},
+    {name:'Cheque anulado',key:'check'},
+    ...(isBiz?[
+      {name:'Carta de EIN (IRS CP575)',key:'ein'},
+      {name:'Documentos de formación empresarial',key:'biz_docs'},
+      {name:'Estados de cuenta empresarial (3 meses)',key:'biz_bank'},
+      {name:'Cuenta NAV.com (plan $79.99/mes)',key:'nav'},
+    ]:[]),
+  ];
+  const docs=lang==='es'?docsES:docsEN;
+  const uploaded=JSON.parse(localStorage.getItem('docs_'+app.trackingId)||'{}');
+  document.getElementById('doc-list').innerHTML=docs.map(d=>{
+    const got=!!uploaded[d.key];
+    const lblEN=got?'Received ✅':'Not Yet Received';
+    const lblES=got?'Recibido ✅':'Aún no recibido';
+    const why = (lang==='es'?whyES:whyEN)[d.key] || '';
+    return`<div class="doc-item"><div class="doc-row"><div class="doc-name">${d.name}</div><div class="doc-status ${got?'doc-received':'doc-missing'}">${lang==='es'?lblES:lblEN}</div></div>${why?`<div class="doc-why">💡 ${why}</div>`:''}</div>`;
+  }).join('');
+
+  // Scores
+  if(app.scoreTU){document.getElementById('p-tu').textContent=app.scoreTU;}
+  if(app.scoreEQ){document.getElementById('p-eq').textContent=app.scoreEQ;}
+  if(app.scoreEX){document.getElementById('p-ex').textContent=app.scoreEX;}
+  if(app.pers){document.getElementById('p-range-personal').textContent=app.pers;}
+  if(app.biz){document.getElementById('p-range-biz').textContent=app.biz;}
+
+  // Messages
+  const msgs=JSON.parse(localStorage.getItem('msgs_'+app.trackingId)||'[]');
+  if(msgs.length===0){
+    const wEN=`Hi ${first}! Welcome to CBG Funds. Your application has been received and our team will review your profile within 24–48 hours. Please upload your documents in the Documents tab and feel free to message us anytime. We are KLIERing your path! — CBG Funds Team`;
+    const wES=`¡Hola ${first}! Bienvenido a CBG Funds. Su solicitud ha sido recibida y nuestro equipo revisará su perfil en 24–48 horas. Por favor cargue sus documentos en la pestaña Documentos y escríbanos cuando tenga preguntas. ¡Estamos despejando su camino! — Equipo CBG Funds`;
+    msgs.push({from:'advisor',text:lang==='es'?wES:wEN,time:new Date().toLocaleString()});
+    localStorage.setItem('msgs_'+app.trackingId,JSON.stringify(msgs));
+  }
+  // === SMART PROGRESS BAR ===
+  const totalSteps = docs.length + 3; // docs + (advisor call/review/scores) approximations
+  const docsUploaded = docs.filter(d => !!uploaded[d.key]).length;
+  let statusBonus = 0;
+  if(['review','active','funded'].includes(status))statusBonus = 1;
+  if(['active','funded'].includes(status))statusBonus = 2;
+  if(status === 'funded')statusBonus = 3;
+  const completed = docsUploaded + statusBonus;
+  const pct = Math.min(100, Math.round((completed / totalSteps) * 100));
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  const missingDocs = docs.length - docsUploaded;
+  const detailEN = pct === 100 ? 'All steps complete' : missingDocs > 0 ? `${missingDocs} document${missingDocs===1?'':'s'} remaining` : 'Awaiting advisor review';
+  const detailES = pct === 100 ? 'Todos los pasos completos' : missingDocs > 0 ? `${missingDocs} documento${missingDocs===1?'':'s'} pendiente${missingDocs===1?'':'s'}` : 'Esperando revisión del asesor';
+  document.getElementById('progress-detail').textContent = lang==='es' ? detailES : detailEN;
+
+  // === MILESTONES CARD ===
+  const totalDocs = docs.length;
+  const msList = [];
+  // Profile completion milestone
+  msList.push({
+    icon: pct >= 100 ? '🏁' : pct >= 75 ? '🎯' : pct >= 50 ? '📈' : '🌱',
+    title_en: pct >= 100 ? 'Profile 100% complete' : `Profile ${pct}% complete`,
+    title_es: pct >= 100 ? 'Perfil 100% completo' : `Perfil ${pct}% completo`,
+    sub_en: pct >= 100 ? 'All steps complete' : pct >= 80 ? "You're almost there" : pct >= 50 ? 'Halfway there' : pct >= 25 ? 'Great start' : 'Just getting started',
+    sub_es: pct >= 100 ? 'Todos los pasos completos' : pct >= 80 ? 'Casi listo' : pct >= 50 ? 'A mitad de camino' : pct >= 25 ? 'Buen comienzo' : 'Comenzando',
+    complete: pct >= 100
+  });
+  // Documents milestone
+  msList.push({
+    icon: docsUploaded === totalDocs && totalDocs > 0 ? '✅' : '📋',
+    title_en: `${docsUploaded} of ${totalDocs} documents received`,
+    title_es: `${docsUploaded} de ${totalDocs} documentos recibidos`,
+    sub_en: docsUploaded === totalDocs && totalDocs > 0 ? 'All documents in' : `${totalDocs - docsUploaded} still pending`,
+    sub_es: docsUploaded === totalDocs && totalDocs > 0 ? 'Todos los documentos recibidos' : `${totalDocs - docsUploaded} pendientes`,
+    complete: docsUploaded === totalDocs && totalDocs > 0
+  });
+  // Ready for review milestone (when all docs in)
+  if (docsUploaded === totalDocs && totalDocs > 0) {
+    msList.push({
+      icon: '🏆',
+      title_en: 'Ready for advisor review',
+      title_es: 'Listo para revisión del asesor',
+      sub_en: 'Your advisor will reach out within 24 business hours',
+      sub_es: 'Su asesor le contactará en 24 horas hábiles',
+      complete: ['active','funded'].includes(status)
+    });
+  }
+  // Funded milestone
+  if (status === 'funded') {
+    msList.push({
+      icon: '🎉',
+      title_en: 'Funding approved',
+      title_es: 'Financiamiento aprobado',
+      sub_en: 'Congratulations',
+      sub_es: '¡Felicidades!',
+      complete: true
+    });
+  }
+  document.getElementById('ms-list').innerHTML = msList.map(m => {
+    const title = lang === 'es' ? m.title_es : m.title_en;
+    const sub = lang === 'es' ? m.sub_es : m.sub_en;
+    return `<div class="ms-row ${m.complete?'complete':''}"><div class="ms-icon">${m.icon}</div><div class="ms-text"><div class="ms-title">${title}</div><div class="ms-sub">${sub}</div></div></div>`;
+  }).join('');
+
+  // === PROGRESS BAR SHIMMER AT 100% ===
+  const pf = document.getElementById('progress-fill');
+  if (pct >= 100) pf.classList.add('complete'); else pf.classList.remove('complete');
+
+  // === CONFETTI TRIGGER AT MILESTONE THRESHOLDS ===
+  const lastPct = parseInt(localStorage.getItem('cbg_last_pct_' + app.trackingId) || '0');
+  const thresholds = [25, 50, 75, 100];
+  const crossed = thresholds.find(t => lastPct < t && pct >= t);
+  if (crossed) {
+    fireConfetti();
+    const msgEN = crossed === 100 ? '🎉 Profile complete!' : `🎯 Milestone unlocked: ${crossed}%`;
+    const msgES = crossed === 100 ? '🎉 ¡Perfil completo!' : `🎯 Hito desbloqueado: ${crossed}%`;
+    showToast(lang === 'es' ? msgES : msgEN, 'success');
+  }
+  localStorage.setItem('cbg_last_pct_' + app.trackingId, pct);
+  // === SERVICE DETECTION (clients can have one OR both) ===
+  const svc = app.fundingType || app.clientType || '';
+  // Dispute service: explicit fundingType='dispute' OR flagged by advisor for dispute work
+  const hasDispute = svc === 'dispute' || app.disputeFlag === true || app.needsDispute === true;
+  // Funding service: anything other than dispute-only (or explicitly flagged)
+  const hasFunding = svc !== 'dispute' || app.fundingFlag === true;
+  const svcIsITIN = svc === 'itin';
+  // Legacy alias used in agreements push below
+  const svcIsDispute = hasDispute;
+
+  // === SIGNED AGREEMENTS (service-conditional) ===
+  const baseEN = [
+    {key:'application',name:'Application Form',desc:'Your signed funding application'},
+    {key:'fee_agreement',name:'Fee Agreement',desc:'Engagement terms, fee schedule, and scope of services'},
+    {key:'credit_auth',name:'Credit Pull Authorization',desc:'Permission to review your reports across all three bureaus'}
+  ];
+  const baseES = [
+    {key:'application',name:'Formulario de Solicitud',desc:'Su solicitud de financiamiento firmada'},
+    {key:'fee_agreement',name:'Acuerdo de Honorarios',desc:'Términos de contratación, honorarios y alcance de servicios'},
+    {key:'credit_auth',name:'Autorización para Verificar Crédito',desc:'Permiso para revisar sus reportes en los tres burós'}
+  ];
+  let agreements = lang==='es' ? [...baseES] : [...baseEN];
+  if (svcIsDispute) {
+    agreements.push(lang==='es'
+      ? {key:'croa_disclosure',name:'Divulgación CROA',desc:'Aviso federal CROA — sus derechos, nuestros límites, y aviso de rescisión de 3 días'}
+      : {key:'croa_disclosure',name:'CROA Disclosure',desc:'Federal CROA notice — your rights, our limits, and 3-day rescission notice'}
+    );
+  }
+  if (svcIsITIN) {
+    agreements.push(lang==='es'
+      ? {key:'itin_attestation',name:'Atestación de ITIN',desc:'Confirma su estatus de ITIN para enrutamiento a prestamistas'}
+      : {key:'itin_attestation',name:'ITIN Attestation',desc:'Confirms your ITIN status for lender routing'}
+    );
+  }
+  const agStatus = JSON.parse(localStorage.getItem('agreements_'+app.trackingId)||'{}');
+  const agListEl = document.getElementById('ag-list');
+  if (agListEl) {
+    agListEl.innerHTML = agreements.map(a=>{
+      const st = agStatus[a.key] || 'not_sent';
+      const statusLblEN = st==='signed'?'Signed ✓':st==='awaiting'?'Awaiting signature':'Not yet sent';
+      const statusLblES = st==='signed'?'Firmado ✓':st==='awaiting'?'Esperando firma':'Aún no enviado';
+      const statusClass = st==='signed'?'ag-status-signed':st==='awaiting'?'ag-status-awaiting':'ag-status-not';
+      const rowClass = st==='signed'?'signed':st==='awaiting'?'awaiting':'';
+      const actions = st==='signed'
+        ? `<a class="ag-btn" href="#" onclick="viewAgreement('${a.key}');return false;">📄 ${lang==='es'?'Ver documento':'View document'}</a>`
+        : st==='awaiting'
+          ? `<a class="ag-btn primary" href="#" onclick="signAgreement('${a.key}');return false;">✎ ${lang==='es'?'Firmar ahora':'Sign now'}</a>`
+          : `<span style="font-size:10px;color:var(--muted);font-style:italic">${lang==='es'?'Será enviado pronto':'Will be sent shortly'}</span>`;
+      return `<div class="ag-row ${rowClass}"><div class="ag-head"><div class="ag-name">${a.name}</div><span class="ag-status-badge ${statusClass}">${lang==='es'?statusLblES:statusLblEN}</span></div><div class="ag-desc">${a.desc}</div><div class="ag-actions">${actions}</div></div>`;
+    }).join('');
+  }
+
+  // Set service-appropriate intro (3 cases: dispute-only, funding-only, both)
+  const introEl = document.getElementById('lbl-analysis-intro');
+  if (introEl) {
+    const showCredit_pre = hasDispute;
+    const showFunding_pre = hasFunding;
+    if (showCredit_pre && showFunding_pre) {
+      introEl.textContent = lang==='es'
+        ? 'Le proporcionaremos sus análisis personalizados en breve. Su asesor está revisando su solicitud.'
+        : "We'll provide your personalized analyses shortly. Your advisor is reviewing your submission now.";
+    } else if (showCredit_pre) {
+      introEl.textContent = lang==='es'
+        ? 'Le proporcionaremos su Análisis de Crédito detallado en breve. Su asesor está revisando su solicitud.'
+        : "We'll provide your detailed Credit Analysis shortly. Your advisor is reviewing your submission now.";
+    } else {
+      introEl.textContent = lang==='es'
+        ? 'Le proporcionaremos su Análisis de Financiamiento detallado en breve. Su asesor está revisando su solicitud.'
+        : "We'll provide your detailed Funding Analysis shortly. Your advisor is reviewing your submission now.";
+    }
+  }
+
+  // === MY ANALYSIS (service-conditional) ===
+  // Funding clients (personal/business/both/itin) → Funding Analysis only
+  // Dispute Resolution clients → Credit Analysis only
+  const analysis = JSON.parse(localStorage.getItem('analysis_'+app.trackingId)||'{}');
+  const showCredit = hasDispute;
+  const showFunding = hasFunding;
+  // Hide the card that doesn't apply
+  const creditCard = document.getElementById('an-credit');
+  const fundingCard = document.getElementById('an-funding');
+  if (creditCard) creditCard.style.display = showCredit ? '' : 'none';
+  if (fundingCard) fundingCard.style.display = showFunding ? '' : 'none';
+  // Render only the applicable card(s)
+  const applicableKinds = [];
+  if (showCredit) applicableKinds.push('credit');
+  if (showFunding) applicableKinds.push('funding');
+  applicableKinds.forEach(kind => {
+    const st = analysis[kind] || 'notstarted';
+    const stEl = document.getElementById('an-'+kind+'-status');
+    const actEl = document.getElementById('an-'+kind+'-actions');
+    const cardEl = document.getElementById('an-'+kind);
+    if (!stEl || !actEl || !cardEl) return;
+    cardEl.classList.remove('ready');
+    stEl.classList.remove('notstarted','inprogress','ready');
+    if (st === 'ready') {
+      cardEl.classList.add('ready');
+      stEl.classList.add('ready');
+      stEl.textContent = lang==='es' ? 'Listo para ver ✓' : 'Ready to view ✓';
+      actEl.innerHTML = `<a class="ag-btn primary" href="#" onclick="viewAnalysis('${kind}');return false;">📄 ${lang==='es'?'Ver análisis':'View analysis'}</a>`;
+    } else if (st === 'inprogress') {
+      stEl.classList.add('inprogress');
+      stEl.textContent = lang==='es' ? 'En proceso con su asesor' : 'In progress with advisor';
+      actEl.innerHTML = `<span style="font-size:11px;color:var(--muted);font-style:italic">${lang==='es'?'Su asesor está revisando su solicitud — su análisis viene pronto':'Your advisor is reviewing your submission — your analysis is on the way'}</span>`;
+    } else {
+      stEl.classList.add('notstarted');
+      stEl.textContent = lang==='es' ? 'Aún no iniciado' : 'Not yet started';
+      actEl.innerHTML = `<span style="font-size:11px;color:var(--muted);font-style:italic">${lang==='es'?'Comienza después de que su asesor revise su solicitud':'Begins after your advisor reviews your submission'}</span>`;
+    }
+  });
+  // === ANALYSIS WOW MOMENT ===
+  // Detect transition from not-ready to ready — fire confetti only for the applicable kind
+  const lastAnalysisState = JSON.parse(localStorage.getItem('analysis_last_'+app.trackingId)||'{}');
+  applicableKinds.forEach(kind => {
+    const wasReady = lastAnalysisState[kind] === 'ready';
+    const isReady = (analysis[kind] || 'notstarted') === 'ready';
+    if (!wasReady && isReady) {
+      fireConfetti();
+      const titleMap = {
+        credit: {en:'Your Credit Analysis is ready ✨', es:'Su Análisis de Crédito está listo ✨'},
+        funding: {en:'Your Funding Analysis is ready 🎯', es:'Su Análisis de Financiamiento está listo 🎯'}
+      };
+      showToast(lang==='es' ? titleMap[kind].es : titleMap[kind].en, 'success');
+    }
+  });
+  localStorage.setItem('analysis_last_'+app.trackingId, JSON.stringify(analysis));
+
+
+
+  // === NEXT ACTION BANNER ===
+  const banner = document.getElementById('next-action-banner');
+  const naTitle = document.getElementById('na-title');
+  const naBody = document.getElementById('na-body');
+  const naCta = document.getElementById('na-cta');
+  const naIcon = document.getElementById('na-icon');
+  const missing = docs.find(d => !uploaded[d.key]);
+  if(missing){
+    naIcon.textContent = '📎';
+    naTitle.textContent = lang==='es' ? `Cargue: ${missing.name}` : `Upload: ${missing.name}`;
+    naBody.textContent = lang==='es' ? (whyES[missing.key] || 'Necesario para procesar su solicitud.') : (whyEN[missing.key] || 'Required to process your application.');
+    naCta.textContent = lang==='es' ? 'Cargar ahora →' : 'Upload now →';
+    naCta.classList.remove('done');
+    window._naMode = 'upload';
+    banner.style.display = 'flex';
+  } else if(status === 'new' || status === 'review'){
+    naIcon.textContent = '📞';
+    naTitle.textContent = lang==='es' ? 'Espere la llamada de su asesor' : 'Expect your advisor\'s call';
+    naBody.textContent = lang==='es' ? 'Todos los documentos recibidos. Su asesor le llamará dentro de 24–48 horas hábiles.' : 'All documents received. Your advisor will call within 24–48 business hours.';
+    naCta.textContent = lang==='es' ? 'Escribirnos →' : 'Message us →';
+    naCta.classList.remove('done');
+    window._naMode = 'messages';
+    banner.style.display = 'flex';
+  } else if(status === 'funded'){
+    naIcon.textContent = '🎉';
+    naTitle.textContent = lang==='es' ? '¡Felicidades — su financiamiento está aprobado!' : 'Congratulations — your funding is approved!';
+    naBody.textContent = lang==='es' ? 'Revise su perfil de crédito y comuníquese con su asesor sobre los próximos pasos.' : 'Review your credit profile and message your advisor about next steps.';
+    naCta.textContent = '✅';
+    naCta.classList.add('done');
+    banner.style.display = 'flex';
+  } else {
+    naIcon.textContent = '⚡';
+    naTitle.textContent = lang==='es' ? 'Su asesor está trabajando en su estrategia' : 'Your advisor is building your strategy';
+    naBody.textContent = lang==='es' ? 'No se requiere acción de su parte ahora mismo.' : 'No action needed from you right now.';
+    naCta.textContent = lang==='es' ? 'Mensajes' : 'Messages';
+    naCta.classList.remove('done');
+    window._naMode = 'messages';
+    banner.style.display = 'flex';
+  }
+
+  renderMessages(msgs);
+}
+
+function showToast(text, kind){
+  const wrap = document.getElementById('toast-wrap');
+  if(!wrap) return;
+  const t = document.createElement('div');
+  t.className = 'toast' + (kind ? ' ' + kind : '');
+  t.textContent = text;
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), 4200);
+}
+
+function fireConfetti(){
+  const colors = ['#C9A84C','#E8CB7A','#27AE60','#2980B9','#E67E22'];
+  for(let i = 0; i < 60; i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = (Math.random() * 100) + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = (Math.random() * 0.6) + 's';
+    piece.style.animationDuration = (2.2 + Math.random() * 1.4) + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4000);
+  }
+}
+
+function viewAnalysis(kind){
+  showToast(lang==='es' ? '📄 Análisis — descarga disponible pronto' : '📄 Analysis — download coming soon', 'success');
+}
+function viewAgreement(key){
+  showToast(lang==='es' ? '📄 Documento firmado — descarga disponible pronto' : '📄 Signed document — download coming soon', 'success');
+}
+function signAgreement(key){
+  showToast(lang==='es' ? '✎ Firma electrónica — disponible pronto vía DocuSign' : '✎ E-signature — coming soon via DocuSign', 'success');
+}
+
+function naAction(){
+  const mode = window._naMode || 'messages';
+  if(mode === 'upload'){
+    showTab('docs', document.querySelectorAll('.tab')[1]);
+  } else {
+    showTab('messages', document.querySelectorAll('.tab')[2]);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// "Why we need this" tooltips — bilingual
+const whyEN = {
+  id: 'Required to verify your identity. Most lenders won\'t process without it.',
+  ssn: 'Used for soft credit pulls and identity confirmation.',
+  itin: 'Your IRS-issued ITIN letter lets us route you to lenders who accept ITIN profiles.',
+  bank: 'Shows lenders your monthly cash flow — one of the biggest factors in approval.',
+  paystubs: 'Confirms your stated income. Two recent stubs is the standard request.',
+  monitoring: 'Lets us see all three bureau reports so we can target the right lenders.',
+  check: 'Used to set up direct deposit of approved funding.',
+  ein: 'Confirms your business is registered with the IRS.',
+  biz_docs: 'Articles of Organization or Formation — proves your business is real.',
+  biz_bank: 'Shows business cash flow — required for any business funding above ~$10K.',
+  nav: 'NAV.com pulls all three business credit reports — critical for business funding strategy.'
+};
+const whyES = {
+  id: 'Necesaria para verificar su identidad. La mayoría de prestamistas no procesan sin ella.',
+  ssn: 'Se usa para verificaciones suaves de crédito y confirmación de identidad.',
+  itin: 'Su carta de ITIN del IRS nos permite dirigirle a prestamistas que aceptan perfiles con ITIN.',
+  bank: 'Muestra a los prestamistas su flujo de efectivo mensual — uno de los mayores factores de aprobación.',
+  paystubs: 'Confirma sus ingresos declarados. Dos talones recientes es el estándar.',
+  monitoring: 'Nos permite ver los tres reportes de buró para dirigirle a los prestamistas correctos.',
+  check: 'Se usa para configurar el depósito directo del financiamiento aprobado.',
+  ein: 'Confirma que su negocio está registrado con el IRS.',
+  biz_docs: 'Artículos de Organización o Formación — comprueba que su negocio es real.',
+  biz_bank: 'Muestra el flujo de efectivo del negocio — requerido para financiamiento empresarial sobre ~$10K.',
+  nav: 'NAV.com extrae los tres reportes de crédito empresarial — crítico para la estrategia de financiamiento.'
+};
+
+function renderMessages(msgs){
+  const wrap=document.getElementById('messages-wrap');
+  if(!wrap)return;
+  wrap.innerHTML=msgs.map(m=>`<div style="display:flex;flex-direction:column;align-items:${m.from==='advisor'?'flex-start':'flex-end'}"><div class="msg ${m.from}">${m.text}</div><div class="msg-time">${m.time}</div></div>`).join('');
+  wrap.scrollTop=wrap.scrollHeight;
+}
+
+function sendMsg(){
+  if(!currentApp)return;
+  const input=document.getElementById('msg-input');
+  const text=input.value.trim();
+  if(!text)return;
+  const msgs=JSON.parse(localStorage.getItem('msgs_'+currentApp.trackingId)||'[]');
+  msgs.push({from:'client',text,time:new Date().toLocaleString()});
+  localStorage.setItem('msgs_'+currentApp.trackingId,JSON.stringify(msgs));
+  input.value='';
+  renderMessages(msgs);
+  // Send to Railway
+  fetch(`${API}/messages`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({trackingId:currentApp.trackingId,from:'client',text,time:new Date().toLocaleString()})}).catch(()=>{});
+  setTimeout(()=>{
+    const autoEN='Thank you for your message! Your advisor will respond within 24 hours. — CBG Funds Team';
+    const autoES='¡Gracias por su mensaje! Su asesor responderá en 24 horas. — Equipo CBG Funds';
+    msgs.push({from:'advisor',text:lang==='es'?autoES:autoEN,time:new Date().toLocaleString()});
+    localStorage.setItem('msgs_'+currentApp.trackingId,JSON.stringify(msgs));
+    renderMessages(msgs);
+  },1000);
+}
+
+function handleFiles(files){
+  if(!currentApp||!files.length)return;
+  const uploaded=JSON.parse(localStorage.getItem('docs_'+currentApp.trackingId)||'{}');
+  const statusEl=document.getElementById('upload-status');
+  Array.from(files).forEach(f=>{
+    const key=f.name.toLowerCase().replace(/[^a-z0-9]/g,'_');
+    uploaded[key]=true;
+    // Auto-match common doc types
+    if(f.name.toLowerCase().includes('id')||f.name.toLowerCase().includes('passport')||f.name.toLowerCase().includes('license'))uploaded['id']=true;
+    if(f.name.toLowerCase().includes('bank')||f.name.toLowerCase().includes('statement'))uploaded['bank']=true;
+    if(f.name.toLowerCase().includes('pay')||f.name.toLowerCase().includes('stub'))uploaded['paystubs']=true;
+    if(f.name.toLowerCase().includes('ssn')||f.name.toLowerCase().includes('social'))uploaded['ssn']=true;
+    if(f.name.toLowerCase().includes('itin'))uploaded['itin']=true;
+    if(f.name.toLowerCase().includes('ein'))uploaded['ein']=true;
+    if(f.name.toLowerCase().includes('void')||f.name.toLowerCase().includes('check'))uploaded['check']=true;
+  });
+  localStorage.setItem('docs_'+currentApp.trackingId,JSON.stringify(uploaded));
+  statusEl.style.display='block';
+  statusEl.textContent='✅ '+(lang==='es'?`${files.length} documento(s) cargado(s) exitosamente`:`${files.length} document(s) uploaded successfully`);
+  // Refresh checklist
+  setTimeout(()=>{
+    renderPortal(currentApp);
+    // Pulse newly received doc rows
+    setTimeout(()=>{
+      document.querySelectorAll('.doc-item').forEach(el=>{
+        const status = el.querySelector('.doc-status');
+        if(status && status.classList.contains('doc-received')){
+          el.classList.add('just-uploaded');
+          setTimeout(()=>el.classList.remove('just-uploaded'), 1500);
+        }
+      });
+    }, 100);
+    showToast(lang==='es' ? '✓ Documento(s) recibido(s)' : '✓ Document(s) received', 'success');
+  },500);
+  // Notify Railway
+  fetch(`${API}/documents`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({trackingId:currentApp.trackingId,files:Array.from(files).map(f=>f.name)})}).catch(()=>{});
+}
+
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+}
+
+function showTab(tab,btn){
+  ['status','docs','messages','analysis','agreements','scores'].forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(el)el.style.display=t===tab?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+}
+
+function goBack(){
+  document.getElementById('portalScreen').classList.remove('show');
+  document.getElementById('lookupScreen').style.display='block';
+  currentApp=null;
+}
+
+// Auto-lookup from URL or session + restore language preference
+window.addEventListener('DOMContentLoaded',()=>{
+  // Restore language preference
+  const savedLang = localStorage.getItem('cbg_lang_pref');
+  if(savedLang && (savedLang==='en' || savedLang==='es')){
+    setLang(savedLang);
+  }
+  const params=new URLSearchParams(window.location.search);
+  const id=params.get('id')||params.get('trackingId')||sessionStorage.getItem('lastTrackingId');
+  if(id){document.getElementById('tracking-input').value=id.toUpperCase();lookup();}
+});
+</script>
+<div class="toast-wrap" id="toast-wrap"></div>
+</body>
+</html>
