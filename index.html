@@ -1,1978 +1,1171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StackPro — Intelligent Funding for Personal & Business Growth</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    :root {
-      --gold: #C9A84C;
-      --gold-light: #D4B057;
-      --black: #000000;
-      --dark: #0A0A0A;
-      --darker: #050505;
-      --white: #FFFFFF;
-      --gray: #B8B8B8;
-      --gray-dark: #6B6B6B;
-    }
-    
-    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-    section { scroll-margin-top: 80px; }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--black);
-      color: var(--white);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      line-height: 1.5;
-    }
-    
-    .serif {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 400;
-      letter-spacing: -0.02em;
-    }
-    
-    .container {
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 0 80px;
-    }
-    
-    /* ===== HEADER ===== */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
-      padding: 24px 0;
-    }
-    
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo-mark {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      position: relative;
-    }
-    
-    .logo-icon svg {
-      width: 100%;
-      height: 100%;
-    }
-    
-    .logo-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 500;
-      color: var(--white);
-      letter-spacing: -0.5px;
-    }
-    
-    .logo-text span {
-      color: var(--gold);
-    }
-    
-    nav {
-      display: flex;
-      gap: 48px;
-      align-items: center;
-    }
-    
-    nav a {
-      color: var(--gray);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 400;
-      transition: color 0.3s;
-    }
-    
-    nav a:hover {
-      color: var(--white);
-    }
-    
-    .nav-cta {
-      background: var(--gold);
-      color: var(--black) !important;
-      padding: 12px 28px;
-      border-radius: 2px;
-      font-weight: 600;
-      transition: all 0.3s;
-    }
-    
-    .nav-cta:hover {
-      background: var(--white);
-      color: var(--black) !important;
-    }
-    
-    /* ===== HERO ===== */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 120px 0 80px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-    
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 32px;
-      font-weight: 500;
-    }
-    
-    .hero-eyebrow::before {
-      content: '';
-      width: 32px;
-      height: 1px;
-      background: var(--gold);
-    }
-    
-    .hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 88px;
-      font-weight: 400;
-      line-height: 1;
-      letter-spacing: -0.03em;
-      margin-bottom: 32px;
-      color: var(--white);
-    }
-    
-    .hero h1 .gold-text {
-      color: var(--gold);
-      font-style: italic;
-      font-weight: 500;
-    }
-    
-    .hero-description {
-      font-size: 18px;
-      line-height: 1.7;
-      color: var(--gray);
-      margin-bottom: 48px;
-      max-width: 540px;
-      font-weight: 300;
-    }
-    
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    
-    .btn-primary {
-      background: var(--gold);
-      color: var(--black);
-      padding: 18px 40px;
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      border: 1px solid var(--gold);
-      transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .btn-primary:hover {
-      background: transparent;
-      color: var(--gold);
-    }
-    
-    .btn-secondary {
-      color: var(--white);
-      padding: 18px 40px;
-      font-size: 15px;
-      font-weight: 500;
-      text-decoration: none;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.3s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .btn-secondary:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-    
-    /* Hero Visual */
-    .hero-visual {
-      position: relative;
-      height: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .visual-card {
-      position: absolute;
-      background: linear-gradient(135deg, rgba(201, 168, 76, 0.08) 0%, rgba(10, 10, 10, 0.95) 100%);
-      border: 1px solid rgba(201, 168, 76, 0.3);
-      padding: 32px;
-      border-radius: 4px;
-      backdrop-filter: blur(20px);
-      transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-    
-    .visual-card-1 {
-      top: 40px;
-      left: 0;
-      width: 280px;
-      transform: rotate(-3deg);
-    }
-    
-    .visual-card-2 {
-      top: 200px;
-      right: 0;
-      width: 300px;
-      transform: rotate(2deg);
-      z-index: 2;
-    }
-    
-    .visual-card-3 {
-      bottom: 40px;
-      left: 60px;
-      width: 260px;
-      transform: rotate(-1deg);
-    }
-    
-    .visual-card-label {
-      font-size: 10px;
-      color: var(--gold);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-    
-    .visual-card-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 36px;
-      font-weight: 500;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-    
-    .visual-card-desc {
-      font-size: 12px;
-      color: var(--gray);
-      line-height: 1.5;
-    }
-    
-    .visual-card-chart {
-      height: 40px;
-      display: flex;
-      align-items: flex-end;
-      gap: 4px;
-      margin-top: 16px;
-    }
-    
-    .chart-bar {
-      flex: 1;
-      background: var(--gold);
-      opacity: 0.6;
-      border-radius: 1px;
-      transition: opacity 0.3s;
-    }
-    
-    .chart-bar:nth-child(1) { height: 30%; }
-    .chart-bar:nth-child(2) { height: 50%; }
-    .chart-bar:nth-child(3) { height: 40%; }
-    .chart-bar:nth-child(4) { height: 70%; }
-    .chart-bar:nth-child(5) { height: 60%; }
-    .chart-bar:nth-child(6) { height: 90%; opacity: 1; }
-    
-    /* ===== TRUST BAR ===== */
-    .trust-bar {
-      padding: 60px 0;
-      border-top: 1px solid rgba(201, 168, 76, 0.1);
-      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
-    }
-    
-    .trust-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 60px;
-      align-items: center;
-    }
-    
-    .trust-item {
-      text-align: center;
-    }
-    
-    .trust-label {
-      font-size: 11px;
-      color: var(--gray-dark);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    
-    .trust-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px;
-      color: var(--white);
-      font-weight: 500;
-    }
-    
-    /* ===== ABOUT ===== */
-    .about {
-      padding: 160px 0;
-      position: relative;
-    }
-    
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 100px;
-      align-items: center;
-    }
-    
-    .about-visual {
-      position: relative;
-      height: 500px;
-      background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
-      border: 1px solid rgba(201, 168, 76, 0.2);
-      overflow: hidden;
-    }
-    
-    .about-visual::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        repeating-linear-gradient(
-          45deg,
-          transparent,
-          transparent 40px,
-          rgba(201, 168, 76, 0.03) 40px,
-          rgba(201, 168, 76, 0.03) 80px
-        );
-    }
-    
-    .about-visual-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      width: 80%;
-    }
-    
-    .about-visual-mark {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 120px;
-      color: var(--gold);
-      font-weight: 300;
-      line-height: 1;
-      margin-bottom: 20px;
-    }
-    
-    .about-visual-quote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px;
-      color: var(--white);
-      font-style: italic;
-      line-height: 1.4;
-    }
-    
-    .about-content .eyebrow {
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 24px;
-      font-weight: 500;
-    }
-    
-    .about-content h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 56px;
-      font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 32px;
-      color: var(--white);
-    }
-    
-    .about-content p {
-      font-size: 17px;
-      line-height: 1.7;
-      color: var(--gray);
-      margin-bottom: 20px;
-      font-weight: 300;
-    }
-    
-    .about-features {
-      margin-top: 40px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    
-    .about-feature {
-      padding: 20px 0;
-      border-top: 1px solid rgba(201, 168, 76, 0.2);
-    }
-    
-    .about-feature-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14px;
-      color: var(--gold);
-      margin-bottom: 8px;
-    }
-    
-    .about-feature-text {
-      font-size: 15px;
-      color: var(--white);
-      font-weight: 500;
-    }
-    
-    /* ===== SERVICES ===== */
-    .services {
-      padding: 160px 0;
-      background: var(--darker);
-    }
-    
-    .section-header {
-      max-width: 800px;
-      margin-bottom: 100px;
-    }
-    
-    .section-header .eyebrow {
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 24px;
-      font-weight: 500;
-    }
-    
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 64px;
-      font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 24px;
-      color: var(--white);
-    }
-    
-    .section-title .gold-text {
-      color: var(--gold);
-      font-style: italic;
-    }
-    
-    .section-description {
-      font-size: 18px;
-      color: var(--gray);
-      line-height: 1.7;
-      font-weight: 300;
-    }
-    
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0;
-      border-top: 1px solid rgba(201, 168, 76, 0.15);
-    }
-    
-    .service-card {
-      padding: 60px 40px;
-      border-right: 1px solid rgba(201, 168, 76, 0.15);
-      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
-      transition: background 0.4s;
-      position: relative;
-    }
-    
-    .service-card:nth-child(2n) {
-      border-right: none;
-    }
-    
-    .service-card:hover {
-      background: rgba(201, 168, 76, 0.03);
-    }
-    
-    .service-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14px;
-      color: var(--gold);
-      margin-bottom: 24px;
-      letter-spacing: 2px;
-    }
-    
-    .service-card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
-      font-weight: 400;
-      margin-bottom: 16px;
-      color: var(--white);
-    }
-    
-    .service-card p {
-      font-size: 15px;
-      line-height: 1.7;
-      color: var(--gray);
-      font-weight: 300;
-      margin-bottom: 24px;
-    }
-    
-    .service-features {
-      list-style: none;
-    }
-    
-    .service-features li {
-      padding: 8px 0;
-      font-size: 14px;
-      color: var(--white);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 300;
-    }
-    
-    .service-features li::before {
-      content: '';
-      width: 4px;
-      height: 4px;
-      background: var(--gold);
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    
-    /* ===== WHO WE SERVE ===== */
-    .who-we-serve {
-      padding: 160px 0;
-    }
-    
-    .serve-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-      margin-top: 80px;
-    }
-    
-    .serve-card {
-      padding: 48px 40px;
-      background: var(--dark);
-      border: 1px solid rgba(201, 168, 76, 0.2);
-      transition: all 0.4s;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .serve-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--gold);
-      transform: scaleY(0);
-      transform-origin: top;
-      transition: transform 0.4s;
-    }
-    
-    .serve-card:hover::before {
-      transform: scaleY(1);
-    }
-    
-    .serve-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-4px);
-    }
-    
-    .serve-icon {
-      width: 56px;
-      height: 56px;
-      border: 1px solid var(--gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 28px;
-    }
-    
-    .serve-icon svg {
-      width: 24px;
-      height: 24px;
-      stroke: var(--gold);
-      fill: none;
-      stroke-width: 1.5;
-    }
-    
-    .serve-card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 400;
-      margin-bottom: 16px;
-      color: var(--white);
-    }
-    
-    .serve-card p {
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--gray);
-      font-weight: 300;
-    }
-    
-    /* ===== PROCESS ===== */
-    .process {
-      padding: 160px 0;
-      background: var(--darker);
-      position: relative;
-    }
-    
-    .process-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
-      margin-top: 80px;
-      position: relative;
-    }
-    
-    .process-grid::before {
-      content: '';
-      position: absolute;
-      top: 40px;
-      left: 80px;
-      right: 80px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
-    }
-    
-    .process-step {
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .process-number {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 32px;
-      background: var(--black);
-      border: 1px solid var(--gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      color: var(--gold);
-      font-weight: 500;
-    }
-    
-    .process-step h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      font-weight: 500;
-      margin-bottom: 12px;
-      color: var(--white);
-    }
-    
-    .process-step p {
-      font-size: 14px;
-      color: var(--gray);
-      line-height: 1.6;
-      font-weight: 300;
-    }
-    
-    /* ===== CONTACT ===== */
-    .contact {
-      padding: 160px 0;
-    }
-    
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-    }
-    
-    .contact-info h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 56px;
-      font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 32px;
-      color: var(--white);
-    }
-    
-    .contact-info h2 .gold-text {
-      color: var(--gold);
-      font-style: italic;
-    }
-    
-    .contact-info p {
-      font-size: 17px;
-      line-height: 1.7;
-      color: var(--gray);
-      margin-bottom: 48px;
-      font-weight: 300;
-    }
-    
-    .contact-methods {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
-    
-    .contact-method {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
-    }
-    
-    .contact-method-icon {
-      width: 48px;
-      height: 48px;
-      border: 1px solid var(--gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    
-    .contact-method-icon svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--gold);
-      fill: none;
-      stroke-width: 1.5;
-    }
-    
-    .contact-method-label {
-      font-size: 11px;
-      color: var(--gray-dark);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    
-    .contact-method-value {
-      font-size: 18px;
-      color: var(--white);
-      font-weight: 400;
-    }
-    
-    .contact-method-value a {
-      color: var(--white);
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-    
-    .contact-method-value a:hover {
-      color: var(--gold);
-    }
-    
-    /* Contact Form */
-    .contact-form {
-      background: var(--dark);
-      border: 1px solid rgba(201, 168, 76, 0.2);
-      padding: 48px;
-    }
-    
-    .form-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 500;
-      margin-bottom: 32px;
-      color: var(--white);
-    }
-    
-    .form-group {
-      margin-bottom: 24px;
-    }
-    
-    .form-label {
-      display: block;
-      font-size: 11px;
-      color: var(--gray);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    
-    .form-input,
-    .form-textarea {
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
-      padding: 12px 0;
-      color: var(--white);
-      font-family: inherit;
-      font-size: 15px;
-      transition: border-color 0.3s;
-    }
-    
-    .form-input:focus,
-    .form-textarea:focus {
-      outline: none;
-      border-bottom-color: var(--gold);
-    }
-    
-    .form-textarea {
-      resize: none;
-      min-height: 80px;
-    }
-    
-    .form-submit {
-      width: 100%;
-      background: var(--gold);
-      color: var(--black);
-      padding: 18px;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      border: 1px solid var(--gold);
-      cursor: pointer;
-      transition: all 0.3s;
-      margin-top: 16px;
-      font-family: inherit;
-    }
-    
-    .form-submit:hover {
-      background: transparent;
-      color: var(--gold);
-    }
-    
-    /* ===== FOOTER ===== */
-    footer {
-      padding: 80px 0 40px;
-      border-top: 1px solid rgba(201, 168, 76, 0.15);
-      background: var(--darker);
-    }
-    
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 80px;
-      margin-bottom: 60px;
-    }
-    
-    .footer-brand .logo-mark {
-      margin-bottom: 24px;
-    }
-    
-    .footer-brand p {
-      font-size: 14px;
-      color: var(--gray);
-      line-height: 1.7;
-      max-width: 280px;
-    }
-    
-    .footer-col h5 {
-      font-size: 11px;
-      color: var(--gold);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-      font-weight: 600;
-    }
-    
-    .footer-col ul {
-      list-style: none;
-    }
-    
-    .footer-col li {
-      margin-bottom: 12px;
-    }
-    
-    .footer-col a {
-      color: var(--gray);
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.3s;
-    }
-    
-    .footer-col a:hover {
-      color: var(--white);
-    }
-    
-    .footer-bottom {
-      padding-top: 40px;
-      border-top: 1px solid rgba(201, 168, 76, 0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .footer-copyright {
-      font-size: 13px;
-      color: var(--gray-dark);
-    }
-    
-    .footer-klierd {
-      font-size: 13px;
-      color: var(--gray-dark);
-    }
-    
-    .footer-klierd span {
-      color: var(--gold);
-      font-weight: 600;
-    }
-    
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(-3deg); }
-      50% { transform: translateY(-15px) rotate(-3deg); }
-    }
-    
-    @keyframes float2 {
-      0%, 100% { transform: translateY(0) rotate(2deg); }
-      50% { transform: translateY(-12px) rotate(2deg); }
-    }
-    
-    @keyframes float3 {
-      0%, 100% { transform: translateY(0) rotate(-1deg); }
-      50% { transform: translateY(-18px) rotate(-1deg); }
-    }
-    
-    .visual-card-1 { animation: float 6s ease-in-out infinite; }
-    .visual-card-2 { animation: float2 7s ease-in-out infinite; }
-    .visual-card-3 { animation: float3 8s ease-in-out infinite; }
-    
-    .hero h1, .hero-description, .hero-actions, .hero-eyebrow {
-      animation: fadeInUp 1s ease-out;
-    }
-    
-    .hero-description { animation-delay: 0.2s; animation-fill-mode: both; }
-    .hero-actions { animation-delay: 0.4s; animation-fill-mode: both; }
-    
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1200px) {
-      .container { padding: 0 40px; }
-      .hero h1 { font-size: 72px; }
-      .section-title { font-size: 52px; }
-    }
-    
-    @media (max-width: 968px) {
-      nav a:not(.nav-cta) { display: none; }
-      
-      .hero-grid,
-      .about-grid,
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 60px;
-      }
-      
-      .hero h1 { font-size: 56px; }
-      
-      .hero-visual {
-        height: 400px;
-      }
-      
-      .visual-card { transform: rotate(0) !important; }
-      
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .service-card {
-        border-right: none;
-      }
-      
-      .serve-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .process-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .process-grid::before {
-        display: none;
-      }
-      
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .container { padding: 0 24px; }
-      .hero h1 { font-size: 42px; }
-      .section-title { font-size: 36px; }
-      .trust-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-      .process-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLIERD — Intelligent Funding Technology</title>
+<meta name="description" content="KLIERD — Intelligent Funding Technology. Lender matching, real-time credit analysis, and intelligent funding decisions for SSN and ITIN holders. Bilingual platform. We are KLIERing your path.">
+<meta name="keywords" content="KLIERD, intelligent funding, fintech, ITIN funding, SSN funding, bilingual funding, credit profile optimization, business funding, personal funding">
+<meta name="author" content="KLIERD">
+<meta name="theme-color" content="#060500">
+<link rel="canonical" href="https://klierd.com/">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2032%2032'%3E%3Crect%20width%3D'32'%20height%3D'32'%20rx%3D'6'%20fill%3D'%23060500'%2F%3E%3Cpath%20d%3D'M8.4%208h3.2v6.6L18%208h4l-6.5%206.8L22.4%2024h-4l-4.8-7.5-2%202.1V24H8.4V8z'%20fill%3D'%23e8b020'%2F%3E%3C%2Fsvg%3E">
 
-  <!-- HEADER -->
-  <header>
-    <div class="container">
-      <div class="header-inner">
-        <div class="logo-mark">
-          <div class="logo-icon">
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-              <rect x="6" y="14" width="28" height="4" fill="#C9A84C"/>
-              <rect x="6" y="22" width="28" height="4" fill="#C9A84C" opacity="0.7"/>
-              <rect x="6" y="30" width="28" height="4" fill="#C9A84C" opacity="0.4"/>
-              <rect x="6" y="6" width="28" height="4" fill="#C9A84C"/>
-            </svg>
-          </div>
-          <div class="logo-text">Stack<span>Pro</span></div>
-        </div>
-        <nav>
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#process">Process</a>
-          <a href="#brokers">Brokers</a>
-          <a href="#contact">Contact</a>
-          <a href="/apply.html" class="nav-cta">Apply Now</a>
-        </nav>
-      </div>
-    </div>
-  </header>
+<!-- Open Graph / Facebook / iMessage / LinkedIn -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="KLIERD">
+<meta property="og:title" content="KLIERD — Intelligent Funding Technology">
+<meta property="og:description" content="Lender matching, real-time credit analysis, and intelligent funding decisions for SSN and ITIN holders. Bilingual platform. We are KLIERing your path.">
+<meta property="og:url" content="https://klierd.com/">
+<meta property="og:image" content="https://klierd.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_US">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div class="hero-content">
-          <div class="hero-eyebrow">Intelligent Funding Platform</div>
-          <h1>
-            Welcome to<br>
-            <span class="gold-text">Intelligent Funding</span>
-          </h1>
-          <p class="hero-description">
-            StackPro delivers sophisticated funding and credit solutions for those who demand excellence. Built for personal and business growth, accessible to ITIN and SSN holders alike.
-          </p>
-          <div class="hero-actions">
-            <a href="/apply.html" class="btn-primary">
-              Begin Application
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5"/>
-              </svg>
-            </a>
-            <a href="#about" class="btn-secondary">Learn More</a>
-          </div>
-        </div>
-        
-        <div class="hero-visual">
-          <div class="visual-card visual-card-1">
-            <div class="visual-card-label">Personal Credit</div>
-            <div class="visual-card-value">820+</div>
-            <div class="visual-card-desc">Strategic optimization for maximum approvals</div>
-            <div class="visual-card-chart">
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-            </div>
-          </div>
-          
-          <div class="visual-card visual-card-2">
-            <div class="visual-card-label">Business Funding</div>
-            <div class="visual-card-value">$150K</div>
-            <div class="visual-card-desc">Capital for scaling enterprise operations</div>
-            <div class="visual-card-chart">
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-            </div>
-          </div>
-          
-          <div class="visual-card visual-card-3">
-            <div class="visual-card-label">Stack Optimization</div>
-            <div class="visual-card-value">100%</div>
-            <div class="visual-card-desc">Precision-engineered credit strategies</div>
-            <div class="visual-card-chart">
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KLIERD — Intelligent Funding Technology">
+<meta name="twitter:description" content="Intelligent lender matching, real-time credit analysis, and funding decisions for SSN and ITIN holders. We are KLIERing your path.">
+<meta name="twitter:image" content="https://klierd.com/og-image.png">
 
-  <!-- TRUST BAR -->
-  <section class="trust-bar">
-    <div class="container">
-      <div class="trust-grid">
-        <div class="trust-item">
-          <div class="trust-label">Established</div>
-          <div class="trust-value">Compliance First</div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-label">Secure</div>
-          <div class="trust-value">Bank-Level Encryption</div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-label">Inclusive</div>
-          <div class="trust-value">ITIN & SSN Eligible</div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-label">Dedicated</div>
-          <div class="trust-value">Personal Advisory</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="about" id="about">
-    <div class="container">
-      <div class="about-grid">
-        <div class="about-visual">
-          <div class="about-visual-content">
-            <div class="about-visual-mark">"</div>
-            <div class="about-visual-quote">
-              Building wealth requires more than capital—it requires strategy.
-            </div>
-          </div>
-        </div>
-        
-        <div class="about-content">
-          <div class="eyebrow">About StackPro</div>
-          <h2>A New Standard in Intelligent Funding</h2>
-          <p>
-            StackPro is the Intelligent Funding Technology platform built for everyone — SSN holders, ITIN clients, entrepreneurs, and individuals ready to build real wealth. We combine Intelligent lender matching, real-time credit analysis, and instant funding decisions to deliver approvals traditional platforms cannot.
-          </p>
-          <p>
-            Whether you're an immigrant building your American dream, an entrepreneur launching your vision, or an individual breaking through financial barriers — StackPro sees you, serves you, and funds you.
-          </p>
-          
-          <div class="about-features">
-            <div class="about-feature">
-              <div class="about-feature-number">01</div>
-              <div class="about-feature-text">Intelligent Lender Matching & Approvals</div>
-            </div>
-            <div class="about-feature">
-              <div class="about-feature-number">02</div>
-              <div class="about-feature-text">Inclusive — SSN, ITIN & All Backgrounds Welcome</div>
-            </div>
-            <div class="about-feature">
-              <div class="about-feature-number">03</div>
-              <div class="about-feature-text">Intelligent Credit Analysis & Dispute Resolution</div>
-            </div>
-            <div class="about-feature">
-              <div class="about-feature-number">04</div>
-              <div class="about-feature-text">Real-Time Funding Decisions Powered by KLIERD</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVICES -->
-  <section class="services" id="services">
-    <div class="container">
-      <div class="section-header">
-        <div class="eyebrow">Our Services</div>
-        <h2 class="section-title">
-          Comprehensive Solutions<br>
-          for <span class="gold-text">Every Stage</span>
-        </h2>
-        <p class="section-description">
-          From personal credit building to business expansion capital, StackPro delivers the complete spectrum of funding solutions.
-        </p>
-      </div>
-      
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-number">01 / Personal</div>
-          <h3>Personal Funding</h3>
-          <p>
-            Strategic funding solutions designed for individual financial goals and credit optimization.
-          </p>
-          <ul class="service-features">
-            <li>Credit profile development</li>
-            <li>Personal loan strategies</li>
-            <li>Score optimization</li>
-            <li>SSN & ITIN eligible</li>
-          </ul>
-        </div>
-        
-        <div class="service-card">
-          <div class="service-number">02 / Business</div>
-          <h3>Business Funding</h3>
-          <p>
-            Comprehensive capital solutions for enterprises at every stage of growth.
-          </p>
-          <ul class="service-features">
-            <li>Startup capital</li>
-            <li>Working capital lines</li>
-            <li>Business credit cards</li>
-            <li>Equipment financing</li>
-          </ul>
-        </div>
-        
-        <div class="service-card">
-          <div class="service-number">03 / Stacking</div>
-          <h3>Credit Stacking</h3>
-          <p>
-            Strategic credit card acquisition programs engineered for maximum approval and funding.
-          </p>
-          <ul class="service-features">
-            <li>Personal credit stacks</li>
-            <li>Business credit stacks</li>
-            <li>Bureau optimization</li>
-            <li>Approval strategies</li>
-          </ul>
-        </div>
-        
-        <div class="service-card">
-          <div class="service-number">04 / Enhancement</div>
-          <h3>Credit Enhancement</h3>
-          <p>
-            Professional credit profile optimization and strategic improvement services.
-          </p>
-          <ul class="service-features">
-            <li>Profile analysis</li>
-            <li>Strategic disputes</li>
-            <li>Building protocols</li>
-            <li>Ongoing optimization</li>
-          </ul>
-        </div>
-        
-        <div class="service-card">
-          <div class="service-number">05 / Tradelines</div>
-          <h3>Authorized Tradelines</h3>
-          <p>
-            Premium authorized user tradeline services for rapid credit profile enhancement.
-          </p>
-          <ul class="service-features">
-            <li>Seasoned tradelines</li>
-            <li>High-limit accounts</li>
-            <li>Strategic placement</li>
-            <li>Fast posting</li>
-          </ul>
-        </div>
-        
-        <div class="service-card">
-          <div class="service-number">06 / Advisory</div>
-          <h3>Custom Solutions</h3>
-          <p>
-            Bespoke funding strategies designed for your unique financial situation.
-          </p>
-          <ul class="service-features">
-            <li>Personalized strategy</li>
-            <li>Dedicated advisor</li>
-            <li>Ongoing support</li>
-            <li>Results tracking</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHO WE SERVE -->
-  <section class="who-we-serve">
-    <div class="container">
-      <div class="section-header">
-        <div class="eyebrow">Who We Serve</div>
-        <h2 class="section-title">
-          Built for <span class="gold-text">Everyone</span><br>
-          Ready to Grow
-        </h2>
-        <p class="section-description">
-          StackPro serves a diverse clientele—from entrepreneurs and small business owners to families building wealth. We're committed to inclusive financial services for ITIN and SSN holders.
-        </p>
-      </div>
-      
-      <div class="serve-grid">
-        <div class="serve-card">
-          <div class="serve-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/>
-            </svg>
-          </div>
-          <h3>Individuals</h3>
-          <p>Personal credit building and funding strategies for individuals seeking financial growth and freedom.</p>
-        </div>
-        
-        <div class="serve-card">
-          <div class="serve-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 21h18M3 7v14M21 7v14M3 7l9-4 9 4M7 11h2M7 15h2M15 11h2M15 15h2"/>
-            </svg>
-          </div>
-          <h3>Businesses</h3>
-          <p>Capital solutions and business credit strategies for startups, small businesses, and growing enterprises.</p>
-        </div>
-        
-        <div class="serve-card">
-          <div class="serve-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-              <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
-          </div>
-          <h3>ITIN Holders</h3>
-          <p>Inclusive funding programs designed specifically for ITIN holders seeking access to credit and capital.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROCESS -->
-  <section class="process" id="process">
-    <div class="container">
-      <div class="section-header">
-        <div class="eyebrow">The Process</div>
-        <h2 class="section-title">
-          A Seamless Path<br>
-          to <span class="gold-text">Capital</span>
-        </h2>
-        <p class="section-description">
-          Our streamlined process moves you from application to funding with clarity and confidence.
-        </p>
-      </div>
-      
-      <div class="process-grid">
-        <div class="process-step">
-          <div class="process-number">I</div>
-          <h4>Apply</h4>
-          <p>Complete our streamlined application in minutes</p>
-        </div>
-        
-        <div class="process-step">
-          <div class="process-number">II</div>
-          <h4>Analyze</h4>
-          <p>Expert review of your complete profile</p>
-        </div>
-        
-        <div class="process-step">
-          <div class="process-number">III</div>
-          <h4>Strategize</h4>
-          <p>Custom funding strategy development</p>
-        </div>
-        
-        <div class="process-step">
-          <div class="process-number">IV</div>
-          <h4>Execute</h4>
-          <p>Implementation and ongoing optimization</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <div class="container">
-      <div class="contact-grid">
-        <div class="contact-info">
-          <h2>Let's <span class="gold-text">Connect</span></h2>
-          <p>
-            Have questions about our funding solutions? Ready to begin your application? Our team is here to help you take the next step toward financial growth.
-          </p>
-          
-          <div class="contact-methods">
-            <div class="contact-method">
-              <div class="contact-method-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 8l9 6 9-6M3 8v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8M3 8l2-2h14l2 2"/>
-                </svg>
-              </div>
-              <div>
-                <div class="contact-method-label">Email</div>
-                <div class="contact-method-value">
-                  <a href="mailto:info@trystackpro.com">info@trystackpro.com</a>
-                </div>
-              </div>
-            </div>
-            
-            <div class="contact-method">
-              <div class="contact-method-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                </svg>
-              </div>
-              <div>
-                <div class="contact-method-label">Phone</div>
-                <div class="contact-method-value">
-                  <a href="tel:+1234567890">(555) 123-4567</a>
-                </div>
-              </div>
-            </div>
-            
-            <div class="contact-method">
-              <div class="contact-method-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-              </div>
-              <div>
-                <div class="contact-method-label">Location</div>
-                <div class="contact-method-value">Available Nationwide</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <form class="contact-form">
-          <div class="form-title">Send Us a Message</div>
-          
-          <div class="form-group">
-            <label class="form-label">Full Name</label>
-            <input type="text" class="form-input" placeholder="Your name">
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">Email Address</label>
-            <input type="email" class="form-input" placeholder="your@email.com">
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">Phone</label>
-            <input type="tel" class="form-input" placeholder="(555) 123-4567">
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">How can we help?</label>
-            <textarea class="form-textarea" placeholder="Tell us about your funding goals..."></textarea>
-          </div>
-          
-          <button type="submit" class="form-submit">Send Message</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- BROKER SECTION -->
-  <section id="brokers" style="padding:80px 0;background:#080808;border-top:1px solid rgba(201,168,76,0.15);">
-    <div class="container">
-
-      <!-- HEADER -->
-      <div style="text-align:center;margin-bottom:56px">
-        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;margin-bottom:14px">For Brokers &amp; Referral Partners</div>
-        <h2 style="font-size:clamp(28px,4vw,46px);font-weight:700;color:#F0EDE6;margin-bottom:16px;line-height:1.2">Partner With <span style="color:#C9A84C;font-style:italic">KLIERD</span></h2>
-        <p style="font-size:16px;color:#9A9580;line-height:1.8;max-width:600px;margin:0 auto 24px">Send us your clients. KLIERD Intelligent Funding Technology handles the analysis, lender matching, and approvals. You earn on every funded client — no overhead, no infrastructure needed.</p>
-        <a href="/portal.html" style="display:inline-block;padding:10px 24px;border:1px solid rgba(201,168,76,0.4);color:#C9A84C;font-size:12px;font-weight:700;border-radius:99px;text-decoration:none;letter-spacing:.5px;margin-bottom:8px">Already a Partner? Log In →</a>
-      </div>
-
-      <!-- PRICING TIERS -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:820px;margin:0 auto 56px">
-
-        <!-- STANDARD -->
-        <div style="background:#111;border:1px solid rgba(41,128,185,0.3);border-radius:14px;padding:32px;position:relative">
-          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2980B9;margin-bottom:16px">Standard Partner</div>
-          <div style="font-size:12px;color:#9A9580;margin-bottom:20px">One-time setup + <strong style="color:#F0EDE6">$500/mo</strong></div>
-          <div style="width:100%;height:1px;background:rgba(41,128,185,0.2);margin-bottom:20px"></div>
-          <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:24px">
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#2980B9;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Submit clients through the KLIERD broker portal</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#2980B9;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Per-deal commission negotiated with each partner</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#2980B9;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Client fee structure tailored per partnership</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#2980B9;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Real-time client status tracking</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#2980B9;flex-shrink:0;margin-top:1px">✓</span>
-              <span>SSN + ITIN clients accepted</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#2980B9;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Earnings dashboard</span>
-            </div>
-          </div>
-          <a href="mailto:info@cbgfunds.com?subject=Standard Broker Partner Inquiry" style="display:block;width:100%;padding:12px;background:rgba(41,128,185,0.15);border:1px solid rgba(41,128,185,0.4);color:#2980B9;font-weight:700;font-size:13px;border-radius:8px;text-decoration:none;text-align:center;box-sizing:border-box">Get Started →</a>
-          <div style="font-size:10px;color:#555;text-align:center;margin-top:10px">Partner is responsible for own taxes</div>
-        </div>
-
-        <!-- WHITE LABEL -->
-        <div style="background:#111;border:1px solid rgba(201,168,76,0.4);border-radius:14px;padding:32px;position:relative">
-          
-          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C9A84C;margin-bottom:16px">White Label Partner</div>
-          <div style="font-size:12px;color:#9A9580;margin-bottom:20px">One-time setup + <strong style="color:#F0EDE6">$500/mo</strong></div>
-          <div style="width:100%;height:1px;background:rgba(201,168,76,0.2);margin-bottom:20px"></div>
-          <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:24px">
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#C9A84C;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Everything in Standard</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#C9A84C;flex-shrink:0;margin-top:1px">✓</span>
-              <span><strong style="color:#F0EDE6">Your brand</strong> — powered by KLIERD technology</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#C9A84C;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Custom markup negotiated per partnership</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#C9A84C;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Custom markup — you control your margin</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#C9A84C;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Full broker portal access</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#9A9580">
-              <span style="color:#C9A84C;flex-shrink:0;margin-top:1px">✓</span>
-              <span>Priority support</span>
-            </div>
-          </div>
-          <a href="mailto:info@cbgfunds.com?subject=White Label Partner Inquiry" style="display:block;width:100%;padding:12px;background:#C9A84C;color:#080808;font-weight:700;font-size:13px;border-radius:8px;text-decoration:none;text-align:center;box-sizing:border-box">Become a White Label Partner →</a>
-          <div style="font-size:10px;color:#555;text-align:center;margin-top:10px">Partner is responsible for own taxes</div>
-        </div>
-      </div>
-
-      <!-- HOW IT WORKS -->
-      <div style="max-width:820px;margin:0 auto 56px">
-        <div style="text-align:center;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C9A84C;margin-bottom:32px">How It Works</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
-          <div style="text-align:center;padding:20px 14px">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:18px;font-weight:800;color:#C9A84C">1</div>
-            <div style="font-size:13px;font-weight:700;color:#F0EDE6;margin-bottom:6px">Submit a Client</div>
-            <div style="font-size:11px;color:#9A9580;line-height:1.6">Log into your broker portal and submit your client's details</div>
-          </div>
-          <div style="text-align:center;padding:20px 14px">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:18px;font-weight:800;color:#C9A84C">2</div>
-            <div style="font-size:13px;font-weight:700;color:#F0EDE6;margin-bottom:6px">We Run Analysis</div>
-            <div style="font-size:11px;color:#9A9580;line-height:1.6">KLIERD Intelligent Funding Technology analyzes the profile and matches lenders</div>
-          </div>
-          <div style="text-align:center;padding:20px 14px">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:18px;font-weight:800;color:#C9A84C">3</div>
-            <div style="font-size:13px;font-weight:700;color:#F0EDE6;margin-bottom:6px">Client Gets Funded</div>
-            <div style="font-size:11px;color:#9A9580;line-height:1.6">98% funding success rate. You track status in real time from your dashboard</div>
-          </div>
-          <div style="text-align:center;padding:20px 14px">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:18px;font-weight:800;color:#C9A84C">4</div>
-            <div style="font-size:13px;font-weight:700;color:#F0EDE6;margin-bottom:6px">You Get Paid</div>
-            <div style="font-size:11px;color:#9A9580;line-height:1.6">Commission paid automatically on every funded client. No chasing invoices</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- INQUIRY FORM -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;max-width:900px;margin:0 auto">
-        <div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C9A84C;margin-bottom:16px">Why KLIERD</div>
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <div style="display:flex;gap:12px;align-items:flex-start">
-              <div style="width:26px;height:26px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:#C9A84C;font-weight:700">✓</div>
-              <div style="font-size:13px;color:#9A9580;line-height:1.6"><strong style="color:#F0EDE6">20-year track record</strong> — 7,000+ clients, 98% funding success rate</div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:flex-start">
-              <div style="width:26px;height:26px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:#C9A84C;font-weight:700">✓</div>
-              <div style="font-size:13px;color:#9A9580;line-height:1.6"><strong style="color:#F0EDE6">SSN and ITIN clients</strong> — the only platform serving both, bilingual EN/ES</div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:flex-start">
-              <div style="width:26px;height:26px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:#C9A84C;font-weight:700">✓</div>
-              <div style="font-size:13px;color:#9A9580;line-height:1.6"><strong style="color:#F0EDE6">No upfront cost to your clients</strong> — success fee only after funding</div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:flex-start">
-              <div style="width:26px;height:26px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:#C9A84C;font-weight:700">✓</div>
-              <div style="font-size:13px;color:#9A9580;line-height:1.6"><strong style="color:#F0EDE6">Full dispute resolution</strong> — integrated credit profile optimization for complex clients</div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:flex-start">
-              <div style="width:26px;height:26px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:#C9A84C;font-weight:700">✓</div>
-              <div style="font-size:13px;color:#9A9580;line-height:1.6"><strong style="color:#F0EDE6">Real-time dashboard</strong> — see every client, every status, your earnings, all in one place</div>
-            </div>
-          </div>
-          <div style="margin-top:28px;padding:16px;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:10px">
-            <div style="font-size:12px;color:#9A9580;line-height:1.7">Already a partner? <a href="/portal.html" style="color:#C9A84C;font-weight:700;text-decoration:none">Log into your broker portal →</a></div>
-            <div style="font-size:11px;color:#555;margin-top:6px">Questions? Email <a href="mailto:info@cbgfunds.com" style="color:#C9A84C;text-decoration:none">info@cbgfunds.com</a></div>
-          </div>
-        </div>
-        <div>
-          <div style="background:#111;border:1px solid rgba(201,168,76,0.2);border-radius:14px;padding:28px">
-            <div style="font-size:14px;font-weight:700;color:#F0EDE6;margin-bottom:4px">Partner Inquiry</div>
-            <div style="font-size:12px;color:#9A9580;margin-bottom:20px">We'll reach out within 24 hours to discuss the right tier for your volume.</div>
-            <div style="display:flex;flex-direction:column;gap:12px">
-              <div>
-                <label style="font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Your Name</label>
-                <input type="text" id="broker-inq-name" placeholder="Full Name" style="width:100%;background:#1a1a1a;border:1px solid #2a2a3a;border-radius:7px;padding:11px 13px;color:#F0EDE6;font-size:13px;outline:none;box-sizing:border-box"/>
-              </div>
-              <div>
-                <label style="font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Company Name</label>
-                <input type="text" id="broker-inq-company" placeholder="Company or Brokerage" style="width:100%;background:#1a1a1a;border:1px solid #2a2a3a;border-radius:7px;padding:11px 13px;color:#F0EDE6;font-size:13px;outline:none;box-sizing:border-box"/>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-                <div>
-                  <label style="font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Email</label>
-                  <input type="email" id="broker-inq-email" placeholder="your@email.com" style="width:100%;background:#1a1a1a;border:1px solid #2a2a3a;border-radius:7px;padding:11px 13px;color:#F0EDE6;font-size:13px;outline:none;box-sizing:border-box"/>
-                </div>
-                <div>
-                  <label style="font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Phone</label>
-                  <input type="tel" id="broker-inq-phone" placeholder="(000) 000-0000" style="width:100%;background:#1a1a1a;border:1px solid #2a2a3a;border-radius:7px;padding:11px 13px;color:#F0EDE6;font-size:13px;outline:none;box-sizing:border-box"/>
-                </div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-                <div>
-                  <label style="font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Tier Interest</label>
-                  <select id="broker-inq-tier" style="width:100%;background:#1a1a1a;border:1px solid #2a2a3a;border-radius:7px;padding:11px 13px;color:#F0EDE6;font-size:13px;outline:none;appearance:none;box-sizing:border-box">
-                    <option value="">-- Select --</option>
-                    <option>I want to learn more about partnership</option>
-                    
-                    <option>Not sure yet</option>
-                  </select>
-                </div>
-                <div>
-                  <label style="font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Monthly Volume</label>
-                  <select id="broker-inq-volume" style="width:100%;background:#1a1a1a;border:1px solid #2a2a3a;border-radius:7px;padding:11px 13px;color:#F0EDE6;font-size:13px;outline:none;appearance:none;box-sizing:border-box">
-                    <option value="">-- Select --</option>
-                    <option>1–5 clients/month</option>
-                    <option>5–20 clients/month</option>
-                    <option>20–50 clients/month</option>
-                    <option>50+ clients/month</option>
-                  </select>
-                </div>
-              </div>
-              <button onclick="submitBrokerInquiry()" style="width:100%;padding:13px;background:#C9A84C;color:#080808;font-weight:700;font-size:14px;border:none;border-radius:7px;cursor:pointer;margin-top:4px;font-family:inherit">Submit Inquiry →</button>
-              <div id="broker-inq-status" style="font-size:11px;text-align:center;display:none"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- FAQ SECTION -->
-  <section id="faq" style="padding:80px 0;background:#0a0a0a;border-top:1px solid rgba(201,168,76,0.15);">
-    <div class="container">
-      <div style="text-align:center;margin-bottom:48px;">
-        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">FAQ</div>
-        <h2 style="font-size:36px;font-weight:700;color:#F0EDE6;margin-bottom:12px;">Frequently Asked Questions</h2>
-        <p style="font-size:15px;color:#9A9580;max-width:540px;margin:0 auto;">Everything you need to know about getting funded through StackPro.</p>
-      </div>
-      <div style="max-width:760px;margin:0 auto;" id="faq-list">
-
-        <div class="faq-item" style="border:1px solid rgba(201,168,76,0.15);border-radius:10px;margin-bottom:12px;overflow:hidden;">
-          <div class="faq-q" onclick="toggleFAQ(this)" style="padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#111;">
-            <span style="font-size:15px;font-weight:600;color:#F0EDE6;">What credit score do I need to qualify?</span>
-            <span class="faq-icon" style="color:#C9A84C;font-size:20px;font-weight:300;transition:transform .3s;">+</span>
-          </div>
-          <div class="faq-a" style="display:none;padding:0 24px 20px;background:#111;color:#9A9580;font-size:14px;line-height:1.8;">
-            We work with clients starting at 620. Clients below 620 may qualify for our Credit Profile Optimization services first, which typically improves scores within 30–45 days before funding.
-          </div>
-        </div>
-
-        <div class="faq-item" style="border:1px solid rgba(201,168,76,0.15);border-radius:10px;margin-bottom:12px;overflow:hidden;">
-          <div class="faq-q" onclick="toggleFAQ(this)" style="padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#111;">
-            <span style="font-size:15px;font-weight:600;color:#F0EDE6;">Do you work with ITIN clients?</span>
-            <span class="faq-icon" style="color:#C9A84C;font-size:20px;font-weight:300;transition:transform .3s;">+</span>
-          </div>
-          <div class="faq-a" style="display:none;padding:0 24px 20px;background:#111;color:#9A9580;font-size:14px;line-height:1.8;">
-            Yes. We proudly serve ITIN clients with full bilingual support in English and Spanish. You do not need a Social Security Number to get started. Our team understands your unique situation and will guide you through every step.
-          </div>
-        </div>
-
-        <div class="faq-item" style="border:1px solid rgba(201,168,76,0.15);border-radius:10px;margin-bottom:12px;overflow:hidden;">
-          <div class="faq-q" onclick="toggleFAQ(this)" style="padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#111;">
-            <span style="font-size:15px;font-weight:600;color:#F0EDE6;">How much funding can I get?</span>
-            <span class="faq-icon" style="color:#C9A84C;font-size:20px;font-weight:300;transition:transform .3s;">+</span>
-          </div>
-          <div class="faq-a" style="display:none;padding:0 24px 20px;background:#111;color:#9A9580;font-size:14px;line-height:1.8;">
-            Personal funding ranges from $5,000 to $100,000+. Business funding ranges from $25,000 to $575,000 depending on your credit profile, time in business, and revenue. Startup capital ranges from $25,000 to $125,000.
-          </div>
-        </div>
-
-        <div class="faq-item" style="border:1px solid rgba(201,168,76,0.15);border-radius:10px;margin-bottom:12px;overflow:hidden;">
-          <div class="faq-q" onclick="toggleFAQ(this)" style="padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#111;">
-            <span style="font-size:15px;font-weight:600;color:#F0EDE6;">How long does the process take?</span>
-            <span class="faq-icon" style="color:#C9A84C;font-size:20px;font-weight:300;transition:transform .3s;">+</span>
-          </div>
-          <div class="faq-a" style="display:none;padding:0 24px 20px;background:#111;color:#9A9580;font-size:14px;line-height:1.8;">
-            Most clients are funded within 30–45 days. Clients who need credit profile optimization first typically see results within 30 days before moving to the funding phase.
-          </div>
-        </div>
-
-        <div class="faq-item" style="border:1px solid rgba(201,168,76,0.15);border-radius:10px;margin-bottom:12px;overflow:hidden;">
-          <div class="faq-q" onclick="toggleFAQ(this)" style="padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#111;">
-            <span style="font-size:15px;font-weight:600;color:#F0EDE6;">Is this a credit repair service?</span>
-            <span class="faq-icon" style="color:#C9A84C;font-size:20px;font-weight:300;transition:transform .3s;">+</span>
-          </div>
-          <div class="faq-a" style="display:none;padding:0 24px 20px;background:#111;color:#9A9580;font-size:14px;line-height:1.8;">
-            No. StackPro is an Intelligent Funding Technology platform. We offer integrated dispute resolution services and credit profile optimization as part of our funding preparation process. Results are not typical and may vary.
-          </div>
-        </div>
-
-        <div class="faq-item" style="border:1px solid rgba(201,168,76,0.15);border-radius:10px;margin-bottom:12px;overflow:hidden;">
-          <div class="faq-q" onclick="toggleFAQ(this)" style="padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#111;">
-            <span style="font-size:15px;font-weight:600;color:#F0EDE6;">What is the success fee?</span>
-            <span class="faq-icon" style="color:#C9A84C;font-size:20px;font-weight:300;transition:transform .3s;">+</span>
-          </div>
-          <div class="faq-a" style="display:none;padding:0 24px 20px;background:#111;color:#9A9580;font-size:14px;line-height:1.8;">
-            Our success fee is 15% of the funded amount, charged only after you are funded. There is also a $500 post-funding technology fee. Service fees for credit profile optimization are separate and discussed during your consultation.
-          </div>
-        </div>
-
-      </div>
-
-      <div style="text-align:center;margin-top:40px;">
-        <a href="/apply.html" style="display:inline-block;padding:16px 40px;background:#C9A84C;color:#09090F;font-weight:700;font-size:15px;border-radius:8px;text-decoration:none;letter-spacing:.3px;">Start Your Application →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- LIVE CHAT BUTTON -->
-  <div id="live-chat-btn" onclick="toggleChat()" style="position:fixed;bottom:28px;right:28px;width:60px;height:60px;background:#C9A84C;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9999;box-shadow:0 4px 20px rgba(201,168,76,0.4);transition:transform .2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-    <svg id="chat-icon-open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#09090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-    <svg id="chat-icon-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#09090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-  </div>
-
-  <!-- LIVE CHAT WINDOW -->
-  <div id="live-chat-window" style="display:none;position:fixed;bottom:100px;right:28px;width:340px;background:#111;border:1px solid rgba(201,168,76,0.3);border-radius:14px;z-index:9998;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
-    <div style="background:#C9A84C;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;">
-      <div>
-        <div style="font-size:14px;font-weight:700;color:#09090F;">StackPro Support</div>
-        <div style="font-size:11px;color:rgba(0,0,0,0.6);margin-top:2px;">Powered by KLIERD · We reply fast</div>
-      </div>
-      <div style="width:10px;height:10px;background:#27AE60;border-radius:50%;box-shadow:0 0 6px #27AE60;"></div>
-    </div>
-    <div id="chat-messages" style="height:260px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
-      <div style="background:#1a1a1a;border-radius:10px 10px 10px 0;padding:12px 14px;font-size:13px;color:#F0EDE6;line-height:1.6;max-width:85%;">
-        Hi! Welcome to StackPro. 👋<br><br>How can we help you today?
-      </div>
-      <div style="background:#1a1a1a;border-radius:10px 10px 10px 0;padding:10px 14px;font-size:12px;color:#9A9580;max-width:85%;">
-        Quick options:
-      </div>
-      <div style="display:flex;flex-direction:column;gap:7px;max-width:85%;">
-        <button onclick="sendQuickMsg('I want to apply for funding')" style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:#C9A84C;border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;font-family:inherit;text-align:left;transition:all .2s;" onmouseover="this.style.background='rgba(201,168,76,0.2)'" onmouseout="this.style.background='rgba(201,168,76,0.1)'">💰 I want to apply for funding</button>
-        <button onclick="sendQuickMsg('I have questions about ITIN funding')" style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:#C9A84C;border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;font-family:inherit;text-align:left;transition:all .2s;" onmouseover="this.style.background='rgba(201,168,76,0.2)'" onmouseout="this.style.background='rgba(201,168,76,0.1)'">🌎 ITIN funding questions</button>
-        <button onclick="sendQuickMsg('I need help with my credit profile')" style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:#C9A84C;border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;font-family:inherit;text-align:left;transition:all .2s;" onmouseover="this.style.background='rgba(201,168,76,0.2)'" onmouseout="this.style.background='rgba(201,168,76,0.1)'">⚡ Help with my credit profile</button>
-        <button onclick="sendQuickMsg('I want to speak with someone')" style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:#C9A84C;border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;font-family:inherit;text-align:left;transition:all .2s;" onmouseover="this.style.background='rgba(201,168,76,0.2)'" onmouseout="this.style.background='rgba(201,168,76,0.1)'">📞 Speak with someone</button>
-      </div>
-    </div>
-    <div style="padding:12px;border-top:1px solid rgba(201,168,76,0.1);display:flex;gap:8px;">
-      <input id="chat-input" type="text" placeholder="Type your message..." onkeydown="if(event.key==='Enter')sendChatMsg()"
-        style="flex:1;background:#1a1a1a;border:1px solid rgba(201,168,76,0.2);border-radius:20px;padding:9px 14px;color:#F0EDE6;font-size:13px;font-family:inherit;outline:none;"/>
-      <button onclick="sendChatMsg()" style="width:36px;height:36px;background:#C9A84C;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#09090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-      </button>
-    </div>
-  </div>
-
-  <script>
-  function submitBrokerInquiry(){
-  const name    = document.getElementById('broker-inq-name')?.value.trim();
-  const company = document.getElementById('broker-inq-company')?.value.trim();
-  const email   = document.getElementById('broker-inq-email')?.value.trim();
-  const phone   = document.getElementById('broker-inq-phone')?.value.trim();
-  const tier    = document.getElementById('broker-inq-tier')?.value;
-  const volume  = document.getElementById('broker-inq-volume')?.value;
-  const status  = document.getElementById('broker-inq-status');
-  if(!name||!email){ if(status){status.style.display='block';status.style.color='#E74C3C';status.textContent='Please enter your name and email.';} return; }
-  if(status){status.style.display='block';status.style.color='#C9A84C';status.textContent='Submitting...';}
-  try{
-    const inquiries = JSON.parse(localStorage.getItem('broker_inquiries')||'[]');
-    inquiries.unshift({name,company,email,phone,tier,volume,submitted:new Date().toLocaleString(),status:'new'});
-    localStorage.setItem('broker_inquiries',JSON.stringify(inquiries));
-  }catch(e){}
-  setTimeout(()=>{
-    if(status){status.style.color='#27AE60';status.textContent='Inquiry received! We\'ll reach out within 24 hours.';}
-    ['broker-inq-name','broker-inq-company','broker-inq-email','broker-inq-phone'].forEach(id=>{
-      const el=document.getElementById(id);if(el)el.value='';
-    });
-  },800);
+<!-- Google Analytics 4 — TODO: replace G-XXXXXXXXXX with your real GA4 Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-XXXXXXXXXX", { anonymize_ip: true });
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060500;--bg2:#0d0b06;--bg3:#161209;
+  --border:#2a2310;--border2:#3a3018;
+  --gold:#c9960c;--gold2:#e8b020;--gold3:#f5d060;
+  --white:#f5f0e6;--dim:#9a8650;--muted:#584e2c;
+  --display:"Bebas Neue",sans-serif;
+  --body:"DM Sans",sans-serif;
+  --mono:"DM Mono",monospace;
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:var(--body);overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9000;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity:.45}
 
-function toggleFAQ(el){
-    const ans = el.nextElementSibling;
-    const icon = el.querySelector('.faq-icon');
-    const isOpen = ans.style.display === 'block';
-    document.querySelectorAll('.faq-a').forEach(a=>a.style.display='none');
-    document.querySelectorAll('.faq-icon').forEach(i=>{i.textContent='+';i.style.transform='rotate(0deg)';});
-    if(!isOpen){ ans.style.display='block'; icon.textContent='−'; icon.style.transform='rotate(180deg)'; }
-  }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;
+  justify-content:space-between;padding:20px 60px;
+  background:rgba(6,5,0,0.94);backdrop-filter:blur(32px);
+  border-bottom:1px solid rgba(201,150,12,0.14)}
+.nav-logo{font-family:var(--display);font-size:30px;letter-spacing:0.12em;
+  color:var(--gold2);text-decoration:none;text-shadow:0 0 40px rgba(232,176,32,0.35)}
+.nav-links{display:flex;align-items:center;gap:40px;list-style:none}
+.nav-links a{font-size:11px;font-weight:500;color:var(--muted);text-decoration:none;
+  letter-spacing:0.14em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--gold2)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.lang-pair{display:flex;gap:4px}
+.lb{background:none;border:1px solid var(--border2);color:var(--muted);
+  font-family:var(--mono);font-size:11px;padding:5px 11px;border-radius:3px;
+  cursor:pointer;transition:all .2s}
+.lb.on,.lb:hover{border-color:var(--gold2);color:var(--gold2)}
+.nav-apply{background:var(--gold);color:#000;font-size:12px;font-weight:700;
+  padding:10px 26px;border-radius:4px;text-decoration:none;letter-spacing:0.08em;
+  text-transform:uppercase;transition:all .2s;display:inline-block}
+.nav-apply:hover{background:var(--gold2);transform:translateY(-1px);
+  box-shadow:0 0 24px rgba(232,176,32,0.4)}
 
-  function toggleChat(){
-    const win = document.getElementById('live-chat-window');
-    const iconOpen = document.getElementById('chat-icon-open');
-    const iconClose = document.getElementById('chat-icon-close');
-    const isOpen = win.style.display === 'block';
-    win.style.display = isOpen ? 'none' : 'block';
-    iconOpen.style.display = isOpen ? 'block' : 'none';
-    iconClose.style.display = isOpen ? 'none' : 'block';
-  }
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:150px 24px 100px;
+  position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:1100px;height:700px;pointer-events:none;
+  background:radial-gradient(ellipse 50% 42% at 50% 10%,rgba(201,150,12,0.17) 0%,transparent 70%)}
+.hero-grid{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(201,150,12,0.065) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,150,12,0.065) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,black 5%,transparent 72%)}
+.hc{position:absolute;width:72px;height:72px;pointer-events:none}
+.hc.tl{top:88px;left:52px;border-top:1px solid rgba(201,150,12,0.3);border-left:1px solid rgba(201,150,12,0.3)}
+.hc.tr{top:88px;right:52px;border-top:1px solid rgba(201,150,12,0.3);border-right:1px solid rgba(201,150,12,0.3)}
+.hc.bl{bottom:72px;left:52px;border-bottom:1px solid rgba(201,150,12,0.3);border-left:1px solid rgba(201,150,12,0.3)}
+.hc.br{bottom:72px;right:52px;border-bottom:1px solid rgba(201,150,12,0.3);border-right:1px solid rgba(201,150,12,0.3)}
 
-  function sendQuickMsg(msg){
-    addUserMsg(msg);
-    setTimeout(()=>{
-      if(msg.includes('apply')){
-        addBotMsg('Great! Click the button below to start your application. Our team will review your profile within 24–48 hours.');
-        addApplyBtn();
-      } else if(msg.includes('ITIN')){
-        addBotMsg('We proudly serve ITIN clients with full bilingual support in English and Spanish. You don\'t need an SSN to apply. Click below to get started!');
-        addApplyBtn();
-      } else if(msg.includes('credit')){
-        addBotMsg('We offer integrated dispute resolution and credit profile optimization services. Most clients see results within 30–45 days. Ready to start?');
-        addApplyBtn();
-      } else if(msg.includes('speak')){
-        addBotMsg('We\'d love to connect! Fill out a quick application and our team will call you within 24 hours. Or email us at info@cbgfunds.com');
-        addApplyBtn();
-      }
-    }, 800);
-  }
+.hero-badge{display:inline-flex;align-items:center;gap:10px;
+  background:rgba(201,150,12,0.09);border:1px solid rgba(201,150,12,0.32);
+  padding:9px 24px;font-family:var(--mono);font-size:11px;color:var(--gold3);
+  letter-spacing:0.22em;text-transform:uppercase;margin-bottom:44px;
+  animation:fu .8s ease both}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--gold2);
+  animation:gp 2s infinite;flex-shrink:0}
+@keyframes gp{0%,100%{box-shadow:0 0 0 0 rgba(232,176,32,.6)}50%{box-shadow:0 0 0 8px rgba(232,176,32,0)}}
 
-  function addUserMsg(msg){
-    const msgs = document.getElementById('chat-messages');
-    const div = document.createElement('div');
-    div.style.cssText='background:#C9A84C;border-radius:10px 10px 0 10px;padding:10px 14px;font-size:13px;color:#09090F;max-width:85%;align-self:flex-end;margin-left:auto;';
-    div.textContent = msg;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
+.hero-h1{font-family:var(--display);font-size:clamp(88px,14vw,168px);
+  letter-spacing:0.035em;line-height:.88;color:var(--white);margin-bottom:6px;
+  animation:fu .7s .08s ease both}
+.hero-h1 .g{color:var(--gold2)}
+.hero-tagline{font-family:var(--display);font-size:clamp(13px,1.6vw,22px);
+  letter-spacing:0.32em;color:var(--gold2);margin-bottom:16px;
+  animation:fu .7s .16s ease both;text-shadow:0 0 28px rgba(232,176,32,0.5)}
+.hero-ift{font-family:var(--mono);font-size:clamp(10px,1vw,13px);
+  letter-spacing:0.26em;color:var(--white);text-transform:uppercase;
+  margin-bottom:40px;animation:fu .7s .22s ease both;opacity:.82}
+.hero-desc{max-width:560px;font-size:17px;font-weight:300;color:var(--dim);
+  line-height:1.78;margin-bottom:56px;animation:fu .7s .3s ease both}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+  animation:fu .7s .38s ease both}
+.btn-gold{background:var(--gold);color:#000;font-weight:700;font-size:14px;
+  padding:17px 44px;border-radius:4px;text-decoration:none;letter-spacing:0.06em;
+  text-transform:uppercase;transition:all .2s;border:none;cursor:pointer;display:inline-block}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);
+  box-shadow:0 8px 36px rgba(232,176,32,0.35)}
+.btn-line{background:transparent;color:var(--dim);font-size:14px;font-weight:500;
+  padding:17px 44px;border-radius:4px;text-decoration:none;
+  border:1px solid var(--border2);letter-spacing:0.06em;
+  text-transform:uppercase;transition:all .2s;display:inline-block}
+.btn-line:hover{border-color:var(--gold);color:var(--gold2)}
 
-  function addBotMsg(msg){
-    const msgs = document.getElementById('chat-messages');
-    const div = document.createElement('div');
-    div.style.cssText='background:#1a1a1a;border-radius:10px 10px 10px 0;padding:12px 14px;font-size:13px;color:#F0EDE6;line-height:1.6;max-width:85%;';
-    div.textContent = msg;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:88px;
+  animation:fu .7s .46s ease both;border:1px solid var(--border2);
+  border-radius:6px;overflow:hidden;width:100%;max-width:680px}
+.stat{padding:30px 36px;text-align:center;background:rgba(201,150,12,0.03);
+  border-right:1px solid var(--border2)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:var(--display);font-size:50px;letter-spacing:0.04em;
+  color:var(--gold2);line-height:1}
+.stat-n sup{font-size:22px}
+.stat-l{font-family:var(--mono);font-size:10px;color:var(--muted);
+  letter-spacing:0.16em;text-transform:uppercase;margin-top:6px}
 
-  function addApplyBtn(){
-    const msgs = document.getElementById('chat-messages');
-    const div = document.createElement('div');
-    div.innerHTML = '<a href="/apply.html" style="display:inline-block;padding:10px 20px;background:#C9A84C;color:#09090F;font-weight:700;font-size:13px;border-radius:6px;text-decoration:none;">Start Application →</a>';
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
+@keyframes fu{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 
-  function sendChatMsg(){
-    const input = document.getElementById('chat-input');
-    const msg = input.value.trim();
-    if(!msg) return;
-    addUserMsg(msg);
-    input.value = '';
-    setTimeout(()=>{
-      addBotMsg('Thank you for your message! One of our advisors will respond shortly. In the meantime, you can start your application below.');
-      addApplyBtn();
-    }, 800);
-  }
-  </script>
+/* MARQUEE */
+.mq-outer{border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);
+  background:var(--bg2);overflow:hidden;position:relative}
+.mq-outer::before,.mq-outer::after{content:"";position:absolute;top:0;bottom:0;
+  width:180px;z-index:2;pointer-events:none}
+.mq-outer::before{left:0;background:linear-gradient(90deg,var(--bg2) 40%,transparent)}
+.mq-outer::after{right:0;background:linear-gradient(-90deg,var(--bg2) 40%,transparent)}
+.mq-track{display:flex;animation:mq 36s linear infinite;width:max-content;padding:22px 0}
+.mq-item{display:flex;align-items:center;gap:24px;
+  font-family:var(--display);font-size:24px;letter-spacing:0.1em;
+  color:var(--gold2);white-space:nowrap;padding:0 40px;text-transform:uppercase}
+.mq-sep{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;opacity:.7}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="logo-mark">
-            <div class="logo-icon">
-              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <rect x="6" y="14" width="28" height="4" fill="#C9A84C"/>
-                <rect x="6" y="22" width="28" height="4" fill="#C9A84C" opacity="0.7"/>
-                <rect x="6" y="30" width="28" height="4" fill="#C9A84C" opacity="0.4"/>
-                <rect x="6" y="6" width="28" height="4" fill="#C9A84C"/>
-              </svg>
-            </div>
-            <div class="logo-text">Stack<span>Pro</span></div>
-          </div>
-          <p>Intelligent funding and credit solutions for personal and business growth.</p>
-        </div>
-        
-        <div class="footer-col">
-          <h5>Services</h5>
-          <ul>
-            <li><a href="#services">Personal Funding</a></li>
-            <li><a href="#services">Business Funding</a></li>
-            <li><a href="#services">Credit Stacking</a></li>
-            <li><a href="#services">Tradelines</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-col">
-          <h5>Company</h5>
-          <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#process">Process</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="/apply.html">Apply</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-col">
-          <h5>Contact</h5>
-          <ul>
-            <li><a href="mailto:info@trystackpro.com">info@trystackpro.com</a></li>
-            <li><a href="tel:+1234567890">(555) 123-4567</a></li>
-            <li>Nationwide Service</li>
-          </ul>
-        </div>
+/* SECTION WRAPPER */
+.sw{max-width:1240px;margin:0 auto;padding:110px 60px}
+.sw-full{padding:110px 60px}
+.sec-tag{font-family:var(--mono);font-size:11px;color:var(--gold);
+  letter-spacing:0.22em;text-transform:uppercase;margin-bottom:14px}
+.sec-h{font-family:var(--display);font-size:clamp(44px,6.5vw,80px);
+  letter-spacing:0.04em;line-height:.95;color:var(--white);margin-bottom:18px}
+.sec-h .g{color:var(--gold2)}
+.sec-p{font-size:16px;font-weight:300;color:var(--dim);line-height:1.75;
+  max-width:520px;margin-bottom:60px}
+
+/* DNA */
+.dna-bg{background:var(--bg);border-top:1px solid var(--border)}
+.dna-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border2);border:1px solid var(--border2);
+  border-radius:10px;overflow:hidden;margin-bottom:20px}
+.dna-card{background:var(--bg2);padding:44px 36px;position:relative}
+.dna-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold3))}
+.dna-parent{font-family:var(--mono);font-size:10px;color:var(--muted);
+  letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px}
+.dna-name{font-family:var(--display);font-size:38px;letter-spacing:0.06em;
+  color:var(--gold2);margin-bottom:22px}
+.dna-list{list-style:none;display:flex;flex-direction:column;gap:11px}
+.dna-list li{font-size:13px;color:var(--dim);display:flex;align-items:flex-start;
+  gap:10px;line-height:1.5}
+.dna-list li::before{content:"→";color:var(--gold);font-family:var(--mono);
+  flex-shrink:0;margin-top:1px}
+.dna-miss{display:inline-block;margin-top:22px;font-family:var(--mono);
+  font-size:10px;color:#b06030;letter-spacing:0.1em;padding:4px 10px;
+  background:rgba(160,80,32,0.1);border:1px solid rgba(160,80,32,0.28);border-radius:2px}
+
+.dna-klierd{background:var(--bg3);border:1px solid rgba(201,150,12,0.5);
+  border-radius:10px;padding:52px;position:relative;overflow:hidden}
+.dna-klierd::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3))}
+.dna-klierd::after{content:"";position:absolute;top:-100px;right:-100px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,150,12,0.07) 0%,transparent 70%);
+  pointer-events:none}
+.dna-klierd-hdr{display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:44px;flex-wrap:wrap;gap:16px}
+.dna-klierd-title{font-family:var(--display);font-size:clamp(52px,5.5vw,76px);
+  letter-spacing:0.06em;color:var(--gold2);line-height:1;
+  text-shadow:0 0 40px rgba(232,176,32,0.28)}
+.dna-klierd-sub{font-size:14px;color:var(--dim);font-weight:300;
+  max-width:320px;text-align:right;line-height:1.65}
+.dna-wins{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.dna-win{background:rgba(201,150,12,0.06);border:1px solid rgba(201,150,12,0.16);
+  border-top:2px solid var(--gold);border-radius:6px;padding:22px 20px;
+  transition:background .2s,border-color .2s}
+.dna-win:hover{background:rgba(201,150,12,0.1);border-color:rgba(201,150,12,0.35)}
+.dna-win-t{font-family:var(--mono);font-size:10px;font-weight:700;
+  color:var(--white);margin-bottom:8px;letter-spacing:0.08em;text-transform:uppercase}
+.dna-win-b{font-size:12px;color:var(--dim);line-height:1.55}
+
+/* HOW IT WORKS — the key section to make pop */
+.how-bg{background:var(--bg2);border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);
+  margin-top:60px;border-radius:10px;overflow:hidden;
+  border:1px solid var(--border2);background:var(--border2);gap:1px}
+.step{background:var(--bg);position:relative;overflow:hidden;
+  transition:background .25s;cursor:default}
+.step:hover{background:var(--bg3)}
+/* gold line slides in from left on hover */
+.step::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--gold2),var(--gold));
+  transform:scaleY(0);transform-origin:bottom;transition:transform .35s ease}
+.step:hover::after{transform:scaleY(1)}
+.step-in{padding:48px 36px 44px}
+.step-n{font-family:var(--display);font-size:100px;letter-spacing:0.02em;
+  line-height:.85;color:rgba(201,150,12,0.08);
+  transition:color .25s;margin-bottom:4px;user-select:none}
+.step:hover .step-n{color:rgba(201,150,12,0.16)}
+.step-stage{font-family:var(--mono);font-size:9px;letter-spacing:0.22em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:28px}
+/* icon square */
+.step-ico{width:52px;height:52px;border-radius:6px;
+  background:rgba(201,150,12,0.08);border:1px solid rgba(201,150,12,0.22);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;transition:all .25s}
+.step:hover .step-ico{background:rgba(201,150,12,0.18);
+  border-color:rgba(201,150,12,0.55);box-shadow:0 0 20px rgba(201,150,12,0.18)}
+.step-ico svg{width:24px;height:24px;stroke:var(--gold2);fill:none;stroke-width:1.5;
+  stroke-linecap:round;stroke-linejoin:round}
+.step-title{font-size:20px;font-weight:600;color:var(--white);
+  margin-bottom:10px;letter-spacing:0.01em}
+.step-div{width:28px;height:2px;background:var(--gold);margin-bottom:16px;
+  transition:width .25s}
+.step:hover .step-div{width:44px}
+.step-body{font-size:13px;font-weight:300;color:var(--dim);line-height:1.72}
+.step-tag{display:inline-block;margin-top:24px;font-family:var(--mono);font-size:10px;
+  color:var(--gold);letter-spacing:0.12em;padding:5px 12px;
+  border:1px solid rgba(201,150,12,0.24);border-radius:2px;text-transform:uppercase;
+  transition:border-color .25s,color .25s}
+.step:hover .step-tag{border-color:rgba(201,150,12,0.5);color:var(--gold2)}
+
+/* FUNDING RANGES */
+.ranges-bg{background:var(--bg);border-bottom:1px solid var(--border)}
+.ranges-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:60px}
+.rcard{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;
+  padding:44px 36px;position:relative;overflow:hidden;transition:all .25s}
+.rcard::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold3))}
+.rcard::after{content:"";position:absolute;bottom:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,150,12,0.07) 0%,transparent 70%);
+  pointer-events:none;opacity:0;transition:opacity .3s}
+.rcard:hover{border-color:rgba(201,150,12,0.5);transform:translateY(-6px);
+  box-shadow:0 24px 60px rgba(0,0,0,0.5)}
+.rcard:hover::after{opacity:1}
+.r-ey{font-family:var(--mono);font-size:10px;color:var(--muted);
+  letter-spacing:0.18em;text-transform:uppercase;margin-bottom:14px}
+.r-amt{font-family:var(--display);font-size:66px;letter-spacing:0.04em;
+  color:var(--gold2);line-height:1;margin-bottom:6px;
+  text-shadow:0 0 30px rgba(232,176,32,0.18)}
+.r-amt sup{font-size:32px}
+.r-title{font-size:18px;font-weight:600;color:var(--white);margin-bottom:26px}
+.r-list{list-style:none;display:flex;flex-direction:column;gap:13px}
+.r-list li{font-size:13px;color:var(--dim);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.r-list li::before{content:"✦";color:var(--gold);font-size:9px;margin-top:3px;flex-shrink:0}
+
+/* ITIN */
+.itin-bg{background:var(--bg2);border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border)}
+.itin-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}
+.itin-visual{background:var(--bg);border:1px solid var(--border2);border-radius:10px;
+  padding:52px;position:relative;overflow:hidden}
+.itin-visual::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold3))}
+.itin-visual::after{content:"";position:absolute;bottom:-60px;right:-60px;
+  width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,150,12,0.09) 0%,transparent 70%);
+  pointer-events:none}
+.itin-big{font-family:var(--display);font-size:96px;color:var(--gold2);
+  letter-spacing:0.04em;line-height:1;margin-bottom:4px;
+  text-shadow:0 0 40px rgba(232,176,32,0.22)}
+.itin-lbl{font-family:var(--mono);font-size:10px;color:var(--muted);
+  letter-spacing:0.18em;text-transform:uppercase;margin-bottom:36px}
+.itin-checks{list-style:none;display:flex;flex-direction:column;gap:16px}
+.itin-checks li{display:flex;align-items:center;gap:14px;font-size:14px;
+  color:var(--dim);font-weight:300}
+.itin-chk{width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:rgba(201,150,12,0.1);border:1px solid rgba(201,150,12,0.28);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:12px;color:var(--gold2);font-weight:500}
+
+/* FAQ */
+.faq-bg{background:var(--bg);border-top:1px solid var(--border)}
+.faq-inner{max-width:800px;margin:0 auto;padding:110px 60px}
+.faq-list{margin-top:52px}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-q{font-size:16px;font-weight:500;color:var(--white);cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:16px;padding:26px 0;letter-spacing:0.01em;transition:color .2s}
+.faq-q:hover{color:var(--gold2)}
+.faq-ic{font-family:var(--mono);font-size:22px;color:var(--gold);
+  flex-shrink:0;transition:transform .25s;line-height:1}
+.faq-item.open .faq-ic{transform:rotate(45deg)}
+.faq-a{font-size:14px;font-weight:300;color:var(--dim);line-height:1.75;
+  max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s ease}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:26px}
+
+/* CTA */
+.cta-bg{background:var(--bg3);border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:140px 60px;text-align:center;position:relative;overflow:hidden}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:900px;height:500px;pointer-events:none;
+  background:radial-gradient(ellipse 50% 40% at 50% 50%,rgba(201,150,12,0.1) 0%,transparent 70%)}
+.cta-h{font-family:var(--display);font-size:clamp(56px,9vw,116px);
+  letter-spacing:0.04em;line-height:.9;color:var(--white);
+  margin-bottom:24px;position:relative;z-index:1}
+.cta-h .g{color:var(--gold2);text-shadow:0 0 50px rgba(232,176,32,0.4)}
+.cta-p{font-size:17px;font-weight:300;color:var(--dim);line-height:1.75;
+  max-width:480px;margin:0 auto 52px;position:relative;z-index:1}
+.cta-disc{font-size:11px;color:var(--muted);font-family:var(--mono);
+  margin-top:24px;position:relative;z-index:1;letter-spacing:0.05em}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:56px 60px}
+.footer-grid{max-width:1240px;margin:0 auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px}
+.f-logo{font-family:var(--display);font-size:36px;letter-spacing:0.1em;
+  color:var(--gold2);margin-bottom:10px}
+.f-tag{font-family:var(--mono);font-size:11px;color:var(--gold);
+  letter-spacing:0.15em;margin-bottom:14px;text-transform:uppercase}
+.f-contact{font-size:13px;color:var(--dim);font-family:var(--mono)}
+.f-col h4{font-family:var(--mono);font-size:10px;color:var(--muted);
+  letter-spacing:0.18em;text-transform:uppercase;margin-bottom:18px}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.f-col a{font-size:13px;color:var(--dim);text-decoration:none;transition:color .2s}
+.f-col a:hover{color:var(--gold2)}
+.footer-bottom{max-width:1240px;margin:40px auto 0;padding-top:28px;
+  border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:flex-start;
+  flex-wrap:wrap;gap:16px}
+.f-copy{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.f-legal{font-size:10px;color:var(--muted);font-family:var(--mono);
+  max-width:580px;line-height:1.7;text-align:right}
+
+/* LANG SYSTEM — bulletproof */
+/* Default: show EN, hide ES */
+.es, span.es, p.es, div.es, h1.es, h2.es, li.es, a.es { display:none !important; }
+.en, span.en, p.en, div.en, h1.en, h2.en, li.en, a.en { display:inline !important; }
+div.en, p.en, h1.en, h2.en { display:block !important; }
+/* When ES active: show ES, hide EN */
+body.lang-es .es, body.lang-es span.es { display:inline !important; }
+body.lang-es div.es, body.lang-es p.es, body.lang-es h1.es, body.lang-es h2.es { display:block !important; }
+body.lang-es .en, body.lang-es span.en, body.lang-es p.en,
+body.lang-es div.en, body.lang-es h1.en, body.lang-es h2.en,
+body.lang-es li.en, body.lang-es a.en { display:none !important; }
+
+/* MOBILE */
+@media(max-width:960px){
+  #paths .sw > div:last-of-type{grid-template-columns:1fr 1fr!important}
+  nav{padding:16px 20px}
+  .nav-links{display:none}
+  .hero{padding:110px 20px 60px}
+  .hc{display:none}
+  .hero-stats{grid-template-columns:1fr 1fr 1fr}
+  .sw,.faq-inner{padding:70px 20px}
+  .sw-full{padding:70px 20px}
+  .dna-grid{grid-template-columns:1fr}
+  .dna-wins{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .ranges-grid{grid-template-columns:1fr}
+  .itin-grid{grid-template-columns:1fr;gap:40px}
+  .cta-bg{padding:80px 20px}
+  footer{padding:40px 20px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-bottom{flex-direction:column}
+  .f-legal{text-align:left}
+}
+@media(max-width:600px){
+  .hero-stats{grid-template-columns:1fr}
+  .stat{border-right:none;border-bottom:1px solid var(--border2)}
+  .stat:last-child{border-bottom:none}
+  .steps{grid-template-columns:1fr}
+  .dna-wins{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body class="lang-en">
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">KLIERD</a>
+  <ul class="nav-links">
+    <li><a href="#what"><span class="en">What We Are</span><span class="es">Quiénes Somos</span></a></li>
+    <li><a href="#how"><span class="en">Pick Your Path</span><span class="es">Tu Camino</span></a></li>
+    <li><a href="#funding"><span class="en">Funding</span><span class="es">Financiamiento</span></a></li>
+    <li><a href="#itin">ITIN</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-pair">
+      <button class="lb on" id="btn-en" onclick="setLang('en')">🇺🇸 EN</button>
+      <button class="lb" id="btn-es" onclick="setLang('es')">🇲🇽 ES</button>
+    </div>
+    <a href="/apply.html" class="nav-apply en">Apply Now</a>
+    <a href="/apply.html" class="nav-apply es">Aplica Ahora</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hc tl"></div><div class="hc tr"></div>
+  <div class="hc bl"></div><div class="hc br"></div>
+
+  <div class="hero-badge">
+    <div class="pulse"></div>
+    <span class="en">New — Intelligent Funding Technology</span>
+    <span class="es">Nuevo — Tecnología de Financiamiento Inteligente</span>
+  </div>
+
+  <h1 class="hero-h1"><span class="g">KLIER</span>ING<br>YOUR PATH</h1>
+  <p class="hero-tagline">WE ARE KLIERING YOUR PATH</p>
+  <p class="hero-ift">— Intelligent Funding Technology —</p>
+
+  <p class="hero-desc en">
+    20 years of funding expertise, now powered by innovative technology.
+    Intelligent lender matching, real-time credit analysis, and intelligent funding decisions
+    for SSN and ITIN holders alike. Apply today.
+  </p>
+  <p class="hero-desc es">
+    20 años de experiencia en financiamiento, ahora impulsados por tecnología innovadora.
+    Emparejamiento inteligente de prestamistas, análisis de crédito en tiempo real y decisiones
+    de financiamiento inteligentes para titulares de SSN e ITIN. Aplica hoy.
+  </p>
+
+  <div class="hero-actions">
+    <a href="/apply.html" class="btn-gold en">Start Your Application →</a>
+    <a href="/apply.html" class="btn-gold es">Iniciar Solicitud →</a>
+    <a href="#how" class="btn-line en">See How It Works</a>
+    <a href="#how" class="btn-line es">Cómo Funciona</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-n">20<sup>+</sup></div>
+      <div class="stat-l en">Years Expertise</div>
+      <div class="stat-l es">Años de Experiencia</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">SSN</div>
+      <div class="stat-l en">+ ITIN Accepted</div>
+      <div class="stat-l es">+ ITIN Aceptado</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">EN</div>
+      <div class="stat-l en">+ Spanish · Bilingual</div>
+      <div class="stat-l es">+ Español · Bilingüe</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq-outer">
+  <div class="mq-track">
+    <span class="mq-item"><span class="mq-sep"></span>20 Years of Funding Expertise</span>
+    <span class="mq-item"><span class="mq-sep"></span>Now Powered by Innovative Technology</span>
+    <span class="mq-item"><span class="mq-sep"></span>SSN &amp; ITIN Accepted</span>
+    <span class="mq-item"><span class="mq-sep"></span>Credit Profile Optimization</span>
+    <span class="mq-item"><span class="mq-sep"></span>Personal Funding Up To $100K+</span>
+    <span class="mq-item"><span class="mq-sep"></span>Business Funding Up To $500K</span>
+    <span class="mq-item"><span class="mq-sep"></span>Dispute Resolution Services</span>
+    <span class="mq-item"><span class="mq-sep"></span>Bilingual EN · ES</span>
+    <span class="mq-item"><span class="mq-sep"></span>KLIERD Card · Secured &amp; Unsecured</span>
+    <span class="mq-item"><span class="mq-sep"></span>AI Lender Matching</span>
+    <span class="mq-item"><span class="mq-sep"></span>20 Years of Funding Expertise</span>
+    <span class="mq-item"><span class="mq-sep"></span>Now Powered by Innovative Technology</span>
+    <span class="mq-item"><span class="mq-sep"></span>SSN &amp; ITIN Accepted</span>
+    <span class="mq-item"><span class="mq-sep"></span>Credit Profile Optimization</span>
+    <span class="mq-item"><span class="mq-sep"></span>Personal Funding Up To $100K+</span>
+    <span class="mq-item"><span class="mq-sep"></span>Business Funding Up To $500K</span>
+    <span class="mq-item"><span class="mq-sep"></span>Dispute Resolution Services</span>
+    <span class="mq-item"><span class="mq-sep"></span>Bilingual EN · ES</span>
+    <span class="mq-item"><span class="mq-sep"></span>KLIERD Card · Secured &amp; Unsecured</span>
+    <span class="mq-item"><span class="mq-sep"></span>AI Lender Matching</span>
+  </div>
+</div>
+
+<!-- WHAT WE ARE / DNA -->
+<section class="dna-bg" id="what">
+  <div class="sw">
+    <div class="sec-tag en">What Makes KLIERD Different</div>
+    <div class="sec-tag es">Lo Que Hace a KLIERD Diferente</div>
+    <h2 class="sec-h en">Three Pillars.<br><span class="g">One Platform.</span></h2>
+    <h2 class="sec-h es">Tres Pilares.<br><span class="g">Una Plataforma.</span></h2>
+    <p class="sec-p en">We studied every platform in the industry and built the one product none of them could — combining dispute resolution, intelligent funding, and bilingual ITIN service under one roof.</p>
+    <p class="sec-p es">Estudiamos cada plataforma de la industria y construimos el producto que ninguna pudo — disputas, financiamiento inteligente y servicio bilingüe ITIN en un solo lugar.</p>
+
+    <div class="dna-grid">
+      <div class="dna-card">
+        <div class="dna-parent">Pillar 01</div>
+        <div class="dna-name en">Dispute</div>
+        <div class="dna-name es">Disputas</div>
+        <ul class="dna-list">
+          <li><span class="en">Intelligent dispute resolution services</span><span class="es">Servicios inteligentes de resolución de disputas</span></li>
+          <li><span class="en">Equifax, TransUnion, and Experian — separately</span><span class="es">Equifax, TransUnion y Experian — por separado</span></li>
+          <li><span class="en">Inaccurate, unverifiable, and outdated items removed</span><span class="es">Elementos inexactos, inverificables y obsoletos eliminados</span></li>
+          <li><span class="en">Credit profile optimization for maximum funding readiness</span><span class="es">Optimización de perfil para máxima preparación</span></li>
+          <li><span class="en">Real-time monitoring and score alerts</span><span class="es">Monitoreo en tiempo real y alertas de puntuación</span></li>
+        </ul>
       </div>
-      
-      <div class="footer-bottom">
-        <div class="footer-copyright">© 2026 StackPro™. All rights reserved.</div>
-        <div class="footer-klierd">A <span>KLIERD</span> Platform</div>
+      <div class="dna-card">
+        <div class="dna-parent">Pillar 02</div>
+        <div class="dna-name en">Funding</div>
+        <div class="dna-name es">Financiamiento</div>
+        <ul class="dna-list">
+          <li><span class="en">Personal and business card stacking — 0% APR targeted</span><span class="es">Acumulación de tarjetas personales y empresariales</span></li>
+          <li><span class="en">Bureau-specific application sequencing for max approvals</span><span class="es">Secuencia de solicitud por buró para máximas aprobaciones</span></li>
+          <li><span class="en">Personal loans, business lines of credit, SBA programs</span><span class="es">Préstamos personales, líneas de crédito, programas SBA</span></li>
+          <li><span class="en">Done-for-you process — KLIERD technology handles it all</span><span class="es">Proceso automatizado — la tecnología KLIERD lo maneja todo</span></li>
+          <li><span class="en">Funding success fee — paid after you receive funding</span><span class="es">Tarifa de éxito de financiamiento — pagada después de recibir fondos</span></li>
+        </ul>
+      </div>
+      <div class="dna-card">
+        <div class="dna-parent">Pillar 03</div>
+        <div class="dna-name en">Access</div>
+        <div class="dna-name es">Acceso</div>
+        <ul class="dna-list">
+          <li><span class="en">ITIN holders — full access to every product and service</span><span class="es">Titulares de ITIN — acceso completo a todos los productos</span></li>
+          <li><span class="en">Bilingual platform — English and Spanish throughout</span><span class="es">Plataforma bilingüe — inglés y español en todo momento</span></li>
+          <li><span class="en">Lower minimum thresholds than industry standard — more people qualify</span><span class="es">Umbrales más bajos que el estándar de la industria — más personas califican</span></li>
+          <li><span class="en">KLIERD Card — secured and unsecured, builds tradelines</span><span class="es">Tarjeta KLIERD — asegurada y no asegurada, construye tradelines</span></li>
+          <li><span class="en">Startup-friendly — new business welcome, no revenue required</span><span class="es">Amigable para startups — nuevos negocios bienvenidos</span></li>
+        </ul>
       </div>
     </div>
-  </footer>
 
+    <div class="dna-klierd">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--gold);
+        letter-spacing:0.25em;text-transform:uppercase;margin-bottom:32px;
+        padding-bottom:20px;border-bottom:1px solid rgba(201,150,12,0.2)">
+        The KLIERD System
+      </div>
+      <div class="dna-klierd-hdr">
+        <div class="dna-klierd-title">KLIERD</div>
+        <div class="dna-klierd-sub en">Three pillars. One platform. The only intelligent funding technology that serves everyone.</div>
+        <div class="dna-klierd-sub es">Tres pilares. Una plataforma. La única tecnología de financiamiento inteligente que sirve a todos.</div>
+      </div>
+      <div class="dna-wins">
+<div class="dna-win">
+          <div class="dna-win-t en">Full Ecosystem</div>
+          <div class="dna-win-t es">Ecosistema Completo</div>
+          <div class="dna-win-b en">Dispute + Funding + Cards + Monitoring. One platform. Nothing else needed.</div>
+          <div class="dna-win-b es">Disputas + Financiamiento + Tarjetas + Monitoreo. Una plataforma.</div>
+        </div>
+
+        <div class="dna-win">
+          <div class="dna-win-t en">ITIN Full Access</div>
+          <div class="dna-win-t es">ITIN Acceso Total</div>
+          <div class="dna-win-b en">Full ITIN access across every product — personal cards, business cards, loans, and funding. No one else does this.</div>
+          <div class="dna-win-b es">Cero competidores sirven ITIN. Personal + empresarial.</div>
+        </div>
+        <div class="dna-win">
+          <div class="dna-win-t">Bilingual EN + ES</div>
+          <div class="dna-win-b en">KLIERD is fully bilingual — every page, every document, every service. English and Spanish throughout.</div>
+          <div class="dna-win-b es">KLIERD es completamente bilingüe — cada página, cada documento, cada servicio.</div>
+        </div>
+        
+        
+        <div class="dna-win">
+          <div class="dna-win-t en">Intelligent Funding Matching</div>
+          <div class="dna-win-t es">Emparejamiento de Financiamiento Inteligente</div>
+          <div class="dna-win-b en">Intelligent matching to the right funding sources for your profile. Bureau-optimized. No guesswork.</div>
+          <div class="dna-win-b es">Emparejamiento inteligente con las fuentes de financiamiento correctas para tu perfil.</div>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-bg" id="how">
+  <div class="sw">
+    <div class="sec-tag en">Pick Your Path</div>
+    <div class="sec-tag es">Elige Tu Camino</div>
+    <h2 class="sec-h en">Pick Your<br><span class="g">Path.</span></h2>
+    <h2 class="sec-h es">Elige Tu<br><span class="g">Camino.</span></h2>
+    <p class="sec-p en">KLIERD Intelligent Funding Technology handles the analysis, lender matching, and approvals. You focus on your goals — we handle the rest.</p>
+    <p class="sec-p es">KLIERD Intelligent Funding Technology maneja el análisis, emparejamiento y aprobaciones. Tú enfócate en tus metas — nosotros hacemos el resto.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-in">
+          <div class="step-n">01</div>
+          <div class="step-stage en">Stage One</div>
+          <div class="step-stage es">Etapa Uno</div>
+          <div class="step-ico">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div class="step-title en">Apply</div>
+          <div class="step-title es">Aplica</div>
+          <div class="step-div"></div>
+          <p class="step-body en">Complete our streamlined application in minutes. SSN or ITIN accepted. Fully bilingual.</p>
+          <p class="step-body es">Completa nuestra solicitud en minutos. SSN o ITIN aceptado. Completamente bilingüe.</p>
+          <span class="step-tag en">SSN + ITIN</span>
+          <span class="step-tag es">SSN + ITIN</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-in">
+          <div class="step-n">02</div>
+          <div class="step-stage en">Stage Two</div>
+          <div class="step-stage es">Etapa Dos</div>
+          <div class="step-ico">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/></svg>
+          </div>
+          <div class="step-title en">Analysis</div>
+          <div class="step-title es">Análisis</div>
+          <div class="step-div"></div>
+          <p class="step-body en">KLIERD analyzes your full credit profile in depth and determines your funding range.</p>
+          <p class="step-body es">KLIERD analiza tu perfil de crédito en profundidad y determina tu rango de financiamiento.</p>
+          <span class="step-tag en">Analysis</span>
+          <span class="step-tag es">Análisis</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-in">
+          <div class="step-n">03</div>
+          <div class="step-stage en">Stage Three</div>
+          <div class="step-stage es">Etapa Tres</div>
+          <div class="step-ico">
+            <svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="step-title en">Strategy</div>
+          <div class="step-title es">Estrategia</div>
+          <div class="step-div"></div>
+          <p class="step-body en">We build a custom funding sequence — personal, business, or both — designed to maximize your results.</p>
+          <p class="step-body es">Construimos una secuencia de financiamiento personalizada — personal, empresarial o ambas — diseñada para maximizar tus resultados.</p>
+          <span class="step-tag en">Custom Strategy</span>
+          <span class="step-tag es">Estrategia Personalizada</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-in">
+          <div class="step-n">04</div>
+          <div class="step-stage en">Stage Four</div>
+          <div class="step-stage es">Etapa Cuatro</div>
+          <div class="step-ico">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          </div>
+          <div class="step-title en">Funded</div>
+          <div class="step-title es">Financiado</div>
+          <div class="step-div"></div>
+          <p class="step-body en">KLIERD Intelligent Funding Technology processes your approvals. Results not typical and may vary.</p>
+          <p class="step-body es">KLIERD Intelligent Funding Technology procesa tus aprobaciones. Los resultados no son típicos.</p>
+          <span class="step-tag en">Funded</span>
+          <span class="step-tag es">Financiado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNDING RANGES -->
+
+<section class="ranges-bg" id="funding">
+  <div class="sw">
+    <div class="sec-tag en">Funding Ranges</div>
+    <div class="sec-tag es">Rangos de Financiamiento</div>
+    <h2 class="sec-h en">How Much<br><span class="g">Can You Get?</span></h2>
+    <h2 class="sec-h es">¿Cuánto<br><span class="g">Puedes Obtener?</span></h2>
+    <p class="sec-p en">Your exact range is determined by your credit profile, income, and business history. KLIERD calculates your position before submitting a single application.</p>
+    <p class="sec-p es">Tu rango exacto se determina por tu perfil de crédito, ingresos e historial empresarial. KLIERD calcula tu posición antes de enviar una sola solicitud.</p>
+
+    <div class="ranges-grid">
+      <div class="rcard">
+        <div class="r-ey en">Personal Funding</div>
+        <div class="r-ey es">Financiamiento Personal</div>
+        <div class="r-amt">$100K<sup>+</sup></div>
+        <div class="r-title en">Personal Credit &amp; Loans</div>
+        <div class="r-title es">Crédito y Préstamos Personales</div>
+        <ul class="r-list">
+          <li><span class="en">Personal credit cards · 0% APR intro offers</span><span class="es">Tarjetas de crédito personales · 0% APR inicial</span></li>
+          <li><span class="en">Personal loans from ITIN-friendly credit unions</span><span class="es">Préstamos de cooperativas amigables con ITIN</span></li>
+          <li><span class="en">Bureau-targeted application sequencing</span><span class="es">Secuencia de solicitud por buró</span></li>
+          <li><span class="en">SSN and ITIN accepted · 620+ score</span><span class="es">SSN e ITIN aceptados · Puntuación 620+</span></li>
+        </ul>
+      </div>
+      <div class="rcard">
+        <div class="r-ey en">Business Funding</div>
+        <div class="r-ey es">Financiamiento Empresarial</div>
+        <div class="r-amt">$500K</div>
+        <div class="r-title en">Business Credit &amp; Loans</div>
+        <div class="r-title es">Crédito y Préstamos Empresariales</div>
+        <ul class="r-list">
+          <li><span class="en">Business credit cards · EIN-based · no personal pull</span><span class="es">Tarjetas empresariales · basadas en EIN</span></li>
+          <li><span class="en">Revenue-based lines of credit</span><span class="es">Líneas de crédito basadas en ingresos</span></li>
+          <li><span class="en">SBA programs available</span><span class="es">Programas SBA disponibles</span></li>
+          <li><span class="en">Builds D&amp;B and business bureau profile</span><span class="es">Construye perfil D&amp;B y buró empresarial</span></li>
+        </ul>
+      </div>
+      <div class="rcard">
+        <div class="r-ey en">Startup Capital</div>
+        <div class="r-ey es">Capital Inicial</div>
+        <div class="r-amt">$125K</div>
+        <div class="r-title en">Launch Funding</div>
+        <div class="r-title es">Financiamiento de Lanzamiento</div>
+        <ul class="r-list">
+          <li><span class="en">New business welcome · no revenue required</span><span class="es">Nuevos negocios bienvenidos · sin ingresos</span></li>
+          <li><span class="en">Personal + business stack combined</span><span class="es">Combinación personal + empresarial</span></li>
+          <li><span class="en">Credit profile optimization included</span><span class="es">Optimización de perfil de crédito incluida</span></li>
+          <li><span class="en">SSN and ITIN · 620+ score</span><span class="es">SSN e ITIN · Puntuación 620+</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ITIN -->
+<section class="itin-bg" id="itin">
+  <div class="sw">
+    <div class="itin-grid">
+      <div>
+        <div class="sec-tag en">For ITIN Holders</div>
+        <div class="sec-tag es">Para Titulares de ITIN</div>
+        <h2 class="sec-h en">No SSN?<br><span class="g">No Problem.</span></h2>
+        <h2 class="sec-h es">¿Sin SSN?<br><span class="g">Sin Problema.</span></h2>
+        <p class="sec-p en">KLIERD is built to serve ITIN clients with the same access, the same technology, and the same results as any SSN holder. Fully bilingual. No barriers. No judgment.</p>
+        <p class="sec-p es">KLIERD sirve a clientes ITIN con el mismo acceso, la misma tecnología y los mismos resultados que cualquier titular de SSN. Completamente bilingüe. Sin barreras.</p>
+        <a href="/apply.html" class="btn-gold en">Apply With ITIN →</a>
+        <a href="/apply.html" class="btn-gold es">Aplica Con ITIN →</a>
+      </div>
+      <div class="itin-visual">
+        <div class="itin-big">62M<sup style="font-size:40px">+</sup></div>
+        <div class="itin-lbl en">ITIN Holders in the US — We Serve Them All</div>
+        <div class="itin-lbl es">Titulares de ITIN en EE.UU. — Los Servimos a Todos</div>
+        <ul class="itin-checks">
+          <li><span class="itin-chk">✦</span><span class="en">Personal credit cards with ITIN only</span><span class="es">Tarjetas de crédito personales solo con ITIN</span></li>
+          <li><span class="itin-chk">✦</span><span class="en">Business credit cards — EIN only, no SSN needed</span><span class="es">Tarjetas empresariales — solo EIN, sin SSN</span></li>
+          <li><span class="itin-chk">✦</span><span class="en">Personal loans from ITIN-friendly lenders</span><span class="es">Préstamos de prestamistas amigables con ITIN</span></li>
+          <li><span class="itin-chk">✦</span><span class="en">Business funding via EIN</span><span class="es">Financiamiento empresarial vía EIN</span></li>
+          <li><span class="itin-chk">✦</span><span class="en">Dispute resolution services</span><span class="es">Servicios de resolución de disputas</span></li>
+          <li><span class="itin-chk">✦</span><span class="en">Fully bilingual — English &amp; Spanish throughout</span><span class="es">Completamente bilingüe — inglés y español</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+
+<!-- KLIERD CARD — COMING SOON -->
+<section style="background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:400px;pointer-events:none;background:radial-gradient(ellipse 50% 40% at 50% 50%,rgba(201,150,12,0.09) 0%,transparent 70%)"></div>
+  <div class="sw" style="position:relative;z-index:1">
+    <div style="max-width:700px;margin:0 auto;text-align:center">
+
+      <!-- CARD MOCKUP — matches real KLIERD card -->
+      <div style="perspective:1400px;margin-bottom:60px">
+        <div id="kcard" style="
+          width:400px;height:252px;border-radius:18px;margin:0 auto;
+          position:relative;cursor:default;
+          transform:rotateY(-14deg) rotateX(6deg) translateY(-8px);
+          transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s ease;"
+          onmouseover="this.style.transform='rotateY(0deg) rotateX(0deg) translateY(-16px) scale(1.04)';this.style.boxShadow='0 60px 120px rgba(0,0,0,0.9),0 0 80px rgba(201,150,12,0.2),0 0 200px rgba(201,150,12,0.06)';"
+          onmouseout="this.style.transform='rotateY(-14deg) rotateX(6deg) translateY(-8px) scale(1)';this.style.boxShadow='';"
+        >
+          <!-- MAIN CARD BODY — matte black brushed metal -->
+          <div style="
+            position:absolute;inset:0;border-radius:18px;
+            background:
+              linear-gradient(160deg,#1a1a18 0%,#0e0e0c 30%,#080807 60%,#111110 100%);
+            box-shadow:
+              0 40px 100px rgba(0,0,0,0.95),
+              0 0 0 1px rgba(201,150,12,0.6),
+              0 0 60px rgba(201,150,12,0.1),
+              inset 0 1px 0 rgba(255,255,255,0.04),
+              inset 0 -1px 0 rgba(0,0,0,0.5);
+            overflow:hidden;
+          ">
+            <!-- Brushed metal texture overlay -->
+            <div style="position:absolute;inset:0;border-radius:18px;
+              background:repeating-linear-gradient(
+                92deg,
+                transparent,
+                transparent 2px,
+                rgba(255,255,255,0.012) 2px,
+                rgba(255,255,255,0.012) 4px
+              );pointer-events:none"></div>
+
+            <!-- Light sweep — top left highlight -->
+            <div style="position:absolute;top:-60px;left:-60px;width:280px;height:280px;
+              background:radial-gradient(ellipse,rgba(201,150,12,0.07) 0%,transparent 65%);
+              pointer-events:none;border-radius:50%"></div>
+
+            <!-- Gold beveled edge — top -->
+            <div style="position:absolute;top:0;left:18px;right:18px;height:1.5px;
+              background:linear-gradient(90deg,transparent,rgba(201,150,12,0.8) 20%,rgba(240,192,64,0.95) 50%,rgba(201,150,12,0.8) 80%,transparent);
+              border-radius:1px"></div>
+            <!-- Gold beveled edge — bottom -->
+            <div style="position:absolute;bottom:0;left:18px;right:18px;height:1.5px;
+              background:linear-gradient(90deg,transparent,rgba(201,150,12,0.6) 20%,rgba(240,192,64,0.75) 50%,rgba(201,150,12,0.6) 80%,transparent);
+              border-radius:1px"></div>
+            <!-- Gold beveled edge — left -->
+            <div style="position:absolute;left:0;top:18px;bottom:18px;width:1.5px;
+              background:linear-gradient(180deg,transparent,rgba(201,150,12,0.7) 30%,rgba(201,150,12,0.7) 70%,transparent)"></div>
+            <!-- Gold beveled edge — right -->
+            <div style="position:absolute;right:0;top:18px;bottom:18px;width:1.5px;
+              background:linear-gradient(180deg,transparent,rgba(201,150,12,0.5) 30%,rgba(201,150,12,0.5) 70%,transparent)"></div>
+
+            <!-- K LOGO — top left, matches card: large K with arrow/chevron -->
+            <div style="position:absolute;top:28px;left:30px">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <!-- K vertical stroke -->
+                <path d="M10 8 L10 56" stroke="url(#kg1)" stroke-width="7" stroke-linecap="round"/>
+                <!-- K upper diagonal -->
+                <path d="M10 32 L38 8" stroke="url(#kg2)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- K lower diagonal — with arrow chevron at bottom -->
+                <path d="M10 32 L38 56" stroke="url(#kg3)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Arrow/chevron accent pointing right — matches the design -->
+                <path d="M32 38 L48 52" stroke="url(#kg4)" stroke-width="5" stroke-linecap="round"/>
+                <defs>
+                  <linearGradient id="kg1" x1="10" y1="8" x2="10" y2="56" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#f5d060"/>
+                    <stop offset="100%" stop-color="#c9960c"/>
+                  </linearGradient>
+                  <linearGradient id="kg2" x1="10" y1="32" x2="38" y2="8" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#c9960c"/>
+                    <stop offset="100%" stop-color="#f0c040"/>
+                  </linearGradient>
+                  <linearGradient id="kg3" x1="10" y1="32" x2="38" y2="56" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#c9960c"/>
+                    <stop offset="100%" stop-color="#e8b020"/>
+                  </linearGradient>
+                  <linearGradient id="kg4" x1="32" y1="38" x2="48" y2="52" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#e8b020"/>
+                    <stop offset="100%" stop-color="#c9960c"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- CONTACTLESS SYMBOL — top right, gold -->
+            <div style="position:absolute;top:28px;right:30px">
+              <svg width="28" height="26" viewBox="0 0 28 26" fill="none">
+                <path d="M14 11 a3 3 0 0 1 0 4" stroke="url(#cg1)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                <path d="M9.5 7.5 a8 8 0 0 1 0 11" stroke="url(#cg1)" stroke-width="2" stroke-linecap="round" fill="none" opacity=".7"/>
+                <path d="M5.5 4 a13 13 0 0 1 0 18" stroke="url(#cg1)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".4"/>
+                <defs>
+                  <linearGradient id="cg1" x1="5" y1="4" x2="14" y2="22" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#f5d060"/>
+                    <stop offset="100%" stop-color="#c9960c"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- CHIP — gold, detailed, below K logo -->
+            <div style="position:absolute;top:100px;left:30px;
+              width:44px;height:34px;border-radius:5px;
+              background:linear-gradient(135deg,#d4a017 0%,#f0c040 30%,#c9960c 60%,#e8b020 100%);
+              box-shadow:0 2px 8px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.2);
+              overflow:hidden">
+              <!-- chip lines horizontal -->
+              <div style="position:absolute;top:33%;left:0;right:0;height:1px;background:rgba(0,0,0,0.25)"></div>
+              <div style="position:absolute;top:66%;left:0;right:0;height:1px;background:rgba(0,0,0,0.25)"></div>
+              <!-- chip lines vertical -->
+              <div style="position:absolute;left:33%;top:0;bottom:0;width:1px;background:rgba(0,0,0,0.2)"></div>
+              <div style="position:absolute;left:66%;top:0;bottom:0;width:1px;background:rgba(0,0,0,0.2)"></div>
+              <!-- center notch -->
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+                width:16px;height:12px;border-radius:2px;
+                background:rgba(0,0,0,0.15);border:1px solid rgba(0,0,0,0.1)"></div>
+            </div>
+
+            <!-- KLIERD NAME — bottom right, gold embossed -->
+            <div style="position:absolute;bottom:26px;right:30px;
+              font-family:var(--display);font-size:28px;letter-spacing:0.22em;
+              background:linear-gradient(135deg,#f5d060,#c9960c 50%,#e8b020);
+              -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+              background-clip:text;
+              filter:drop-shadow(0 0 8px rgba(201,150,12,0.4));
+              font-weight:400">KLIERD</div>
+
+            <!-- COMING SOON subtle bottom left -->
+            <div style="position:absolute;bottom:30px;left:30px;
+              font-family:var(--mono);font-size:8px;letter-spacing:0.18em;
+              color:rgba(201,150,12,0.35);text-transform:uppercase">
+              <span class="en">COMING SOON</span>
+              <span class="es">PRÓXIMAMENTE</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- HEADLINE -->
+      <div style="font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:0.22em;text-transform:uppercase;margin-bottom:16px" class="en">Be First in Line</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:0.22em;text-transform:uppercase;margin-bottom:16px" class="es">Sé el Primero</div>
+
+      <h2 style="font-family:var(--display);font-size:clamp(44px,6vw,76px);letter-spacing:0.04em;line-height:.95;color:var(--white);margin-bottom:18px" class="en">
+        The KLIERD Card<br>Is <span style="color:var(--gold2);text-shadow:0 0 40px rgba(232,176,32,0.4)">Coming Soon.</span>
+      </h2>
+      <h2 style="font-family:var(--display);font-size:clamp(44px,6vw,76px);letter-spacing:0.04em;line-height:.95;color:var(--white);margin-bottom:18px" class="es">
+        La Tarjeta KLIERD<br><span style="color:var(--gold2);text-shadow:0 0 40px rgba(232,176,32,0.4)">Llega Pronto.</span>
+      </h2>
+
+      <p style="font-size:16px;font-weight:300;color:var(--dim);line-height:1.75;max-width:500px;margin:0 auto 10px" class="en">
+        Secured and unsecured. Personal and business. Reports to all 3 bureaus. Converts to unsecured after 12 months. Built to build your credit — while you fund your life.
+      </p>
+      <p style="font-size:16px;font-weight:300;color:var(--dim);line-height:1.75;max-width:500px;margin:0 auto 10px" class="es">
+        Asegurada y no asegurada. Personal y empresarial. Reporta a los 3 burós. Se convierte a no asegurada después de 12 meses. Construida para construir tu crédito.
+      </p>
+      <p style="font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:48px;letter-spacing:0.08em" class="en">SSN and ITIN accepted &nbsp;·&nbsp; Exclusive early access for subscribers</p>
+      <p style="font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:48px;letter-spacing:0.08em" class="es">SSN e ITIN aceptados &nbsp;·&nbsp; Acceso anticipado exclusivo para suscriptores</p>
+
+      <!-- SIGN UP FORM -->
+      <div style="max-width:500px;margin:0 auto" id="signup-wrap">
+        <div style="display:flex;gap:0;border:1px solid rgba(201,150,12,0.4);border-radius:5px;overflow:hidden;background:rgba(201,150,12,0.04);transition:border-color .2s"
+          onfocusin="this.style.borderColor='rgba(201,150,12,0.8)'"
+          onfocusout="this.style.borderColor='rgba(201,150,12,0.4)'">
+          <input type="email" id="signup-email"
+            placeholder="Enter your email address"
+            style="flex:1;background:transparent;border:none;outline:none;
+              padding:17px 20px;font-family:var(--body);font-size:14px;
+              color:var(--white);letter-spacing:0.02em;min-width:0"
+          />
+          <button onclick="handleSignup()"
+            style="background:var(--gold);color:#000;font-family:var(--mono);
+              font-size:12px;font-weight:700;padding:17px 28px;border:none;
+              cursor:pointer;letter-spacing:0.08em;text-transform:uppercase;
+              transition:background .2s;white-space:nowrap;flex-shrink:0"
+            onmouseover="this.style.background='#e8b020'"
+            onmouseout="this.style.background='var(--gold)'"
+          >
+            <span class="en">Notify Me</span>
+            <span class="es">Notifícame</span>
+          </button>
+        </div>
+        <p style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:12px;letter-spacing:0.06em" class="en">No spam. Early access only. Unsubscribe anytime.</p>
+        <p style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:12px;letter-spacing:0.06em" class="es">Sin spam. Solo acceso anticipado. Cancela cuando quieras.</p>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div id="signup-success" style="display:none;max-width:500px;margin:0 auto;
+        background:rgba(201,150,12,0.08);border:1px solid rgba(201,150,12,0.4);
+        border-radius:6px;padding:28px 32px;text-align:center">
+        <div style="font-family:var(--display);font-size:40px;color:var(--gold2);
+          letter-spacing:0.1em;margin-bottom:10px;text-shadow:0 0 30px rgba(232,176,32,0.4)" class="en">
+          Your path has been KLIERed.
+        </div>
+        <div style="font-family:var(--display);font-size:40px;color:var(--gold2);
+          letter-spacing:0.1em;margin-bottom:10px;text-shadow:0 0 30px rgba(232,176,32,0.4)" class="es">
+          Tu camino ha sido KLIERed.
+        </div>
+        <p style="font-size:13px;color:var(--dim);font-family:var(--mono);letter-spacing:0.05em" class="en">The KLIERD Card is coming soon. You are first in line — we will notify you the moment it launches.</p>
+        <p style="font-size:13px;color:var(--dim);font-family:var(--mono);letter-spacing:0.05em" class="es">La Tarjeta KLIERD llega pronto. Eres el primero en la fila — te notificaremos en el momento del lanzamiento.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="faq-bg" id="faq">
+  <div class="faq-inner">
+    <div class="sec-tag en">Common Questions</div>
+    <div class="sec-tag es">Preguntas Frecuentes</div>
+    <h2 class="sec-h en">Got <span class="g">Questions.</span></h2>
+    <h2 class="sec-h es">Tienes <span class="g">Preguntas.</span></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="en">What credit score do I need?</span>
+          <span class="es">¿Qué puntuación de crédito necesito?</span>
+          <span class="faq-ic">+</span>
+        </div>
+        <div class="faq-a en">We work with clients starting at 620. Clients below 620 typically qualify for our credit profile optimization services first, which positions your profile for funding approval within 30–45 days. Results not typical and may vary.</div>
+        <div class="faq-a es">Trabajamos con clientes desde 620. Los clientes por debajo de 620 califican para optimización de perfil primero, posicionando tu perfil en 30–45 días. Los resultados no son típicos.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="en">Do you work with ITIN clients?</span>
+          <span class="es">¿Trabajan con clientes ITIN?</span>
+          <span class="faq-ic">+</span>
+        </div>
+        <div class="faq-a en">Yes. KLIERD is built to serve ITIN holders fully — personal cards, business cards, personal loans, and business funding. No Social Security Number required. Full bilingual support in English and Spanish.</div>
+        <div class="faq-a es">Sí. KLIERD está construido para servir completamente a titulares de ITIN — tarjetas personales, empresariales, préstamos y financiamiento. Sin Número de Seguro Social requerido.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="en">What is the fee structure?</span>
+          <span class="es">¿Cuál es la estructura de tarifas?</span>
+          <span class="faq-ic">+</span>
+        </div>
+        <div class="faq-a en">A success fee is charged as a percentage of your funded amount — only after you are funded. A post-funding technology fee also applies. Credit profile optimization services are separate and discussed during your consultation. Full transparency from day one.</div>
+        <div class="faq-a es">Se cobra una tarifa de éxito como porcentaje del monto financiado — solo después de recibir fondos. También aplica una tarifa de tecnología post-financiamiento. Los servicios de optimización son separados.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="en">Is this a credit repair service?</span>
+          <span class="es">¿Es esto un servicio de reparación de crédito?</span>
+          <span class="faq-ic">+</span>
+        </div>
+        <div class="faq-a en">No. KLIERD is an Intelligent Funding Technology platform. We offer integrated dispute resolution services and credit profile optimization as part of our process. We do not operate as a credit repair organization under CROA. Results not typical and may vary.</div>
+        <div class="faq-a es">No. KLIERD es una plataforma de Tecnología de Financiamiento Inteligente. No operamos como organización de reparación de crédito bajo CROA. Los resultados no son típicos.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="en">How long does the process take?</span>
+          <span class="es">¿Cuánto tiempo toma el proceso?</span>
+          <span class="faq-ic">+</span>
+        </div>
+        <div class="faq-a en">Most clients move through the funding process within 30–45 days. Clients who need credit profile optimization first typically see measurable improvement within 30 days before advancing to the funding phase. Results not typical and may vary.</div>
+        <div class="faq-a es">La mayoría de los clientes avanzan en 30–45 días. Los que necesitan optimización primero típicamente ven mejoras en 30 días. Los resultados no son típicos.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-bg">
+  <div class="cta-glow"></div>
+  <h2 class="cta-h en">Ready to Get<br><span class="g">Funded?</span></h2>
+  <h2 class="cta-h es">¿Listo para<br><span class="g">Financiarte?</span></h2>
+  <p class="cta-p en">Apply today. Your path is about to be KLIERed. 20 years of funding expertise, now powered by innovative technology. SSN and ITIN welcome.</p>
+  <p class="cta-p es">Aplica hoy. Tu camino está a punto de ser KLIERed. 20 años de experiencia en financiamiento, ahora con tecnología innovadora. SSN e ITIN bienvenidos.</p>
+  <a href="/apply.html" class="btn-gold en">Start Your Application →</a>
+  <a href="/apply.html" class="btn-gold es">Iniciar Solicitud →</a>
+  <p class="cta-disc en">Results are not typical and may vary. KLIERD does not operate as a credit repair organization under CROA.</p>
+  <p class="cta-disc es">Los resultados no son típicos. KLIERD no opera como organización de reparación de crédito bajo CROA.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="f-logo">KLIERD</div>
+      <div class="f-tag en">We Are KLIERing Your Path.</div>
+      <div class="f-tag es">Estamos KLIERando Tu Camino.</div>
+      <div class="f-contact">info@klierd.com</div>
+    </div>
+    <div class="f-col">
+      <h4 class="en">Services</h4>
+      <h4 class="es">Servicios</h4>
+      <ul>
+        <li><a href="#funding"><span class="en">Personal Funding</span><span class="es">Financiamiento Personal</span></a></li>
+        <li><a href="#funding"><span class="en">Business Funding</span><span class="es">Financiamiento Empresarial</span></a></li>
+        <li><a href="#what"><span class="en">Credit Profile Optimization</span><span class="es">Optimización de Perfil</span></a></li>
+        <li><a href="#itin"><span class="en">ITIN Services</span><span class="es">Servicios ITIN</span></a></li>
+        <li><a href="#what">KLIERD Card</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4 class="en">Company</h4>
+      <h4 class="es">Empresa</h4>
+      <ul>
+        <li><a href="#what"><span class="en">What We Are</span><span class="es">Quiénes Somos</span></a></li>
+        <li><a href="#how"><span class="en">Pick Your Path</span><span class="es">Tu Camino</span></a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="/portal.html"><span class="en">Staff Login</span><span class="es">Acceso Personal</span></a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4 class="en">Apply</h4>
+      <h4 class="es">Aplica</h4>
+      <ul>
+        <li><a href="/apply.html"><span class="en">Start Application</span><span class="es">Iniciar Solicitud</span></a></li>
+        <li><a href="/apply.html"><span class="en">ITIN Application</span><span class="es">Solicitud ITIN</span></a></li>
+        <li><a href="/apply.html"><span class="en">Business Application</span><span class="es">Solicitud Empresarial</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="f-copy" style="margin-bottom:8px">
+      <a href="/privacy.html" style="color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:11px"><span class="en">Privacy Policy</span><span class="es">Privacidad</span></a>
+      &nbsp;·&nbsp;
+      <a href="/terms.html" style="color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:11px"><span class="en">Terms of Service</span><span class="es">Términos</span></a>
+      &nbsp;·&nbsp;
+      <a href="/privacy.html#ccpa" style="color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:11px"><span class="en">Do Not Sell My Personal Information</span><span class="es">No Vender Mi Información</span></a>
+      &nbsp;·&nbsp;
+      <a href="mailto:press@klierd.com" style="color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:11px">Press</a>
+    </p>
+    <p class="f-copy">© 2026 KLIERD · Intelligent Funding Technology · All rights reserved.</p>
+    <p class="f-legal en">Results are not typical and may vary. KLIERD does not operate as a credit repair organization under CROA. We offer integrated dispute resolution services and credit profile optimization as part of our intelligent funding process. This is not a guarantee of funding approval or credit improvement.</p>
+    <p class="f-legal es">Los resultados no son típicos y pueden variar. KLIERD no opera como organización de reparación de crédito bajo CROA. Ofrecemos servicios integrados de resolución de disputas y optimización de perfil de crédito. Esto no es una garantía de aprobación.</p>
+  </div>
+</footer>
+
+<script>
+
+function handleSignup(){
+  const email = document.getElementById("signup-email").value.trim();
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!re.test(email)){
+    document.getElementById("signup-email").style.borderBottom="2px solid rgba(201,150,12,0.8)";
+    document.getElementById("signup-email").focus();
+    return;
+  }
+  // Stopgap lead capture — persist to localStorage until SendGrid endpoint is wired.
+  // To export collected leads on the browser console: JSON.parse(localStorage.getItem('klierd_waitlist'))
+  try {
+    const waitlist = JSON.parse(localStorage.getItem("klierd_waitlist") || "[]");
+    waitlist.push({
+      email: email,
+      timestamp: new Date().toISOString(),
+      lang: document.documentElement.lang || "en",
+      source: "klierd.com/card-waitlist",
+      userAgent: navigator.userAgent.slice(0,200)
+    });
+    localStorage.setItem("klierd_waitlist", JSON.stringify(waitlist));
+  } catch(e) { /* localStorage unavailable — fall through */ }
+  document.getElementById("signup-wrap").style.display="none";
+  document.getElementById("signup-success").style.display="block";
+  // TODO: wire to SendGrid / Supabase POST when ready
+  // fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,source:'klierd.com'})}).catch(()=>{});
+  if(window.gtag){ try{ gtag('event','waitlist_signup',{method:'klierd_card'}); }catch(e){} }
+  console.log("KLIERD signup captured:", email);
+}
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    const el = document.getElementById("signup-email");
+    if(document.activeElement === el) handleSignup();
+  }
+});
+
+function setLang(l){
+  document.body.className="lang-"+l;
+  document.getElementById("btn-en").classList.toggle("on",l==="en");
+  document.getElementById("btn-es").classList.toggle("on",l==="es");
+  try{localStorage.setItem("klierd_lang",l)}catch(e){}
+}
+try{const s=localStorage.getItem("klierd_lang");if(s)setLang(s)}catch(e){}
+document.querySelectorAll(".faq-q").forEach(q=>{
+  q.addEventListener("click",()=>{
+    const item=q.closest(".faq-item"),open=item.classList.contains("open");
+    document.querySelectorAll(".faq-item").forEach(i=>i.classList.remove("open"));
+    if(!open)item.classList.add("open");
+  });
+});
+document.querySelectorAll("a[href^='#']").forEach(a=>{
+  a.addEventListener("click",e=>{
+    const t=document.querySelector(a.getAttribute("href"));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:"smooth"})}
+  });
+});
+</script>
 </body>
 </html>
