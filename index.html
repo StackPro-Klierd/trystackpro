@@ -398,6 +398,25 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 .path-cta:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,150,12,0.3)}
 @media (max-width:900px){.two-paths{grid-template-columns:1fr;gap:20px}.path-title{font-size:32px}}
 
+
+/* ITIN CALLOUT BOX */
+.itin-callout-bg{background:var(--bg);padding:80px 0 40px;position:relative}
+.itin-call-box{border:1px solid var(--gold);border-radius:6px;background:linear-gradient(180deg,rgba(201,150,12,0.06),rgba(201,150,12,0.02));padding:60px 50px;position:relative;overflow:hidden}
+.itin-call-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.itin-call-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center}
+.itin-call-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.28em;color:var(--gold);text-transform:uppercase;margin-bottom:18px}
+.itin-call-h{font-family:var(--display);font-size:60px;line-height:0.95;font-weight:800;margin-bottom:20px;letter-spacing:-0.01em;text-transform:uppercase}
+.itin-call-p{font-size:16px;line-height:1.6;color:var(--gold2);margin-bottom:24px;max-width:520px}
+.itin-call-right{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.itin-call-card{border:1px solid var(--border);background:rgba(0,0,0,0.4);padding:22px 18px;border-radius:4px;transition:all 0.2s ease}
+.itin-call-card:hover{border-color:var(--gold);background:rgba(201,150,12,0.05);transform:translateY(-2px)}
+.itin-call-num{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;color:var(--gold);margin-bottom:10px}
+.itin-call-title{font-family:var(--display);font-size:15px;font-weight:700;line-height:1.3;color:var(--cream);text-transform:uppercase;letter-spacing:0.02em}
+@media (max-width:900px){
+  .itin-call-grid{grid-template-columns:1fr;gap:40px}
+  .itin-call-h{font-size:42px}
+  .itin-call-box{padding:40px 24px}
+}
 </style>
 </head>
 <body class="lang-en">
@@ -441,10 +460,10 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
   <p class="hero-ift">— Intelligent Funding Technology —</p>
 
   <p class="hero-desc en" style="color:var(--gold2)">
-    The first intelligent funding platform built for everyone — SSN, ITIN, and every underserved community. Match. Analyze. Fund.
+    <strong>Match. Analyze. Fund.</strong><br>Intelligent funding for every wallet, every story, every path.
   </p>
   <p class="hero-desc es" style="color:var(--gold2)">
-    La primera plataforma de financiamiento inteligente construida para todos — SSN, ITIN y cada comunidad desatendida. Empareja. Analiza. Financia.
+    <strong>Empareja. Analiza. Financia.</strong><br>Financiamiento inteligente para cada bolsillo, cada historia, cada camino.
   </p>
 
   <div class="hero-actions">
@@ -454,46 +473,29 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
     <a href="#how" class="btn-line es">Cómo Funciona</a>
   </div>
 
-  <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-n">20<sup>+</sup></div>
-      <div class="stat-l en">Years Expertise</div>
-      <div class="stat-l es">Años de Experiencia</div>
-    </div>
-    <div class="stat">
-      <div class="stat-n">SSN</div>
-      <div class="stat-l en">+ ITIN Accepted</div>
-      <div class="stat-l es">+ ITIN Aceptado</div>
-    </div>
-    <div class="stat">
-      <div class="stat-n">EN</div>
-      <div class="stat-l en">+ Spanish · Bilingual</div>
-      <div class="stat-l es">+ Español · Bilingüe</div>
-    </div>
-  </div>
 </section>
 
 <!-- MARQUEE -->
 <div class="mq-outer">
   <div class="mq-track">
-    <span class="mq-item"><span class="mq-sep"></span>20 Years of Funding Expertise</span>
+    
     <span class="mq-item"><span class="mq-sep"></span>Now Powered by Innovative Technology</span>
     <span class="mq-item"><span class="mq-sep"></span>SSN &amp; ITIN Accepted</span>
     <span class="mq-item"><span class="mq-sep"></span>Credit Profile Optimization</span>
-    <span class="mq-item"><span class="mq-sep"></span>Personal Funding Up To $100K+</span>
-    <span class="mq-item"><span class="mq-sep"></span>Business Funding Up To $500K</span>
+    <span class="mq-item"><span class="mq-sep"></span>Personal Funding · Up To $150K</span>
+    <span class="mq-item"><span class="mq-sep"></span>Business Funding · Up To $500K</span><span class="mq-item"><span class="mq-sep"></span>Startup Capital · Up To $100K</span>
     <span class="mq-item"><span class="mq-sep"></span>Dispute Resolution Services</span>
-    <span class="mq-item"><span class="mq-sep"></span>Bilingual EN · ES</span>
+    
     <span class="mq-item"><span class="mq-sep"></span>KLIERD Card · Secured &amp; Unsecured</span>
     <span class="mq-item"><span class="mq-sep"></span>Intelligent Lender Matching</span>
-    <span class="mq-item"><span class="mq-sep"></span>20 Years of Funding Expertise</span>
+    
     <span class="mq-item"><span class="mq-sep"></span>Now Powered by Innovative Technology</span>
     <span class="mq-item"><span class="mq-sep"></span>SSN &amp; ITIN Accepted</span>
     <span class="mq-item"><span class="mq-sep"></span>Credit Profile Optimization</span>
-    <span class="mq-item"><span class="mq-sep"></span>Personal Funding Up To $100K+</span>
-    <span class="mq-item"><span class="mq-sep"></span>Business Funding Up To $500K</span>
+    <span class="mq-item"><span class="mq-sep"></span>Personal Funding · Up To $150K</span>
+    <span class="mq-item"><span class="mq-sep"></span>Business Funding · Up To $500K</span><span class="mq-item"><span class="mq-sep"></span>Startup Capital · Up To $100K</span>
     <span class="mq-item"><span class="mq-sep"></span>Dispute Resolution Services</span>
-    <span class="mq-item"><span class="mq-sep"></span>Bilingual EN · ES</span>
+    
     <span class="mq-item"><span class="mq-sep"></span>KLIERD Card · Secured &amp; Unsecured</span>
     <span class="mq-item"><span class="mq-sep"></span>Intelligent Lender Matching</span>
   </div>
@@ -549,6 +551,48 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
     </div>
 
     
+
+
+<!-- ITIN DEDICATED CALLOUT BOX -->
+<section class="itin-callout-bg">
+  <div class="sw">
+    <div class="itin-call-box">
+      <div class="itin-call-grid">
+        <div class="itin-call-left">
+          <div class="itin-call-eyebrow">— FOR ITIN HOLDERS —</div>
+          <h2 class="itin-call-h en">No SSN?<br><span class="g">Full Access.</span></h2>
+          <h2 class="itin-call-h es">¿Sin SSN?<br><span class="g">Acceso Total.</span></h2>
+          <p class="itin-call-p en">KLIERD was built for ITIN clients from day one — not as an afterthought. Same technology. Same lender network. Same results. Fully bilingual, end to end.</p>
+          <p class="itin-call-p es">KLIERD fue construido para clientes ITIN desde el primer día — no como una idea posterior. Misma tecnología. Misma red de prestamistas. Mismos resultados. Completamente bilingüe.</p>
+          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold en" style="margin-top:8px">Apply With ITIN →</a>
+          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold es" style="margin-top:8px">Aplica Con ITIN →</a>
+        </div>
+        <div class="itin-call-right">
+          <div class="itin-call-card">
+            <div class="itin-call-num">01</div>
+            <div class="itin-call-title en">Personal Cards · ITIN Only</div>
+            <div class="itin-call-title es">Tarjetas Personales · Solo ITIN</div>
+          </div>
+          <div class="itin-call-card">
+            <div class="itin-call-num">02</div>
+            <div class="itin-call-title en">Business Cards · EIN Only</div>
+            <div class="itin-call-title es">Tarjetas Empresariales · Solo EIN</div>
+          </div>
+          <div class="itin-call-card">
+            <div class="itin-call-num">03</div>
+            <div class="itin-call-title en">ITIN-Friendly Lenders</div>
+            <div class="itin-call-title es">Prestamistas Amigables ITIN</div>
+          </div>
+          <div class="itin-call-card">
+            <div class="itin-call-num">04</div>
+            <div class="itin-call-title en">Bilingual · End to End</div>
+            <div class="itin-call-title es">Bilingüe · De Principio a Fin</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- HOW IT WORKS -->
 <section class="how-bg" id="how">
@@ -628,9 +672,9 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 
     <div class="ranges-grid">
       <div class="rcard">
-        <div class="r-ey en">Personal Funding</div>
-        <div class="r-ey es">Financiamiento Personal</div>
-        <div class="r-amt">$100K<sup>+</sup></div>
+        <div class="r-ey en">Personal Funding · Up To</div>
+        <div class="r-ey es">Financiamiento Personal · Hasta</div>
+        <div class="r-amt">$150K</div>
         <div class="r-title en">Personal Credit &amp; Loans</div>
         <div class="r-title es">Crédito y Préstamos Personales</div>
         <ul class="r-list">
@@ -641,8 +685,8 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
         </ul>
       </div>
       <div class="rcard">
-        <div class="r-ey en">Business Funding</div>
-        <div class="r-ey es">Financiamiento Empresarial</div>
+        <div class="r-ey en">Business Funding · Up To</div>
+        <div class="r-ey es">Financiamiento Empresarial · Hasta</div>
         <div class="r-amt">$500K</div>
         <div class="r-title en">Business Credit &amp; Loans</div>
         <div class="r-title es">Crédito y Préstamos Empresariales</div>
@@ -654,9 +698,9 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
         </ul>
       </div>
       <div class="rcard">
-        <div class="r-ey en">Startup Capital</div>
-        <div class="r-ey es">Capital Inicial</div>
-        <div class="r-amt">$125K</div>
+        <div class="r-ey en">Startup Capital · Up To</div>
+        <div class="r-ey es">Capital Inicial · Hasta</div>
+        <div class="r-amt">$100K</div>
         <div class="r-title en">Launch Funding</div>
         <div class="r-title es">Financiamiento de Lanzamiento</div>
         <ul class="r-list">
