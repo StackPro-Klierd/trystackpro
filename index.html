@@ -743,6 +743,40 @@ section + section::before{
   .itin2-strip{font-size:9.5px;letter-spacing:0.3em}
   .itin2-h{font-size:clamp(30px,8vw,42px)}
 }
+
+/* HERO V3 - clean professional fintech */
+.hero{padding:88px 22px 56px !important;min-height:auto !important;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-h1{
+  font-family:var(--display) !important;
+  font-size:clamp(48px,7.5vw,104px) !important;
+  line-height:0.98 !important;font-weight:800 !important;letter-spacing:-0.025em !important;
+  margin:18px 0 22px !important;text-transform:none !important;max-width:1100px !important;
+  background:none !important;-webkit-text-fill-color:initial !important;color:var(--gold2) !important;
+  animation:none !important;
+}
+.hero-h1 .it-acc{font-style:italic;font-weight:400;display:inline-block}
+.hero-sub{
+  font-family:var(--display);font-size:clamp(13px,1.3vw,17px);
+  font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gold2);margin:0 0 18px;opacity:0.85;
+}
+.hero-line{
+  font-family:var(--display);font-size:clamp(20px,2.3vw,30px);
+  line-height:1.35;color:var(--gold2);font-weight:400;
+  margin:0 auto 36px;max-width:780px;letter-spacing:-0.005em;
+}
+.hero-line .cycle{font-weight:700;font-style:italic}
+.hero-actions{
+  display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
+  margin:0 auto 28px;
+}
+.hero-meta{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:0.22em;
+  color:var(--gold);opacity:0.55;text-transform:uppercase;
+  display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;
+}
+.hero-meta .dot{opacity:0.4}
+.hero-badge{margin-bottom:6px}
 </style>
 </head>
 <body class="lang-en">
@@ -779,29 +813,33 @@ section + section::before{
 
   <div class="hero-badge">
     <div class="pulse"></div>
-    <span class="en">New — Intelligent Funding Technology</span>
-    <span class="es">Nuevo — Tecnología de Financiamiento Inteligente</span>
+    <span class="en">Intelligent Funding Technology</span>
+    <span class="es">Tecnología de Financiamiento Inteligente</span>
   </div>
 
-  <h1 class="hero-h1"><span class="g">KLIER</span>ING<br>YOUR PATH</h1>
-  <p class="hero-tagline en">YOU HAVE NOW BEEN <span class="hero-klierd">KLIERD</span></p>
-  <p class="hero-tagline en hero-welcome">— WELCOME TO <span class="hero-klierd">KLIERD</span> —</p>
-  <p class="hero-tagline es">AHORA HAS SIDO <span class="hero-klierd">KLIERD</span></p>
-  <p class="hero-tagline es hero-welcome">— BIENVENIDO A <span class="hero-klierd">KLIERD</span> —</p>
-  <p class="hero-ift">— Intelligent Funding Technology —</p>
+  <h1 class="hero-h1">
+    <span class="en">Kliering <span class="it-acc">your path.</span></span>
+    <span class="es">Klierando <span class="it-acc">tu camino.</span></span>
+  </h1>
 
-  <p class="hero-desc en" style="color:var(--gold2)">
-    <strong>Match. Analyze. Fund.</strong><br>Intelligent funding for <span class="cycle" data-cycle-en="every dream|every story|every path|every founder|every family"><span class="cycle-w on">every dream</span></span>.
-  </p>
-  <p class="hero-desc es" style="color:var(--gold2)">
-    <strong>Empareja. Analiza. Financia.</strong><br>Financiamiento inteligente para <span class="cycle" data-cycle-es="cada sueño|cada historia|cada camino|cada fundador|cada familia"><span class="cycle-w on">cada sueño</span></span>.
-  </p>
+  <p class="hero-sub en">You have now been <span class="hero-klierd">KLIERD</span> — welcome.</p>
+  <p class="hero-sub es">Ahora has sido <span class="hero-klierd">KLIERD</span> — bienvenido.</p>
+
+  <p class="hero-line en">Intelligent funding for <span class="cycle" data-cycle-en="every dream|every story|every path|every founder|every family"><span class="cycle-w on">every dream</span></span>.</p>
+  <p class="hero-line es">Financiamiento inteligente para <span class="cycle" data-cycle-es="cada sueño|cada historia|cada camino|cada fundador|cada familia"><span class="cycle-w on">cada sueño</span></span>.</p>
 
   <div class="hero-actions">
-    <a href="https://trystackpro.com/apply.html" class="btn-gold en">Start Your Application →</a>
+    <a href="https://trystackpro.com/apply.html" class="btn-gold en">Start Application →</a>
     <a href="https://trystackpro.com/apply.html" class="btn-gold es">Iniciar Solicitud →</a>
-    <a href="#how" class="btn-line en">See How It Works</a>
+    <a href="#how" class="btn-line en">How It Works</a>
     <a href="#how" class="btn-line es">Cómo Funciona</a>
+  </div>
+
+  <div class="hero-meta en">
+    <span>SSN & ITIN</span><span class="dot">·</span><span>Bilingual EN · ES</span><span class="dot">·</span><span>Up to $500K</span>
+  </div>
+  <div class="hero-meta es">
+    <span>SSN & ITIN</span><span class="dot">·</span><span>Bilingüe</span><span class="dot">·</span><span>Hasta $500K</span>
   </div>
 
 </section>
