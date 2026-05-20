@@ -1950,9 +1950,9 @@ document.querySelectorAll("a[href^='#']").forEach(a=>{
     setTimeout(() => p.remove(), 11000);
   }
   // Spawn a particle every 350ms
-  setInterval(spawn, 350);
+  setInterval(spawn, 900);
   // Initial burst
-  for(let i = 0; i < 6; i++) setTimeout(spawn, i * 200);
+  for(let i = 0; i < 2; i++) setTimeout(spawn, i * 400);
 })();
 
 // 3D tilt on cards
