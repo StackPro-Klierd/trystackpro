@@ -97,10 +97,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .hero-ift{font-family:var(--mono);font-size:clamp(10px,1vw,13px);
   letter-spacing:0.26em;color:var(--white);text-transform:uppercase;
   margin-bottom:40px;animation:fu .7s .22s ease both;opacity:.82}
-.hero-desc{max-width:900px;font-size:clamp(22px,3.2vw,40px);font-weight:500;color:var(--cream);
-  line-height:1.35;margin-bottom:60px;animation:fu .7s .3s ease both;font-family:var(--display);letter-spacing:-0.01em}
-.hero-desc strong{display:block;font-size:clamp(14px,1.4vw,18px);font-weight:700;letter-spacing:0.3em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-family:var(--mono)}
+.hero-desc{max-width:560px;font-size:17px;font-weight:300;color:var(--gold2);
+  line-height:1.78;margin-bottom:56px;animation:fu .7s .3s ease both}
 .hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
   animation:fu .7s .38s ease both}
 .btn-gold{background:var(--gold2);color:#000;font-weight:700;font-size:14px;border:2px solid var(--gold2);
@@ -444,12 +442,9 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 .hero-glow{will-change:transform}
 
 /* Hero cycle word — fade switch */
-.cycle{display:inline-block;position:relative;min-height:1em;font-weight:800;font-style:italic;
-  background:linear-gradient(120deg,#c9960c,#ffd76b,#e8b020);background-size:200% 100%;
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-  animation:goldsweep 4s ease-in-out infinite;white-space:nowrap}
-.cycle-w{display:inline-block;opacity:1;transform:translateY(0);transition:opacity .35s ease,transform .35s ease}
-
+.cycle{display:inline-block;position:relative;min-height:1em;color:var(--gold);font-weight:700}
+.cycle-w{display:inline-block;opacity:0;transform:translateY(8px);transition:opacity .55s ease,transform .55s ease;position:absolute;left:0;top:0;white-space:nowrap}
+.cycle-w.on{opacity:1;transform:translateY(0);position:relative}
 
 /* Gentle scroll-fade for sections */
 section{scroll-margin-top:80px}
@@ -662,417 +657,6 @@ section + section::before{
   animation:goldsweep 4s ease-in-out infinite;
   font-family:var(--display);
 }
-
-/* CONFETTI BURST */
-.confetti-host{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99998;overflow:hidden}
-.confetti-piece{position:absolute;width:8px;height:14px;border-radius:1px;will-change:transform,opacity}
-@keyframes confetti-fall{
-  0%{transform:translate(0,0) rotate(0deg);opacity:1}
-  100%{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}
-}
-
-.hero-welcome{font-size:clamp(11px,1.1vw,15px) !important;letter-spacing:0.32em !important;opacity:0.85;margin-top:-4px}
-
-/* ITIN CALLOUT v2 — gold-only, no white text, tech-forward */
-.itin2-box{
-  position:relative;
-  border:1px solid rgba(201,150,12,0.35);
-  border-radius:4px;
-  background:
-    linear-gradient(135deg, rgba(232,176,32,0.05) 0%, rgba(0,0,0,0.4) 100%),
-    radial-gradient(circle at top right, rgba(232,176,32,0.08), transparent 60%);
-  padding:48px 56px 56px;
-  overflow:hidden;
-}
-.itin2-box::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(232,176,32,0.6),transparent);
-}
-.itin2-strip{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:0.4em;
-  color:var(--gold2);opacity:0.6;
-  text-align:center;margin-bottom:36px;
-}
-.itin2-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:center}
-.itin2-left{display:flex;flex-direction:column;gap:18px}
-.itin2-tag{
-  font-family:var(--mono);font-size:11px;letter-spacing:0.32em;
-  color:var(--gold);text-transform:uppercase;margin-bottom:4px;
-}
-.itin2-h{
-  font-family:var(--display);font-size:clamp(36px,4.5vw,58px);
-  line-height:0.98;font-weight:800;letter-spacing:-0.015em;
-  color:var(--gold2);margin:0;text-transform:none;
-}
-.itin2-h .it-acc{font-size:0.95em}
-.itin2-p{
-  font-family:var(--body);font-size:16.5px;line-height:1.6;
-  color:var(--gold2);opacity:0.82;margin:0;max-width:480px;
-}
-.itin2-right{
-  display:flex;flex-direction:column;gap:1px;
-  background:rgba(201,150,12,0.18);
-  border:1px solid rgba(201,150,12,0.25);
-}
-.itin2-feat{
-  display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;
-  background:rgba(8,8,8,0.85);padding:18px 22px;
-  transition:background 0.25s ease, padding-left 0.25s ease;
-}
-.itin2-feat:hover{
-  background:rgba(20,16,8,0.95);
-  padding-left:28px;
-}
-.itin2-feat-key{
-  font-family:var(--mono);font-size:11px;letter-spacing:0.2em;
-  color:var(--gold);min-width:24px;
-}
-.itin2-feat-body{display:flex;flex-direction:column;gap:2px}
-.itin2-feat-t{
-  font-family:var(--display);font-size:16px;font-weight:700;
-  color:var(--gold2);letter-spacing:0.01em;
-}
-.itin2-feat-s{
-  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
-  color:var(--gold);opacity:0.7;
-}
-
-@media (max-width:900px){
-  .itin2-grid{grid-template-columns:1fr;gap:36px}
-  .itin2-box{padding:32px 24px 40px}
-  .itin2-strip{font-size:9.5px;letter-spacing:0.3em}
-  .itin2-h{font-size:clamp(30px,8vw,42px)}
-}
-
-/* HERO V3 - clean professional fintech */
-.hero{padding:88px 22px 56px !important;min-height:auto !important;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.hero-h1{
-  font-family:var(--display) !important;
-  font-size:clamp(48px,7.5vw,104px) !important;
-  line-height:0.98 !important;font-weight:800 !important;letter-spacing:-0.025em !important;
-  margin:18px 0 22px !important;text-transform:none !important;max-width:1100px !important;
-  background:none !important;-webkit-text-fill-color:initial !important;color:var(--gold2) !important;
-  animation:none !important;
-}
-.hero-h1 .it-acc{font-style:italic;font-weight:400;display:inline-block}
-.hero-sub{
-  font-family:var(--display);font-size:clamp(13px,1.3vw,17px);
-  font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
-  color:var(--gold2);margin:0 0 18px;opacity:0.85;
-}
-.hero-line{
-  font-family:var(--display);font-size:clamp(20px,2.3vw,30px);
-  line-height:1.35;color:var(--gold2);font-weight:400;
-  margin:0 auto 36px;max-width:780px;letter-spacing:-0.005em;
-}
-.hero-line .cycle{font-weight:700;font-style:italic}
-.hero-actions{
-  display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
-  margin:0 auto 28px;
-}
-.hero-meta{
-  font-family:var(--mono);font-size:11.5px;letter-spacing:0.22em;
-  color:var(--gold);opacity:0.55;text-transform:uppercase;
-  display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;
-}
-.hero-meta .dot{opacity:0.4}
-.hero-badge{margin-bottom:6px}
-
-.hero-line strong{color:var(--gold);font-weight:800;font-style:normal}
-.hero-audience{
-  font-family:var(--display);font-size:clamp(15px,1.4vw,19px);
-  color:var(--gold2);opacity:0.85;margin:-22px auto 36px;max-width:720px;
-  font-weight:400;
-}
-.hero-audience strong{color:var(--gold);font-weight:700}
-
-/* ════════════════════════════════════════════════════════
-   PROFESSIONAL FINTECH RESET — final layer
-   Kills the noise, restrains the gold, unifies type.
-   ════════════════════════════════════════════════════════ */
-
-/* Kill ALL text-gradient animations — solid gold only */
-.hero-h1,
-.hero-klierd,
-.it-acc,
-.cycle,
-.count-up{
-  background:none !important;
-  -webkit-background-clip:initial !important;
-  background-clip:initial !important;
-  -webkit-text-fill-color:initial !important;
-  color:var(--gold) !important;
-  animation:none !important;
-  filter:none !important;
-  text-shadow:none !important;
-}
-
-/* H1 reset — solid color, no gradient, smaller, sentence case */
-.hero-h1{
-  font-family:var(--display) !important;
-  font-size:clamp(44px,6.5vw,84px) !important;
-  line-height:1.0 !important;
-  font-weight:400 !important;
-  letter-spacing:0.01em !important;
-  color:var(--gold2) !important;
-  margin:14px 0 18px !important;
-  text-transform:uppercase !important;
-}
-.hero-h1 .it-acc{
-  font-family:Georgia,"Times New Roman",serif !important;
-  font-style:italic !important;
-  font-weight:400 !important;
-  text-transform:none !important;
-  color:var(--gold) !important;
-  letter-spacing:-0.01em !important;
-}
-
-/* Hide all particles */
-#particles,.particle,.confetti-host{display:none !important}
-
-/* Stop all pulse / glow / sheen animations */
-.hero-badge,
-.btn-gold,
-.nav-apply,
-.itin-call-box::after,
-.itin2-box::before,
-.mq-track{
-  animation:none !important;
-}
-.mq-track{animation:mq 38s linear infinite !important}
-
-/* Kill scroll progress bar */
-.scroll-bar{display:none !important}
-
-/* Buttons — flat, no pulse, no magnetic */
-.btn-gold{
-  background:var(--gold) !important;
-  color:#000 !important;
-  border:1px solid var(--gold) !important;
-  padding:14px 32px !important;
-  font-family:var(--body) !important;
-  font-size:14px !important;
-  font-weight:600 !important;
-  letter-spacing:0.04em !important;
-  text-transform:none !important;
-  border-radius:3px !important;
-  box-shadow:none !important;
-  transition:background 0.2s ease, transform 0.2s ease !important;
-}
-.btn-gold:hover{
-  background:#f5d060 !important;
-  transform:translateY(-1px) !important;
-  box-shadow:0 8px 24px -8px rgba(232,176,32,0.4) !important;
-}
-.btn-gold::after{display:none !important}
-
-.btn-line{
-  background:transparent !important;
-  color:var(--gold2) !important;
-  border:1px solid rgba(201,150,12,0.4) !important;
-  padding:14px 32px !important;
-  font-family:var(--body) !important;
-  font-size:14px !important;
-  font-weight:600 !important;
-  letter-spacing:0.04em !important;
-  text-transform:none !important;
-  border-radius:3px !important;
-  transition:border-color 0.2s, color 0.2s !important;
-}
-.btn-line:hover{
-  border-color:var(--gold) !important;
-  color:var(--gold) !important;
-  transform:none !important;
-}
-
-/* Cards — flat, clean, no 3D tilt */
-.dna-card,.path-card,.rcard,.itin-call-card,.fcard,.itin2-feat{
-  transform:none !important;
-  transform-style:initial !important;
-  perspective:none !important;
-}
-.dna-card:hover,.path-card:hover,.rcard:hover,.fcard:hover{
-  transform:translateY(-3px) !important;
-  border-color:var(--gold) !important;
-  box-shadow:0 16px 40px -16px rgba(0,0,0,0.6) !important;
-}
-.dna-card,.path-card,.rcard{
-  background:#0d0d0d !important;
-  border:1px solid #1a1a1a !important;
-  border-radius:6px !important;
-  padding:32px 28px !important;
-}
-
-/* Hero — clean breathing room */
-.hero{
-  min-height:auto !important;
-  padding:96px 22px 88px !important;
-}
-.hero-badge{
-  display:inline-flex !important;
-  background:rgba(232,176,32,0.08) !important;
-  border:1px solid rgba(232,176,32,0.3) !important;
-  border-radius:99px !important;
-  padding:7px 16px !important;
-  font-family:var(--mono) !important;
-  font-size:10.5px !important;
-  letter-spacing:0.2em !important;
-  text-transform:uppercase !important;
-  color:var(--gold) !important;
-  margin-bottom:24px !important;
-}
-.hero-badge .pulse{
-  width:6px;height:6px;border-radius:50%;background:var(--gold);
-  animation:none !important;
-}
-
-.hero-sub{
-  font-family:var(--body) !important;
-  font-size:13px !important;
-  font-weight:600 !important;
-  letter-spacing:0.18em !important;
-  text-transform:uppercase !important;
-  color:var(--gold) !important;
-  opacity:0.7 !important;
-  margin:0 0 28px !important;
-}
-.hero-klierd{
-  font-family:var(--display) !important;
-  font-weight:400 !important;
-  font-size:1.05em !important;
-  letter-spacing:0.05em !important;
-}
-
-.hero-line{
-  font-family:var(--body) !important;
-  font-size:clamp(17px,2vw,22px) !important;
-  font-weight:400 !important;
-  line-height:1.55 !important;
-  color:#e8e8e8 !important;
-  margin:0 auto 14px !important;
-  max-width:680px !important;
-  letter-spacing:0 !important;
-}
-.hero-line strong{color:var(--gold) !important;font-weight:700 !important}
-
-.hero-audience{
-  font-family:var(--body) !important;
-  font-size:clamp(14px,1.3vw,16px) !important;
-  color:#999 !important;
-  margin:0 auto 40px !important;
-  max-width:600px !important;
-  opacity:1 !important;
-  font-weight:400 !important;
-}
-.hero-audience strong{color:var(--gold2) !important;font-weight:600 !important}
-
-.hero-actions{margin:0 auto 44px !important;gap:12px !important}
-
-.hero-meta{
-  font-family:var(--mono) !important;
-  font-size:10.5px !important;
-  letter-spacing:0.25em !important;
-  color:#666 !important;
-  text-transform:uppercase !important;
-  display:flex !important;
-  gap:12px !important;
-  justify-content:center !important;
-}
-.hero-meta .dot{color:#444 !important}
-
-/* Section headlines — unified treatment */
-.sec-h{
-  font-family:var(--display) !important;
-  font-size:clamp(40px,5.5vw,72px) !important;
-  line-height:1.0 !important;
-  letter-spacing:0.01em !important;
-  color:var(--gold2) !important;
-}
-.sec-h .it-acc{
-  font-family:Georgia,"Times New Roman",serif !important;
-  font-style:italic !important;
-  font-weight:400 !important;
-  color:var(--gold) !important;
-  text-transform:none !important;
-  letter-spacing:-0.005em !important;
-}
-.sec-tag{
-  font-family:var(--mono) !important;
-  font-size:11px !important;
-  letter-spacing:0.28em !important;
-  color:var(--gold) !important;
-  opacity:0.7 !important;
-}
-.sec-p{
-  font-family:var(--body) !important;
-  font-size:16px !important;
-  line-height:1.7 !important;
-  color:#bbb !important;
-  font-weight:400 !important;
-}
-
-/* Funding range numbers — clean solid gold */
-.r-amt{
-  font-family:var(--display) !important;
-  font-size:56px !important;
-  letter-spacing:0.02em !important;
-  color:var(--gold) !important;
-  margin:8px 0 14px !important;
-}
-
-/* Marquee — restrained */
-.mq-outer{background:#0a0a0a !important;border-top:1px solid #1a1a1a !important;border-bottom:1px solid #1a1a1a !important}
-.mq-item{
-  font-family:var(--mono) !important;
-  font-size:11.5px !important;
-  letter-spacing:0.22em !important;
-  color:#888 !important;
-  font-weight:500 !important;
-  text-transform:uppercase !important;
-}
-.mq-sep{
-  display:inline-block;width:4px;height:4px;border-radius:50%;
-  background:var(--gold) !important;margin:0 16px;opacity:0.5
-}
-
-/* Three Pillars — equal flat boxes */
-.dna-grid{gap:14px !important;border:none !important;background:transparent !important}
-.dna-card{
-  min-height:auto !important;
-}
-.dna-name{
-  font-family:var(--display) !important;
-  color:var(--gold) !important;
-  font-size:32px !important;
-  letter-spacing:0.04em !important;
-}
-.dna-parent{
-  font-family:var(--mono) !important;
-  font-size:10.5px !important;
-  letter-spacing:0.28em !important;
-  color:#777 !important;
-  margin-bottom:14px !important;
-}
-.dna-list li{
-  font-family:var(--body) !important;
-  font-size:14.5px !important;
-  line-height:1.55 !important;
-  color:#bbb !important;
-  font-weight:400 !important;
-}
-.dna-list li::before{color:var(--gold) !important}
-
-/* Reveal — keep but subtle */
-.reveal{transform:translateY(20px) !important;transition-duration:0.6s !important}
-.reveal.in{transform:translateY(0) !important}
-
-/* Hero badge — no glow */
-@keyframes badge-glow{from{box-shadow:none}to{box-shadow:none}}
-
-@media (max-width:900px){
-  .hero{padding:60px 18px 50px !important}
-  .hero-h1{font-size:clamp(34px,9vw,52px) !important}
-}
 </style>
 </head>
 <body class="lang-en">
@@ -1109,31 +693,27 @@ section + section::before{
 
   <div class="hero-badge">
     <div class="pulse"></div>
-    <span class="en">Intelligent Funding Technology</span>
-    <span class="es">Tecnología de Financiamiento Inteligente</span>
+    <span class="en">New — Intelligent Funding Technology</span>
+    <span class="es">Nuevo — Tecnología de Financiamiento Inteligente</span>
   </div>
 
-  <p class="hero-sub en">You have now been <span class="hero-klierd">KLIERD</span> — welcome.</p>
-  <p class="hero-sub es">Ahora has sido <span class="hero-klierd">KLIERD</span> — bienvenido.</p>
+  <h1 class="hero-h1"><span class="g">KLIER</span>ING<br>YOUR PATH</h1>
+  <p class="hero-tagline en">YOU ARE NOW <span class="hero-klierd">KLIERD</span></p>
+  <p class="hero-tagline es">AHORA ERES <span class="hero-klierd">KLIERD</span></p>
+  <p class="hero-ift">— Intelligent Funding Technology —</p>
 
-  <p class="hero-line en">Personal funding up to <strong>$150K</strong>. Business funding up to <strong>$500K</strong>. Credit disputes included.</p>
-  <p class="hero-line es">Financiamiento personal hasta <strong>$150K</strong>. Empresarial hasta <strong>$500K</strong>. Disputas de crédito incluidas.</p>
-
-  <p class="hero-audience en">Built for <strong>SSN and ITIN holders</strong>. Fully bilingual — English and Spanish.</p>
-  <p class="hero-audience es">Para <strong>titulares de SSN e ITIN</strong>. Completamente bilingüe — inglés y español.</p>
+  <p class="hero-desc en" style="color:var(--gold2)">
+    <strong>Match. Analyze. Fund.</strong><br>Intelligent funding for <span class="cycle" data-cycle-en="every dream|every story|every path|every founder|every family"><span class="cycle-w on">every dream</span></span>.
+  </p>
+  <p class="hero-desc es" style="color:var(--gold2)">
+    <strong>Empareja. Analiza. Financia.</strong><br>Financiamiento inteligente para <span class="cycle" data-cycle-es="cada sueño|cada historia|cada camino|cada fundador|cada familia"><span class="cycle-w on">cada sueño</span></span>.
+  </p>
 
   <div class="hero-actions">
-    <a href="https://trystackpro.com/apply.html" class="btn-gold en">Start Application →</a>
+    <a href="https://trystackpro.com/apply.html" class="btn-gold en">Start Your Application →</a>
     <a href="https://trystackpro.com/apply.html" class="btn-gold es">Iniciar Solicitud →</a>
-    <a href="#how" class="btn-line en">How It Works</a>
+    <a href="#how" class="btn-line en">See How It Works</a>
     <a href="#how" class="btn-line es">Cómo Funciona</a>
-  </div>
-
-  <div class="hero-meta en">
-    <span>SSN & ITIN</span><span class="dot">·</span><span>Bilingual EN · ES</span><span class="dot">·</span><span>Up to $500K</span>
-  </div>
-  <div class="hero-meta es">
-    <span>SSN & ITIN</span><span class="dot">·</span><span>Bilingüe</span><span class="dot">·</span><span>Hasta $500K</span>
   </div>
 
 </section>
@@ -1177,14 +757,14 @@ section + section::before{
     <div class="dna-grid">
       <div class="dna-card reveal">
         <div class="dna-parent">Pillar 01</div>
-        <div class="dna-name en">Access</div>
-        <div class="dna-name es">Acceso</div>
+        <div class="dna-name en">Dispute</div>
+        <div class="dna-name es">Disputas</div>
         <ul class="dna-list">
-          <li><span class="en">ITIN holders — full access to every product and service</span><span class="es">Titulares de ITIN — acceso completo a todos los productos</span></li>
-          <li><span class="en">Bilingual platform — English and Spanish throughout</span><span class="es">Plataforma bilingüe — inglés y español en todo momento</span></li>
-          <li><span class="en">Lower minimum thresholds than industry standard — more people qualify</span><span class="es">Umbrales más bajos que el estándar de la industria — más personas califican</span></li>
-          <li><span class="en">KLIERD Card — secured and unsecured, builds tradelines</span><span class="es">Tarjeta KLIERD — asegurada y no asegurada, construye tradelines</span></li>
-          <li><span class="en">Startup-friendly — new business welcome, no revenue required</span><span class="es">Amigable para startups — nuevos negocios bienvenidos</span></li>
+          <li><span class="en">Intelligent dispute resolution services</span><span class="es">Servicios inteligentes de resolución de disputas</span></li>
+          <li><span class="en">Equifax, TransUnion, and Experian — separately</span><span class="es">Equifax, TransUnion y Experian — por separado</span></li>
+          <li><span class="en">Inaccurate, unverifiable, and outdated items removed</span><span class="es">Elementos inexactos, inverificables y obsoletos eliminados</span></li>
+          <li><span class="en">Credit profile optimization for maximum funding readiness</span><span class="es">Optimización de perfil para máxima preparación</span></li>
+          <li><span class="en">Real-time monitoring and score alerts</span><span class="es">Monitoreo en tiempo real y alertas de puntuación</span></li>
         </ul>
       </div>
       <div class="dna-card reveal">
@@ -1201,14 +781,14 @@ section + section::before{
       </div>
       <div class="dna-card reveal">
         <div class="dna-parent">Pillar 03</div>
-        <div class="dna-name en">Dispute</div>
-        <div class="dna-name es">Disputas</div>
+        <div class="dna-name en">Access</div>
+        <div class="dna-name es">Acceso</div>
         <ul class="dna-list">
-          <li><span class="en">Intelligent dispute resolution services</span><span class="es">Servicios inteligentes de resolución de disputas</span></li>
-          <li><span class="en">Equifax, TransUnion, and Experian — separately</span><span class="es">Equifax, TransUnion y Experian — por separado</span></li>
-          <li><span class="en">Inaccurate, unverifiable, and outdated items removed</span><span class="es">Elementos inexactos, inverificables y obsoletos eliminados</span></li>
-          <li><span class="en">Credit profile optimization for maximum funding readiness</span><span class="es">Optimización de perfil para máxima preparación</span></li>
-          <li><span class="en">Real-time monitoring and score alerts</span><span class="es">Monitoreo en tiempo real y alertas de puntuación</span></li>
+          <li><span class="en">ITIN holders — full access to every product and service</span><span class="es">Titulares de ITIN — acceso completo a todos los productos</span></li>
+          <li><span class="en">Bilingual platform — English and Spanish throughout</span><span class="es">Plataforma bilingüe — inglés y español en todo momento</span></li>
+          <li><span class="en">Lower minimum thresholds than industry standard — more people qualify</span><span class="es">Umbrales más bajos que el estándar de la industria — más personas califican</span></li>
+          <li><span class="en">KLIERD Card — secured and unsecured, builds tradelines</span><span class="es">Tarjeta KLIERD — asegurada y no asegurada, construye tradelines</span></li>
+          <li><span class="en">Startup-friendly — new business welcome, no revenue required</span><span class="es">Amigable para startups — nuevos negocios bienvenidos</span></li>
         </ul>
       </div>
     </div>
@@ -1216,74 +796,42 @@ section + section::before{
     
 
 
-<!-- ITIN DEDICATED CALLOUT BOX (v2 — tech-forward, gold-only) -->
+<!-- ITIN DEDICATED CALLOUT BOX -->
 <section class="itin-callout-bg">
   <div class="sw">
-    <div class="itin2-box">
-
-      <!-- top eyebrow strip -->
-      <div class="itin2-strip">
-        <span class="itin2-strip-en en">— BUILT FOR ITIN HOLDERS · DESDE EL DIA UNO —</span>
-        <span class="itin2-strip-es es">— CONSTRUIDO PARA TITULARES DE ITIN · FROM DAY ONE —</span>
-      </div>
-
-      <div class="itin2-grid">
-
-        <!-- LEFT: headline + copy -->
-        <div class="itin2-left">
-          <div class="itin2-tag en">For ITIN Holders</div>
-          <div class="itin2-tag es">Para Titulares de ITIN</div>
-
-          <h2 class="itin2-h en">No SSN. <span class="it-acc">Full access.</span></h2>
-          <h2 class="itin2-h es">Sin SSN. <span class="it-acc">Acceso total.</span></h2>
-
-          <p class="itin2-p en">Same technology. Same lender network. Same results. ITIN is not an afterthought at KLIERD — it is the foundation.</p>
-          <p class="itin2-p es">Misma tecnología. Misma red de prestamistas. Mismos resultados. ITIN no es una idea posterior en KLIERD — es la base.</p>
-
-          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold en">Apply With ITIN →</a>
-          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold es">Aplica Con ITIN →</a>
+    <div class="itin-call-box">
+      <div class="itin-call-grid">
+        <div class="itin-call-left">
+          <div class="itin-call-eyebrow">— FOR ITIN HOLDERS —</div>
+          <h2 class="itin-call-h en">No SSN?<br><span class="g">Full Access.</span></h2>
+          <h2 class="itin-call-h es">¿Sin SSN?<br><span class="g">Acceso Total.</span></h2>
+          <p class="itin-call-p en">KLIERD was built for ITIN clients from day one — not as an afterthought. Same technology. Same lender network. Same results. Fully bilingual, end to end.</p>
+          <p class="itin-call-p es">KLIERD fue construido para clientes ITIN desde el primer día — no como una idea posterior. Misma tecnología. Misma red de prestamistas. Mismos resultados. Completamente bilingüe.</p>
+          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold en" style="margin-top:8px">Apply With ITIN →</a>
+          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold es" style="margin-top:8px">Aplica Con ITIN →</a>
         </div>
-
-        <!-- RIGHT: feature stack (no white text) -->
-        <div class="itin2-right">
-          <div class="itin2-feat">
-            <div class="itin2-feat-key">01</div>
-            <div class="itin2-feat-body">
-              <div class="itin2-feat-t en">Personal Cards</div>
-              <div class="itin2-feat-t es">Tarjetas Personales</div>
-              <div class="itin2-feat-s en">ITIN-only · no SSN required</div>
-              <div class="itin2-feat-s es">Solo ITIN · sin SSN</div>
-            </div>
+        <div class="itin-call-right">
+          <div class="itin-call-card reveal">
+            <div class="itin-call-num">01</div>
+            <div class="itin-call-title en">Personal Cards · ITIN Only</div>
+            <div class="itin-call-title es">Tarjetas Personales · Solo ITIN</div>
           </div>
-          <div class="itin2-feat">
-            <div class="itin2-feat-key">02</div>
-            <div class="itin2-feat-body">
-              <div class="itin2-feat-t en">Business Cards</div>
-              <div class="itin2-feat-t es">Tarjetas Empresariales</div>
-              <div class="itin2-feat-s en">EIN-only · no personal pull</div>
-              <div class="itin2-feat-s es">Solo EIN · sin verificación personal</div>
-            </div>
+          <div class="itin-call-card reveal">
+            <div class="itin-call-num">02</div>
+            <div class="itin-call-title en">Business Cards · EIN Only</div>
+            <div class="itin-call-title es">Tarjetas Empresariales · Solo EIN</div>
           </div>
-          <div class="itin2-feat">
-            <div class="itin2-feat-key">03</div>
-            <div class="itin2-feat-body">
-              <div class="itin2-feat-t en">ITIN Lenders</div>
-              <div class="itin2-feat-t es">Prestamistas ITIN</div>
-              <div class="itin2-feat-s en">Curated partner network</div>
-              <div class="itin2-feat-s es">Red de socios curada</div>
-            </div>
+          <div class="itin-call-card reveal">
+            <div class="itin-call-num">03</div>
+            <div class="itin-call-title en">ITIN-Friendly Lenders</div>
+            <div class="itin-call-title es">Prestamistas Amigables ITIN</div>
           </div>
-          <div class="itin2-feat">
-            <div class="itin2-feat-key">04</div>
-            <div class="itin2-feat-body">
-              <div class="itin2-feat-t en">Bilingual</div>
-              <div class="itin2-feat-t es">Bilingüe</div>
-              <div class="itin2-feat-s en">End-to-end English &amp; Spanish</div>
-              <div class="itin2-feat-s es">Inglés y español de principio a fin</div>
-            </div>
+          <div class="itin-call-card reveal">
+            <div class="itin-call-num">04</div>
+            <div class="itin-call-title en">Bilingual · End to End</div>
+            <div class="itin-call-title es">Bilingüe · De Principio a Fin</div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -2199,35 +1747,26 @@ document.querySelectorAll("a[href^='#']").forEach(a=>{
   });
 })();
 
-// Hero word cycler — single span, swap text with fade (no DOM accumulation)
+// Hero word cycler — swap text every 2.6s with fade
 (function(){
   function attach(node){
-    const data = node.dataset.cycleEn || node.dataset.cycleEs;
-    if(!data) return;
-    const words = data.split('|');
-    // Force single child span: clear any extras
-    const spans = node.querySelectorAll('.cycle-w');
-    spans.forEach((s, idx) => { if(idx > 0) s.remove(); });
-    let span = node.querySelector('.cycle-w');
-    if(!span){
-      span = document.createElement('span');
-      span.className = 'cycle-w on';
-      span.textContent = words[0];
-      node.appendChild(span);
-    }
-    // Ensure exactly one .on class
-    span.classList.add('on');
+    const lang = node.dataset.cycleEn ? 'en' : 'es';
+    const words = (node.dataset.cycleEn || node.dataset.cycleEs).split('|');
     let i = 0;
     setInterval(() => {
       i = (i + 1) % words.length;
-      span.style.transition = 'opacity .35s ease, transform .35s ease';
-      span.style.opacity = '0';
-      span.style.transform = 'translateY(6px)';
-      setTimeout(() => {
-        span.textContent = words[i];
-        span.style.opacity = '1';
-        span.style.transform = 'translateY(0)';
-      }, 360);
+      const cur = node.querySelector('.cycle-w.on');
+      const next = document.createElement('span');
+      next.className = 'cycle-w';
+      next.textContent = words[i];
+      node.appendChild(next);
+      requestAnimationFrame(() => {
+        next.classList.add('on');
+        if(cur){
+          cur.classList.remove('on');
+          setTimeout(() => cur.remove(), 600);
+        }
+      });
     }, 2600);
   }
   document.querySelectorAll('.cycle').forEach(attach);
@@ -2282,9 +1821,9 @@ document.querySelectorAll("a[href^='#']").forEach(a=>{
     setTimeout(() => p.remove(), 11000);
   }
   // Spawn a particle every 350ms
-  setInterval(spawn, 900);
+  setInterval(spawn, 350);
   // Initial burst
-  for(let i = 0; i < 2; i++) setTimeout(spawn, i * 400);
+  for(let i = 0; i < 6; i++) setTimeout(spawn, i * 200);
 })();
 
 // 3D tilt on cards
@@ -2320,66 +1859,6 @@ document.querySelectorAll("a[href^='#']").forEach(a=>{
       btn.style.transform = '';
     });
   });
-})();
-
-
-/* ── CONFETTI BURST on Apply Now click ───────────────────── */
-(function(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const host = document.createElement('div');
-  host.className = 'confetti-host';
-  document.body.appendChild(host);
-
-  const palette = ['#e8b020','#c9960c','#ffd76b','#f5d060','#ffffff','#fff4d6'];
-
-  function burst(originX, originY){
-    const count = 80;
-    for(let i = 0; i < count; i++){
-      const p = document.createElement('div');
-      p.className = 'confetti-piece';
-      const color = palette[Math.floor(Math.random()*palette.length)];
-      const size = 6 + Math.random()*8;
-      const angle = Math.random() * Math.PI * 2;
-      const velocity = 200 + Math.random()*400;
-      const x = Math.cos(angle) * velocity;
-      const y = Math.sin(angle) * velocity - 200;  // bias upward
-      const rot = (Math.random() - 0.5) * 1080;
-      const dur = 1200 + Math.random()*1200;
-
-      p.style.cssText = `
-        left:${originX}px;top:${originY}px;
-        width:${size}px;height:${size*1.6}px;
-        background:${color};
-        box-shadow:0 0 8px ${color};
-        --x:${x}px; --y:${y}px; --r:${rot}deg;
-        animation:confetti-fall ${dur}ms cubic-bezier(.16,.84,.32,1) forwards;
-      `;
-      host.appendChild(p);
-      setTimeout(() => p.remove(), dur + 100);
-    }
-  }
-
-  function isApplyTarget(el){
-    if(!el) return false;
-    // Match .btn-gold, .nav-apply, .path-cta, any anchor pointing to apply.html
-    if(el.matches && el.matches('.btn-gold, .nav-apply, .path-cta')) return true;
-    const href = el.getAttribute && el.getAttribute('href');
-    if(href && (href.includes('apply.html') || href.includes('apply?') || href === '#apply')) return true;
-    return false;
-  }
-
-  document.addEventListener('click', function(e){
-    let t = e.target;
-    while(t && t !== document.body){
-      if(isApplyTarget(t)){
-        const r = t.getBoundingClientRect();
-        burst(r.left + r.width/2, r.top + r.height/2);
-        break;
-      }
-      t = t.parentElement;
-    }
-  }, true);
 })();
 </script>
 </body>
