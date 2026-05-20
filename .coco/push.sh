@@ -80,8 +80,8 @@ echo "✅ Pushed $NEW_SHA → main"
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] PUSH COMPLETE: $NEW_SHA" >> "$LOG"
 
 # ─── 6. Wait + health check (Layer 3 light) ───────────────────────
-echo "→ Waiting 75s for Vercel deploy..."
-sleep 75
+echo "→ Waiting 40s for Vercel deploy..."
+sleep 40
 if [ -x ./.coco/health_check.sh ]; then
   if ./.coco/health_check.sh; then
     echo "✅ Health check passed"
