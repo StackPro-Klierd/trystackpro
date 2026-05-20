@@ -593,7 +593,16 @@ function submitIntake(){
   document.getElementById('thankyou').style.display='block';
 }
 
-setFundingType('personal',document.getElementById('btn-personal'));
+// Auto-select funding type from URL param (?type=personal | business | dispute)
+const urlParams = new URLSearchParams(window.location.search);
+const initialType = urlParams.get('type');
+if (initialType === 'business') {
+  setFundingType('business', document.getElementById('btn-business'));
+} else if (initialType === 'dispute') {
+  window.location.href = '/dispute.html';
+} else {
+  setFundingType('personal', document.getElementById('btn-personal'));
+}
 setClientType('ssn',document.getElementById('btn-ssn'));
 </script>
 </body>

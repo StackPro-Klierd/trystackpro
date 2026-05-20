@@ -385,18 +385,18 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 }
 
 /* === TWO-PATH SECTION === */
-.two-paths{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:50px 0 30px}
-.path-card{background:rgba(20,18,14,0.6);border:1px solid var(--border);border-radius:14px;padding:32px 28px;position:relative;transition:all .3s ease;backdrop-filter:blur(10px)}
+.two-paths{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;margin:50px 0 30px}
+.path-card{background:rgba(20,18,14,0.6);border:1px solid var(--border);border-radius:14px;padding:28px 22px;position:relative;transition:all .3s ease;backdrop-filter:blur(10px)}
 .path-card:hover{border-color:var(--gold);box-shadow:0 0 40px rgba(201,150,12,0.15);transform:translateY(-2px)}
 .path-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));border-radius:14px 14px 0 0}
 .path-tag{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.22em;text-transform:uppercase;margin-bottom:14px;font-weight:700}
-.path-title{font-family:var(--display);font-size:42px;letter-spacing:0.02em;color:var(--white);line-height:1.05;margin-bottom:14px}
+.path-title{font-family:var(--display);font-size:36px;letter-spacing:0.02em;color:var(--white);line-height:1.05;margin-bottom:14px}
 .path-desc{font-size:14px;color:var(--dim);line-height:1.65;margin-bottom:24px;min-height:80px}
 .path-stages{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .ps{font-family:var(--mono);font-size:11px;color:var(--gold2);letter-spacing:0.08em;padding:8px 10px;background:rgba(201,150,12,0.06);border-radius:6px;text-transform:uppercase;font-weight:600}
 .path-cta{display:inline-block;background:var(--gold);color:var(--bg);padding:14px 26px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.02em;transition:all .2s;font-family:var(--body)}
 .path-cta:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,150,12,0.3)}
-@media (max-width:760px){.two-paths{grid-template-columns:1fr;gap:20px}.path-title{font-size:32px}}
+@media (max-width:900px){.two-paths{grid-template-columns:1fr;gap:20px}.path-title{font-size:32px}}
 
 </style>
 </head>
@@ -612,28 +612,44 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 
     <div class="two-paths">
       <div class="path-card">
-        <div class="path-tag en">Path 1 · Funding</div>
-        <div class="path-tag es">Camino 1 · Financiamiento</div>
-        <h3 class="path-title en">Apply for Funding</h3>
-        <h3 class="path-title es">Aplica para Financiamiento</h3>
-        <p class="path-desc en">For clients ready or close to ready for capital. Intelligent lender matching across personal and business credit. SSN and ITIN accepted.</p>
-        <p class="path-desc es">Para clientes listos o casi listos para capital. Emparejamiento inteligente de prestamistas para crédito personal y empresarial. SSN e ITIN aceptados.</p>
+        <div class="path-tag en">Path 1 · Personal</div>
+        <div class="path-tag es">Camino 1 · Personal</div>
+        <h3 class="path-title en">Personal Funding</h3>
+        <h3 class="path-title es">Financiamiento Personal</h3>
+        <p class="path-desc en">For individuals seeking personal credit cards, loans, or capital. SSN or ITIN accepted.</p>
+        <p class="path-desc es">Para individuos que buscan tarjetas, préstamos o capital personal. SSN o ITIN aceptados.</p>
         <div class="path-stages">
           <div class="ps">01 · <span class="en">Apply</span><span class="es">Aplica</span></div>
           <div class="ps">02 · <span class="en">Analysis</span><span class="es">Análisis</span></div>
           <div class="ps">03 · <span class="en">Strategy</span><span class="es">Estrategia</span></div>
           <div class="ps">04 · <span class="en">Funded</span><span class="es">Financiado</span></div>
         </div>
-        <a href="/apply.html" class="path-cta en">Start Funding Application →</a>
-        <a href="/apply.html" class="path-cta es">Iniciar Solicitud de Financiamiento →</a>
+        <a href="/apply.html?type=personal" class="path-cta en">Start Personal Application →</a>
+        <a href="/apply.html?type=personal" class="path-cta es">Iniciar Solicitud Personal →</a>
       </div>
       <div class="path-card">
-        <div class="path-tag en">Path 2 · Dispute Resolution</div>
-        <div class="path-tag es">Camino 2 · Resolución de Disputas</div>
-        <h3 class="path-title en">Improve My Credit First</h3>
-        <h3 class="path-title es">Mejorar Mi Crédito Primero</h3>
-        <p class="path-desc en">For clients optimizing credit before funding. Dispute resolution services and credit profile optimization to get you funding-ready. CROA-compliant. Results not typical and may vary.</p>
-        <p class="path-desc es">Para clientes que optimizan crédito antes de financiar. Servicios de resolución de disputas y optimización de perfil de crédito. Cumple con CROA. Los resultados no son típicos.</p>
+        <div class="path-tag en">Path 2 · Business</div>
+        <div class="path-tag es">Camino 2 · Empresarial</div>
+        <h3 class="path-title en">Business Funding</h3>
+        <h3 class="path-title es">Financiamiento Empresarial</h3>
+        <p class="path-desc en">For business owners seeking capital, credit lines, or SBA programs. EIN-based products available.</p>
+        <p class="path-desc es">Para empresarios que buscan capital, líneas de crédito o programas SBA. Productos basados en EIN.</p>
+        <div class="path-stages">
+          <div class="ps">01 · <span class="en">Apply</span><span class="es">Aplica</span></div>
+          <div class="ps">02 · <span class="en">Analysis</span><span class="es">Análisis</span></div>
+          <div class="ps">03 · <span class="en">Strategy</span><span class="es">Estrategia</span></div>
+          <div class="ps">04 · <span class="en">Funded</span><span class="es">Financiado</span></div>
+        </div>
+        <a href="/apply.html?type=business" class="path-cta en">Start Business Application →</a>
+        <a href="/apply.html?type=business" class="path-cta es">Iniciar Solicitud Empresarial →</a>
+      </div>
+      <div class="path-card">
+        <div class="path-tag en">Path 3 · Dispute</div>
+        <div class="path-tag es">Camino 3 · Disputa</div>
+        <h3 class="path-title en">Dispute Resolution</h3>
+        <h3 class="path-title es">Resolución de Disputas</h3>
+        <p class="path-desc en">For clients optimizing credit before funding. CROA-compliant dispute services and profile optimization.</p>
+        <p class="path-desc es">Para clientes que optimizan crédito antes de financiar. Servicios de disputa que cumplen con CROA.</p>
         <div class="path-stages">
           <div class="ps">01 · <span class="en">Apply</span><span class="es">Aplica</span></div>
           <div class="ps">02 · <span class="en">Profile Review</span><span class="es">Revisión</span></div>
@@ -644,7 +660,6 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
         <a href="/dispute.html" class="path-cta es">Iniciar Servicio de Disputa →</a>
       </div>
     </div>
-
   </div>
 </section>
 
