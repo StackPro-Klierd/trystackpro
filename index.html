@@ -417,6 +417,52 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
   .itin-call-h{font-size:42px}
   .itin-call-box{padding:40px 24px}
 }
+
+/* MOTION LAYER — qandid-inspired */
+
+/* Italic serif accent for headline emphasis */
+.it-acc{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:var(--gold);letter-spacing:-0.01em}
+
+/* Scroll-triggered reveals */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,.84,.32,1),transform .9s cubic-bezier(.16,.84,.32,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.08s}
+.reveal-d2{transition-delay:.16s}
+.reveal-d3{transition-delay:.24s}
+.reveal-d4{transition-delay:.32s}
+
+/* Hover lift for all card-like elements */
+.dna-card,.path-card,.rcard,.fcard,.itin-call-card{transition:transform .35s cubic-bezier(.16,.84,.32,1),border-color .25s,background .25s,box-shadow .35s}
+.dna-card:hover,.path-card:hover,.rcard:hover,.fcard:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 24px 60px -20px rgba(201,150,12,0.25)}
+
+/* Animated counters */
+.count-up{display:inline-block;font-variant-numeric:tabular-nums}
+
+/* Hero glow parallax target */
+.hero-glow{will-change:transform}
+
+/* Hero cycle word — fade switch */
+.cycle{display:inline-block;position:relative;min-height:1em;color:var(--gold);font-weight:700}
+.cycle-w{display:inline-block;opacity:0;transform:translateY(8px);transition:opacity .55s ease,transform .55s ease;position:absolute;left:0;top:0;white-space:nowrap}
+.cycle-w.on{opacity:1;transform:translateY(0);position:relative}
+
+/* Gentle scroll-fade for sections */
+section{scroll-margin-top:80px}
+
+/* Smooth marquee hover pause */
+.mq-track{will-change:transform}
+.mq-outer:hover .mq-track{animation-play-state:paused}
+
+/* Section eyebrows: subtle slide-in on reveal */
+.sec-tag.reveal.in{animation:eyebrow-slide .7s ease both}
+@keyframes eyebrow-slide{from{letter-spacing:.1em;opacity:0}to{letter-spacing:.28em;opacity:1}}
+
+/* Subtle reduced-motion safety */
+@media (prefers-reduced-motion: reduce){
+  .reveal,.reveal-d1,.reveal-d2,.reveal-d3,.reveal-d4{transition:none;opacity:1;transform:none}
+  .cycle-w{transition:none}
+  .mq-track{animation:none}
+}
 </style>
 </head>
 <body class="lang-en">
@@ -460,10 +506,10 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
   <p class="hero-ift">— Intelligent Funding Technology —</p>
 
   <p class="hero-desc en" style="color:var(--gold2)">
-    <strong>Match. Analyze. Fund.</strong><br>Intelligent funding for every wallet, every story, every path.
+    <strong>Match. Analyze. Fund.</strong><br>Intelligent funding for <span class="cycle" data-cycle-en="every wallet|every story|every path|every founder|every family"><span class="cycle-w on">every wallet</span></span>.
   </p>
   <p class="hero-desc es" style="color:var(--gold2)">
-    <strong>Empareja. Analiza. Financia.</strong><br>Financiamiento inteligente para cada bolsillo, cada historia, cada camino.
+    <strong>Empareja. Analiza. Financia.</strong><br>Financiamiento inteligente para <span class="cycle" data-cycle-es="cada bolsillo|cada historia|cada camino|cada fundador|cada familia"><span class="cycle-w on">cada bolsillo</span></span>.
   </p>
 
   <div class="hero-actions">
@@ -504,15 +550,15 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 <!-- WHAT WE ARE / DNA -->
 <section class="dna-bg" id="what">
   <div class="sw">
-    <div class="sec-tag en">What Makes KLIERD Different</div>
-    <div class="sec-tag es">Lo Que Hace a KLIERD Diferente</div>
-    <h2 class="sec-h en">Three Pillars.<br><span class="g">One Platform.</span></h2>
-    <h2 class="sec-h es">Tres Pilares.<br><span class="g">Una Plataforma.</span></h2>
+    <div class="sec-tag en reveal">What Makes KLIERD Different</div>
+    <div class="sec-tag es reveal">Lo Que Hace a KLIERD Diferente</div>
+    <h2 class="sec-h en reveal">Three Pillars. <span class="it-acc">One platform.</span></h2>
+    <h2 class="sec-h es reveal">Tres Pilares. <span class="it-acc">Una plataforma.</span></h2>
     <p class="sec-p en" style="color:var(--gold2)">We studied every platform in the industry and built the one product none of them could — combining dispute resolution, intelligent funding, and bilingual ITIN service under one roof.</p>
     <p class="sec-p es" style="color:var(--gold2)">Estudiamos cada plataforma de la industria y construimos el producto que ninguna pudo — disputas, financiamiento inteligente y servicio bilingüe ITIN en un solo lugar.</p>
 
     <div class="dna-grid">
-      <div class="dna-card">
+      <div class="dna-card reveal">
         <div class="dna-parent">Pillar 01</div>
         <div class="dna-name en">Dispute</div>
         <div class="dna-name es">Disputas</div>
@@ -524,7 +570,7 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
           <li><span class="en">Real-time monitoring and score alerts</span><span class="es">Monitoreo en tiempo real y alertas de puntuación</span></li>
         </ul>
       </div>
-      <div class="dna-card">
+      <div class="dna-card reveal">
         <div class="dna-parent">Pillar 02</div>
         <div class="dna-name en">Funding</div>
         <div class="dna-name es">Financiamiento</div>
@@ -536,7 +582,7 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
           <li><span class="en">Success fee only — you pay after you are funded</span><span class="es">Solo tarifa de éxito — pagas después de recibir fondos</span></li>
         </ul>
       </div>
-      <div class="dna-card">
+      <div class="dna-card reveal">
         <div class="dna-parent">Pillar 03</div>
         <div class="dna-name en">Access</div>
         <div class="dna-name es">Acceso</div>
@@ -568,22 +614,22 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
           <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold es" style="margin-top:8px">Aplica Con ITIN →</a>
         </div>
         <div class="itin-call-right">
-          <div class="itin-call-card">
+          <div class="itin-call-card reveal">
             <div class="itin-call-num">01</div>
             <div class="itin-call-title en">Personal Cards · ITIN Only</div>
             <div class="itin-call-title es">Tarjetas Personales · Solo ITIN</div>
           </div>
-          <div class="itin-call-card">
+          <div class="itin-call-card reveal">
             <div class="itin-call-num">02</div>
             <div class="itin-call-title en">Business Cards · EIN Only</div>
             <div class="itin-call-title es">Tarjetas Empresariales · Solo EIN</div>
           </div>
-          <div class="itin-call-card">
+          <div class="itin-call-card reveal">
             <div class="itin-call-num">03</div>
             <div class="itin-call-title en">ITIN-Friendly Lenders</div>
             <div class="itin-call-title es">Prestamistas Amigables ITIN</div>
           </div>
-          <div class="itin-call-card">
+          <div class="itin-call-card reveal">
             <div class="itin-call-num">04</div>
             <div class="itin-call-title en">Bilingual · End to End</div>
             <div class="itin-call-title es">Bilingüe · De Principio a Fin</div>
@@ -597,17 +643,17 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 <!-- HOW IT WORKS -->
 <section class="how-bg" id="how">
   <div class="sw">
-    <div class="sec-tag en">Pick Your Path</div>
-    <div class="sec-tag es">Elige Tu Camino</div>
-    <h2 class="sec-h en">Pick Your<br><span class="g">Path.</span></h2>
-    <h2 class="sec-h es">Elige Tu<br><span class="g">Camino.</span></h2>
+    <div class="sec-tag en reveal">Pick Your Path</div>
+    <div class="sec-tag es reveal">Elige Tu Camino</div>
+    <h2 class="sec-h en reveal">Pick your <span class="it-acc">path.</span></h2>
+    <h2 class="sec-h es reveal">Elige tu <span class="it-acc">camino.</span></h2>
     <p class="sec-p en" style="color:var(--gold2)">KLIERD Intelligent Funding Technology handles the analysis, lender matching, and approvals. You focus on your goals — we handle the rest.</p>
     <p class="sec-p es" style="color:var(--gold2)">KLIERD Intelligent Funding Technology maneja el análisis, emparejamiento y aprobaciones. Tú enfócate en tus metas — nosotros hacemos el resto.</p>
     <p class="sec-p en" style="color:var(--gold2);text-align:center">Three clear paths. All built on KLIERD Intelligent Funding Technology.</p>
     <p class="sec-p es" style="color:var(--gold2);text-align:center">Tres caminos claros. Todos construidos sobre KLIERD Tecnología de Financiamiento Inteligente.</p>
 
     <div class="two-paths">
-      <div class="path-card">
+      <div class="path-card reveal">
         <div class="path-tag en">Path 1 · Personal</div>
         <div class="path-tag es">Camino 1 · Personal</div>
         <h3 class="path-title en">Personal Funding</h3>
@@ -623,7 +669,7 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
         <a href="/apply.html?type=personal" class="path-cta en">Start Personal Application →</a>
         <a href="/apply.html?type=personal" class="path-cta es">Iniciar Solicitud Personal →</a>
       </div>
-      <div class="path-card">
+      <div class="path-card reveal">
         <div class="path-tag en">Path 2 · Business</div>
         <div class="path-tag es">Camino 2 · Empresarial</div>
         <h3 class="path-title en">Business Funding</h3>
@@ -639,7 +685,7 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
         <a href="/apply.html?type=business" class="path-cta en">Start Business Application →</a>
         <a href="/apply.html?type=business" class="path-cta es">Iniciar Solicitud Empresarial →</a>
       </div>
-      <div class="path-card">
+      <div class="path-card reveal">
         <div class="path-tag en">Path 3 · Dispute</div>
         <div class="path-tag es">Camino 3 · Disputa</div>
         <h3 class="path-title en">Dispute Resolution</h3>
@@ -663,18 +709,18 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 
 <section class="ranges-bg" id="funding">
   <div class="sw">
-    <div class="sec-tag en">Funding Ranges</div>
-    <div class="sec-tag es">Rangos de Financiamiento</div>
-    <h2 class="sec-h en">How Much<br><span class="g">Can You Get?</span></h2>
-    <h2 class="sec-h es">¿Cuánto<br><span class="g">Puedes Obtener?</span></h2>
+    <div class="sec-tag en reveal">Funding Ranges</div>
+    <div class="sec-tag es reveal">Rangos de Financiamiento</div>
+    <h2 class="sec-h en reveal">How much <span class="it-acc">can you get?</span></h2>
+    <h2 class="sec-h es reveal">¿Cuánto <span class="it-acc">puedes obtener?</span></h2>
     <p class="sec-p en" style="color:var(--gold2)">Your exact range is determined by your credit profile, income, and business history. KLIERD calculates your position before submitting a single application.</p>
     <p class="sec-p es" style="color:var(--gold2)">Tu rango exacto se determina por tu perfil de crédito, ingresos e historial empresarial. KLIERD calcula tu posición antes de enviar una sola solicitud.</p>
 
     <div class="ranges-grid">
-      <div class="rcard">
+      <div class="rcard reveal">
         <div class="r-ey en">Personal Funding · Up To</div>
         <div class="r-ey es">Financiamiento Personal · Hasta</div>
-        <div class="r-amt">$150K</div>
+        <div class="r-amt"><span class="count-up" data-target="150" data-prefix="$" data-suffix="K">$150K</span></div>
         <div class="r-title en">Personal Credit &amp; Loans</div>
         <div class="r-title es">Crédito y Préstamos Personales</div>
         <ul class="r-list">
@@ -684,10 +730,10 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
           <li><span class="en">SSN and ITIN accepted · accessible thresholds</span><span class="es">SSN e ITIN aceptados · umbrales accesibles</span></li>
         </ul>
       </div>
-      <div class="rcard">
+      <div class="rcard reveal">
         <div class="r-ey en">Business Funding · Up To</div>
         <div class="r-ey es">Financiamiento Empresarial · Hasta</div>
-        <div class="r-amt">$500K</div>
+        <div class="r-amt"><span class="count-up" data-target="500" data-prefix="$" data-suffix="K">$500K</span></div>
         <div class="r-title en">Business Credit &amp; Loans</div>
         <div class="r-title es">Crédito y Préstamos Empresariales</div>
         <ul class="r-list">
@@ -697,10 +743,10 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
           <li><span class="en">Builds D&amp;B and business bureau profile</span><span class="es">Construye perfil D&amp;B y buró empresarial</span></li>
         </ul>
       </div>
-      <div class="rcard">
+      <div class="rcard reveal">
         <div class="r-ey en">Startup Capital · Up To</div>
         <div class="r-ey es">Capital Inicial · Hasta</div>
-        <div class="r-amt">$100K</div>
+        <div class="r-amt"><span class="count-up" data-target="100" data-prefix="$" data-suffix="K">$100K</span></div>
         <div class="r-title en">Launch Funding</div>
         <div class="r-title es">Financiamiento de Lanzamiento</div>
         <ul class="r-list">
@@ -719,10 +765,10 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
   <div class="sw">
     <div class="itin-grid">
       <div>
-        <div class="sec-tag en">For ITIN Holders</div>
-        <div class="sec-tag es">Para Titulares de ITIN</div>
-        <h2 class="sec-h en">No SSN?<br><span class="g">No Problem.</span></h2>
-        <h2 class="sec-h es">¿Sin SSN?<br><span class="g">Sin Problema.</span></h2>
+        <div class="sec-tag en reveal">For ITIN Holders</div>
+        <div class="sec-tag es reveal">Para Titulares de ITIN</div>
+        <h2 class="sec-h en reveal">No SSN? <span class="it-acc">No problem.</span></h2>
+        <h2 class="sec-h es reveal">¿Sin SSN? <span class="it-acc">Sin problema.</span></h2>
         <p class="sec-p en" style="color:var(--gold2)">KLIERD is built to serve ITIN clients with the same access, the same technology, and the same results as any SSN holder. Fully bilingual. No barriers. No judgment.</p>
         <p class="sec-p es" style="color:var(--gold2)">KLIERD sirve a clientes ITIN con el mismo acceso, la misma tecnología y los mismos resultados que cualquier titular de SSN. Completamente bilingüe. Sin barreras.</p>
         <a href="https://trystackpro.com/apply.html" class="btn-gold en">Apply With ITIN →</a>
@@ -995,8 +1041,8 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 
 <section class="faq-bg" id="faq">
   <div class="faq-inner">
-    <div class="sec-tag en">Common Questions</div>
-    <div class="sec-tag es">Preguntas Frecuentes</div>
+    <div class="sec-tag en reveal">Common Questions</div>
+    <div class="sec-tag es reveal">Preguntas Frecuentes</div>
     <h2 class="sec-h en">Got <span class="g">Questions.</span></h2>
     <h2 class="sec-h es">Tienes <span class="g">Preguntas.</span></h2>
     <div class="faq-list">
@@ -1056,8 +1102,8 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 <!-- REAL PEOPLE REAL RESULTS -->
 <section style="background:var(--bg);border-top:1px solid var(--border)">
   <div class="sw">
-    <div class="sec-tag en">Real People. Real Results.</div>
-    <div class="sec-tag es">Personas Reales. Resultados Reales.</div>
+    <div class="sec-tag en reveal">Real People. Real Results.</div>
+    <div class="sec-tag es reveal">Personas Reales. Resultados Reales.</div>
     <h2 class="sec-h en">Paths That Have<br><span class="g">Been KLIERed.</span></h2>
     <h2 class="sec-h es">Caminos Que Han<br><span class="g">Sido KLIERed.</span></h2>
     <p class="sec-p en" style="color:var(--gold2)">Real clients. Real businesses. Real funding. KLIERD Intelligent Funding Technology at work.</p>
@@ -1449,6 +1495,103 @@ document.querySelectorAll("a[href^='#']").forEach(a=>{
     if(t){e.preventDefault();t.scrollIntoView({behavior:"smooth"})}
   });
 });
+
+
+/* ── Motion engine (qandid-style) ────────────────────────── */
+
+// Scroll reveal — observe everything with .reveal
+(function(){
+  if(!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        en.target.classList.add('in');
+        // Stagger siblings inside a grid
+        const sibs = en.target.parentElement?.querySelectorAll(':scope > .reveal') || [];
+        sibs.forEach((s, i) => {
+          s.style.transitionDelay = (i * 0.08) + 's';
+        });
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
+// Count-up engine
+(function(){
+  function countUp(el){
+    const tgt = parseFloat(el.dataset.target);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const dur = 1400;
+    const start = performance.now();
+    function step(t){
+      const p = Math.min((t - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const cur = Math.round(tgt * eased);
+      el.textContent = prefix + cur + suffix;
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if(!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if(en.isIntersecting){ countUp(en.target); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.count-up').forEach(el => {
+    el.textContent = (el.dataset.prefix || '') + '0' + (el.dataset.suffix || '');
+    io.observe(el);
+  });
+})();
+
+// Hero word cycler — swap text every 2.6s with fade
+(function(){
+  function attach(node){
+    const lang = node.dataset.cycleEn ? 'en' : 'es';
+    const words = (node.dataset.cycleEn || node.dataset.cycleEs).split('|');
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % words.length;
+      const cur = node.querySelector('.cycle-w.on');
+      const next = document.createElement('span');
+      next.className = 'cycle-w';
+      next.textContent = words[i];
+      node.appendChild(next);
+      requestAnimationFrame(() => {
+        next.classList.add('on');
+        if(cur){
+          cur.classList.remove('on');
+          setTimeout(() => cur.remove(), 600);
+        }
+      });
+    }, 2600);
+  }
+  document.querySelectorAll('.cycle').forEach(attach);
+})();
+
+// Subtle hero parallax (gold glow drifts on scroll)
+(function(){
+  const glow = document.querySelector('.hero-glow');
+  if(!glow) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      glow.style.transform = `translate3d(0, ${y * 0.18}px, 0)`;
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
 </script>
 </body>
 </html>
