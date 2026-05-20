@@ -97,8 +97,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .hero-ift{font-family:var(--mono);font-size:clamp(10px,1vw,13px);
   letter-spacing:0.26em;color:var(--white);text-transform:uppercase;
   margin-bottom:40px;animation:fu .7s .22s ease both;opacity:.82}
-.hero-desc{max-width:560px;font-size:17px;font-weight:300;color:var(--gold2);
-  line-height:1.78;margin-bottom:56px;animation:fu .7s .3s ease both}
+.hero-desc{max-width:900px;font-size:clamp(22px,3.2vw,40px);font-weight:500;color:var(--cream);
+  line-height:1.35;margin-bottom:60px;animation:fu .7s .3s ease both;font-family:var(--display);letter-spacing:-0.01em}
+.hero-desc strong{display:block;font-size:clamp(14px,1.4vw,18px);font-weight:700;letter-spacing:0.3em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-family:var(--mono)}
 .hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
   animation:fu .7s .38s ease both}
 .btn-gold{background:var(--gold2);color:#000;font-weight:700;font-size:14px;border:2px solid var(--gold2);
@@ -442,7 +444,10 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 .hero-glow{will-change:transform}
 
 /* Hero cycle word — fade switch */
-.cycle{display:inline-block;position:relative;min-height:1em;color:var(--gold);font-weight:700}
+.cycle{display:inline-block;position:relative;min-height:1em;color:var(--gold);font-weight:800;font-style:italic;
+  background:linear-gradient(120deg,#c9960c,#ffd76b,#e8b020);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:goldsweep 4s ease-in-out infinite}
 .cycle-w{display:inline-block;opacity:0;transform:translateY(8px);transition:opacity .55s ease,transform .55s ease;position:absolute;left:0;top:0;white-space:nowrap}
 .cycle-w.on{opacity:1;transform:translateY(0);position:relative}
 
