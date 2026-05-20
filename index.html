@@ -670,6 +670,8 @@ section + section::before{
   0%{transform:translate(0,0) rotate(0deg);opacity:1}
   100%{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}
 }
+
+.hero-welcome{font-size:clamp(11px,1.1vw,15px) !important;letter-spacing:0.32em !important;opacity:0.85;margin-top:-4px}
 </style>
 </head>
 <body class="lang-en">
@@ -711,8 +713,10 @@ section + section::before{
   </div>
 
   <h1 class="hero-h1"><span class="g">KLIER</span>ING<br>YOUR PATH</h1>
-  <p class="hero-tagline en">YOU ARE NOW <span class="hero-klierd">KLIERD</span></p>
-  <p class="hero-tagline es">AHORA ERES <span class="hero-klierd">KLIERD</span></p>
+  <p class="hero-tagline en">YOU HAVE NOW BEEN <span class="hero-klierd">KLIERD</span></p>
+  <p class="hero-tagline en hero-welcome">— WELCOME TO <span class="hero-klierd">KLIERD</span> —</p>
+  <p class="hero-tagline es">AHORA HAS SIDO <span class="hero-klierd">KLIERD</span></p>
+  <p class="hero-tagline es hero-welcome">— BIENVENIDO A <span class="hero-klierd">KLIERD</span> —</p>
   <p class="hero-ift">— Intelligent Funding Technology —</p>
 
   <p class="hero-desc en" style="color:var(--gold2)">
