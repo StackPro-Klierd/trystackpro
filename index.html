@@ -600,6 +600,53 @@ section + section::before{
   .scroll-bar{display:none}
   .particle{display:none}
 }
+
+/* ── BOX UNIFORMITY — same size regardless of EN/ES ───── */
+
+/* All card grids: equal-row heights */
+.dna-grid,.ranges-grid,.itin-call-right{grid-auto-rows:1fr;align-items:stretch}
+
+/* Pick Your Path container — find and force equal heights */
+.how-bg .sw > div:has(.path-card),
+.how-bg [class*="grid"]:has(.path-card){grid-auto-rows:1fr;align-items:stretch}
+
+/* DNA cards — flex column, push list down */
+.dna-card{display:flex;flex-direction:column;min-height:480px;height:100%}
+.dna-card .dna-list{flex:1;display:flex;flex-direction:column;justify-content:flex-start}
+.dna-card .dna-list li{min-height:54px;display:flex;align-items:flex-start}
+
+/* Path cards — flex column, CTA at bottom */
+.path-card{display:flex;flex-direction:column;min-height:340px;height:100%}
+.path-card .path-cta{margin-top:auto !important}
+.path-card .path-desc{min-height:84px}
+
+/* Funding range cards — equal heights, lists same */
+.rcard{display:flex;flex-direction:column;min-height:520px;height:100%}
+.rcard .r-list{flex:1;display:flex;flex-direction:column}
+.rcard .r-list li{min-height:50px;display:flex;align-items:flex-start}
+
+/* ITIN callout small cards — same height all 4 */
+.itin-call-card{display:flex;flex-direction:column;min-height:120px;justify-content:flex-start}
+.itin-call-title{min-height:38px;display:flex;align-items:center}
+
+/* Eyebrow lines — equal height so titles align */
+.r-ey{min-height:36px;display:flex;align-items:center}
+.path-title{min-height:32px}
+.dna-name{min-height:34px}
+
+/* Hide the inactive-language version completely so it doesn't reserve space */
+.lang-en .es,.lang-es .en{display:none !important}
+
+/* Equal-height utility */
+.dna-card,.path-card,.rcard,.itin-call-card{box-sizing:border-box}
+
+/* Tablet/mobile keep aspect but allow natural growth */
+@media (max-width:900px){
+  .dna-card{min-height:auto}
+  .path-card{min-height:auto}
+  .rcard{min-height:auto}
+  .itin-call-card{min-height:auto}
+}
 </style>
 </head>
 <body class="lang-en">
