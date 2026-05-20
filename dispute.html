@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KLIERD — Dispute Resolution Service</title>
+<meta name="description" content="KLIERD dispute resolution service — credit profile optimization, integrated dispute filing across Equifax, TransUnion, and Experian. CROA-aligned. Bilingual EN/ES.">
+<style>
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#09090F;color:#E8E8F0;font-family:'Inter',-apple-system,sans-serif;min-height:100vh;padding:20px;}
+.wrap{max-width:660px;margin:0 auto;}
+
+/* HEADER */
+.header{text-align:center;padding:32px 20px 24px;border-bottom:1px solid #1E1E2E;margin-bottom:28px;}
+.logo{font-size:32px;font-weight:800;color:#E8B020;letter-spacing:-1px;}
+.tagline{font-size:11px;color:#9A8650;text-transform:uppercase;letter-spacing:2px;margin-top:6px;font-family:'SF Mono',monospace}
+.form-title{font-size:18px;color:#E8E8F0;margin-top:14px;font-weight:600}
+.form-sub{font-size:12px;color:#9A8650;margin-top:6px;font-style:italic}
+
+/* LANGUAGE TOGGLE */
+.lang-toggle{position:fixed;top:18px;right:18px;display:flex;gap:6px;background:rgba(13,11,6,0.92);backdrop-filter:blur(20px);padding:6px;border-radius:8px;border:1px solid #2a2310;z-index:100}
+.lb{background:transparent;border:none;color:#9A8650;font-family:'SF Mono',monospace;font-size:11px;padding:6px 10px;cursor:pointer;border-radius:4px;font-weight:600}
+.lb.on{background:#C9960C;color:#09090F}
+.es{display:none}
+.lang-es .en{display:none}
+.lang-es .es{display:inline}
+
+/* CROA DISCLOSURE */
+.croa-block{background:#161209;border:1px solid #C9960C;border-radius:10px;padding:18px 20px;margin-bottom:24px}
+.croa-title{font-size:11px;font-weight:700;color:#E8B020;text-transform:uppercase;letter-spacing:0.2em;margin-bottom:10px;font-family:'SF Mono',monospace}
+.croa-body{font-size:11.5px;color:#E8E8F0;line-height:1.65;opacity:0.92}
+.croa-body strong{color:#F5D060}
+
+/* SWITCH BANNER */
+.switch-banner{background:rgba(201,150,12,0.06);border:1px solid #3a3018;border-radius:8px;padding:11px 16px;margin-bottom:24px;font-size:12px;color:#E8E8F0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.switch-banner a{color:#E8B020;text-decoration:none;font-weight:600;border-bottom:1px solid rgba(232,176,32,0.4)}
+.switch-banner a:hover{border-bottom-color:#E8B020}
+
+/* SECTIONS */
+.section-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#E8B020;font-weight:700;margin:28px 0 14px;padding-bottom:6px;border-bottom:1px solid #1E1E2E;}
+
+/* FIELDS */
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.row.single{grid-template-columns:1fr;}
+.f{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+label{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;}
+input,select,textarea{background:#09090F;border:1px solid #2a2a3a;border-radius:7px;padding:11px 12px;color:#E8E8F0;font-size:13px;font-family:inherit;outline:none;width:100%;transition:border-color .2s;}
+input:focus,select:focus,textarea:focus{border-color:#C9960C;}
+select option{background:#09090F;}
+textarea{resize:vertical;min-height:80px;}
+.req{color:#E8B020;}
+.hint{font-size:10px;color:#666;margin-top:2px;font-style:italic}
+
+/* CHECKBOXES — Bureaus */
+.bureau-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.bureau-card{background:#0d0b06;border:1px solid #2a2310;border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .2s}
+.bureau-card:has(input:checked){border-color:#C9960C;background:rgba(201,150,12,0.08)}
+.bureau-card label{cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;color:#E8E8F0;text-transform:none;letter-spacing:0;font-weight:600}
+.bureau-card input{width:auto;cursor:pointer}
+@media(max-width:560px){.bureau-grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+
+/* SERVICE TIER */
+.tier-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
+.tier{background:#0d0b06;border:1px solid #2a2310;border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .2s}
+.tier:has(input:checked){border-color:#C9960C;background:rgba(201,150,12,0.08)}
+.tier label{cursor:pointer;display:flex;flex-direction:column;gap:4px;text-transform:none;letter-spacing:0}
+.tier-name{font-size:14px;color:#E8E8F0;font-weight:700}
+.tier-desc{font-size:11px;color:#9A8650;line-height:1.5}
+.tier-price{font-size:10px;color:#E8B020;font-family:'SF Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;margin-top:4px}
+
+/* RESCISSION */
+.rescission-block{background:#0d0b06;border:1px solid #2a2310;border-radius:8px;padding:14px 16px;margin:18px 0;font-size:11px;color:#9A8650;line-height:1.6}
+.rescission-block strong{color:#F5D060}
+
+/* ATTEST CHECKBOX */
+.attest{display:flex;align-items:flex-start;gap:10px;margin:14px 0;font-size:12px;color:#E8E8F0;line-height:1.5}
+.attest input{margin-top:3px;cursor:pointer;width:auto}
+.attest label{cursor:pointer;flex:1;text-transform:none;letter-spacing:0}
+
+/* SUBMIT */
+.submit-btn{background:#C9960C;color:#09090F;border:none;padding:16px 28px;border-radius:8px;width:100%;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit;margin-top:18px;transition:all .2s}
+.submit-btn:hover{background:#E8B020;transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,150,12,0.3)}
+.submit-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+
+/* FOOTER */
+.foot{margin-top:32px;padding-top:18px;border-top:1px solid #1E1E2E;font-size:9px;color:#584e2c;font-family:'SF Mono',monospace;line-height:1.7;letter-spacing:0.06em}
+</style>
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button class="lb on" id="btn-en" onclick="setLang('en')">🇺🇸 EN</button>
+  <button class="lb" id="btn-es" onclick="setLang('es')">🇲🇽 ES</button>
+</div>
+
+<div class="wrap">
+
+  <div class="header">
+    <div class="logo">KLIERD</div>
+    <div class="tagline">Intelligent Funding Technology</div>
+    <div class="form-title"><span class="en">Dispute Resolution Service</span><span class="es">Servicio de Resolución de Disputas</span></div>
+    <div class="form-sub"><span class="en">Confidential application · CROA-aligned</span><span class="es">Solicitud confidencial · Cumple con CROA</span></div>
+  </div>
+
+  <!-- SWITCH BANNER -->
+  <div class="switch-banner">
+    <span><span class="en">Looking for funding instead?</span><span class="es">¿Buscas financiamiento en su lugar?</span></span>
+    <a href="/apply.html"><span class="en">Switch to Funding Application →</span><span class="es">Cambiar a Solicitud de Financiamiento →</span></a>
+  </div>
+
+  <!-- CROA DISCLOSURE (REQUIRED BY LAW) -->
+  <div class="croa-block">
+    <div class="croa-title"><span class="en">Federal Disclosure · CROA</span><span class="es">Divulgación Federal · CROA</span></div>
+    <div class="croa-body">
+      <span class="en"><strong>Your rights under the Credit Repair Organizations Act (CROA):</strong> You have a right to dispute inaccurate information in your credit report by contacting the credit bureau directly. You may also obtain a free copy of your credit report once every twelve months from each of the three major credit bureaus. <strong>KLIERD does not operate as a Credit Repair Organization.</strong> Dispute resolution and credit profile optimization are offered as discrete consulting services under a separate engagement letter. You may cancel this agreement, without penalty, within three (3) business days of signing. <strong>Results are not typical and may vary.</strong></span>
+      <span class="es"><strong>Sus derechos bajo la Ley de Organizaciones de Reparación de Crédito (CROA):</strong> Tiene derecho a disputar información inexacta en su reporte de crédito contactando directamente al buró de crédito. Puede obtener una copia gratuita una vez cada doce meses de cada uno de los tres burós principales. <strong>KLIERD no opera como Organización de Reparación de Crédito.</strong> Los servicios de resolución de disputas y optimización de perfil se ofrecen como servicios discretos bajo un acuerdo separado. Puede cancelar este acuerdo, sin penalización, dentro de tres (3) días hábiles después de firmar. <strong>Los resultados no son típicos.</strong></span>
+    </div>
+  </div>
+
+  <!-- PERSONAL INFO -->
+  <div class="section-label"><span class="en">Personal Information</span><span class="es">Información Personal</span></div>
+  <div class="row">
+    <div class="f"><label><span class="en">First Name</span><span class="es">Nombre</span> <span class="req">*</span></label><input type="text" id="d-first" required/></div>
+    <div class="f"><label><span class="en">Last Name</span><span class="es">Apellido</span> <span class="req">*</span></label><input type="text" id="d-last" required/></div>
+  </div>
+  <div class="row">
+    <div class="f"><label><span class="en">Email</span><span class="es">Correo</span> <span class="req">*</span></label><input type="email" id="d-email" required/></div>
+    <div class="f"><label><span class="en">Phone</span><span class="es">Teléfono</span> <span class="req">*</span></label><input type="tel" id="d-phone" required/></div>
+  </div>
+  <div class="row">
+    <div class="f"><label><span class="en">SSN or ITIN</span><span class="es">SSN o ITIN</span> <span class="req">*</span></label><input type="text" id="d-tin" required placeholder="000-00-0000"/></div>
+    <div class="f"><label><span class="en">State</span><span class="es">Estado</span></label><input type="text" id="d-state" placeholder="CA"/></div>
+  </div>
+
+  <!-- BUREAUS TO DISPUTE -->
+  <div class="section-label"><span class="en">Which Bureaus to Dispute?</span><span class="es">¿Qué Burós Disputar?</span></div>
+  <p class="hint" style="margin-bottom:10px"><span class="en">Each bureau is disputed separately under federal CROA guidelines.</span><span class="es">Cada buró se disputa por separado bajo las directrices federales de CROA.</span></p>
+  <div class="bureau-grid">
+    <div class="bureau-card"><label><input type="checkbox" id="d-bureau-eq" value="equifax"/> Equifax</label></div>
+    <div class="bureau-card"><label><input type="checkbox" id="d-bureau-tu" value="transunion"/> TransUnion</label></div>
+    <div class="bureau-card"><label><input type="checkbox" id="d-bureau-ex" value="experian"/> Experian</label></div>
+  </div>
+
+  <!-- DISPUTE CONTEXT -->
+  <div class="section-label"><span class="en">What Are You Disputing?</span><span class="es">¿Qué Está Disputando?</span></div>
+  <div class="row single">
+    <div class="f"><label><span class="en">Describe the items you want disputed</span><span class="es">Describa los elementos que desea disputar</span></label>
+      <textarea id="d-items" placeholder="e.g. 1) Collection from XYZ — $500 (Experian) — not mine. 2) Late payment Jan 2024 (TransUnion) — paid on time."></textarea>
+      <div class="hint"><span class="en">List specific items, amounts, and which bureau they appear on.</span><span class="es">Liste elementos específicos, montos y en qué buró aparecen.</span></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="f"><label><span class="en">Have You Disputed These Before?</span><span class="es">¿Ha Disputado Esto Antes?</span></label>
+      <select id="d-prior">
+        <option value="">-- <span class="en">Select</span> --</option>
+        <option value="no">No</option>
+        <option value="yes_unsuccessful"><span class="en">Yes — unsuccessful</span></option>
+        <option value="yes_partial"><span class="en">Yes — partially successful</span></option>
+      </select>
+    </div>
+    <div class="f"><label><span class="en">Current Credit Score (est.)</span><span class="es">Puntaje Actual (est.)</span></label><input type="number" id="d-score" placeholder="e.g. 580" min="300" max="850"/></div>
+  </div>
+
+  <!-- GOAL -->
+  <div class="row single">
+    <div class="f"><label><span class="en">Your Goal</span><span class="es">Su Meta</span> <span class="req">*</span></label>
+      <textarea id="d-goal" required placeholder="e.g. Reach 680+ score in 60 days to qualify for business funding"></textarea>
+    </div>
+  </div>
+
+  <!-- SERVICE TIER -->
+  <div class="section-label"><span class="en">Choose Your Service Tier</span><span class="es">Elija Su Nivel de Servicio</span> <span class="req">*</span></div>
+  <p class="hint" style="margin-bottom:10px"><span class="en">Pricing finalized in your engagement letter. All fees disclosed upfront before service begins.</span><span class="es">Los precios se finalizan en su carta de contratación. Todas las tarifas se divulgan antes del servicio.</span></p>
+  <div class="tier-grid">
+    <div class="tier">
+      <label>
+        <input type="radio" name="tier" value="basic" required/>
+        <div>
+          <div class="tier-name"><span class="en">Basic Profile Optimization</span><span class="es">Optimización Básica de Perfil</span></div>
+          <div class="tier-desc"><span class="en">Initial profile review, dispute strategy, letters for 1 bureau. 30-day timeline.</span><span class="es">Revisión inicial, estrategia, cartas para 1 buró. Plazo de 30 días.</span></div>
+          <div class="tier-price"><span class="en">Pricing disclosed in engagement letter</span><span class="es">Precio en carta de contratación</span></div>
+        </div>
+      </label>
+    </div>
+    <div class="tier">
+      <label>
+        <input type="radio" name="tier" value="full"/>
+        <div>
+          <div class="tier-name"><span class="en">Full Dispute Resolution</span><span class="es">Resolución Completa de Disputas</span></div>
+          <div class="tier-desc"><span class="en">All 3 bureaus, full strategy, ongoing monitoring, certified mail dispute letters, real-time score alerts. 45-90 day timeline.</span><span class="es">3 burós, estrategia completa, monitoreo continuo, cartas certificadas, alertas en tiempo real. 45-90 días.</span></div>
+          <div class="tier-price"><span class="en">Pricing disclosed in engagement letter</span><span class="es">Precio en carta de contratación</span></div>
+        </div>
+      </label>
+    </div>
+    <div class="tier">
+      <label>
+        <input type="radio" name="tier" value="combo"/>
+        <div>
+          <div class="tier-name"><span class="en">Combo (Dispute + Funding-Ready)</span><span class="es">Combo (Disputa + Listo para Financiar)</span></div>
+          <div class="tier-desc"><span class="en">Full dispute resolution PLUS profile optimization to prepare you for funding within 60-90 days. Includes seamless handoff to KLIERD's funding application.</span><span class="es">Resolución completa MÁS optimización para preparar financiamiento en 60-90 días. Incluye transferencia a la solicitud de financiamiento de KLIERD.</span></div>
+          <div class="tier-price"><span class="en">Pricing disclosed in engagement letter</span><span class="es">Precio en carta de contratación</span></div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- 3-DAY RESCISSION + ATTEST -->
+  <div class="rescission-block">
+    <strong><span class="en">3-Day Right of Cancellation:</span><span class="es">Derecho de Cancelación de 3 Días:</span></strong>
+    <span class="en"> You may cancel this engagement, without penalty or obligation, within three (3) business days after signing the service agreement. Cancellation must be in writing and delivered to info@klierd.com.</span>
+    <span class="es"> Puede cancelar esta contratación, sin penalización ni obligación, dentro de tres (3) días hábiles después de firmar el acuerdo. La cancelación debe ser por escrito y entregada a info@klierd.com.</span>
+  </div>
+
+  <div class="attest">
+    <input type="checkbox" id="d-attest-disclosure" required/>
+    <label for="d-attest-disclosure"><span class="en">I have read and acknowledge the CROA disclosure above and my 3-day right of cancellation.</span><span class="es">He leído y reconozco la divulgación CROA anterior y mi derecho de cancelación de 3 días.</span></label>
+  </div>
+  <div class="attest">
+    <input type="checkbox" id="d-attest-truth" required/>
+    <label for="d-attest-truth"><span class="en">I confirm the information I provided is true and accurate to the best of my knowledge.</span><span class="es">Confirmo que la información proporcionada es verdadera y precisa a mi mejor conocimiento.</span></label>
+  </div>
+  <div class="attest">
+    <input type="checkbox" id="d-attest-engage" required/>
+    <label for="d-attest-engage"><span class="en">I understand a separate service agreement with full fee disclosure will be sent for my electronic signature before any service begins.</span><span class="es">Entiendo que un acuerdo separado con divulgación completa de tarifas será enviado para mi firma electrónica antes de comenzar.</span></label>
+  </div>
+
+  <button class="submit-btn" id="d-submit" onclick="submitDispute()">
+    <span class="en">Submit Application →</span><span class="es">Enviar Solicitud →</span>
+  </button>
+
+  <div class="foot">
+    <span class="en">Results are not typical and may vary. KLIERD does not operate as a Credit Repair Organization under the Credit Repair Organizations Act (15 U.S.C. § 1679 et seq.). All dispute services are governed by a separate engagement letter with all federally required disclosures, including the 3-day right of cancellation. Submission of this application does not create a contractual obligation; a binding agreement requires execution of the service engagement letter.</span>
+    <span class="es">Los resultados no son típicos y pueden variar. KLIERD no opera como Organización de Reparación de Crédito bajo la Ley CROA (15 U.S.C. § 1679 et seq.). Todos los servicios de disputa se rigen por una carta de contratación separada con todas las divulgaciones requeridas federalmente, incluyendo el derecho de cancelación de 3 días.</span>
+    <br><br>
+    KLIERD · Intelligent Funding Technology · klierd.com · © 2026
+  </div>
+
+</div>
+
+<script>
+let lang = 'en';
+function setLang(l){
+  lang = l;
+  document.body.classList.toggle('lang-es', l==='es');
+  document.getElementById('btn-en').classList.toggle('on', l==='en');
+  document.getElementById('btn-es').classList.toggle('on', l==='es');
+  try{ localStorage.setItem('klierd_lang', l); }catch(e){}
+}
+try{
+  const saved = localStorage.getItem('klierd_lang');
+  if(saved) setLang(saved);
+}catch(e){}
+
+function submitDispute(){
+  const first = document.getElementById('d-first').value.trim();
+  const last = document.getElementById('d-last').value.trim();
+  const email = document.getElementById('d-email').value.trim();
+  const phone = document.getElementById('d-phone').value.trim();
+  const tin = document.getElementById('d-tin').value.trim();
+  const items = document.getElementById('d-items').value.trim();
+  const goal = document.getElementById('d-goal').value.trim();
+  const tierSel = document.querySelector('input[name="tier"]:checked');
+  const a1 = document.getElementById('d-attest-disclosure').checked;
+  const a2 = document.getElementById('d-attest-truth').checked;
+  const a3 = document.getElementById('d-attest-engage').checked;
+  const bureauEq = document.getElementById('d-bureau-eq').checked;
+  const bureauTu = document.getElementById('d-bureau-tu').checked;
+  const bureauEx = document.getElementById('d-bureau-ex').checked;
+
+  if (!first || !last || !email || !phone || !tin) {
+    alert(lang==='es' ? 'Por favor complete todos los campos requeridos (*).' : 'Please fill in all required fields (*).');
+    return;
+  }
+  if (!bureauEq && !bureauTu && !bureauEx) {
+    alert(lang==='es' ? 'Seleccione al menos un buró para disputar.' : 'Please select at least one bureau to dispute.');
+    return;
+  }
+  if (!goal) {
+    alert(lang==='es' ? 'Por favor describa su meta.' : 'Please describe your goal.');
+    return;
+  }
+  if (!tierSel) {
+    alert(lang==='es' ? 'Seleccione un nivel de servicio.' : 'Please select a service tier.');
+    return;
+  }
+  if (!a1 || !a2 || !a3) {
+    alert(lang==='es' ? 'Marque todas las casillas de reconocimiento.' : 'Please check all acknowledgment boxes.');
+    return;
+  }
+
+  // Build tracking ID with dispute prefix
+  const trackingId = 'KLD-D-' + Math.random().toString(36).slice(2, 10).toUpperCase();
+
+  const submission = {
+    trackingId, type: 'dispute',
+    firstName: first, lastName: last, email, phone, tin,
+    state: document.getElementById('d-state').value.trim(),
+    bureaus: { equifax: bureauEq, transunion: bureauTu, experian: bureauEx },
+    items, prior: document.getElementById('d-prior').value,
+    currentScore: document.getElementById('d-score').value,
+    goal, tier: tierSel.value,
+    acknowledgments: { croaDisclosure: a1, infoTruthful: a2, engagementUnderstood: a3 },
+    submittedAt: new Date().toISOString(),
+    userAgent: navigator.userAgent.slice(0,300),
+    lang
+  };
+
+  // Persist to localStorage (stopgap until backend wired)
+  try {
+    const queue = JSON.parse(localStorage.getItem('klierd_dispute_queue') || '[]');
+    queue.push(submission);
+    localStorage.setItem('klierd_dispute_queue', JSON.stringify(queue));
+  } catch(e) {}
+
+  // POST to Railway endpoint (best-effort)
+  try {
+    const apiUrl = localStorage.getItem('sp_api_url') || 'https://stackpro-api-production.up.railway.app';
+    fetch(apiUrl + '/dispute-intake', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(submission)
+    }).catch(()=>{});
+  } catch(e) {}
+
+  // GA4 event
+  if(window.gtag){ try{ gtag('event', 'dispute_application_submitted', { tier: tierSel.value }); }catch(e){} }
+
+  alert((lang==='es' ? '✓ Solicitud recibida.\n\nID de seguimiento: ' : '✓ Application received.\n\nTracking ID: ') + trackingId + (lang==='es' ? '\n\nNuestro equipo le contactará dentro de 24-48 horas con su acuerdo de servicio personalizado y divulgación completa de tarifas.' : '\n\nOur team will reach out within 24-48 hours with your personalized service agreement and full fee disclosure.'));
+}
+</script>
+</body>
+</html>

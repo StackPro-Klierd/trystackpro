@@ -383,6 +383,21 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
   .dna-wins{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr}
 }
+
+/* === TWO-PATH SECTION === */
+.two-paths{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:50px 0 30px}
+.path-card{background:rgba(20,18,14,0.6);border:1px solid var(--border);border-radius:14px;padding:32px 28px;position:relative;transition:all .3s ease;backdrop-filter:blur(10px)}
+.path-card:hover{border-color:var(--gold);box-shadow:0 0 40px rgba(201,150,12,0.15);transform:translateY(-2px)}
+.path-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));border-radius:14px 14px 0 0}
+.path-tag{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.22em;text-transform:uppercase;margin-bottom:14px;font-weight:700}
+.path-title{font-family:var(--display);font-size:42px;letter-spacing:0.02em;color:var(--white);line-height:1.05;margin-bottom:14px}
+.path-desc{font-size:14px;color:var(--dim);line-height:1.65;margin-bottom:24px;min-height:80px}
+.path-stages{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ps{font-family:var(--mono);font-size:11px;color:var(--gold2);letter-spacing:0.08em;padding:8px 10px;background:rgba(201,150,12,0.06);border-radius:6px;text-transform:uppercase;font-weight:600}
+.path-cta{display:inline-block;background:var(--gold);color:var(--bg);padding:14px 26px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.02em;transition:all .2s;font-family:var(--body)}
+.path-cta:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,150,12,0.3)}
+@media (max-width:760px){.two-paths{grid-template-columns:1fr;gap:20px}.path-title{font-size:32px}}
+
 </style>
 </head>
 <body class="lang-en">
@@ -592,77 +607,44 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
     <h2 class="sec-h es">Elige Tu<br><span class="g">Camino.</span></h2>
     <p class="sec-p en" style="color:var(--gold2)">KLIERD Intelligent Funding Technology handles the analysis, lender matching, and approvals. You focus on your goals — we handle the rest.</p>
     <p class="sec-p es" style="color:var(--gold2)">KLIERD Intelligent Funding Technology maneja el análisis, emparejamiento y aprobaciones. Tú enfócate en tus metas — nosotros hacemos el resto.</p>
+    <p class="sec-p en" style="color:var(--gold2);text-align:center">Two clear paths. Both built on KLIERD Intelligent Funding Technology.</p>
+    <p class="sec-p es" style="color:var(--gold2);text-align:center">Dos caminos claros. Ambos construidos sobre KLIERD Tecnología de Financiamiento Inteligente.</p>
 
-    <div class="steps">
-      <div class="step">
-        <div class="step-in">
-          <div class="step-n">01</div>
-          <div class="step-stage en">Stage One</div>
-          <div class="step-stage es">Etapa Uno</div>
-          <div class="step-ico">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          </div>
-          <div class="step-title en">Apply</div>
-          <div class="step-title es">Aplica</div>
-          <div class="step-div"></div>
-          <p class="step-body en">Complete our streamlined application in minutes. SSN or ITIN accepted. Fully bilingual.</p>
-          <p class="step-body es">Completa nuestra solicitud en minutos. SSN o ITIN aceptado. Completamente bilingüe.</p>
-          <span class="step-tag en">SSN + ITIN</span>
-          <span class="step-tag es">SSN + ITIN</span>
+    <div class="two-paths">
+      <div class="path-card">
+        <div class="path-tag en">Path 1 · Funding</div>
+        <div class="path-tag es">Camino 1 · Financiamiento</div>
+        <h3 class="path-title en">Apply for Funding</h3>
+        <h3 class="path-title es">Aplica para Financiamiento</h3>
+        <p class="path-desc en">For clients ready or close to ready for capital. Intelligent lender matching across personal and business credit. SSN and ITIN accepted.</p>
+        <p class="path-desc es">Para clientes listos o casi listos para capital. Emparejamiento inteligente de prestamistas para crédito personal y empresarial. SSN e ITIN aceptados.</p>
+        <div class="path-stages">
+          <div class="ps">01 · <span class="en">Apply</span><span class="es">Aplica</span></div>
+          <div class="ps">02 · <span class="en">Analysis</span><span class="es">Análisis</span></div>
+          <div class="ps">03 · <span class="en">Strategy</span><span class="es">Estrategia</span></div>
+          <div class="ps">04 · <span class="en">Funded</span><span class="es">Financiado</span></div>
         </div>
+        <a href="/apply.html" class="path-cta en">Start Funding Application →</a>
+        <a href="/apply.html" class="path-cta es">Iniciar Solicitud de Financiamiento →</a>
       </div>
-      <div class="step">
-        <div class="step-in">
-          <div class="step-n">02</div>
-          <div class="step-stage en">Stage Two</div>
-          <div class="step-stage es">Etapa Dos</div>
-          <div class="step-ico">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/></svg>
-          </div>
-          <div class="step-title en">Analysis</div>
-          <div class="step-title es">Análisis</div>
-          <div class="step-div"></div>
-          <p class="step-body en">KLIERD analyzes your full credit profile in depth and determines your funding range.</p>
-          <p class="step-body es">KLIERD analiza tu perfil de crédito en profundidad y determina tu rango de financiamiento.</p>
-          <span class="step-tag en">Analysis</span>
-          <span class="step-tag es">Análisis</span>
+      <div class="path-card">
+        <div class="path-tag en">Path 2 · Dispute Resolution</div>
+        <div class="path-tag es">Camino 2 · Resolución de Disputas</div>
+        <h3 class="path-title en">Improve My Credit First</h3>
+        <h3 class="path-title es">Mejorar Mi Crédito Primero</h3>
+        <p class="path-desc en">For clients optimizing credit before funding. Dispute resolution services and credit profile optimization to get you funding-ready. CROA-compliant. Results not typical and may vary.</p>
+        <p class="path-desc es">Para clientes que optimizan crédito antes de financiar. Servicios de resolución de disputas y optimización de perfil de crédito. Cumple con CROA. Los resultados no son típicos.</p>
+        <div class="path-stages">
+          <div class="ps">01 · <span class="en">Apply</span><span class="es">Aplica</span></div>
+          <div class="ps">02 · <span class="en">Profile Review</span><span class="es">Revisión</span></div>
+          <div class="ps">03 · <span class="en">Dispute Filing</span><span class="es">Disputas</span></div>
+          <div class="ps">04 · <span class="en">Optimized</span><span class="es">Optimizado</span></div>
         </div>
-      </div>
-      <div class="step">
-        <div class="step-in">
-          <div class="step-n">03</div>
-          <div class="step-stage en">Stage Three</div>
-          <div class="step-stage es">Etapa Tres</div>
-          <div class="step-ico">
-            <svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          </div>
-          <div class="step-title en">Strategy</div>
-          <div class="step-title es">Estrategia</div>
-          <div class="step-div"></div>
-          <p class="step-body en">We build a custom funding sequence — personal, business, or both — designed to maximize your results.</p>
-          <p class="step-body es">Construimos una secuencia de financiamiento personalizada — personal, empresarial o ambas — diseñada para maximizar tus resultados.</p>
-          <span class="step-tag en">Custom Strategy</span>
-          <span class="step-tag es">Estrategia Personalizada</span>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-in">
-          <div class="step-n">04</div>
-          <div class="step-stage en">Stage Four</div>
-          <div class="step-stage es">Etapa Cuatro</div>
-          <div class="step-ico">
-            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-          </div>
-          <div class="step-title en">Funded</div>
-          <div class="step-title es">Financiado</div>
-          <div class="step-div"></div>
-          <p class="step-body en">KLIERD Intelligent Funding Technology processes your approvals. Results not typical and may vary.</p>
-          <p class="step-body es">KLIERD Intelligent Funding Technology procesa tus aprobaciones. Los resultados no son típicos.</p>
-          <span class="step-tag en">Funded</span>
-          <span class="step-tag es">Financiado</span>
-        </div>
+        <a href="/dispute.html" class="path-cta en">Start Dispute Service →</a>
+        <a href="/dispute.html" class="path-cta es">Iniciar Servicio de Disputa →</a>
       </div>
     </div>
+
   </div>
 </section>
 
