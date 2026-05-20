@@ -463,9 +463,147 @@ section{scroll-margin-top:80px}
   .cycle-w{transition:none}
   .mq-track{animation:none}
 }
+
+/* ── BIG MOTION OVERHAUL ─────────────────────────────────── */
+
+/* Top scroll-progress bar */
+.scroll-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#e8b020,#c9960c,#e8b020);z-index:9999;box-shadow:0 0 16px rgba(232,176,32,0.6);transition:width 0.05s linear}
+
+/* Hero H1 — animated gradient sweep */
+.hero-h1{
+  background:linear-gradient(120deg,#c9960c 0%,#e8b020 25%,#ffd76b 50%,#e8b020 75%,#c9960c 100%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:goldsweep 6s ease-in-out infinite;
+}
+.hero-h1 .g{background:none !important;-webkit-text-fill-color:transparent}
+@keyframes goldsweep{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* Floating gold particles in hero */
+.hero{overflow:hidden}
+.particle{position:absolute;width:4px;height:4px;border-radius:50%;background:#e8b020;box-shadow:0 0 12px #e8b020,0 0 24px rgba(232,176,32,0.5);opacity:0;pointer-events:none;z-index:1}
+@keyframes float-up{
+  0%{opacity:0;transform:translateY(0) scale(0)}
+  10%{opacity:1;transform:translateY(-20px) scale(1)}
+  90%{opacity:0.8;transform:translateY(-400px) scale(0.6)}
+  100%{opacity:0;transform:translateY(-450px) scale(0)}
+}
+
+/* Apply CTA — strong pulse */
+.btn-gold,.nav-apply{position:relative;overflow:hidden}
+.btn-gold::after,.nav-apply::after{content:'';position:absolute;top:50%;left:50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.4) 0%,transparent 60%);transform:translate(-50%,-50%) scale(0);transition:transform 0.6s ease}
+.btn-gold:hover::after,.nav-apply:hover::after{transform:translate(-50%,-50%) scale(1)}
+
+.btn-gold{box-shadow:0 0 0 0 rgba(232,176,32,0.7);animation:pulse-gold 2.5s infinite}
+@keyframes pulse-gold{
+  0%{box-shadow:0 0 0 0 rgba(232,176,32,0.7),0 8px 30px -8px rgba(232,176,32,0.5)}
+  70%{box-shadow:0 0 0 20px rgba(232,176,32,0),0 8px 30px -8px rgba(232,176,32,0.5)}
+  100%{box-shadow:0 0 0 0 rgba(232,176,32,0),0 8px 30px -8px rgba(232,176,32,0.5)}
+}
+
+/* 3D tilt cards */
+.dna-card,.path-card,.rcard,.itin-call-card,.fcard{
+  transform-style:preserve-3d;perspective:1000px;
+  transition:transform 0.4s cubic-bezier(.16,.84,.32,1),border-color 0.25s,box-shadow 0.4s
+}
+.tilt-card{will-change:transform}
+
+/* Italic accent — bigger, animated */
+.it-acc{
+  font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;
+  background:linear-gradient(120deg,#e8b020,#ffd76b,#e8b020);
+  background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:goldsweep 4s ease-in-out infinite;
+  letter-spacing:-0.02em;
+}
+
+/* Count-up — make BIG and bold */
+.count-up{
+  display:inline-block;
+  font-variant-numeric:tabular-nums;
+  background:linear-gradient(180deg,#ffd76b,#c9960c);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  text-shadow:none;
+  filter:drop-shadow(0 0 30px rgba(232,176,32,0.4))
+}
+
+/* Section divider — gold sweep line */
+section{position:relative}
+section + section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(232,176,32,0.4) 50%,transparent 100%)
+}
+
+/* Reveal — make it BIGGER, more dramatic */
+.reveal{opacity:0;transform:translateY(60px) scale(0.96);transition:opacity 1s cubic-bezier(.16,.84,.32,1),transform 1s cubic-bezier(.16,.84,.32,1)}
+.reveal.in{opacity:1;transform:translateY(0) scale(1)}
+
+/* Card hover — STRONG lift + glow */
+.dna-card:hover,.path-card:hover,.rcard:hover,.itin-call-card:hover,.fcard:hover{
+  transform:translateY(-12px) scale(1.02);
+  border-color:#e8b020 !important;
+  box-shadow:0 30px 80px -20px rgba(232,176,32,0.4),0 0 0 1px rgba(232,176,32,0.3) inset
+}
+
+/* Magnetic button — follows cursor slightly */
+.btn-gold,.nav-apply,.path-cta{transition:transform 0.3s cubic-bezier(.16,.84,.32,1),box-shadow 0.3s,background 0.2s}
+.btn-gold:hover,.nav-apply:hover{transform:translateY(-3px) scale(1.04)}
+
+/* Marquee — make it FAST and bold */
+.mq-track{animation:mq 22s linear infinite}
+.mq-item{font-weight:700;font-size:14px;letter-spacing:0.14em}
+.mq-outer{background:linear-gradient(90deg,#000 0%,#0a0a0a 50%,#000 100%);border-top:1px solid rgba(232,176,32,0.3);border-bottom:1px solid rgba(232,176,32,0.3)}
+
+/* ITIN callout box — give it a sheen */
+.itin-call-box::after{
+  content:'';position:absolute;top:-100%;left:-100%;width:50%;height:300%;
+  background:linear-gradient(115deg,transparent 30%,rgba(232,176,32,0.08) 50%,transparent 70%);
+  animation:sheen 6s ease-in-out infinite;pointer-events:none
+}
+@keyframes sheen{
+  0%,100%{transform:translateX(-100%) rotate(0deg)}
+  50%{transform:translateX(800%) rotate(0deg)}
+}
+
+/* Funding range cards — gold accent stripe */
+.rcard{position:relative;overflow:hidden}
+.rcard::before{
+  content:'';position:absolute;top:0;left:0;width:4px;height:0;
+  background:linear-gradient(180deg,#e8b020,#c9960c);transition:height 0.5s ease
+}
+.rcard:hover::before{height:100%}
+.rcard:hover .r-amt{transform:scale(1.05)}
+.r-amt{transition:transform 0.4s ease}
+
+/* Hero badge — extra pulse */
+.hero-badge{animation:badge-glow 3s ease-in-out infinite}
+@keyframes badge-glow{
+  0%,100%{box-shadow:0 0 0 0 rgba(232,176,32,0)}
+  50%{box-shadow:0 0 30px rgba(232,176,32,0.4)}
+}
+
+/* DNA pillar numbers — make them HUGE on hover */
+.dna-parent{transition:font-size 0.4s ease,color 0.3s,letter-spacing 0.4s}
+.dna-card:hover .dna-parent{color:#ffd76b;letter-spacing:0.35em}
+
+/* Path icons / numbers — pulse on reveal */
+.path-num{animation:none}
+.path-card.in .path-num{animation:numpop 0.6s cubic-bezier(.16,.84,.32,1) both}
+@keyframes numpop{0%{transform:scale(0.5);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+
+@media (prefers-reduced-motion: reduce){
+  .hero-h1,.it-acc,.count-up,.itin-call-box::after,.btn-gold,.hero-badge{animation:none !important}
+  .scroll-bar{display:none}
+  .particle{display:none}
+}
 </style>
 </head>
 <body class="lang-en">
+<div class="scroll-bar" id="scrollBar"></div>
 
 <!-- NAV -->
 <nav>
@@ -490,6 +628,7 @@ section{scroll-margin-top:80px}
 
 <!-- HERO -->
 <section class="hero">
+  <div id="particles"></div>
   <div class="hero-glow"></div>
   <div class="hero-grid"></div>
   <div class="hc tl"></div><div class="hc tr"></div>
@@ -1591,6 +1730,77 @@ document.querySelectorAll("a[href^='#']").forEach(a=>{
     });
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
+
+/* ── BIG MOTION ENGINE ────────────────────────────────── */
+
+// Scroll progress bar
+(function(){
+  const bar = document.getElementById('scrollBar');
+  if(!bar) return;
+  function update(){
+    const h = document.documentElement;
+    const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    bar.style.width = (scrolled * 100) + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// Hero particles — floating gold dots
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const host = document.getElementById('particles');
+  if(!host) return;
+  host.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1';
+  function spawn(){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 2 + Math.random() * 5;
+    p.style.cssText = `left:${Math.random()*100}%;bottom:-10px;width:${size}px;height:${size}px;animation:float-up ${6+Math.random()*4}s linear forwards`;
+    host.appendChild(p);
+    setTimeout(() => p.remove(), 11000);
+  }
+  // Spawn a particle every 350ms
+  setInterval(spawn, 350);
+  // Initial burst
+  for(let i = 0; i < 6; i++) setTimeout(spawn, i * 200);
+})();
+
+// 3D tilt on cards
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cards = document.querySelectorAll('.dna-card,.path-card,.rcard,.itin-call-card,.fcard');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      const rotY = (x - 0.5) * 8;
+      const rotX = (0.5 - y) * 8;
+      card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-10px) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+})();
+
+// Magnetic apply buttons
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.btn-gold,.nav-apply').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width/2;
+      const y = e.clientY - rect.top - rect.height/2;
+      btn.style.transform = `translate(${x*0.2}px, ${y*0.3}px) scale(1.04)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
 })();
 </script>
 </body>
