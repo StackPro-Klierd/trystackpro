@@ -80,6 +80,11 @@ echo "✅ Pushed $NEW_SHA → main"
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] PUSH COMPLETE: $NEW_SHA" >> "$LOG"
 
 # ─── 6. Wait + health check (Layer 3 light) ───────────────────────
+# Skip health check if we can't reach the production host (sandbox restrictions)
+if ! curl -s --max-time 4 -o /dev/null https://trystackpro.com/ 2>/dev/null; then
+  echo "ℹ Skipping post-push health check (sandbox can't reach trystackpro.com — runs from Mac via launchd)"
+  exit 0
+fi
 echo "→ Waiting 40s for Vercel deploy..."
 sleep 40
 if [ -x ./.coco/health_check.sh ]; then

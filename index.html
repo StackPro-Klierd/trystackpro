@@ -4,39 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KLIERD — Intelligent Funding Technology</title>
-<meta name="description" content="KLIERD — Intelligent Funding Technology. Lender matching, real-time credit analysis, and intelligent funding decisions for SSN and ITIN holders. Bilingual platform. We are KLIERing your path.">
-<meta name="keywords" content="KLIERD, intelligent funding, fintech, ITIN funding, SSN funding, bilingual funding, credit profile optimization, business funding, personal funding">
-<meta name="author" content="KLIERD">
-<meta name="theme-color" content="#060500">
-<link rel="canonical" href="https://klierd.com/">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2032%2032'%3E%3Crect%20width%3D'32'%20height%3D'32'%20rx%3D'6'%20fill%3D'%23060500'%2F%3E%3Cpath%20d%3D'M8.4%208h3.2v6.6L18%208h4l-6.5%206.8L22.4%2024h-4l-4.8-7.5-2%202.1V24H8.4V8z'%20fill%3D'%23e8b020'%2F%3E%3C%2Fsvg%3E">
-
-<!-- Open Graph / Facebook / iMessage / LinkedIn -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="KLIERD">
-<meta property="og:title" content="KLIERD — Intelligent Funding Technology">
-<meta property="og:description" content="Lender matching, real-time credit analysis, and intelligent funding decisions for SSN and ITIN holders. Bilingual platform. We are KLIERing your path.">
-<meta property="og:url" content="https://klierd.com/">
-<meta property="og:image" content="https://klierd.com/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="es_US">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="KLIERD — Intelligent Funding Technology">
-<meta name="twitter:description" content="Intelligent lender matching, real-time credit analysis, and funding decisions for SSN and ITIN holders. We are KLIERing your path.">
-<meta name="twitter:image" content="https://klierd.com/og-image.png">
-
-<!-- Google Analytics 4 — TODO: replace G-XXXXXXXXXX with your real GA4 Measurement ID -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-XXXXXXXXXX", { anonymize_ip: true });
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -64,19 +31,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .nav-logo{font-family:var(--display);font-size:30px;letter-spacing:0.12em;
   color:var(--gold2);text-decoration:none;text-shadow:0 0 40px rgba(232,176,32,0.35)}
 .nav-links{display:flex;align-items:center;gap:40px;list-style:none}
-.nav-links a{font-size:11px;font-weight:500;color:var(--muted);text-decoration:none;
+.nav-links a{font-size:11px;font-weight:500;color:var(--gold2);text-decoration:none;
   letter-spacing:0.14em;text-transform:uppercase;transition:color .2s}
 .nav-links a:hover{color:var(--gold2)}
 .nav-right{display:flex;align-items:center;gap:12px}
 .lang-pair{display:flex;gap:4px}
-.lb{background:none;border:1px solid var(--border2);color:var(--muted);
+.lb{background:none;border:1px solid var(--border2);color:var(--gold2);
   font-family:var(--mono);font-size:11px;padding:5px 11px;border-radius:3px;
   cursor:pointer;transition:all .2s}
 .lb.on,.lb:hover{border-color:var(--gold2);color:var(--gold2)}
-.nav-apply{background:var(--gold);color:#000;font-size:12px;font-weight:700;
+.nav-apply{background:var(--gold2);color:#000;font-size:12px;font-weight:700;border:2px solid var(--gold2);
   padding:10px 26px;border-radius:4px;text-decoration:none;letter-spacing:0.08em;
   text-transform:uppercase;transition:all .2s;display:inline-block}
-.nav-apply:hover{background:var(--gold2);transform:translateY(-1px);
+.nav-apply:hover{background:var(--gold3,#f5d060);transform:translateY(-1px);border-color:var(--gold3,#f5d060);
   box-shadow:0 0 24px rgba(232,176,32,0.4)}
 
 /* HERO */
@@ -99,11 +66,25 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 
 .hero-badge{display:inline-flex;align-items:center;gap:10px;
   background:rgba(201,150,12,0.09);border:1px solid rgba(201,150,12,0.32);
-  padding:9px 24px;font-family:var(--mono);font-size:11px;color:var(--gold3);
+  padding:9px 24px;font-family:var(--mono);font-size:11px;color:var(--gold2);
   letter-spacing:0.22em;text-transform:uppercase;margin-bottom:44px;
   animation:fu .8s ease both}
 .pulse{width:7px;height:7px;border-radius:50%;background:var(--gold2);
   animation:gp 2s infinite;flex-shrink:0}
+
+@keyframes float1{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.1)}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(20px) rotate(180deg)}}
+@keyframes spin3d{0%{transform:rotate(0deg) translateY(0)}50%{transform:rotate(180deg) translateY(-10px)}100%{transform:rotate(360deg) translateY(0)}}
+@keyframes slowzoom{0%{transform:scale(1)}100%{transform:scale(1.08)}}
+@keyframes countup{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+
+
+@keyframes cardglow{0%{opacity:.6;transform:translate(-50%,-50%) scale(1)}100%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+@keyframes sparkle1{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes sparkle2{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0;transform:scale(0.3)}}
+@keyframes startwinkle{0%,100%{opacity:0;transform:scale(0.5) rotate(0deg)}50%{opacity:.9;transform:scale(1.2) rotate(20deg)}}
+@keyframes streak{0%,100%{opacity:0}50%{opacity:1}}
+
 @keyframes gp{0%,100%{box-shadow:0 0 0 0 rgba(232,176,32,.6)}50%{box-shadow:0 0 0 8px rgba(232,176,32,0)}}
 
 .hero-h1{font-family:var(--display);font-size:clamp(88px,14vw,168px);
@@ -116,16 +97,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .hero-ift{font-family:var(--mono);font-size:clamp(10px,1vw,13px);
   letter-spacing:0.26em;color:var(--white);text-transform:uppercase;
   margin-bottom:40px;animation:fu .7s .22s ease both;opacity:.82}
-.hero-desc{max-width:560px;font-size:17px;font-weight:300;color:var(--dim);
+.hero-desc{max-width:560px;font-size:17px;font-weight:300;color:var(--gold2);
   line-height:1.78;margin-bottom:56px;animation:fu .7s .3s ease both}
 .hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
   animation:fu .7s .38s ease both}
-.btn-gold{background:var(--gold);color:#000;font-weight:700;font-size:14px;
+.btn-gold{background:var(--gold2);color:#000;font-weight:700;font-size:14px;border:2px solid var(--gold2);
   padding:17px 44px;border-radius:4px;text-decoration:none;letter-spacing:0.06em;
   text-transform:uppercase;transition:all .2s;border:none;cursor:pointer;display:inline-block}
-.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);
+.btn-gold:hover{background:var(--gold3,#f5d060);transform:translateY(-2px);border-color:var(--gold3,#f5d060);
   box-shadow:0 8px 36px rgba(232,176,32,0.35)}
-.btn-line{background:transparent;color:var(--dim);font-size:14px;font-weight:500;
+.btn-line{background:transparent;color:var(--gold2);font-size:14px;font-weight:500;
   padding:17px 44px;border-radius:4px;text-decoration:none;
   border:1px solid var(--border2);letter-spacing:0.06em;
   text-transform:uppercase;transition:all .2s;display:inline-block}
@@ -140,7 +121,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .stat-n{font-family:var(--display);font-size:50px;letter-spacing:0.04em;
   color:var(--gold2);line-height:1}
 .stat-n sup{font-size:22px}
-.stat-l{font-family:var(--mono);font-size:10px;color:var(--muted);
+.stat-l{font-family:var(--mono);font-size:10px;color:var(--gold2);
   letter-spacing:0.16em;text-transform:uppercase;margin-top:6px}
 
 @keyframes fu{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
@@ -167,7 +148,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .sec-h{font-family:var(--display);font-size:clamp(44px,6.5vw,80px);
   letter-spacing:0.04em;line-height:.95;color:var(--white);margin-bottom:18px}
 .sec-h .g{color:var(--gold2)}
-.sec-p{font-size:16px;font-weight:300;color:var(--dim);line-height:1.75;
+.sec-p{font-size:16px;font-weight:300;color:var(--gold2);line-height:1.75;
   max-width:520px;margin-bottom:60px}
 
 /* DNA */
@@ -178,12 +159,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .dna-card{background:var(--bg2);padding:44px 36px;position:relative}
 .dna-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--gold),var(--gold3))}
-.dna-parent{font-family:var(--mono);font-size:10px;color:var(--muted);
+.dna-parent{font-family:var(--mono);font-size:10px;color:var(--gold2);
   letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px}
 .dna-name{font-family:var(--display);font-size:38px;letter-spacing:0.06em;
   color:var(--gold2);margin-bottom:22px}
 .dna-list{list-style:none;display:flex;flex-direction:column;gap:11px}
-.dna-list li{font-size:13px;color:var(--dim);display:flex;align-items:flex-start;
+.dna-list li{font-size:13px;color:var(--gold2);display:flex;align-items:flex-start;
   gap:10px;line-height:1.5}
 .dna-list li::before{content:"→";color:var(--gold);font-family:var(--mono);
   flex-shrink:0;margin-top:1px}
@@ -204,7 +185,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .dna-klierd-title{font-family:var(--display);font-size:clamp(52px,5.5vw,76px);
   letter-spacing:0.06em;color:var(--gold2);line-height:1;
   text-shadow:0 0 40px rgba(232,176,32,0.28)}
-.dna-klierd-sub{font-size:14px;color:var(--dim);font-weight:300;
+.dna-klierd-sub{font-size:14px;color:var(--gold2);font-weight:300;
   max-width:320px;text-align:right;line-height:1.65}
 .dna-wins{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .dna-win{background:rgba(201,150,12,0.06);border:1px solid rgba(201,150,12,0.16);
@@ -213,7 +194,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .dna-win:hover{background:rgba(201,150,12,0.1);border-color:rgba(201,150,12,0.35)}
 .dna-win-t{font-family:var(--mono);font-size:10px;font-weight:700;
   color:var(--white);margin-bottom:8px;letter-spacing:0.08em;text-transform:uppercase}
-.dna-win-b{font-size:12px;color:var(--dim);line-height:1.55}
+.dna-win-b{font-size:12px;color:var(--gold2);line-height:1.55}
 
 /* HOW IT WORKS — the key section to make pop */
 .how-bg{background:var(--bg2);border-top:1px solid var(--border);
@@ -245,12 +226,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
   border-color:rgba(201,150,12,0.55);box-shadow:0 0 20px rgba(201,150,12,0.18)}
 .step-ico svg{width:24px;height:24px;stroke:var(--gold2);fill:none;stroke-width:1.5;
   stroke-linecap:round;stroke-linejoin:round}
-.step-title{font-size:20px;font-weight:600;color:var(--white);
+.step-title{font-size:20px;font-weight:600;color:var(--gold2);
   margin-bottom:10px;letter-spacing:0.01em}
 .step-div{width:28px;height:2px;background:var(--gold);margin-bottom:16px;
   transition:width .25s}
 .step:hover .step-div{width:44px}
-.step-body{font-size:13px;font-weight:300;color:var(--dim);line-height:1.72}
+.step-body{font-size:13px;font-weight:300;color:var(--gold2);line-height:1.72}
 .step-tag{display:inline-block;margin-top:24px;font-family:var(--mono);font-size:10px;
   color:var(--gold);letter-spacing:0.12em;padding:5px 12px;
   border:1px solid rgba(201,150,12,0.24);border-radius:2px;text-transform:uppercase;
@@ -271,15 +252,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .rcard:hover{border-color:rgba(201,150,12,0.5);transform:translateY(-6px);
   box-shadow:0 24px 60px rgba(0,0,0,0.5)}
 .rcard:hover::after{opacity:1}
-.r-ey{font-family:var(--mono);font-size:10px;color:var(--muted);
+.r-ey{font-family:var(--mono);font-size:10px;color:var(--gold2);
   letter-spacing:0.18em;text-transform:uppercase;margin-bottom:14px}
 .r-amt{font-family:var(--display);font-size:66px;letter-spacing:0.04em;
   color:var(--gold2);line-height:1;margin-bottom:6px;
   text-shadow:0 0 30px rgba(232,176,32,0.18)}
 .r-amt sup{font-size:32px}
-.r-title{font-size:18px;font-weight:600;color:var(--white);margin-bottom:26px}
+.r-title{font-size:18px;font-weight:600;color:var(--gold2);margin-bottom:26px}
 .r-list{list-style:none;display:flex;flex-direction:column;gap:13px}
-.r-list li{font-size:13px;color:var(--dim);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.r-list li{font-size:13px;color:var(--gold2);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
 .r-list li::before{content:"✦";color:var(--gold);font-size:9px;margin-top:3px;flex-shrink:0}
 
 /* ITIN */
@@ -297,11 +278,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .itin-big{font-family:var(--display);font-size:96px;color:var(--gold2);
   letter-spacing:0.04em;line-height:1;margin-bottom:4px;
   text-shadow:0 0 40px rgba(232,176,32,0.22)}
-.itin-lbl{font-family:var(--mono);font-size:10px;color:var(--muted);
+.itin-lbl{font-family:var(--mono);font-size:10px;color:var(--gold2);
   letter-spacing:0.18em;text-transform:uppercase;margin-bottom:36px}
 .itin-checks{list-style:none;display:flex;flex-direction:column;gap:16px}
 .itin-checks li{display:flex;align-items:center;gap:14px;font-size:14px;
-  color:var(--dim);font-weight:300}
+  color:var(--gold2);font-weight:300}
 .itin-chk{width:26px;height:26px;border-radius:50%;flex-shrink:0;
   background:rgba(201,150,12,0.1);border:1px solid rgba(201,150,12,0.28);
   display:flex;align-items:center;justify-content:center;
@@ -312,14 +293,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .faq-inner{max-width:800px;margin:0 auto;padding:110px 60px}
 .faq-list{margin-top:52px}
 .faq-item{border-bottom:1px solid var(--border)}
-.faq-q{font-size:16px;font-weight:500;color:var(--white);cursor:pointer;
+.faq-q{font-size:16px;font-weight:500;color:var(--gold2);cursor:pointer;
   display:flex;justify-content:space-between;align-items:center;
   gap:16px;padding:26px 0;letter-spacing:0.01em;transition:color .2s}
 .faq-q:hover{color:var(--gold2)}
 .faq-ic{font-family:var(--mono);font-size:22px;color:var(--gold);
   flex-shrink:0;transition:transform .25s;line-height:1}
 .faq-item.open .faq-ic{transform:rotate(45deg)}
-.faq-a{font-size:14px;font-weight:300;color:var(--dim);line-height:1.75;
+.faq-a{font-size:14px;font-weight:300;color:var(--gold2);line-height:1.75;
   max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s ease}
 .faq-item.open .faq-a{max-height:300px;padding-bottom:26px}
 
@@ -334,9 +315,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
   letter-spacing:0.04em;line-height:.9;color:var(--white);
   margin-bottom:24px;position:relative;z-index:1}
 .cta-h .g{color:var(--gold2);text-shadow:0 0 50px rgba(232,176,32,0.4)}
-.cta-p{font-size:17px;font-weight:300;color:var(--dim);line-height:1.75;
+.cta-p{font-size:17px;font-weight:300;color:var(--gold2);line-height:1.75;
   max-width:480px;margin:0 auto 52px;position:relative;z-index:1}
-.cta-disc{font-size:11px;color:var(--muted);font-family:var(--mono);
+.cta-disc{font-size:11px;color:var(--gold2);font-family:var(--mono);
   margin-top:24px;position:relative;z-index:1;letter-spacing:0.05em}
 
 /* FOOTER */
@@ -347,18 +328,18 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:56px 60p
   color:var(--gold2);margin-bottom:10px}
 .f-tag{font-family:var(--mono);font-size:11px;color:var(--gold);
   letter-spacing:0.15em;margin-bottom:14px;text-transform:uppercase}
-.f-contact{font-size:13px;color:var(--dim);font-family:var(--mono)}
-.f-col h4{font-family:var(--mono);font-size:10px;color:var(--muted);
+.f-contact{font-size:13px;color:var(--gold2);font-family:var(--mono)}
+.f-col h4{font-family:var(--mono);font-size:10px;color:var(--gold2);
   letter-spacing:0.18em;text-transform:uppercase;margin-bottom:18px}
 .f-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
-.f-col a{font-size:13px;color:var(--dim);text-decoration:none;transition:color .2s}
+.f-col a{font-size:13px;color:var(--gold2);text-decoration:none;transition:color .2s}
 .f-col a:hover{color:var(--gold2)}
 .footer-bottom{max-width:1240px;margin:40px auto 0;padding-top:28px;
   border-top:1px solid var(--border);
   display:flex;justify-content:space-between;align-items:flex-start;
   flex-wrap:wrap;gap:16px}
-.f-copy{font-size:11px;color:var(--muted);font-family:var(--mono)}
-.f-legal{font-size:10px;color:var(--muted);font-family:var(--mono);
+.f-copy{font-size:11px;color:var(--gold2);font-family:var(--mono)}
+.f-legal{font-size:10px;color:var(--gold2);font-family:var(--mono);
   max-width:580px;line-height:1.7;text-align:right}
 
 /* LANG SYSTEM — bulletproof */
@@ -408,21 +389,22 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">KLIERD</a>
+  <a href="#" class="nav-logo" style="color:var(--gold2)">KLIERD</a>
   <ul class="nav-links">
-    <li><a href="#what"><span class="en">What We Are</span><span class="es">Quiénes Somos</span></a></li>
-    <li><a href="#how"><span class="en">Pick Your Path</span><span class="es">Tu Camino</span></a></li>
-    <li><a href="#funding"><span class="en">Funding</span><span class="es">Financiamiento</span></a></li>
-    <li><a href="#itin">ITIN</a></li>
-    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#what" style="color:var(--gold2)"><span class="en">What We Are</span><span class="es">Quiénes Somos</span></a></li>
+    <li><a href="#how" style="color:var(--gold2)"><span class="en">Pick Your Path</span><span class="es">Tu Camino</span></a></li>
+    <li><a href="#funding" style="color:var(--gold2)"><span class="en">Funding</span><span class="es">Financiamiento</span></a></li>
+    <li><a href="#itin" style="color:var(--gold2)">ITIN</a></li>
+    <li><a href="#dispute" style="color:var(--gold2)">Dispute</a></li>
+    <li><a href="#faq" style="color:var(--gold2)">FAQ</a></li>
   </ul>
   <div class="nav-right">
     <div class="lang-pair">
       <button class="lb on" id="btn-en" onclick="setLang('en')">🇺🇸 EN</button>
       <button class="lb" id="btn-es" onclick="setLang('es')">🇲🇽 ES</button>
     </div>
-    <a href="/apply.html" class="nav-apply en">Apply Now</a>
-    <a href="/apply.html" class="nav-apply es">Aplica Ahora</a>
+    <a href="https://trystackpro.com/apply.html" class="nav-apply en">Apply Now</a>
+    <a href="https://trystackpro.com/apply.html" class="nav-apply es">Aplica Ahora</a>
   </div>
 </nav>
 
@@ -443,20 +425,20 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
   <p class="hero-tagline">WE ARE KLIERING YOUR PATH</p>
   <p class="hero-ift">— Intelligent Funding Technology —</p>
 
-  <p class="hero-desc en">
+  <p class="hero-desc en" style="color:var(--gold2)">
     20 years of funding expertise, now powered by innovative technology.
     Intelligent lender matching, real-time credit analysis, and intelligent funding decisions
-    for SSN and ITIN holders alike. Apply today.
+    for SSN and ITIN holders alike.
   </p>
-  <p class="hero-desc es">
+  <p class="hero-desc es" style="color:var(--gold2)">
     20 años de experiencia en financiamiento, ahora impulsados por tecnología innovadora.
     Emparejamiento inteligente de prestamistas, análisis de crédito en tiempo real y decisiones
-    de financiamiento inteligentes para titulares de SSN e ITIN. Aplica hoy.
+    de financiamiento inteligentes para titulares de SSN e ITIN.
   </p>
 
   <div class="hero-actions">
-    <a href="/apply.html" class="btn-gold en">Start Your Application →</a>
-    <a href="/apply.html" class="btn-gold es">Iniciar Solicitud →</a>
+    <a href="https://trystackpro.com/apply.html" class="btn-gold en">Start Your Application →</a>
+    <a href="https://trystackpro.com/apply.html" class="btn-gold es">Iniciar Solicitud →</a>
     <a href="#how" class="btn-line en">See How It Works</a>
     <a href="#how" class="btn-line es">Cómo Funciona</a>
   </div>
@@ -513,8 +495,8 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
     <div class="sec-tag es">Lo Que Hace a KLIERD Diferente</div>
     <h2 class="sec-h en">Three Pillars.<br><span class="g">One Platform.</span></h2>
     <h2 class="sec-h es">Tres Pilares.<br><span class="g">Una Plataforma.</span></h2>
-    <p class="sec-p en">We studied every platform in the industry and built the one product none of them could — combining dispute resolution, intelligent funding, and bilingual ITIN service under one roof.</p>
-    <p class="sec-p es">Estudiamos cada plataforma de la industria y construimos el producto que ninguna pudo — disputas, financiamiento inteligente y servicio bilingüe ITIN en un solo lugar.</p>
+    <p class="sec-p en" style="color:var(--gold2)">We studied every platform in the industry and built the one product none of them could — combining dispute resolution, intelligent funding, and bilingual ITIN service under one roof.</p>
+    <p class="sec-p es" style="color:var(--gold2)">Estudiamos cada plataforma de la industria y construimos el producto que ninguna pudo — disputas, financiamiento inteligente y servicio bilingüe ITIN en un solo lugar.</p>
 
     <div class="dna-grid">
       <div class="dna-card">
@@ -538,7 +520,7 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
           <li><span class="en">Bureau-specific application sequencing for max approvals</span><span class="es">Secuencia de solicitud por buró para máximas aprobaciones</span></li>
           <li><span class="en">Personal loans, business lines of credit, SBA programs</span><span class="es">Préstamos personales, líneas de crédito, programas SBA</span></li>
           <li><span class="en">Done-for-you process — KLIERD technology handles it all</span><span class="es">Proceso automatizado — la tecnología KLIERD lo maneja todo</span></li>
-          <li><span class="en">Funding success fee — paid after you receive funding</span><span class="es">Tarifa de éxito de financiamiento — pagada después de recibir fondos</span></li>
+          <li><span class="en">Success fee only — you pay after you are funded</span><span class="es">Solo tarifa de éxito — pagas después de recibir fondos</span></li>
         </ul>
       </div>
       <div class="dna-card">
@@ -608,8 +590,8 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
     <div class="sec-tag es">Elige Tu Camino</div>
     <h2 class="sec-h en">Pick Your<br><span class="g">Path.</span></h2>
     <h2 class="sec-h es">Elige Tu<br><span class="g">Camino.</span></h2>
-    <p class="sec-p en">KLIERD Intelligent Funding Technology handles the analysis, lender matching, and approvals. You focus on your goals — we handle the rest.</p>
-    <p class="sec-p es">KLIERD Intelligent Funding Technology maneja el análisis, emparejamiento y aprobaciones. Tú enfócate en tus metas — nosotros hacemos el resto.</p>
+    <p class="sec-p en" style="color:var(--gold2)">KLIERD Intelligent Funding Technology handles the analysis, lender matching, and approvals. You focus on your goals — we handle the rest.</p>
+    <p class="sec-p es" style="color:var(--gold2)">KLIERD Intelligent Funding Technology maneja el análisis, emparejamiento y aprobaciones. Tú enfócate en tus metas — nosotros hacemos el resto.</p>
 
     <div class="steps">
       <div class="step">
@@ -692,8 +674,8 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
     <div class="sec-tag es">Rangos de Financiamiento</div>
     <h2 class="sec-h en">How Much<br><span class="g">Can You Get?</span></h2>
     <h2 class="sec-h es">¿Cuánto<br><span class="g">Puedes Obtener?</span></h2>
-    <p class="sec-p en">Your exact range is determined by your credit profile, income, and business history. KLIERD calculates your position before submitting a single application.</p>
-    <p class="sec-p es">Tu rango exacto se determina por tu perfil de crédito, ingresos e historial empresarial. KLIERD calcula tu posición antes de enviar una sola solicitud.</p>
+    <p class="sec-p en" style="color:var(--gold2)">Your exact range is determined by your credit profile, income, and business history. KLIERD calculates your position before submitting a single application.</p>
+    <p class="sec-p es" style="color:var(--gold2)">Tu rango exacto se determina por tu perfil de crédito, ingresos e historial empresarial. KLIERD calcula tu posición antes de enviar una sola solicitud.</p>
 
     <div class="ranges-grid">
       <div class="rcard">
@@ -748,10 +730,10 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
         <div class="sec-tag es">Para Titulares de ITIN</div>
         <h2 class="sec-h en">No SSN?<br><span class="g">No Problem.</span></h2>
         <h2 class="sec-h es">¿Sin SSN?<br><span class="g">Sin Problema.</span></h2>
-        <p class="sec-p en">KLIERD is built to serve ITIN clients with the same access, the same technology, and the same results as any SSN holder. Fully bilingual. No barriers. No judgment.</p>
-        <p class="sec-p es">KLIERD sirve a clientes ITIN con el mismo acceso, la misma tecnología y los mismos resultados que cualquier titular de SSN. Completamente bilingüe. Sin barreras.</p>
-        <a href="/apply.html" class="btn-gold en">Apply With ITIN →</a>
-        <a href="/apply.html" class="btn-gold es">Aplica Con ITIN →</a>
+        <p class="sec-p en" style="color:var(--gold2)">KLIERD is built to serve ITIN clients with the same access, the same technology, and the same results as any SSN holder. Fully bilingual. No barriers. No judgment.</p>
+        <p class="sec-p es" style="color:var(--gold2)">KLIERD sirve a clientes ITIN con el mismo acceso, la misma tecnología y los mismos resultados que cualquier titular de SSN. Completamente bilingüe. Sin barreras.</p>
+        <a href="https://trystackpro.com/apply.html" class="btn-gold en">Apply With ITIN →</a>
+        <a href="https://trystackpro.com/apply.html" class="btn-gold es">Aplica Con ITIN →</a>
       </div>
       <div class="itin-visual">
         <div class="itin-big">62M<sup style="font-size:40px">+</sup></div>
@@ -779,8 +761,42 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
     <div style="max-width:700px;margin:0 auto;text-align:center">
 
       <!-- CARD MOCKUP — matches real KLIERD card -->
-      <div style="perspective:1400px;margin-bottom:60px">
-        <div id="kcard" style="
+      <div style="perspective:1400px;margin-bottom:60px;position:relative">
+
+        <!-- SPARKLE LAYER -->
+        <div style="position:absolute;inset:-80px;pointer-events:none;z-index:0;overflow:visible">
+
+          <!-- Gold pulse glow -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+            width:480px;height:280px;border-radius:50%;
+            background:radial-gradient(ellipse,rgba(232,176,32,0.2) 0%,rgba(201,150,12,0.08) 45%,transparent 70%);
+            animation:cardglow 3s ease-in-out infinite alternate"></div>
+
+          <!-- Sparkle dots -->
+          <div style="position:absolute;top:8%;left:8%;width:7px;height:7px;border-radius:50%;background:#e8b020;box-shadow:0 0 12px #e8b020,0 0 24px rgba(232,176,32,0.5);animation:sparkle1 2.4s ease-in-out infinite"></div>
+          <div style="position:absolute;top:15%;right:10%;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff,0 0 16px rgba(255,255,255,0.6);animation:sparkle2 3s ease-in-out infinite .6s"></div>
+          <div style="position:absolute;bottom:12%;left:12%;width:6px;height:6px;border-radius:50%;background:#e8b020;box-shadow:0 0 10px #e8b020;animation:sparkle1 2s ease-in-out infinite 1s"></div>
+          <div style="position:absolute;bottom:20%;right:8%;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff;animation:sparkle2 2.6s ease-in-out infinite .3s"></div>
+          <div style="position:absolute;top:45%;left:3%;width:5px;height:5px;border-radius:50%;background:#e8b020;box-shadow:0 0 10px #e8b020;animation:sparkle1 3s ease-in-out infinite .8s"></div>
+          <div style="position:absolute;top:30%;right:4%;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 12px #fff;animation:sparkle2 2.8s ease-in-out infinite 1.2s"></div>
+          <div style="position:absolute;bottom:8%;right:20%;width:5px;height:5px;border-radius:50%;background:#e8b020;box-shadow:0 0 10px #e8b020;animation:sparkle1 2.2s ease-in-out infinite .5s"></div>
+          <div style="position:absolute;top:5%;left:35%;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 8px rgba(255,255,255,0.9);animation:sparkle2 3.2s ease-in-out infinite .2s"></div>
+          <div style="position:absolute;bottom:5%;left:45%;width:6px;height:6px;border-radius:50%;background:#e8b020;box-shadow:0 0 12px #e8b020;animation:sparkle1 2.7s ease-in-out infinite 1.5s"></div>
+
+          <!-- Star sparkles ✦ -->
+          <div style="position:absolute;top:5%;right:22%;font-size:16px;color:#e8b020;animation:startwinkle 2s ease-in-out infinite">✦</div>
+          <div style="position:absolute;bottom:10%;left:18%;font-size:12px;color:#fff;animation:startwinkle 2.5s ease-in-out infinite .7s">✦</div>
+          <div style="position:absolute;top:38%;right:2%;font-size:14px;color:#e8b020;animation:startwinkle 3s ease-in-out infinite 1s">✦</div>
+          <div style="position:absolute;top:12%;left:14%;font-size:10px;color:#fff;animation:startwinkle 1.8s ease-in-out infinite .4s">✦</div>
+          <div style="position:absolute;bottom:18%;right:28%;font-size:18px;color:#e8b020;opacity:.5;animation:startwinkle 2.2s ease-in-out infinite .9s">✦</div>
+          <div style="position:absolute;top:55%;left:6%;font-size:12px;color:#fff;animation:startwinkle 2.6s ease-in-out infinite 1.3s">✦</div>
+
+          <!-- Light streak -->
+          <div style="position:absolute;top:48%;left:0;right:0;height:1px;
+            background:linear-gradient(90deg,transparent,rgba(232,176,32,0.4),rgba(255,255,255,0.6),rgba(232,176,32,0.4),transparent);
+            animation:streak 4s ease-in-out infinite"></div>
+        </div>
+        <div id="kcard" style="position:relative;z-index:1;
           width:400px;height:252px;border-radius:18px;margin:0 auto;
           position:relative;cursor:default;
           transform:rotateY(-14deg) rotateX(6deg) translateY(-8px);
@@ -928,14 +944,14 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
         La Tarjeta KLIERD<br><span style="color:var(--gold2);text-shadow:0 0 40px rgba(232,176,32,0.4)">Llega Pronto.</span>
       </h2>
 
-      <p style="font-size:16px;font-weight:300;color:var(--dim);line-height:1.75;max-width:500px;margin:0 auto 10px" class="en">
+      <p style="font-size:16px;font-weight:300;color:var(--gold2);line-height:1.75;max-width:500px;margin:0 auto 10px" class="en">
         Secured and unsecured. Personal and business. Reports to all 3 bureaus. Converts to unsecured after 12 months. Built to build your credit — while you fund your life.
       </p>
-      <p style="font-size:16px;font-weight:300;color:var(--dim);line-height:1.75;max-width:500px;margin:0 auto 10px" class="es">
+      <p style="font-size:16px;font-weight:300;color:var(--gold2);line-height:1.75;max-width:500px;margin:0 auto 10px" class="es">
         Asegurada y no asegurada. Personal y empresarial. Reporta a los 3 burós. Se convierte a no asegurada después de 12 meses. Construida para construir tu crédito.
       </p>
-      <p style="font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:48px;letter-spacing:0.08em" class="en">SSN and ITIN accepted &nbsp;·&nbsp; Exclusive early access for subscribers</p>
-      <p style="font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:48px;letter-spacing:0.08em" class="es">SSN e ITIN aceptados &nbsp;·&nbsp; Acceso anticipado exclusivo para suscriptores</p>
+      <p style="font-size:12px;color:var(--gold2);font-family:var(--mono);margin-bottom:48px;letter-spacing:0.08em" class="en">SSN and ITIN accepted &nbsp;·&nbsp; Exclusive early access for subscribers</p>
+      <p style="font-size:12px;color:var(--gold2);font-family:var(--mono);margin-bottom:48px;letter-spacing:0.08em" class="es">SSN e ITIN aceptados &nbsp;·&nbsp; Acceso anticipado exclusivo para suscriptores</p>
 
       <!-- SIGN UP FORM -->
       <div style="max-width:500px;margin:0 auto" id="signup-wrap">
@@ -949,19 +965,19 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
               color:var(--white);letter-spacing:0.02em;min-width:0"
           />
           <button onclick="handleSignup()"
-            style="background:var(--gold);color:#000;font-family:var(--mono);
+            style="background:var(--gold2);color:#000;font-family:var(--mono);
               font-size:12px;font-weight:700;padding:17px 28px;border:none;
               cursor:pointer;letter-spacing:0.08em;text-transform:uppercase;
               transition:background .2s;white-space:nowrap;flex-shrink:0"
             onmouseover="this.style.background='#e8b020'"
-            onmouseout="this.style.background='var(--gold)'"
+            onmouseout="this.style.background='var(--gold2)'"
           >
             <span class="en">Notify Me</span>
             <span class="es">Notifícame</span>
           </button>
         </div>
-        <p style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:12px;letter-spacing:0.06em" class="en">No spam. Early access only. Unsubscribe anytime.</p>
-        <p style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:12px;letter-spacing:0.06em" class="es">Sin spam. Solo acceso anticipado. Cancela cuando quieras.</p>
+        <p style="font-size:11px;color:var(--gold2);font-family:var(--mono);margin-top:12px;letter-spacing:0.06em" class="en">No spam. Early access only. Unsubscribe anytime.</p>
+        <p style="font-size:11px;color:var(--gold2);font-family:var(--mono);margin-top:12px;letter-spacing:0.06em" class="es">Sin spam. Solo acceso anticipado. Cancela cuando quieras.</p>
       </div>
 
       <!-- SUCCESS STATE -->
@@ -976,8 +992,8 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
           letter-spacing:0.1em;margin-bottom:10px;text-shadow:0 0 30px rgba(232,176,32,0.4)" class="es">
           Tu camino ha sido KLIERed.
         </div>
-        <p style="font-size:13px;color:var(--dim);font-family:var(--mono);letter-spacing:0.05em" class="en">The KLIERD Card is coming soon. You are first in line — we will notify you the moment it launches.</p>
-        <p style="font-size:13px;color:var(--dim);font-family:var(--mono);letter-spacing:0.05em" class="es">La Tarjeta KLIERD llega pronto. Eres el primero en la fila — te notificaremos en el momento del lanzamiento.</p>
+        <p style="font-size:13px;color:var(--gold2);font-family:var(--mono);letter-spacing:0.05em" class="en">The KLIERD Card is coming soon. You are first in line — we will notify you the moment it launches.</p>
+        <p style="font-size:13px;color:var(--gold2);font-family:var(--mono);letter-spacing:0.05em" class="es">La Tarjeta KLIERD llega pronto. Eres el primero en la fila — te notificaremos en el momento del lanzamiento.</p>
       </div>
 
     </div>
@@ -1041,14 +1057,311 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 </section>
 
 <!-- CTA -->
+
+
+
+<!-- REAL PEOPLE REAL RESULTS -->
+<section style="background:var(--bg);border-top:1px solid var(--border)">
+  <div class="sw">
+    <div class="sec-tag en">Real People. Real Results.</div>
+    <div class="sec-tag es">Personas Reales. Resultados Reales.</div>
+    <h2 class="sec-h en">Paths That Have<br><span class="g">Been KLIERed.</span></h2>
+    <h2 class="sec-h es">Caminos Que Han<br><span class="g">Sido KLIERed.</span></h2>
+    <p class="sec-p en" style="color:var(--gold2)">Real clients. Real businesses. Real funding. KLIERD Intelligent Funding Technology at work.</p>
+    <p class="sec-p es" style="color:var(--gold2)">Clientes reales. Negocios reales. Financiamiento real. KLIERD Intelligent Funding Technology en acción.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:28px">
+
+      <!-- VARICK B. -->
+      <div style="background:var(--bg2);border:1px solid rgba(201,150,12,0.4);border-radius:10px;
+        padding:32px;position:relative;overflow:hidden;transition:all .25s;
+        box-shadow:0 0 30px rgba(201,150,12,0.06)"
+        onmouseover="this.style.borderColor='var(--gold2)';this.style.transform='translateY(-6px)';this.style.boxShadow='0 24px 60px rgba(0,0,0,0.5),0 0 40px rgba(201,150,12,0.12)'"
+        onmouseout="this.style.borderColor='rgba(201,150,12,0.4)';this.style.transform='translateY(0)';this.style.boxShadow='0 0 30px rgba(201,150,12,0.06)'">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;
+          background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3))"></div>
+
+        <div style="font-family:var(--mono);font-size:9px;color:var(--gold);
+          letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px">
+          Business Funding · 30 Days
+        </div>
+
+        <div style="font-family:var(--display);font-size:64px;color:var(--gold2);
+          letter-spacing:0.04em;line-height:1;margin-bottom:4px;
+          text-shadow:0 0 30px rgba(232,176,32,0.25)">$168,000</div>
+
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;
+          color:var(--green);display:flex;align-items:center;gap:8px;margin-bottom:24px">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--green);
+            display:inline-block;animation:gp 2s infinite"></span>
+          <span class="en">FUNDED</span><span class="es">FINANCIADO</span>
+        </div>
+
+        <div style="width:40px;height:2px;background:var(--gold);margin-bottom:20px"></div>
+
+        <p style="font-size:13px;font-weight:300;color:var(--gold2);line-height:1.75;
+          margin-bottom:22px;font-style:italic" class="en">
+          "KLIERD Intelligent Funding Technology processed my business profile and I was funded. My business is now where it needs to be."
+        </p>
+        <p style="font-size:13px;font-weight:300;color:var(--gold2);line-height:1.75;
+          margin-bottom:22px;font-style:italic" class="es">
+          "KLIERD procesó mi perfil empresarial y recibí financiamiento. Mi negocio ahora está donde necesita estar."
+        </p>
+
+        <div style="border-top:1px solid var(--border2);padding-top:16px">
+          <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:3px">Varick B.</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);
+            letter-spacing:0.08em" class="en">Celebrity Cake Artist · Bee Sweets · Atlanta, GA</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);
+            letter-spacing:0.08em" class="es">Artista Pastelero · Bee Sweets · Atlanta, GA</div>
+        </div>
+      </div>
+
+      <!-- LATONYA E. -->
+      <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:10px;
+        padding:32px;position:relative;overflow:hidden;transition:all .25s"
+        onmouseover="this.style.borderColor='rgba(201,150,12,0.5)';this.style.transform='translateY(-6px)';this.style.boxShadow='0 24px 60px rgba(0,0,0,0.5)'"
+        onmouseout="this.style.borderColor='var(--border2)';this.style.transform='translateY(0)';this.style.boxShadow='none'">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;
+          background:linear-gradient(90deg,var(--gold),var(--gold3))"></div>
+
+        <div style="font-family:var(--mono);font-size:9px;color:var(--gold2);
+          letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px">
+          Business Funding · 2 Weeks
+        </div>
+
+        <div style="font-family:var(--display);font-size:64px;color:var(--gold2);
+          letter-spacing:0.04em;line-height:1;margin-bottom:4px;
+          text-shadow:0 0 30px rgba(232,176,32,0.2)">$100,000</div>
+
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;
+          color:var(--green);display:flex;align-items:center;gap:8px;margin-bottom:24px">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--green);
+            display:inline-block;animation:gp 2s infinite"></span>
+          <span class="en">FUNDED</span><span class="es">FINANCIADA</span>
+        </div>
+
+        <div style="width:40px;height:2px;background:var(--gold);margin-bottom:20px"></div>
+
+        <p style="font-size:13px;font-weight:300;color:var(--gold2);line-height:1.75;
+          margin-bottom:22px;font-style:italic" class="en">
+          "I did not think I qualified. KLIERD Intelligent Funding Technology analyzed my profile and I was funded in 2 weeks."
+        </p>
+        <p style="font-size:13px;font-weight:300;color:var(--gold2);line-height:1.75;
+          margin-bottom:22px;font-style:italic" class="es">
+          "No pensé que calificaba. KLIERD analizó mi perfil y fui financiada en 2 semanas."
+        </p>
+
+        <div style="border-top:1px solid var(--border2);padding-top:16px">
+          <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:3px">Latonya E.</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);
+            letter-spacing:0.08em" class="en">Private Education Consultant · Birmingham, AL</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);
+            letter-spacing:0.08em" class="es">Consultora de Educación Privada · Birmingham, AL</div>
+        </div>
+      </div>
+
+      <!-- WILLIAM P. -->
+      <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:10px;
+        padding:32px;position:relative;overflow:hidden;transition:all .25s"
+        onmouseover="this.style.borderColor='rgba(201,150,12,0.5)';this.style.transform='translateY(-6px)';this.style.boxShadow='0 24px 60px rgba(0,0,0,0.5)'"
+        onmouseout="this.style.borderColor='var(--border2)';this.style.transform='translateY(0)';this.style.boxShadow='none'">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;
+          background:linear-gradient(90deg,var(--gold),var(--gold3))"></div>
+
+        <div style="font-family:var(--mono);font-size:9px;color:var(--gold2);
+          letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px">
+          Business Funding · 1 Week
+        </div>
+
+        <div style="font-family:var(--display);font-size:64px;color:var(--gold2);
+          letter-spacing:0.04em;line-height:1;margin-bottom:4px;
+          text-shadow:0 0 30px rgba(232,176,32,0.2)">$62,000</div>
+
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;
+          color:var(--green);display:flex;align-items:center;gap:8px;margin-bottom:24px">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--green);
+            display:inline-block;animation:gp 2s infinite"></span>
+          <span class="en">FUNDED</span><span class="es">FINANCIADO</span>
+        </div>
+
+        <div style="width:40px;height:2px;background:var(--gold);margin-bottom:20px"></div>
+
+        <p style="font-size:13px;font-weight:300;color:var(--gold2);line-height:1.75;
+          margin-bottom:22px;font-style:italic" class="en">
+          "The technology matched me to the right funding for my business. I was funded in 1 week."
+        </p>
+        <p style="font-size:13px;font-weight:300;color:var(--gold2);line-height:1.75;
+          margin-bottom:22px;font-style:italic" class="es">
+          "La tecnología me emparejó con el financiamiento correcto. Fui financiado en 1 semana."
+        </p>
+
+        <div style="border-top:1px solid var(--border2);padding-top:16px">
+          <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:3px">William P.</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);
+            letter-spacing:0.08em" class="en">Mental Health Professional · Dallas, TX</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);
+            letter-spacing:0.08em" class="es">Profesional de Salud Mental · Dallas, TX</div>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="font-family:var(--mono);font-size:10px;color:var(--gold2);text-align:center;
+      letter-spacing:0.06em;line-height:1.6" class="en">
+      Results are not typical and may vary. Individual outcomes depend on credit profile, income, and other factors.
+      First name and last initial used for privacy. Client consent obtained.
+    </p>
+    <p style="font-family:var(--mono);font-size:10px;color:var(--gold2);text-align:center;
+      letter-spacing:0.06em;line-height:1.6" class="es">
+      Los resultados no son típicos y pueden variar. Nombre e inicial usados por privacidad. Consentimiento obtenido.
+    </p>
+  </div>
+</section>
+
+
+<!-- JOIN THE MOVEMENT -->
+<section style="background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="sw" style="text-align:center">
+
+    <div class="sec-tag en" style="justify-content:center;display:flex">Join the Movement</div>
+    <div class="sec-tag es" style="justify-content:center;display:flex">Únete al Movimiento</div>
+
+    <h2 class="sec-h en" style="text-align:center">We Are KLIERing<br><span class="g">Paths Every Day.</span></h2>
+    <h2 class="sec-h es" style="text-align:center">KLIERando Caminos<br><span class="g">Cada Día.</span></h2>
+
+    <p style="font-size:16px;font-weight:300;color:var(--gold2);line-height:1.75;max-width:520px;margin:0 auto 48px" class="en">
+      Follow us on social media and be part of the first intelligent funding community — bilingual, inclusive, and built for everyone. ITIN and SSN welcome.
+    </p>
+    <p style="font-size:16px;font-weight:300;color:var(--gold2);line-height:1.75;max-width:520px;margin:0 auto 48px" class="es">
+      Síguenos en redes sociales y sé parte de la primera comunidad de financiamiento inteligente — bilingüe, inclusiva y construida para todos. ITIN y SSN bienvenidos.
+    </p>
+
+    <!-- SOCIAL ICONS -->
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:52px">
+
+      <!-- Facebook -->
+      <a href="https://facebook.com/klierd" target="_blank"
+        style="display:flex;align-items:center;gap:10px;background:var(--bg2);
+        border:1px solid var(--border2);border-radius:6px;padding:14px 22px;
+        text-decoration:none;transition:all .2s;color:var(--gold2)"
+        onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold2)';this.style.transform='translateY(-3px)'"
+        onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--dim)';this.style.transform='translateY(0)'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+        </svg>
+        <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase">Facebook</span>
+      </a>
+
+      <!-- Instagram -->
+      <a href="https://instagram.com/klierd" target="_blank"
+        style="display:flex;align-items:center;gap:10px;background:var(--bg2);
+        border:1px solid var(--border2);border-radius:6px;padding:14px 22px;
+        text-decoration:none;transition:all .2s;color:var(--gold2)"
+        onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold2)';this.style.transform='translateY(-3px)'"
+        onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--dim)';this.style.transform='translateY(0)'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase">Instagram</span>
+      </a>
+
+      <!-- TikTok -->
+      <a href="https://tiktok.com/@klierd" target="_blank"
+        style="display:flex;align-items:center;gap:10px;background:var(--bg2);
+        border:1px solid var(--border2);border-radius:6px;padding:14px 22px;
+        text-decoration:none;transition:all .2s;color:var(--gold2)"
+        onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold2)';this.style.transform='translateY(-3px)'"
+        onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--dim)';this.style.transform='translateY(0)'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.73a4.85 4.85 0 01-1.01-.04z"/>
+        </svg>
+        <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase">TikTok</span>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://linkedin.com/company/klierd" target="_blank"
+        style="display:flex;align-items:center;gap:10px;background:var(--bg2);
+        border:1px solid var(--border2);border-radius:6px;padding:14px 22px;
+        text-decoration:none;transition:all .2s;color:var(--gold2)"
+        onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold2)';this.style.transform='translateY(-3px)'"
+        onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--dim)';this.style.transform='translateY(0)'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+          <circle cx="4" cy="4" r="2"/>
+        </svg>
+        <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase">LinkedIn</span>
+      </a>
+
+      <!-- YouTube -->
+      <a href="https://youtube.com/@klierd" target="_blank"
+        style="display:flex;align-items:center;gap:10px;background:var(--bg2);
+        border:1px solid var(--border2);border-radius:6px;padding:14px 22px;
+        text-decoration:none;transition:all .2s;color:var(--gold2)"
+        onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold2)';this.style.transform='translateY(-3px)'"
+        onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--dim)';this.style.transform='translateY(0)'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58a2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/>
+          <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--bg)"/>
+        </svg>
+        <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase">YouTube</span>
+      </a>
+
+    </div>
+
+    <!-- COMMUNITY COMING SOON -->
+    <div style="max-width:560px;margin:0 auto;background:var(--bg2);border:1px solid rgba(201,150,12,0.3);
+      border-radius:10px;padding:36px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;
+        background:linear-gradient(90deg,var(--gold),var(--gold3))"></div>
+      <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;
+        background:radial-gradient(circle,rgba(201,150,12,0.07) 0%,transparent 70%);pointer-events:none"></div>
+
+      <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.22em;
+        text-transform:uppercase;margin-bottom:12px" class="en">Community — Coming Soon</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.22em;
+        text-transform:uppercase;margin-bottom:12px" class="es">Comunidad — Próximamente</div>
+
+      <div style="font-family:var(--display);font-size:32px;letter-spacing:0.06em;color:var(--white);
+        margin-bottom:12px;line-height:1" class="en">The KLIERD Community<br>Is <span style="color:var(--gold2)">Coming.</span></div>
+      <div style="font-family:var(--display);font-size:32px;letter-spacing:0.06em;color:var(--white);
+        margin-bottom:12px;line-height:1" class="es">La Comunidad KLIERD<br><span style="color:var(--gold2)">Está en Camino.</span></div>
+
+      <p style="font-size:13px;font-weight:300;color:var(--gold2);line-height:1.7;margin-bottom:24px" class="en">
+        A bilingual space for clients, ITIN holders, and entrepreneurs building their financial future. Follow us on social media to be first when we launch.
+      </p>
+      <p style="font-size:13px;font-weight:300;color:var(--gold2);line-height:1.7;margin-bottom:24px" class="es">
+        Un espacio bilingüe para clientes, titulares de ITIN y emprendedores construyendo su futuro financiero. Síguenos en redes sociales para ser el primero cuando lancemos.
+      </p>
+
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <a href="https://facebook.com/klierd" target="_blank" style="font-family:var(--mono);font-size:11px;
+          color:var(--gold2);border:1px solid rgba(201,150,12,0.3);padding:7px 16px;border-radius:3px;
+          text-decoration:none;letter-spacing:0.1em;transition:all .2s;text-transform:uppercase"
+          onmouseover="this.style.background='rgba(201,150,12,0.1)'"
+          onmouseout="this.style.background='transparent'">Follow Us →</a>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--gold2);padding:7px 0;letter-spacing:0.1em" class="en">
+          Community launching after social media launch
+        </span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--gold2);padding:7px 0;letter-spacing:0.1em" class="es">
+          Comunidad lanzará después del inicio en redes sociales
+        </span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <section class="cta-bg">
   <div class="cta-glow"></div>
   <h2 class="cta-h en">Ready to Get<br><span class="g">Funded?</span></h2>
   <h2 class="cta-h es">¿Listo para<br><span class="g">Financiarte?</span></h2>
-  <p class="cta-p en">Apply today. Your path is about to be KLIERed. 20 years of funding expertise, now powered by innovative technology. SSN and ITIN welcome.</p>
-  <p class="cta-p es">Aplica hoy. Tu camino está a punto de ser KLIERed. 20 años de experiencia en financiamiento, ahora con tecnología innovadora. SSN e ITIN bienvenidos.</p>
-  <a href="/apply.html" class="btn-gold en">Start Your Application →</a>
-  <a href="/apply.html" class="btn-gold es">Iniciar Solicitud →</a>
+  <p class="cta-p en" style="color:var(--gold2)">Apply today. Your path is about to be KLIERed. 20 years of funding expertise, now powered by innovative technology. SSN and ITIN welcome.</p>
+  <p class="cta-p es" style="color:var(--gold2)">Aplica hoy. Tu camino está a punto de ser KLIERed. 20 años de experiencia en financiamiento, ahora con tecnología innovadora. SSN e ITIN bienvenidos.</p>
+  <a href="https://trystackpro.com/apply.html" class="btn-gold en">Start Your Application →</a>
+  <a href="https://trystackpro.com/apply.html" class="btn-gold es">Iniciar Solicitud →</a>
   <p class="cta-disc en">Results are not typical and may vary. KLIERD does not operate as a credit repair organization under CROA.</p>
   <p class="cta-disc es">Los resultados no son típicos. KLIERD no opera como organización de reparación de crédito bajo CROA.</p>
 </section>
@@ -1070,6 +1383,7 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
         <li><a href="#funding"><span class="en">Business Funding</span><span class="es">Financiamiento Empresarial</span></a></li>
         <li><a href="#what"><span class="en">Credit Profile Optimization</span><span class="es">Optimización de Perfil</span></a></li>
         <li><a href="#itin"><span class="en">ITIN Services</span><span class="es">Servicios ITIN</span></a></li>
+        <li><a href="#dispute"><span class="en">Dispute Resolution</span><span class="es">Resolución de Disputas</span></a></li>
         <li><a href="#what">KLIERD Card</a></li>
       </ul>
     </div>
@@ -1077,32 +1391,23 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
       <h4 class="en">Company</h4>
       <h4 class="es">Empresa</h4>
       <ul>
-        <li><a href="#what"><span class="en">What We Are</span><span class="es">Quiénes Somos</span></a></li>
-        <li><a href="#how"><span class="en">Pick Your Path</span><span class="es">Tu Camino</span></a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="/portal.html"><span class="en">Staff Login</span><span class="es">Acceso Personal</span></a></li>
+        <li><a href="#what" style="color:var(--gold2)"><span class="en">What We Are</span><span class="es">Quiénes Somos</span></a></li>
+        <li><a href="#how" style="color:var(--gold2)"><span class="en">Pick Your Path</span><span class="es">Tu Camino</span></a></li>
+        <li><a href="#faq" style="color:var(--gold2)">FAQ</a></li>
+        <li><a href="https://trystackpro.com/portal.html"><span class="en">Staff Login</span><span class="es">Acceso Personal</span></a></li>
       </ul>
     </div>
     <div class="f-col">
       <h4 class="en">Apply</h4>
       <h4 class="es">Aplica</h4>
       <ul>
-        <li><a href="/apply.html"><span class="en">Start Application</span><span class="es">Iniciar Solicitud</span></a></li>
-        <li><a href="/apply.html"><span class="en">ITIN Application</span><span class="es">Solicitud ITIN</span></a></li>
-        <li><a href="/apply.html"><span class="en">Business Application</span><span class="es">Solicitud Empresarial</span></a></li>
+        <li><a href="https://trystackpro.com/apply.html"><span class="en">Start Application</span><span class="es">Iniciar Solicitud</span></a></li>
+        <li><a href="https://trystackpro.com/apply.html"><span class="en">ITIN Application</span><span class="es">Solicitud ITIN</span></a></li>
+        <li><a href="https://trystackpro.com/apply.html"><span class="en">Business Application</span><span class="es">Solicitud Empresarial</span></a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="f-copy" style="margin-bottom:8px">
-      <a href="/privacy.html" style="color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:11px"><span class="en">Privacy Policy</span><span class="es">Privacidad</span></a>
-      &nbsp;·&nbsp;
-      <a href="/terms.html" style="color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:11px"><span class="en">Terms of Service</span><span class="es">Términos</span></a>
-      &nbsp;·&nbsp;
-      <a href="/privacy.html#ccpa" style="color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:11px"><span class="en">Do Not Sell My Personal Information</span><span class="es">No Vender Mi Información</span></a>
-      &nbsp;·&nbsp;
-      <a href="mailto:press@klierd.com" style="color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:11px">Press</a>
-    </p>
     <p class="f-copy">© 2026 KLIERD · Intelligent Funding Technology · All rights reserved.</p>
     <p class="f-legal en">Results are not typical and may vary. KLIERD does not operate as a credit repair organization under CROA. We offer integrated dispute resolution services and credit profile optimization as part of our intelligent funding process. This is not a guarantee of funding approval or credit improvement.</p>
     <p class="f-legal es">Los resultados no son típicos y pueden variar. KLIERD no opera como organización de reparación de crédito bajo CROA. Ofrecemos servicios integrados de resolución de disputas y optimización de perfil de crédito. Esto no es una garantía de aprobación.</p>
@@ -1119,25 +1424,10 @@ function handleSignup(){
     document.getElementById("signup-email").focus();
     return;
   }
-  // Stopgap lead capture — persist to localStorage until SendGrid endpoint is wired.
-  // To export collected leads on the browser console: JSON.parse(localStorage.getItem('klierd_waitlist'))
-  try {
-    const waitlist = JSON.parse(localStorage.getItem("klierd_waitlist") || "[]");
-    waitlist.push({
-      email: email,
-      timestamp: new Date().toISOString(),
-      lang: document.documentElement.lang || "en",
-      source: "klierd.com/card-waitlist",
-      userAgent: navigator.userAgent.slice(0,200)
-    });
-    localStorage.setItem("klierd_waitlist", JSON.stringify(waitlist));
-  } catch(e) { /* localStorage unavailable — fall through */ }
   document.getElementById("signup-wrap").style.display="none";
   document.getElementById("signup-success").style.display="block";
-  // TODO: wire to SendGrid / Supabase POST when ready
-  // fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,source:'klierd.com'})}).catch(()=>{});
-  if(window.gtag){ try{ gtag('event','waitlist_signup',{method:'klierd_card'}); }catch(e){} }
-  console.log("KLIERD signup captured:", email);
+  // TODO: wire to SendGrid / Supabase when ready
+  console.log("KLIERD signup:", email);
 }
 document.addEventListener("keydown", function(e){
   if(e.key === "Enter"){
