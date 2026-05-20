@@ -398,7 +398,7 @@ footer{background:var(--bg)!important;border-top:1px solid var(--border2)!import
         <div class="nav-desc">Business clients must set up a NAV.com account so we can review your business credit profile. Please select the <strong style="color:#2980B9">$79.99/month plan</strong> and log in to review your profile before your consultation.</div>
         <div class="row">
           <div class="f"><label>NAV.com Account Status <span class="req">*</span></label>
-            <select id="i-nav-status" required>
+            <select id="i-nav-status">
               <option value="">-- Select --</option>
               <option value="setup_done">✅ Set up — ready for review</option>
               <option value="setting_up">⏳ Setting up now</option>
@@ -540,7 +540,7 @@ function setFundingType(type,btn){
   document.getElementById('personal-goal-wrap').style.display=(type==='personal'||type==='both')?'':'none';
   document.getElementById('business-goal-wrap').style.display=(type==='business'||type==='both')?'':'none';
   document.getElementById('biz-required-note').style.display=(type==='business'||type==='both')?'block':'none';
-  ['i-biz-name','i-ein','i-biz-type','i-entity','i-time-biz','i-monthly-rev'].forEach(id=>{const el=document.getElementById(id);if(el)el.required=(type==='business'||type==='both');});
+  ['i-biz-name','i-ein','i-biz-type','i-entity','i-time-biz','i-monthly-rev','i-nav-status'].forEach(id=>{const el=document.getElementById(id);if(el)el.required=(type==='business'||type==='both');});
 }
 
 function setClientType(type,btn){
