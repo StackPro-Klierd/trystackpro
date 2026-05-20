@@ -785,6 +785,294 @@ section + section::before{
   font-weight:400;
 }
 .hero-audience strong{color:var(--gold);font-weight:700}
+
+/* ════════════════════════════════════════════════════════
+   PROFESSIONAL FINTECH RESET — final layer
+   Kills the noise, restrains the gold, unifies type.
+   ════════════════════════════════════════════════════════ */
+
+/* Kill ALL text-gradient animations — solid gold only */
+.hero-h1,
+.hero-klierd,
+.it-acc,
+.cycle,
+.count-up{
+  background:none !important;
+  -webkit-background-clip:initial !important;
+  background-clip:initial !important;
+  -webkit-text-fill-color:initial !important;
+  color:var(--gold) !important;
+  animation:none !important;
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+/* H1 reset — solid color, no gradient, smaller, sentence case */
+.hero-h1{
+  font-family:var(--display) !important;
+  font-size:clamp(44px,6.5vw,84px) !important;
+  line-height:1.0 !important;
+  font-weight:400 !important;
+  letter-spacing:0.01em !important;
+  color:var(--gold2) !important;
+  margin:14px 0 18px !important;
+  text-transform:uppercase !important;
+}
+.hero-h1 .it-acc{
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-style:italic !important;
+  font-weight:400 !important;
+  text-transform:none !important;
+  color:var(--gold) !important;
+  letter-spacing:-0.01em !important;
+}
+
+/* Hide all particles */
+#particles,.particle,.confetti-host{display:none !important}
+
+/* Stop all pulse / glow / sheen animations */
+.hero-badge,
+.btn-gold,
+.nav-apply,
+.itin-call-box::after,
+.itin2-box::before,
+.mq-track{
+  animation:none !important;
+}
+.mq-track{animation:mq 38s linear infinite !important}
+
+/* Kill scroll progress bar */
+.scroll-bar{display:none !important}
+
+/* Buttons — flat, no pulse, no magnetic */
+.btn-gold{
+  background:var(--gold) !important;
+  color:#000 !important;
+  border:1px solid var(--gold) !important;
+  padding:14px 32px !important;
+  font-family:var(--body) !important;
+  font-size:14px !important;
+  font-weight:600 !important;
+  letter-spacing:0.04em !important;
+  text-transform:none !important;
+  border-radius:3px !important;
+  box-shadow:none !important;
+  transition:background 0.2s ease, transform 0.2s ease !important;
+}
+.btn-gold:hover{
+  background:#f5d060 !important;
+  transform:translateY(-1px) !important;
+  box-shadow:0 8px 24px -8px rgba(232,176,32,0.4) !important;
+}
+.btn-gold::after{display:none !important}
+
+.btn-line{
+  background:transparent !important;
+  color:var(--gold2) !important;
+  border:1px solid rgba(201,150,12,0.4) !important;
+  padding:14px 32px !important;
+  font-family:var(--body) !important;
+  font-size:14px !important;
+  font-weight:600 !important;
+  letter-spacing:0.04em !important;
+  text-transform:none !important;
+  border-radius:3px !important;
+  transition:border-color 0.2s, color 0.2s !important;
+}
+.btn-line:hover{
+  border-color:var(--gold) !important;
+  color:var(--gold) !important;
+  transform:none !important;
+}
+
+/* Cards — flat, clean, no 3D tilt */
+.dna-card,.path-card,.rcard,.itin-call-card,.fcard,.itin2-feat{
+  transform:none !important;
+  transform-style:initial !important;
+  perspective:none !important;
+}
+.dna-card:hover,.path-card:hover,.rcard:hover,.fcard:hover{
+  transform:translateY(-3px) !important;
+  border-color:var(--gold) !important;
+  box-shadow:0 16px 40px -16px rgba(0,0,0,0.6) !important;
+}
+.dna-card,.path-card,.rcard{
+  background:#0d0d0d !important;
+  border:1px solid #1a1a1a !important;
+  border-radius:6px !important;
+  padding:32px 28px !important;
+}
+
+/* Hero — clean breathing room */
+.hero{
+  min-height:auto !important;
+  padding:96px 22px 88px !important;
+}
+.hero-badge{
+  display:inline-flex !important;
+  background:rgba(232,176,32,0.08) !important;
+  border:1px solid rgba(232,176,32,0.3) !important;
+  border-radius:99px !important;
+  padding:7px 16px !important;
+  font-family:var(--mono) !important;
+  font-size:10.5px !important;
+  letter-spacing:0.2em !important;
+  text-transform:uppercase !important;
+  color:var(--gold) !important;
+  margin-bottom:24px !important;
+}
+.hero-badge .pulse{
+  width:6px;height:6px;border-radius:50%;background:var(--gold);
+  animation:none !important;
+}
+
+.hero-sub{
+  font-family:var(--body) !important;
+  font-size:13px !important;
+  font-weight:600 !important;
+  letter-spacing:0.18em !important;
+  text-transform:uppercase !important;
+  color:var(--gold) !important;
+  opacity:0.7 !important;
+  margin:0 0 28px !important;
+}
+.hero-klierd{
+  font-family:var(--display) !important;
+  font-weight:400 !important;
+  font-size:1.05em !important;
+  letter-spacing:0.05em !important;
+}
+
+.hero-line{
+  font-family:var(--body) !important;
+  font-size:clamp(17px,2vw,22px) !important;
+  font-weight:400 !important;
+  line-height:1.55 !important;
+  color:#e8e8e8 !important;
+  margin:0 auto 14px !important;
+  max-width:680px !important;
+  letter-spacing:0 !important;
+}
+.hero-line strong{color:var(--gold) !important;font-weight:700 !important}
+
+.hero-audience{
+  font-family:var(--body) !important;
+  font-size:clamp(14px,1.3vw,16px) !important;
+  color:#999 !important;
+  margin:0 auto 40px !important;
+  max-width:600px !important;
+  opacity:1 !important;
+  font-weight:400 !important;
+}
+.hero-audience strong{color:var(--gold2) !important;font-weight:600 !important}
+
+.hero-actions{margin:0 auto 44px !important;gap:12px !important}
+
+.hero-meta{
+  font-family:var(--mono) !important;
+  font-size:10.5px !important;
+  letter-spacing:0.25em !important;
+  color:#666 !important;
+  text-transform:uppercase !important;
+  display:flex !important;
+  gap:12px !important;
+  justify-content:center !important;
+}
+.hero-meta .dot{color:#444 !important}
+
+/* Section headlines — unified treatment */
+.sec-h{
+  font-family:var(--display) !important;
+  font-size:clamp(40px,5.5vw,72px) !important;
+  line-height:1.0 !important;
+  letter-spacing:0.01em !important;
+  color:var(--gold2) !important;
+}
+.sec-h .it-acc{
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-style:italic !important;
+  font-weight:400 !important;
+  color:var(--gold) !important;
+  text-transform:none !important;
+  letter-spacing:-0.005em !important;
+}
+.sec-tag{
+  font-family:var(--mono) !important;
+  font-size:11px !important;
+  letter-spacing:0.28em !important;
+  color:var(--gold) !important;
+  opacity:0.7 !important;
+}
+.sec-p{
+  font-family:var(--body) !important;
+  font-size:16px !important;
+  line-height:1.7 !important;
+  color:#bbb !important;
+  font-weight:400 !important;
+}
+
+/* Funding range numbers — clean solid gold */
+.r-amt{
+  font-family:var(--display) !important;
+  font-size:56px !important;
+  letter-spacing:0.02em !important;
+  color:var(--gold) !important;
+  margin:8px 0 14px !important;
+}
+
+/* Marquee — restrained */
+.mq-outer{background:#0a0a0a !important;border-top:1px solid #1a1a1a !important;border-bottom:1px solid #1a1a1a !important}
+.mq-item{
+  font-family:var(--mono) !important;
+  font-size:11.5px !important;
+  letter-spacing:0.22em !important;
+  color:#888 !important;
+  font-weight:500 !important;
+  text-transform:uppercase !important;
+}
+.mq-sep{
+  display:inline-block;width:4px;height:4px;border-radius:50%;
+  background:var(--gold) !important;margin:0 16px;opacity:0.5
+}
+
+/* Three Pillars — equal flat boxes */
+.dna-grid{gap:14px !important;border:none !important;background:transparent !important}
+.dna-card{
+  min-height:auto !important;
+}
+.dna-name{
+  font-family:var(--display) !important;
+  color:var(--gold) !important;
+  font-size:32px !important;
+  letter-spacing:0.04em !important;
+}
+.dna-parent{
+  font-family:var(--mono) !important;
+  font-size:10.5px !important;
+  letter-spacing:0.28em !important;
+  color:#777 !important;
+  margin-bottom:14px !important;
+}
+.dna-list li{
+  font-family:var(--body) !important;
+  font-size:14.5px !important;
+  line-height:1.55 !important;
+  color:#bbb !important;
+  font-weight:400 !important;
+}
+.dna-list li::before{color:var(--gold) !important}
+
+/* Reveal — keep but subtle */
+.reveal{transform:translateY(20px) !important;transition-duration:0.6s !important}
+.reveal.in{transform:translateY(0) !important}
+
+/* Hero badge — no glow */
+@keyframes badge-glow{from{box-shadow:none}to{box-shadow:none}}
+
+@media (max-width:900px){
+  .hero{padding:60px 18px 50px !important}
+  .hero-h1{font-size:clamp(34px,9vw,52px) !important}
+}
 </style>
 </head>
 <body class="lang-en">
