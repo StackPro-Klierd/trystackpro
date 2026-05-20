@@ -444,12 +444,12 @@ body.lang-es li.en, body.lang-es a.en { display:none !important; }
 .hero-glow{will-change:transform}
 
 /* Hero cycle word — fade switch */
-.cycle{display:inline-block;position:relative;min-height:1em;color:var(--gold);font-weight:800;font-style:italic;
+.cycle{display:inline-block;position:relative;min-height:1em;font-weight:800;font-style:italic;
   background:linear-gradient(120deg,#c9960c,#ffd76b,#e8b020);background-size:200% 100%;
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  animation:goldsweep 4s ease-in-out infinite}
-.cycle-w{display:inline-block;opacity:0;transform:translateY(8px);transition:opacity .55s ease,transform .55s ease;position:absolute;left:0;top:0;white-space:nowrap}
-.cycle-w.on{opacity:1;transform:translateY(0);position:relative}
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  animation:goldsweep 4s ease-in-out infinite;white-space:nowrap}
+.cycle-w{display:inline-block;opacity:1;transform:translateY(0);transition:opacity .35s ease,transform .35s ease}
+
 
 /* Gentle scroll-fade for sections */
 section{scroll-margin-top:80px}
@@ -1760,26 +1760,35 @@ document.querySelectorAll("a[href^='#']").forEach(a=>{
   });
 })();
 
-// Hero word cycler — swap text every 2.6s with fade
+// Hero word cycler — single span, swap text with fade (no DOM accumulation)
 (function(){
   function attach(node){
-    const lang = node.dataset.cycleEn ? 'en' : 'es';
-    const words = (node.dataset.cycleEn || node.dataset.cycleEs).split('|');
+    const data = node.dataset.cycleEn || node.dataset.cycleEs;
+    if(!data) return;
+    const words = data.split('|');
+    // Force single child span: clear any extras
+    const spans = node.querySelectorAll('.cycle-w');
+    spans.forEach((s, idx) => { if(idx > 0) s.remove(); });
+    let span = node.querySelector('.cycle-w');
+    if(!span){
+      span = document.createElement('span');
+      span.className = 'cycle-w on';
+      span.textContent = words[0];
+      node.appendChild(span);
+    }
+    // Ensure exactly one .on class
+    span.classList.add('on');
     let i = 0;
     setInterval(() => {
       i = (i + 1) % words.length;
-      const cur = node.querySelector('.cycle-w.on');
-      const next = document.createElement('span');
-      next.className = 'cycle-w';
-      next.textContent = words[i];
-      node.appendChild(next);
-      requestAnimationFrame(() => {
-        next.classList.add('on');
-        if(cur){
-          cur.classList.remove('on');
-          setTimeout(() => cur.remove(), 600);
-        }
-      });
+      span.style.transition = 'opacity .35s ease, transform .35s ease';
+      span.style.opacity = '0';
+      span.style.transform = 'translateY(6px)';
+      setTimeout(() => {
+        span.textContent = words[i];
+        span.style.opacity = '1';
+        span.style.transform = 'translateY(0)';
+      }, 360);
     }, 2600);
   }
   document.querySelectorAll('.cycle').forEach(attach);
