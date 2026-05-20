@@ -91,7 +91,7 @@ footer{background:var(--bg)!important;border-top:1px solid var(--border2)!import
   <div id="form-body">
     <p class="required-note"><span class="req">*</span> Required fields</p>
 
-    <div class="section-label">I Am Applying For</div>
+    <div class="section-label"><span class="en">Pick Your Path</span><span class="es">Elige Tu Camino</span></div>
     <div class="type-toggle">
       <button class="type-btn active" id="btn-personal" onclick="setFundingType('personal',this)">Personal</button>
       <button class="type-btn" id="btn-business" onclick="setFundingType('business',this)">Business</button>
@@ -446,7 +446,7 @@ let clientType='ssn', fundingType='personal', currentLang='en';
 const LANG = {
   en:{
     'form-title':'Client Intake Form — Confidential',
-    'lbl-applying':'I Am Applying For',
+    'lbl-applying':'Pick Your Path',
     'btn-personal-text':'Personal Funding',
     'btn-business-text':'Business Funding',
     'btn-both-text':'Both Personal + Business',
