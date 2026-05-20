@@ -295,6 +295,35 @@ p,li,span,div{color:inherit}
 .header,.navbar,.nav{background:var(--bg)!important;border-bottom:1px solid var(--border2)!important}
 .logo,.brand{color:var(--gold2)!important;font-family:'Bebas Neue',sans-serif!important;letter-spacing:0.1em!important}
 footer{background:var(--bg)!important;border-top:1px solid var(--border2)!important;color:var(--gold2)!important}
+
+/* === E-SIGNATURE MODAL (native, replaces DocuSign for MVP) === */
+.sig-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.sig-overlay.open{display:flex}
+.sig-modal{background:var(--dark2,#0d0b06);border:1px solid var(--border,#2a2310);border-radius:14px;max-width:620px;width:100%;padding:28px 28px 22px;max-height:92vh;overflow-y:auto;box-shadow:0 30px 90px rgba(0,0,0,0.85)}
+.sig-title{font-family:var(--display,Bebas Neue),sans-serif;font-size:28px;letter-spacing:0.04em;color:var(--gold2,#e8b020);margin-bottom:6px;line-height:1.05}
+.sig-key{font-family:var(--mono,DM Mono),monospace;font-size:10px;color:var(--dim,#9a8650);text-transform:uppercase;letter-spacing:0.18em;margin-bottom:18px}
+.sig-body{font-size:13px;color:var(--white,#f5f0e6);line-height:1.6;background:rgba(255,255,255,0.02);border:1px solid var(--border,#2a2310);border-radius:8px;padding:14px 16px;max-height:240px;overflow-y:auto;margin-bottom:18px}
+.sig-canvas-wrap{position:relative;background:#fff;border-radius:8px;padding:6px;margin-bottom:8px}
+.sig-canvas{display:block;width:100%;height:160px;border:1px dashed #ddd;border-radius:6px;cursor:crosshair;touch-action:none;background:#fff}
+.sig-canvas.has-sig{border-style:solid;border-color:#c9960c}
+.sig-hint{font-size:10px;color:var(--muted,#584e2c);font-family:var(--mono,monospace);text-align:center;margin-top:4px;text-transform:uppercase;letter-spacing:0.1em}
+.sig-clear-btn{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.06);border:none;border-radius:4px;font-size:10px;padding:4px 8px;color:#555;cursor:pointer;font-family:var(--mono,monospace);text-transform:uppercase;letter-spacing:0.06em}
+.sig-clear-btn:hover{background:rgba(0,0,0,0.12)}
+.sig-or{text-align:center;font-size:10px;color:var(--muted,#584e2c);font-family:var(--mono,monospace);margin:14px 0 8px;letter-spacing:0.2em}
+.sig-name-input{width:100%;background:var(--bg,#060500);border:1px solid var(--border,#2a2310);border-radius:6px;padding:11px 12px;color:var(--white,#f5f0e6);font-family:'Caveat',cursive,var(--body,sans-serif);font-size:22px;outline:none}
+.sig-name-input:focus{border-color:var(--gold,#c9960c)}
+.sig-attest{display:flex;align-items:flex-start;gap:10px;margin:18px 0 6px;font-size:12px;color:var(--white,#f5f0e6);line-height:1.5}
+.sig-attest input{margin-top:3px;cursor:pointer}
+.sig-attest label{cursor:pointer;flex:1}
+.sig-meta{font-size:10px;color:var(--dim,#9a8650);font-family:var(--mono,monospace);margin:8px 0 16px;line-height:1.6}
+.sig-actions{display:flex;gap:10px;margin-top:8px}
+.sig-btn{flex:1;padding:13px 16px;border:none;border-radius:7px;font-family:var(--body,sans-serif);font-weight:600;font-size:14px;cursor:pointer;transition:all .2s}
+.sig-btn-cancel{background:transparent;border:1px solid var(--border,#2a2310);color:var(--dim,#9a8650)}
+.sig-btn-cancel:hover{border-color:var(--muted,#584e2c);color:var(--white,#f5f0e6)}
+.sig-btn-sign{background:var(--gold,#c9960c);color:var(--bg,#060500);font-weight:700}
+.sig-btn-sign:hover{background:var(--gold2,#e8b020)}
+.sig-btn-sign:disabled{opacity:0.4;cursor:not-allowed}
+
 </style>
 </head>
 <body>
@@ -1178,11 +1207,184 @@ function fireConfetti(){
 function viewAnalysis(kind){
   showToast(lang==='es' ? '📄 Análisis — descarga disponible pronto' : '📄 Analysis — download coming soon', 'success');
 }
-function viewAgreement(key){
-  showToast(lang==='es' ? '📄 Documento firmado — descarga disponible pronto' : '📄 Signed document — download coming soon', 'success');
-}
+// ─── E-SIGNATURE (native, replaces DocuSign for MVP) ───
+const AGREEMENT_TEXTS = {
+  application: {
+    en: "I confirm that the information provided in my funding application is true, complete, and accurate. I authorize KLIERD Intelligent Funding Technology to review my application and contact me regarding my funding options. Results are not typical and may vary.",
+    es: "Confirmo que la información proporcionada en mi solicitud de financiamiento es verdadera, completa y precisa. Autorizo a KLIERD Tecnología de Financiamiento Inteligente a revisar mi solicitud y contactarme sobre mis opciones de financiamiento. Los resultados no son típicos."
+  },
+  fee_agreement: {
+    en: "I agree to the engagement terms with KLIERD. Funding-related fees are charged as a success fee, payable after I receive funding. Optional services (credit profile optimization, dispute resolution) are billed separately and disclosed upfront before service begins. Specific fees, scope, and timing are detailed in the service agreement that accompanies this electronic signature. KLIERD does not operate as a credit repair organization under CROA.",
+    es: "Acepto los términos de contratación con KLIERD. Las tarifas relacionadas con el financiamiento se cobran como tarifa de éxito, pagadera después de recibir fondos. Los servicios opcionales (optimización de perfil de crédito, resolución de disputas) se facturan por separado y se divulgan antes del servicio. KLIERD no opera como organización de reparación de crédito bajo CROA."
+  },
+  credit_auth: {
+    en: "I authorize KLIERD to obtain my credit reports from Equifax, TransUnion, and Experian for the purpose of reviewing my funding application and identifying suitable lender matches. This authorization is valid for the duration of my engagement with KLIERD.",
+    es: "Autorizo a KLIERD a obtener mis reportes de crédito de Equifax, TransUnion y Experian con el propósito de revisar mi solicitud de financiamiento e identificar prestamistas adecuados. Esta autorización es válida durante el tiempo de mi contratación con KLIERD."
+  },
+  croa_disclosure: {
+    en: "Federal CROA Disclosure: You have a right to dispute inaccurate information in your credit report by contacting the credit bureau directly. You may also obtain a free copy of your credit report once every twelve months from each of the three major credit bureaus. KLIERD does not operate as a Credit Repair Organization. You may cancel this agreement, without penalty, within three (3) business days of signing. Results are not typical and may vary.",
+    es: "Divulgación CROA Federal: Usted tiene derecho a disputar información inexacta en su reporte de crédito contactando directamente al buró de crédito. Puede obtener una copia gratuita de su reporte de crédito una vez cada doce meses de cada uno de los tres burós principales. KLIERD no opera como Organización de Reparación de Crédito. Puede cancelar este acuerdo, sin penalización, dentro de tres (3) días hábiles después de firmar. Los resultados no son típicos."
+  },
+  itin_attestation: {
+    en: "I attest that I hold a valid Individual Taxpayer Identification Number (ITIN) issued by the Internal Revenue Service. I authorize KLIERD to use my ITIN for the purpose of identifying ITIN-friendly lenders and routing my application appropriately.",
+    es: "Declaro que tengo un Número de Identificación Personal del Contribuyente (ITIN) válido emitido por el IRS. Autorizo a KLIERD a usar mi ITIN con el propósito de identificar prestamistas amigables a ITIN y enrutar mi solicitud apropiadamente."
+  }
+};
+
+let _sigState = { agreementKey: null, drawn: false, ctx: null, lastX: 0, lastY: 0, drawing: false };
+
 function signAgreement(key){
-  showToast(lang==='es' ? '✎ Firma electrónica — disponible pronto vía DocuSign' : '✎ E-signature — coming soon via DocuSign', 'success');
+  const app = JSON.parse(localStorage.getItem('current_app') || '{}');
+  if (!app.trackingId) {
+    showToast(lang==='es' ? 'No se encontró la solicitud activa' : 'No active application found', 'error');
+    return;
+  }
+  _sigState.agreementKey = key;
+  _sigState.drawn = false;
+  const text = (AGREEMENT_TEXTS[key] || {en:'(Agreement text not available)', es:'(Texto del acuerdo no disponible)'})[lang] || (AGREEMENT_TEXTS[key]||{}).en || '(Agreement text not available)';
+  document.getElementById('sig-title').textContent = (lang==='es' ? 'Firmar — ' : 'Sign — ') + key.replace(/_/g,' ').replace(/\b\w/g, c=>c.toUpperCase());
+  document.getElementById('sig-key').textContent = 'Audit Key: ' + key;
+  document.getElementById('sig-body').textContent = text;
+  document.getElementById('sig-name-typed').value = '';
+  document.getElementById('sig-attest-box').checked = false;
+  const auditId = 'KLD-' + key.toUpperCase().replace(/_/g,'') + '-' + Math.random().toString(36).slice(2,10).toUpperCase();
+  document.getElementById('sig-meta-id').textContent = auditId;
+  document.getElementById('sig-meta-ts').textContent = new Date().toLocaleString();
+  _sigState.auditId = auditId;
+  // Setup canvas
+  const c = document.getElementById('sig-canvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#1a1208';
+  _sigState.ctx = ctx;
+  c.classList.remove('has-sig');
+  // Bind events (idempotent — remove first to avoid double-bind)
+  c.onpointerdown = e => { _sigState.drawing = true; const r=c.getBoundingClientRect(); _sigState.lastX=(e.clientX-r.left)*(c.width/r.width); _sigState.lastY=(e.clientY-r.top)*(c.height/r.height); };
+  c.onpointermove = e => {
+    if(!_sigState.drawing) return;
+    const r=c.getBoundingClientRect();
+    const x=(e.clientX-r.left)*(c.width/r.width), y=(e.clientY-r.top)*(c.height/r.height);
+    ctx.beginPath(); ctx.moveTo(_sigState.lastX,_sigState.lastY); ctx.lineTo(x,y); ctx.stroke();
+    _sigState.lastX=x; _sigState.lastY=y; _sigState.drawn=true; c.classList.add('has-sig'); updateSignBtn();
+  };
+  c.onpointerup = () => _sigState.drawing = false;
+  c.onpointerleave = () => _sigState.drawing = false;
+  document.getElementById('sig-overlay').classList.add('open');
+}
+
+function clearSig(){
+  const c = document.getElementById('sig-canvas');
+  _sigState.ctx.clearRect(0,0,c.width,c.height);
+  c.classList.remove('has-sig');
+  _sigState.drawn = false;
+  updateSignBtn();
+}
+
+function updateSignBtn(){
+  const typed = (document.getElementById('sig-name-typed').value||'').trim();
+  const attest = document.getElementById('sig-attest-box').checked;
+  const ok = attest && (_sigState.drawn || typed.length >= 3);
+  document.getElementById('sig-btn-submit').disabled = !ok;
+}
+
+document.addEventListener('input', e => { if (e.target.id === 'sig-name-typed') updateSignBtn(); });
+
+function closeSignModal(){
+  document.getElementById('sig-overlay').classList.remove('open');
+}
+
+async function submitSignature(){
+  const app = JSON.parse(localStorage.getItem('current_app') || '{}');
+  const key = _sigState.agreementKey;
+  const typed = (document.getElementById('sig-name-typed').value||'').trim();
+  const text = document.getElementById('sig-body').textContent;
+  const c = document.getElementById('sig-canvas');
+  const sigDataUrl = _sigState.drawn ? c.toDataURL('image/png') : null;
+  // Build audit record
+  const record = {
+    auditId: _sigState.auditId,
+    agreementKey: key,
+    trackingId: app.trackingId || null,
+    signedAt: new Date().toISOString(),
+    signedName: typed || (app.firstName + ' ' + app.lastName).trim() || 'Unknown',
+    method: _sigState.drawn ? (typed ? 'drawn+typed' : 'drawn') : 'typed',
+    signatureDataUrl: sigDataUrl,
+    agreementTextHash: await sha256(text),
+    agreementText: text,
+    userAgent: navigator.userAgent.slice(0,300),
+    lang: lang
+  };
+  // Persist locally
+  const agStatusKey = 'agreements_' + (app.trackingId || 'anon');
+  const agStatus = JSON.parse(localStorage.getItem(agStatusKey) || '{}');
+  agStatus[key] = 'signed';
+  localStorage.setItem(agStatusKey, JSON.stringify(agStatus));
+  // Persist full record separately for audit retrieval
+  const auditKey = 'agreement_audit_' + (app.trackingId || 'anon');
+  const auditLog = JSON.parse(localStorage.getItem(auditKey) || '[]');
+  auditLog.push(record);
+  localStorage.setItem(auditKey, JSON.stringify(auditLog));
+  // POST to backend (best-effort — falls back to local-only if endpoint not yet wired)
+  try {
+    const apiUrl = localStorage.getItem('sp_api_url') || 'https://stackpro-api-production.up.railway.app';
+    fetch(apiUrl + '/agreements/sign', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(record)
+    }).catch(()=>{});
+  } catch(e) { /* offline ok */ }
+  showToast(lang==='es' ? '✓ Firma capturada y registrada' : '✓ Signature captured and logged', 'success');
+  closeSignModal();
+  // Re-render the agreements list
+  setTimeout(()=> { if (typeof renderAgreements === 'function') renderAgreements(); else location.reload(); }, 600);
+}
+
+async function sha256(text){
+  try {
+    const buf = new TextEncoder().encode(text);
+    const hash = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  } catch(e) { return 'hash-unavailable'; }
+}
+
+function viewAgreement(key){
+  const app = JSON.parse(localStorage.getItem('current_app') || '{}');
+  const auditKey = 'agreement_audit_' + (app.trackingId || 'anon');
+  const auditLog = JSON.parse(localStorage.getItem(auditKey) || '[]');
+  const rec = auditLog.filter(r=>r.agreementKey===key).slice(-1)[0];
+  if (!rec) {
+    showToast(lang==='es' ? 'No se encontró el registro de firma' : 'Signature record not found', 'error');
+    return;
+  }
+  // Build a viewer in the sig modal (reuse modal)
+  document.getElementById('sig-title').textContent = (lang==='es' ? 'Documento firmado — ' : 'Signed document — ') + key.replace(/_/g,' ');
+  document.getElementById('sig-key').textContent = 'Audit ID: ' + rec.auditId;
+  document.getElementById('sig-body').innerHTML =
+    '<div style="margin-bottom:14px"><strong>'+(lang==='es'?'Firmado por':'Signed by')+':</strong> '+rec.signedName+'</div>' +
+    '<div style="margin-bottom:14px"><strong>'+(lang==='es'?'Fecha':'Date')+':</strong> '+new Date(rec.signedAt).toLocaleString()+'</div>' +
+    (rec.signatureDataUrl ? '<div style="margin-bottom:14px;background:#fff;padding:10px;border-radius:6px"><img src="'+rec.signatureDataUrl+'" style="max-width:100%;display:block" alt="Signature"/></div>' : '') +
+    '<div style="font-size:12px;color:var(--dim);line-height:1.5"><strong>'+(lang==='es'?'Texto del acuerdo':'Agreement text')+':</strong><br><br>'+rec.agreementText.replace(/</g,'&lt;')+'</div>' +
+    '<div style="font-size:10px;color:var(--muted);font-family:var(--mono,monospace);margin-top:14px">Hash: '+rec.agreementTextHash.slice(0,32)+'...</div>';
+  // Hide signing controls in view mode
+  document.querySelector('.sig-canvas-wrap').style.display = 'none';
+  document.querySelector('.sig-or').style.display = 'none';
+  document.getElementById('sig-name-typed').style.display = 'none';
+  document.querySelector('.sig-attest').style.display = 'none';
+  document.getElementById('sig-meta-ts').textContent = new Date(rec.signedAt).toLocaleString();
+  document.getElementById('sig-meta-id').textContent = rec.auditId;
+  document.getElementById('sig-btn-submit').style.display = 'none';
+  document.getElementById('sig-overlay').classList.add('open');
+  // Restore on close
+  document.getElementById('sig-overlay').addEventListener('transitionend', function restore(){
+    document.querySelector('.sig-canvas-wrap').style.display = '';
+    document.querySelector('.sig-or').style.display = '';
+    document.getElementById('sig-name-typed').style.display = '';
+    document.querySelector('.sig-attest').style.display = '';
+    document.getElementById('sig-btn-submit').style.display = '';
+  }, {once: true});
 }
 
 function naAction(){
@@ -1402,5 +1604,34 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 <div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- E-SIGNATURE MODAL -->
+<div class="sig-overlay" id="sig-overlay" onclick="if(event.target===this)closeSignModal()">
+  <div class="sig-modal" role="dialog" aria-modal="true" aria-labelledby="sig-title">
+    <div class="sig-title" id="sig-title">Sign Agreement</div>
+    <div class="sig-key" id="sig-key"></div>
+    <div class="sig-body" id="sig-body">Agreement text will appear here.</div>
+    <div class="sig-canvas-wrap">
+      <button type="button" class="sig-clear-btn" onclick="clearSig()"><span class="en">Clear</span><span class="es">Borrar</span></button>
+      <canvas class="sig-canvas" id="sig-canvas" width="600" height="160"></canvas>
+      <div class="sig-hint"><span class="en">Sign above with mouse or finger</span><span class="es">Firme arriba con el ratón o el dedo</span></div>
+    </div>
+    <div class="sig-or"><span class="en">— or —</span><span class="es">— o —</span></div>
+    <input type="text" class="sig-name-input" id="sig-name-typed" placeholder="Type your full legal name" autocomplete="off"/>
+    <div class="sig-attest">
+      <input type="checkbox" id="sig-attest-box" onchange="updateSignBtn()"/>
+      <label for="sig-attest-box"><span class="en">I have read and agree to this document. I confirm this is my signature and intend to be legally bound.</span><span class="es">He leído y acepto este documento. Confirmo que esta es mi firma y tengo la intención de quedar legalmente vinculado.</span></label>
+    </div>
+    <div class="sig-meta">
+      <span class="en">Signed at:</span><span class="es">Firmado a las:</span> <span id="sig-meta-ts">—</span><br>
+      <span class="en">Audit ID:</span><span class="es">ID de auditoría:</span> <span id="sig-meta-id">—</span>
+    </div>
+    <div class="sig-actions">
+      <button class="sig-btn sig-btn-cancel" onclick="closeSignModal()"><span class="en">Cancel</span><span class="es">Cancelar</span></button>
+      <button class="sig-btn sig-btn-sign" id="sig-btn-submit" onclick="submitSignature()" disabled><span class="en">Submit Signature</span><span class="es">Enviar Firma</span></button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
