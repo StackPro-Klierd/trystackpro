@@ -662,6 +662,14 @@ section + section::before{
   animation:goldsweep 4s ease-in-out infinite;
   font-family:var(--display);
 }
+
+/* CONFETTI BURST */
+.confetti-host{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99998;overflow:hidden}
+.confetti-piece{position:absolute;width:8px;height:14px;border-radius:1px;will-change:transform,opacity}
+@keyframes confetti-fall{
+  0%{transform:translate(0,0) rotate(0deg);opacity:1}
+  100%{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}
+}
 </style>
 </head>
 <body class="lang-en">
@@ -1864,6 +1872,66 @@ document.querySelectorAll("a[href^='#']").forEach(a=>{
       btn.style.transform = '';
     });
   });
+})();
+
+
+/* ── CONFETTI BURST on Apply Now click ───────────────────── */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const host = document.createElement('div');
+  host.className = 'confetti-host';
+  document.body.appendChild(host);
+
+  const palette = ['#e8b020','#c9960c','#ffd76b','#f5d060','#ffffff','#fff4d6'];
+
+  function burst(originX, originY){
+    const count = 80;
+    for(let i = 0; i < count; i++){
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      const color = palette[Math.floor(Math.random()*palette.length)];
+      const size = 6 + Math.random()*8;
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = 200 + Math.random()*400;
+      const x = Math.cos(angle) * velocity;
+      const y = Math.sin(angle) * velocity - 200;  // bias upward
+      const rot = (Math.random() - 0.5) * 1080;
+      const dur = 1200 + Math.random()*1200;
+
+      p.style.cssText = `
+        left:${originX}px;top:${originY}px;
+        width:${size}px;height:${size*1.6}px;
+        background:${color};
+        box-shadow:0 0 8px ${color};
+        --x:${x}px; --y:${y}px; --r:${rot}deg;
+        animation:confetti-fall ${dur}ms cubic-bezier(.16,.84,.32,1) forwards;
+      `;
+      host.appendChild(p);
+      setTimeout(() => p.remove(), dur + 100);
+    }
+  }
+
+  function isApplyTarget(el){
+    if(!el) return false;
+    // Match .btn-gold, .nav-apply, .path-cta, any anchor pointing to apply.html
+    if(el.matches && el.matches('.btn-gold, .nav-apply, .path-cta')) return true;
+    const href = el.getAttribute && el.getAttribute('href');
+    if(href && (href.includes('apply.html') || href.includes('apply?') || href === '#apply')) return true;
+    return false;
+  }
+
+  document.addEventListener('click', function(e){
+    let t = e.target;
+    while(t && t !== document.body){
+      if(isApplyTarget(t)){
+        const r = t.getBoundingClientRect();
+        burst(r.left + r.width/2, r.top + r.height/2);
+        break;
+      }
+      t = t.parentElement;
+    }
+  }, true);
 })();
 </script>
 </body>
