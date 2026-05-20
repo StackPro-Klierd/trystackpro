@@ -672,6 +672,77 @@ section + section::before{
 }
 
 .hero-welcome{font-size:clamp(11px,1.1vw,15px) !important;letter-spacing:0.32em !important;opacity:0.85;margin-top:-4px}
+
+/* ITIN CALLOUT v2 — gold-only, no white text, tech-forward */
+.itin2-box{
+  position:relative;
+  border:1px solid rgba(201,150,12,0.35);
+  border-radius:4px;
+  background:
+    linear-gradient(135deg, rgba(232,176,32,0.05) 0%, rgba(0,0,0,0.4) 100%),
+    radial-gradient(circle at top right, rgba(232,176,32,0.08), transparent 60%);
+  padding:48px 56px 56px;
+  overflow:hidden;
+}
+.itin2-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(232,176,32,0.6),transparent);
+}
+.itin2-strip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:0.4em;
+  color:var(--gold2);opacity:0.6;
+  text-align:center;margin-bottom:36px;
+}
+.itin2-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:center}
+.itin2-left{display:flex;flex-direction:column;gap:18px}
+.itin2-tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.32em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:4px;
+}
+.itin2-h{
+  font-family:var(--display);font-size:clamp(36px,4.5vw,58px);
+  line-height:0.98;font-weight:800;letter-spacing:-0.015em;
+  color:var(--gold2);margin:0;text-transform:none;
+}
+.itin2-h .it-acc{font-size:0.95em}
+.itin2-p{
+  font-family:var(--body);font-size:16.5px;line-height:1.6;
+  color:var(--gold2);opacity:0.82;margin:0;max-width:480px;
+}
+.itin2-right{
+  display:flex;flex-direction:column;gap:1px;
+  background:rgba(201,150,12,0.18);
+  border:1px solid rgba(201,150,12,0.25);
+}
+.itin2-feat{
+  display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;
+  background:rgba(8,8,8,0.85);padding:18px 22px;
+  transition:background 0.25s ease, padding-left 0.25s ease;
+}
+.itin2-feat:hover{
+  background:rgba(20,16,8,0.95);
+  padding-left:28px;
+}
+.itin2-feat-key{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.2em;
+  color:var(--gold);min-width:24px;
+}
+.itin2-feat-body{display:flex;flex-direction:column;gap:2px}
+.itin2-feat-t{
+  font-family:var(--display);font-size:16px;font-weight:700;
+  color:var(--gold2);letter-spacing:0.01em;
+}
+.itin2-feat-s{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
+  color:var(--gold);opacity:0.7;
+}
+
+@media (max-width:900px){
+  .itin2-grid{grid-template-columns:1fr;gap:36px}
+  .itin2-box{padding:32px 24px 40px}
+  .itin2-strip{font-size:9.5px;letter-spacing:0.3em}
+  .itin2-h{font-size:clamp(30px,8vw,42px)}
+}
 </style>
 </head>
 <body class="lang-en">
@@ -813,42 +884,74 @@ section + section::before{
     
 
 
-<!-- ITIN DEDICATED CALLOUT BOX -->
+<!-- ITIN DEDICATED CALLOUT BOX (v2 — tech-forward, gold-only) -->
 <section class="itin-callout-bg">
   <div class="sw">
-    <div class="itin-call-box">
-      <div class="itin-call-grid">
-        <div class="itin-call-left">
-          <div class="itin-call-eyebrow">— FOR ITIN HOLDERS —</div>
-          <h2 class="itin-call-h en">No SSN?<br><span class="g">Full Access.</span></h2>
-          <h2 class="itin-call-h es">¿Sin SSN?<br><span class="g">Acceso Total.</span></h2>
-          <p class="itin-call-p en">KLIERD was built for ITIN clients from day one — not as an afterthought. Same technology. Same lender network. Same results. Fully bilingual, end to end.</p>
-          <p class="itin-call-p es">KLIERD fue construido para clientes ITIN desde el primer día — no como una idea posterior. Misma tecnología. Misma red de prestamistas. Mismos resultados. Completamente bilingüe.</p>
-          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold en" style="margin-top:8px">Apply With ITIN →</a>
-          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold es" style="margin-top:8px">Aplica Con ITIN →</a>
+    <div class="itin2-box">
+
+      <!-- top eyebrow strip -->
+      <div class="itin2-strip">
+        <span class="itin2-strip-en en">— BUILT FOR ITIN HOLDERS · DESDE EL DIA UNO —</span>
+        <span class="itin2-strip-es es">— CONSTRUIDO PARA TITULARES DE ITIN · FROM DAY ONE —</span>
+      </div>
+
+      <div class="itin2-grid">
+
+        <!-- LEFT: headline + copy -->
+        <div class="itin2-left">
+          <div class="itin2-tag en">For ITIN Holders</div>
+          <div class="itin2-tag es">Para Titulares de ITIN</div>
+
+          <h2 class="itin2-h en">No SSN. <span class="it-acc">Full access.</span></h2>
+          <h2 class="itin2-h es">Sin SSN. <span class="it-acc">Acceso total.</span></h2>
+
+          <p class="itin2-p en">Same technology. Same lender network. Same results. ITIN is not an afterthought at KLIERD — it is the foundation.</p>
+          <p class="itin2-p es">Misma tecnología. Misma red de prestamistas. Mismos resultados. ITIN no es una idea posterior en KLIERD — es la base.</p>
+
+          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold en">Apply With ITIN →</a>
+          <a href="https://trystackpro.com/apply.html?type=personal" class="btn-gold es">Aplica Con ITIN →</a>
         </div>
-        <div class="itin-call-right">
-          <div class="itin-call-card reveal">
-            <div class="itin-call-num">01</div>
-            <div class="itin-call-title en">Personal Cards · ITIN Only</div>
-            <div class="itin-call-title es">Tarjetas Personales · Solo ITIN</div>
+
+        <!-- RIGHT: feature stack (no white text) -->
+        <div class="itin2-right">
+          <div class="itin2-feat">
+            <div class="itin2-feat-key">01</div>
+            <div class="itin2-feat-body">
+              <div class="itin2-feat-t en">Personal Cards</div>
+              <div class="itin2-feat-t es">Tarjetas Personales</div>
+              <div class="itin2-feat-s en">ITIN-only · no SSN required</div>
+              <div class="itin2-feat-s es">Solo ITIN · sin SSN</div>
+            </div>
           </div>
-          <div class="itin-call-card reveal">
-            <div class="itin-call-num">02</div>
-            <div class="itin-call-title en">Business Cards · EIN Only</div>
-            <div class="itin-call-title es">Tarjetas Empresariales · Solo EIN</div>
+          <div class="itin2-feat">
+            <div class="itin2-feat-key">02</div>
+            <div class="itin2-feat-body">
+              <div class="itin2-feat-t en">Business Cards</div>
+              <div class="itin2-feat-t es">Tarjetas Empresariales</div>
+              <div class="itin2-feat-s en">EIN-only · no personal pull</div>
+              <div class="itin2-feat-s es">Solo EIN · sin verificación personal</div>
+            </div>
           </div>
-          <div class="itin-call-card reveal">
-            <div class="itin-call-num">03</div>
-            <div class="itin-call-title en">ITIN-Friendly Lenders</div>
-            <div class="itin-call-title es">Prestamistas Amigables ITIN</div>
+          <div class="itin2-feat">
+            <div class="itin2-feat-key">03</div>
+            <div class="itin2-feat-body">
+              <div class="itin2-feat-t en">ITIN Lenders</div>
+              <div class="itin2-feat-t es">Prestamistas ITIN</div>
+              <div class="itin2-feat-s en">Curated partner network</div>
+              <div class="itin2-feat-s es">Red de socios curada</div>
+            </div>
           </div>
-          <div class="itin-call-card reveal">
-            <div class="itin-call-num">04</div>
-            <div class="itin-call-title en">Bilingual · End to End</div>
-            <div class="itin-call-title es">Bilingüe · De Principio a Fin</div>
+          <div class="itin2-feat">
+            <div class="itin2-feat-key">04</div>
+            <div class="itin2-feat-body">
+              <div class="itin2-feat-t en">Bilingual</div>
+              <div class="itin2-feat-t es">Bilingüe</div>
+              <div class="itin2-feat-s en">End-to-end English &amp; Spanish</div>
+              <div class="itin2-feat-s es">Inglés y español de principio a fin</div>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
