@@ -91,15 +91,11 @@ footer{background:var(--bg)!important;border-top:1px solid var(--border2)!import
   <div id="form-body">
     <p class="required-note"><span class="req">*</span> Required fields</p>
 
-    <div style="background:rgba(201,150,12,0.06);border:1px solid #3a3018;border-radius:8px;padding:11px 16px;margin-bottom:24px;font-size:12px;color:#E8E8F0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-      <span>Need dispute resolution first?</span>
-      <a href="/dispute.html" style="color:#E8B020;text-decoration:none;font-weight:600;border-bottom:1px solid rgba(232,176,32,0.4)">Switch to Dispute Service →</a>
-    </div>
     <div class="section-label">I Am Applying For</div>
     <div class="type-toggle">
-      <button class="type-btn active" id="btn-personal" onclick="setFundingType('personal',this)">Personal Funding</button>
-      <button class="type-btn" id="btn-business" onclick="setFundingType('business',this)">Business Funding</button>
-      <button class="type-btn" id="btn-both" onclick="setFundingType('both',this)">Both Personal + Business</button>
+      <button class="type-btn active" id="btn-personal" onclick="setFundingType('personal',this)">Personal</button>
+      <button class="type-btn" id="btn-business" onclick="setFundingType('business',this)">Business</button>
+      <button class="type-btn" id="btn-dispute" onclick="window.location.href='/dispute.html'">Dispute</button>
     </div>
     <div class="itin-toggle">
       <button class="itin-btn active" id="btn-ssn" onclick="setClientType('ssn',this)">🇺🇸 SSN — U.S. Citizen</button>
@@ -540,11 +536,11 @@ function setFundingType(type,btn){
   fundingType=type;
   document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  document.getElementById('all-biz-sections').style.display=(type==='business'||type==='both')?'':'none';
-  document.getElementById('personal-goal-wrap').style.display=(type==='personal'||type==='both')?'':'none';
-  document.getElementById('business-goal-wrap').style.display=(type==='business'||type==='both')?'':'none';
-  document.getElementById('biz-required-note').style.display=(type==='business'||type==='both')?'block':'none';
-  ['i-biz-name','i-ein','i-biz-type','i-entity','i-time-biz','i-monthly-rev','i-nav-status'].forEach(id=>{const el=document.getElementById(id);if(el)el.required=(type==='business'||type==='both');});
+  document.getElementById('all-biz-sections').style.display=(type==='business')?'':'none';
+  document.getElementById('personal-goal-wrap').style.display=(type==='personal')?'':'none';
+  document.getElementById('business-goal-wrap').style.display=(type==='business')?'':'none';
+  document.getElementById('biz-required-note').style.display=(type==='business')?'block':'none';
+  ['i-biz-name','i-ein','i-biz-type','i-entity','i-time-biz','i-monthly-rev','i-nav-status'].forEach(id=>{const el=document.getElementById(id);if(el)el.required=(type==='business');});
 }
 
 function setClientType(type,btn){
