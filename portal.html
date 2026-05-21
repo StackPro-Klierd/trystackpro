@@ -4509,27 +4509,21 @@ let clients = [
   },
 ];
 
-// Inject a test web form submission so Millicent can test the intake queue
-(function injectTestIntake(){
-  try {
-    const existing = JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
-    if(existing.some(q=>q.email==='maria.gonzalez.test@gmail.com')) return;
-    existing.push({
-      fundingType:'itin', fundingTypeLabel:'ITIN Client',
-      first:'Maria', last:'Gonzalez',
-      email:'maria.gonzalez.test@gmail.com', phone:'(786) 555-0606',
-      score:'610', housing:'rent', employment:'self_employed',
-      income:'$25,000 – $50,000', goal:'cards',
-      taxes:'itin_filed', usBank:'yes', itin:'914-56-7890',
-      bizName:'Gonzalez Beauty Salon', entity:'Sole Proprietor',
-      timeBiz:'1–2 years', monthlyRev:'$5,000 – $15,000',
-      notes:'Me recomendaron con usted. Quiero construir mi credito para comprar mi propio local.',
-      referral:'Facebook / Instagram', lang:'es',
-      submitted: new Date().toLocaleString(),
-    });
-    localStorage.setItem('sp_intake_queue', JSON.stringify(existing));
-  } catch(e){}
+
+// One-time cleanup: remove stale Maria Gonzalez test entry from intake queue (2026-05-20)
+(function cleanupTestMaria(){
+  try{
+    const q = JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+    const filtered = q.filter(item => item.email !== 'maria.gonzalez.test@gmail.com');
+    if(filtered.length !== q.length){
+      localStorage.setItem('sp_intake_queue', JSON.stringify(filtered));
+      console.log('Removed stale Maria Gonzalez test entry from intake queue');
+    }
+  }catch(e){}
 })();
+
+// (Test Maria Gonzalez intake injection removed 2026-05-20 — was masking real submissions)
+// To restore demo data for training purposes, see Reports/Portal_Demo_Data_Restore.md
 let importQ=[], reports=[], curNotes=[], curResult=null, sensVis=false;
 let matType='all', matScore='all';
 
