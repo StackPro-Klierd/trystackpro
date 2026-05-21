@@ -1,6 +1,6 @@
 #!/bin/bash
 # ═══════════════════════════════════════════════════════════════
-# KLIERD / StackPro — Pre-deploy validator
+# KLIERD — Pre-deploy validator (Layer 1)
 # ═══════════════════════════════════════════════════════════════
 # Run BEFORE every cPanel upload or git push.
 # Blocks bad files from ever reaching production.
@@ -8,15 +8,17 @@
 # Checks for each .html file:
 #   1. JS syntax inside <script> blocks (via node --check)
 #   2. <script> tag balance
-#   3. Compliance words ("credit sweep", "guaranteed approval", etc.)
-#   4. CROA disclaimer presence on client-portal.html
+#   3. Compliance words (StackPro / CBG Funds / credit repair / etc.)
+#   4. Federal disclosure (FCRA) presence on dispute-referencing pages
+#   5. "Results are not typical and may vary" presence
 #
 # Exit code 0 = safe to deploy. Non-zero = STOP, fix the issue first.
 # ═══════════════════════════════════════════════════════════════
 
 cd "$(dirname "$0")"
 
-FILES="portal.html client-portal.html index.html"
+# Every HTML file shipped to klierd.com is scanned
+FILES="index.html apply.html portal.html client-portal.html dispute.html"
 ERRORS=0
 
 echo "═══════════════════════════════════════════════════════════════"
@@ -73,9 +75,23 @@ print(len(blocks))
     echo "  ✅ <script> balanced: $SCR_OPEN"
   fi
 
-  # 3. Compliance scan — forbidden words
+  # 3. Compliance scan — forbidden client-visible language (HARD FAIL)
+  # NOTE: "credit repair" is allowed only in defensive disclaimer context
+  # ("not a credit repair", "does not operate as a credit repair", "never credit repair").
+  # All other uses of "credit repair" hard-fail.
   COMP_ERRS=0
-  for WORD in "credit sweep" "guaranteed approval" "we will get you funded"; do
+  HARD_FAILS=(
+    "credit sweep"
+    "clean credit"
+    "guaranteed approval"
+    "we will get you funded"
+    "CBG Funds"
+    "Cole Benefit Group"
+    "AI-driven"
+    "AI-powered"
+    "trystackpro"
+  )
+  for WORD in "${HARD_FAILS[@]}"; do
     HITS=$(grep -c -i "$WORD" "$FILE" 2>/dev/null | head -1 | tr -d ' \n')
     HITS=${HITS:-0}
     if [ "$HITS" -gt 0 ] 2>/dev/null; then
@@ -84,17 +100,47 @@ print(len(blocks))
       COMP_ERRS=$((COMP_ERRS+1))
     fi
   done
+
+  # 3b. "credit repair" — must only appear in approved defensive contexts
+  CR_TOTAL=$(grep -c -i "credit repair" "$FILE" 2>/dev/null | head -1 | tr -d ' \n')
+  CR_TOTAL=${CR_TOTAL:-0}
+  if [ "$CR_TOTAL" -gt 0 ] 2>/dev/null; then
+    # Allowed defensive patterns (case-insensitive)
+    CR_OK=$(grep -i -E "not (a |operate as a )credit repair|does not operate as a credit repair|never credit repair|misrepresent.*credit repair|use the term .credit repair|Claim to be a Credit Repair" "$FILE" 2>/dev/null | wc -l | tr -d ' \n')
+    CR_BAD=$((CR_TOTAL - CR_OK))
+    if [ "$CR_BAD" -gt 0 ]; then
+      echo "  ❌ COMPLIANCE: 'credit repair' found in $CR_BAD non-defensive context(s)"
+      grep -n -i "credit repair" "$FILE" | grep -v -i -E "not (a |operate as a )credit repair|does not operate as a credit repair|never credit repair|misrepresent.*credit repair|use the term .credit repair|Claim to be a Credit Repair" | head -3 | sed 's/^/    /' | cut -c1-160
+      ERRORS=$((ERRORS+1))
+      COMP_ERRS=$((COMP_ERRS+1))
+    else
+      echo "  ℹ️  'credit repair' x$CR_TOTAL — all in approved defensive context"
+    fi
+  fi
+
+  # Soft warn — known-pending infra references (Mill's scope to migrate)
+  SOFT_HITS=$(grep -c -i "stackpro-api-production" "$FILE" 2>/dev/null | head -1 | tr -d ' \n')
+  SOFT_HITS=${SOFT_HITS:-0}
+  if [ "$SOFT_HITS" -gt 0 ]; then
+    echo "  ⚠️  INFRA pending: 'stackpro-api-production' x$SOFT_HITS (Railway rename — Mill's scope)"
+  fi
+
   if [ "$COMP_ERRS" -eq 0 ]; then
     echo "  ✅ Compliance scan: clean"
   fi
 
-  # 4. CROA disclaimer presence (client-portal.html only)
-  if [ "$FILE" = "client-portal.html" ]; then
-    if grep -q -i "not a credit repair" "$FILE"; then
-      echo "  ✅ CROA disclaimer present"
+  # 4. Required disclosure on dispute-referencing pages
+  if [ "$FILE" = "client-portal.html" ] || [ "$FILE" = "dispute.html" ]; then
+    if grep -q -i -E "Fair Credit Reporting Act|FCRA" "$FILE"; then
+      echo "  ✅ FCRA disclosure present"
     else
-      echo "  ⚠️  CROA disclaimer NOT FOUND (recommended)"
+      echo "  ⚠️  FCRA disclosure NOT FOUND (recommended on dispute-referencing pages)"
     fi
+  fi
+
+  # 5. Required "Results not typical" disclaimer
+  if ! grep -q -i "Results are not typical" "$FILE"; then
+    echo "  ⚠️  'Results are not typical and may vary' NOT FOUND"
   fi
 done
 

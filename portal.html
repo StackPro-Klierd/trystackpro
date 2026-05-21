@@ -2028,7 +2028,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
       <div style="background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:16px">
         <div style="font-size:12px;font-weight:700;color:var(--purple,#8E44AD);margin-bottom:10px">⚡ Goodwill & Rapid Rescore</div>
         <div style="font-size:11px;color:var(--dim);line-height:1.8;margin-bottom:10px">Goodwill letters to creditors for one-time lates. Pay-for-delete on collections under $5K. Rapid rescore 48-72hrs.</div>
-        <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px"><div style="font-size:10px;color:var(--muted);font-weight:700;margin-bottom:5px">COMPLIANCE NOTE</div><div style="font-size:10.5px;color:var(--dim);line-height:1.65">We do NOT operate as a Credit Repair Organization under CROA. Clients execute all disputes themselves.</div></div>
+        <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px"><div style="font-size:10px;color:var(--muted);font-weight:700;margin-bottom:5px">COMPLIANCE NOTE</div><div style="font-size:10.5px;color:var(--dim);line-height:1.65">KLIERD operates as a dispute resolution consulting firm under the Fair Credit Reporting Act. Clients execute all disputes themselves.</div></div>
       </div>
     </div>
   </div>
@@ -3520,8 +3520,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
           <div><span style="color:var(--gold);font-weight:600">Success fee:</span> <span style="color:var(--dim)">15–30% — dropdown per client</span></div>
           <div><span style="color:var(--gold);font-weight:600">Dispute payments:</span> <span style="color:var(--dim)">ACH/debit ONLY</span></div>
           <div><span style="color:var(--gold);font-weight:600">$5,000 package:</span> <span style="color:var(--dim)">Management approval only</span></div>
-          <div><span style="color:var(--gold);font-weight:600">Client docs:</span> <span style="color:var(--dim)">KLIERD only — never CBG Funds or Cole Benefit Group (legacy brand, internal use only)</span></div>
-          <div><span style="color:var(--gold);font-weight:600">Language:</span> <span style="color:var(--dim)">Dispute resolution services — never credit repair</span></div>
+          <div><span style="color:var(--gold);font-weight:600">Client docs:</span> <span style="color:var(--dim)">KLIERD only — use the KLIERD brand on every client-facing document and communication. Legacy brand names are internal-only references.</span></div>
+          <div><span style="color:var(--gold);font-weight:600">Language:</span> <span style="color:var(--dim)">Use "Dispute Resolution" — never use the term "Credit Repair" to clients</span></div>
           <div><span style="color:var(--gold);font-weight:600">Funding:</span> <span style="color:var(--dim)">KLIERD Intelligent Funding Technology — never humans</span></div>
         </div>
       </div>
@@ -3781,6 +3781,32 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="toast-msg">Saved</span></div>
 
+<script>
+/* KLIERD localStorage migration shim v1 — runs once per browser */
+(function(){
+  if(localStorage.getItem("klierd_migration_v1")==="done")return;
+  try{
+    // Encryption device-key rename
+    var oldDk=localStorage.getItem("__sp_dk")||sessionStorage.getItem("__sp_dk");
+    if(oldDk&&localStorage.getItem("__klierd_dk")===null){
+      localStorage.setItem("__klierd_dk",oldDk);
+      localStorage.removeItem("__sp_dk");
+      try{sessionStorage.removeItem("__sp_dk");}catch(e){}
+    }
+    // General prefix migration: sp_* / stackpro_* -> klierd_*
+    Object.keys(localStorage).forEach(function(k){
+      var n=null;
+      if(k.indexOf("sp_")===0)n="klierd_"+k.substring(3);
+      else if(k.indexOf("stackpro_")===0)n="klierd_"+k.substring(9);
+      if(n){
+        if(localStorage.getItem(n)===null)localStorage.setItem(n,localStorage.getItem(k));
+        localStorage.removeItem(k);
+      }
+    });
+    localStorage.setItem("klierd_migration_v1","done");
+  }catch(e){}
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════
@@ -3792,8 +3818,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 
 (function(){
   const SALT       = 'SP_KLIERD_2026_CBG';
-  const KEY_STORE  = '__sp_dk';
-  const SKIP_KEYS  = ['__sp_dk']; // keys that store the key itself — not encrypted
+  const KEY_STORE  = '__klierd_dk';
+  const SKIP_KEYS  = ['__klierd_dk']; // keys that store the key itself — not encrypted
 
   // Generate or retrieve a unique device key
   function getDeviceKey(){
@@ -4422,10 +4448,10 @@ let clients = [];
 // One-time cleanup: remove stale Maria Gonzalez test entry from intake queue (2026-05-20)
 (function cleanupTestMaria(){
   try{
-    const q = JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+    const q = JSON.parse(localStorage.getItem('klierd_intake_queue')||'[]');
     const filtered = q.filter(item => item.email !== 'maria.gonzalez.test@gmail.com');
     if(filtered.length !== q.length){
-      localStorage.setItem('sp_intake_queue', JSON.stringify(filtered));
+      localStorage.setItem('klierd_intake_queue', JSON.stringify(filtered));
       console.log('Removed stale Maria Gonzalez test entry from intake queue');
     }
   }catch(e){}
@@ -4434,10 +4460,10 @@ let clients = [];
 // One-time cleanup: clear stale demo clients from localStorage (2026-05-20)
 (function cleanupDemoClients(){
   try{
-    const flagKey = 'sp_demo_clients_cleared_v1';
+    const flagKey = 'klierd_demo_clients_cleared_v1';
     if(localStorage.getItem(flagKey)) return;
     const demoEmails = ['marcus.thompson@email.com','denice.williams@gmail.com','carlos.mendoza@hotmail.com','sandra.kim@kimenterprises.com','james.rivera@email.com'];
-    ['sp_clients','LS_CLIENTS','klierd_clients'].forEach(key => {
+    ['klierd_clients','LS_CLIENTS','klierd_clients'].forEach(key => {
       try{
         const raw = localStorage.getItem(key);
         if(!raw) return;
@@ -5210,10 +5236,10 @@ function row(label, val){
 
 function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function lastStaffName(){ return localStorage.getItem('sp_staff_name')||''; }
+function lastStaffName(){ return localStorage.getItem('klierd_staff_name')||''; }
 function getStaffName(){
   const n = document.getElementById('m-note-staff')?.value || document.getElementById('m-quick-staff')?.value || lastStaffName() || 'Advisor';
-  if(n) localStorage.setItem('sp_staff_name', n);
+  if(n) localStorage.setItem('klierd_staff_name', n);
   return n;
 }
 
@@ -5227,7 +5253,7 @@ function addStaffNote(mode='quick'){
   if(!txt){ toast('⚠ Write a note first'); return; }
   const staff = staffEl?.value?.trim() || 'Advisor';
   const type  = typeEl?.value || 'update';
-  localStorage.setItem('sp_staff_name', staff);
+  localStorage.setItem('klierd_staff_name', staff);
   if(!c.notes) c.notes = [];
   c.notes.push({id:Date.now(), txt, staff, type, ts: new Date().toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'})});
   saveLS();
@@ -5574,7 +5600,7 @@ SECTION 6 — DISCLOSURES
   - This is consulting only; Consultant is NOT a lender
   - Hard inquiries WILL appear on Client's credit report(s)
   - No legal advice is provided; consult an attorney
-  - Consultant does NOT operate as a credit repair organization
+  - Consultant operates as a dispute resolution consulting firm
 
 ────────────────────────────────────────────────────────
 SECTION 7 — CONFIDENTIALITY
@@ -6825,8 +6851,8 @@ nav = function(id, el){
 // ═══════════════════════════════════════════════
 // RAILWAY API CONFIGURATION
 // ═══════════════════════════════════════════════
-const API_URL = 'https://stackpro-api-production.up.railway.app/api';
-const API_KEY = 'stackpro_secure_2026';
+const API_URL = '/backend/api';
+const API_KEY = 'klierd_secure_2026';
 
 async function apiCall(endpoint, method = 'GET', body = null) {
   try {
@@ -6848,28 +6874,28 @@ async function apiCall(endpoint, method = 'GET', body = null) {
   }
 }
 
-const LS_CLIENTS  = 'stackpro_clients';
-const LS_REPORTS  = 'stackpro_reports';
-const LS_SETTINGS = 'stackpro_settings';
-const LS_NOTES    = 'stackpro_notes';
+const LS_CLIENTS  = 'klierd_clients';
+const LS_REPORTS  = 'klierd_reports';
+const LS_SETTINGS = 'klierd_settings';
+const LS_NOTES    = 'klierd_notes';
 
 // ── SAVE TO RAILWAY API ──
 async function saveAll(){
   try{
     // Save clients
-    await apiCall('/clients/sp_clients', 'POST', {
+    await apiCall('/clients/klierd_main', 'POST', {
       id: 'main',
       data: { clients: clients }
     });
     
     // Save reports
-    await apiCall('/clients/sp_clients', 'POST', {
+    await apiCall('/clients/klierd_main', 'POST', {
       id: 'reports',
       data: { reports: reports }
     });
     
     // Save notes
-    await apiCall('/clients/sp_clients', 'POST', {
+    await apiCall('/clients/klierd_main', 'POST', {
       id: 'notes',
       data: { notes: curNotes }
     });
@@ -6901,7 +6927,7 @@ async function saveAll(){
 async function loadAll(){
   try{
     // Load clients
-    const clientsResult = await apiCall('/clients/sp_clients');
+    const clientsResult = await apiCall('/clients/klierd_main');
     if(clientsResult.clients && clientsResult.clients.length > 0) {
       const mainData = clientsResult.clients.find(c => c.id === 'main');
       if(mainData && mainData.data && mainData.data.clients) {
@@ -6988,7 +7014,7 @@ async function clearAllData(){
 function getStorageSize(){
   let total = 0;
   for(let k in localStorage){
-    if(localStorage.hasOwnProperty(k) && k.startsWith('stackpro')){
+    if(localStorage.hasOwnProperty(k) && k.startsWith('klierd_')){
       total += (localStorage.getItem(k)||'').length;
     }
   }
@@ -7110,8 +7136,8 @@ document.getElementById('ag-date').value = new Date().toLocaleDateString('en-US'
 //  Free tier: 10K requests/month, perfect for small team
 //  All staff sync to same bin automatically
 // ═══════════════════════════════════════════════════════════
-const LS_SYNC_KEY = 'sp_sync_key';
-const LS_SYNC_BIN = 'sp_sync_bin';
+const LS_SYNC_KEY = 'klierd_sync_key';
+const LS_SYNC_BIN = 'klierd_sync_bin';
 let syncInProgress = false;
 let lastSyncTime   = null;
 let syncInterval   = null;
@@ -7326,7 +7352,7 @@ function setReferral(clientId, partner, fee){
 // ═══════════════════════════════════════════════════════════
 function checkExportReminder(){
   const today = new Date().toDateString();
-  const last  = localStorage.getItem('sp_last_export');
+  const last  = localStorage.getItem('klierd_last_export');
   if(last === today) return; // already exported today
   if(clients.length === 0) return; // no data to export
   // Show gentle reminder after 2 hours of use
@@ -7335,8 +7361,8 @@ function checkExportReminder(){
     banner.id = 'export-reminder';
     banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:rgba(201,168,76,0.95);color:#0a0a1a;padding:10px 20px;display:flex;align-items:center;gap:12px;z-index:200;font-size:12px;font-weight:600';
     banner.innerHTML = '💾 Daily backup reminder — export your client data to CSV to keep a local copy. &nbsp;' +
-      '<button onclick="exportCSV();localStorage.setItem(\'sp_last_export\',new Date().toDateString());this.closest(\'#export-reminder\').remove()" style="background:#0a0a1a;color:#C9A84C;border:none;border-radius:5px;padding:5px 12px;cursor:pointer;font-weight:700;font-family:inherit">Export Now</button>' +
-      '<button onclick="localStorage.setItem(\'sp_last_export\',new Date().toDateString());this.closest(\'#export-reminder\').remove()" style="background:transparent;border:none;cursor:pointer;font-size:16px;margin-left:auto">✕</button>';
+      '<button onclick="exportCSV();localStorage.setItem(\'klierd_last_export\',new Date().toDateString());this.closest(\'#export-reminder\').remove()" style="background:#0a0a1a;color:#C9A84C;border:none;border-radius:5px;padding:5px 12px;cursor:pointer;font-weight:700;font-family:inherit">Export Now</button>' +
+      '<button onclick="localStorage.setItem(\'klierd_last_export\',new Date().toDateString());this.closest(\'#export-reminder\').remove()" style="background:transparent;border:none;cursor:pointer;font-size:16px;margin-left:auto">✕</button>';
     document.body.prepend(banner);
   }, 2 * 60 * 60 * 1000); // 2 hours
 }
@@ -7368,7 +7394,7 @@ function checkIntakeQueue(){
     // First pull any new submissions from JSONBin
     pullIntakeFromCloud();
 
-    const queue = JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+    const queue = JSON.parse(localStorage.getItem('klierd_intake_queue')||'[]');
     const banner = document.getElementById('intake-queue-banner');
     const countEl = document.getElementById('intake-count');
     const listEl  = document.getElementById('intake-queue-list');
@@ -7425,12 +7451,12 @@ function pullIntakeFromCloud(){
       const cloudQueue = data?.intake_queue || [];
       if(!cloudQueue.length) return;
       // Merge with local queue — avoid duplicates by submitted timestamp
-      const local = JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+      const local = JSON.parse(localStorage.getItem('klierd_intake_queue')||'[]');
       const localTs = new Set(local.map(q=>q.submitted));
       const newOnes = cloudQueue.filter(q=>!localTs.has(q.submitted));
       if(newOnes.length > 0){
         const merged = [...newOnes, ...local];
-        localStorage.setItem('sp_intake_queue', JSON.stringify(merged));
+        localStorage.setItem('klierd_intake_queue', JSON.stringify(merged));
         // Clear cloud queue after pulling
         fetch(`https://api.jsonbin.io/v3/b/${cfg.bin}`, {
           method:'PUT',
@@ -7449,7 +7475,7 @@ function pullIntakeFromCloud(){
 // Display only — no cloud pull (prevents infinite loop)
 function checkIntakeQueueDisplay(){
   try {
-    const queue = JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+    const queue = JSON.parse(localStorage.getItem('klierd_intake_queue')||'[]');
     const banner = document.getElementById('intake-queue-banner');
     const countEl = document.getElementById('intake-count');
     if(!banner) return;
@@ -7461,7 +7487,7 @@ function checkIntakeQueueDisplay(){
 
 
 function importIntake(index){
-  const queue = JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+  const queue = JSON.parse(localStorage.getItem('klierd_intake_queue')||'[]');
   const q = queue[index];
   if(!q) return;
 
@@ -7518,7 +7544,7 @@ function importIntake(index){
   });
 
   queue.splice(index,1);
-  localStorage.setItem('sp_intake_queue', JSON.stringify(queue));
+  localStorage.setItem('klierd_intake_queue', JSON.stringify(queue));
   saveAll();
   renderPip();
   checkIntakeQueue();
@@ -7528,15 +7554,15 @@ function importIntake(index){
 }
 
 function dismissIntake(index){
-  const queue = JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+  const queue = JSON.parse(localStorage.getItem('klierd_intake_queue')||'[]');
   queue.splice(index,1);
-  localStorage.setItem('sp_intake_queue', JSON.stringify(queue));
+  localStorage.setItem('klierd_intake_queue', JSON.stringify(queue));
   checkIntakeQueue();
 }
 
 function clearIntakeQueue(){
   if(!confirm('Clear all pending web submissions?')) return;
-  localStorage.removeItem('sp_intake_queue');
+  localStorage.removeItem('klierd_intake_queue');
   checkIntakeQueue();
 }
 
@@ -7587,7 +7613,7 @@ function captureSignature(){
     ts: new Date().toISOString(),
     ip: 'local'
   };
-  localStorage.setItem('sp_last_signature', JSON.stringify(sig));
+  localStorage.setItem('klierd_last_signature', JSON.stringify(sig));
   // Update result
   document.getElementById('esign-result').style.display = 'block';
   document.getElementById('esign-summary').textContent = name + ' · ' + new Date().toLocaleString();
@@ -7673,9 +7699,9 @@ function isAdminOrOwner(){ return !currentStaff || ['owner','admin'].includes(cu
 // ═══════════════════════════════════════════════════════════
 //  STRIPE INTEGRATION
 // ═══════════════════════════════════════════════════════════
-const LS_STRIPE_PK   = 'sp_stripe_pk';
-const LS_STRIPE_LINK = 'sp_stripe_link';
-const LS_PD_DOMAIN   = 'sp_pd_domain';
+const LS_STRIPE_PK   = 'klierd_stripe_pk';
+const LS_STRIPE_LINK = 'klierd_stripe_link';
+const LS_PD_DOMAIN   = 'klierd_pd_domain';
 
 function saveStripeSettings(){
   const pk   = document.getElementById('set-stripe-pk')?.value?.trim();
@@ -7867,7 +7893,7 @@ function syncInvAmount(sel){
 // ═══════════════════════════════════════════════════════════
 //  SERVICE PACKAGES — fully editable by owner
 // ═══════════════════════════════════════════════════════════
-const LS_PACKAGES = 'sp_packages';
+const LS_PACKAGES = 'klierd_packages';
 
 const DEFAULT_PACKAGES = [
   {id:1, name:'Consultation / Strategy Session', price:'$297',  pct:0},
@@ -7935,26 +7961,26 @@ function editPackage(id){
 
 function saveCalendly(){
   const val=document.getElementById("set-calendly")?.value?.trim();
-  if(val) localStorage.setItem("sp_calendly",val);
+  if(val) localStorage.setItem("klierd_calendly",val);
   toast("Calendly link saved");
 }
 function getCalendly(){
-  return localStorage.getItem("sp_calendly")||"https://calendly.com/info-41276/15min";
+  return localStorage.getItem("klierd_calendly")||"https://calendly.com/info-41276/15min";
 }
 
 function loadSyncSettings(){
   const keyEl = document.getElementById('set-sync-key');
   const binEl = document.getElementById('set-sync-bin');
-  const key = localStorage.getItem('sp_sync_key')||'';
-  const bin = localStorage.getItem('sp_sync_bin')||'';
+  const key = localStorage.getItem('klierd_sync_key')||'';
+  const bin = localStorage.getItem('klierd_sync_bin')||'';
   if(keyEl) keyEl.value = key;
   if(binEl) binEl.value = bin;
 }
 
 function loadAnetSettings(){
-  const login = localStorage.getItem('sp_anet_login')||'';
-  const txkey = localStorage.getItem('sp_anet_txkey')||'';
-  const link  = localStorage.getItem('sp_anet_link')||'';
+  const login = localStorage.getItem('klierd_anet_login')||'';
+  const txkey = localStorage.getItem('klierd_anet_txkey')||'';
+  const link  = localStorage.getItem('klierd_anet_link')||'';
   const el1 = document.getElementById('set-anet-login');
   const el2 = document.getElementById('set-anet-txkey');
   const el3 = document.getElementById('set-anet-link');
@@ -8003,9 +8029,9 @@ function syncAgFee(sel){
 // ═══════════════════════════════════════════════════════════
 //  AUTHORIZE.NET
 // ═══════════════════════════════════════════════════════════
-const LS_ANET_LOGIN  = 'sp_anet_login';
-const LS_ANET_TXKEY  = 'sp_anet_txkey';
-const LS_ANET_LINK   = 'sp_anet_link';
+const LS_ANET_LOGIN  = 'klierd_anet_login';
+const LS_ANET_TXKEY  = 'klierd_anet_txkey';
+const LS_ANET_LINK   = 'klierd_anet_link';
 
 function saveAnetSettings(){
   const login  = document.getElementById('set-anet-login')?.value?.trim();
@@ -8631,7 +8657,7 @@ function calcEnhancement(){
 // ═══════════════════════════════════════════════════════════
 //  TRADELINE TRACKER
 // ═══════════════════════════════════════════════════════════
-const LS_TRADELINES = 'sp_tradelines';
+const LS_TRADELINES = 'klierd_tradelines';
 
 function getTradelines(){ try{ return JSON.parse(localStorage.getItem(LS_TRADELINES)||'[]'); }catch(e){ return []; } }
 
@@ -8652,7 +8678,7 @@ function addClientTradeline(){
 // ═══════════════════════════════════════════════════════════
 //  SHELF CORP INVENTORY
 // ═══════════════════════════════════════════════════════════
-const LS_SHELF_CORPS = 'sp_shelf_corps';
+const LS_SHELF_CORPS = 'klierd_shelf_corps';
 
 function getShelfCorps(){ try{ return JSON.parse(localStorage.getItem(LS_SHELF_CORPS)||'[]'); }catch(e){ return []; } }
 
@@ -8794,8 +8820,8 @@ function setClientType(type){
 // ═══════════════════════════════════════════════════════════
 //  TRADELINE PACKAGES — pricing manager
 // ═══════════════════════════════════════════════════════════
-const LS_TL_PACKAGES = 'sp_tl_packages';
-const LS_TL_SALES    = 'sp_tl_sales';
+const LS_TL_PACKAGES = 'klierd_tl_packages';
+const LS_TL_SALES    = 'klierd_tl_sales';
 
 const DEFAULT_TL_PACKAGES = [
   {id:1, name:'AU — 2yr / $5K Limit',   type:'au_personal',  limit:'$5,000',  age:'2 years',  price:''},
@@ -9008,11 +9034,11 @@ const ITIN_STRINGS = {
   }
 };
 
-let itinLang = localStorage.getItem('sp_itin_lang') || 'es'; // default Spanish for VAs
+let itinLang = localStorage.getItem('klierd_itin_lang') || 'es'; // default Spanish for VAs
 
 function switchItinLang(lang){
   itinLang = lang;
-  localStorage.setItem('sp_itin_lang', lang);
+  localStorage.setItem('klierd_itin_lang', lang);
   const s = ITIN_STRINGS[lang];
 
   // Update button styles
@@ -9397,7 +9423,7 @@ function renderItinAnalytics(){
 // ═══════════════════════════════════════════════════════════
 //  CREDIT ENHANCEMENT CLIENT FILE SYSTEM
 // ═══════════════════════════════════════════════════════════
-const LS_CE_CLIENTS = 'sp_ce_clients';
+const LS_CE_CLIENTS = 'klierd_ce_clients';
 let ceClients = [];
 let activeCEClient = null;
 
@@ -9661,7 +9687,7 @@ counseling, and credit monitoring setup.
 ────────────────────────────────────────────────────────
 SECTION 2 — IMPORTANT DISCLOSURES
 ────────────────────────────────────────────────────────
-  • Consultant does NOT operate as a Credit Repair
+  • Consultant operates as a dispute resolution consulting firm
     Organization (CRO) under federal CROA (15 U.S.C. §1679)
   • No specific score increase is guaranteed
   • Client executes all dispute letters themselves
@@ -9850,7 +9876,7 @@ renderCreditEnhancement = function(){
 // ═══════════════════════════════════════════════════════════
 //  TRADELINE CLIENT FILE SYSTEM
 // ═══════════════════════════════════════════════════════════
-const LS_TL_CLIENTS = 'sp_tl_clients';
+const LS_TL_CLIENTS = 'klierd_tl_clients';
 let tlClients = [];
 let activeTLClient = null;
 
@@ -10054,7 +10080,7 @@ function renderTLNotes(){ const el=document.getElementById('tlf-notes-list'); if
 // ═══════════════════════════════════════════════════════════
 //  SHELF CORP CLIENT FILE SYSTEM
 // ═══════════════════════════════════════════════════════════
-const LS_SC_CLIENTS = 'sp_sc_clients';
+const LS_SC_CLIENTS = 'klierd_sc_clients';
 let scClients = [];
 let activeSCClient = null;
 
@@ -10359,7 +10385,7 @@ function renderFundingScoreRef(){
 // ═══════════════════════════════════════════════════════════
 //  RESOURCES TAB
 // ═══════════════════════════════════════════════════════════
-const LS_RES_VIDEOS = 'sp_res_videos';
+const LS_RES_VIDEOS = 'klierd_res_videos';
 
 function switchResTab(lang, btn){
   document.querySelectorAll('#res-tabs .ctab').forEach(t=>t.classList.remove('active'));
@@ -10459,7 +10485,7 @@ function renderScripts(){
 
 function renderCompliance(){
   const can_en = ['Explain how credit scoring works','Advise on which bureaus different lenders pull','Help clients understand their credit reports','Recommend dispute strategies and educate on FCRA rights','Provide credit building strategy and sequencing','Charge consulting fees for education and strategy','Recommend tradelines as a credit building tool','Refer clients to attorneys or credit counselors'];
-  const cant_en = ['Guarantee a specific credit score increase','Promise specific approval amounts','Dispute accurate negative items on client\'s behalf','Claim to be a Credit Repair Organization (CRO)','Make false statements to creditors or bureaus','Charge upfront fees for credit repair services under CROA','Tell clients to dispute accurate information','Provide legal advice — refer to an attorney'];
+  const cant_en = ['Guarantee a specific credit score increase','Promise specific approval amounts','Dispute accurate negative items on client\'s behalf','Misrepresent our scope of service','Make false statements to creditors or bureaus','Misrepresent our fee structure to clients','Tell clients to dispute accurate information','Provide legal advice — refer to an attorney'];
   const can_es  = ['Explicar cómo funciona la calificación crediticia','Asesorar sobre qué burós consultan diferentes prestamistas','Ayudar a los clientes a entender sus informes de crédito','Recomendar estrategias de disputa y educar sobre los derechos FCRA','Proporcionar estrategia y secuenciación para construir crédito','Cobrar honorarios de consultoría por educación y estrategia','Recomendar líneas de crédito como herramienta'];
   const cant_es = ['Garantizar un aumento específico del puntaje de crédito','Prometer montos de aprobación específicos','Disputar elementos negativos precisos en nombre del cliente','Reclamar ser una Organización de Reparación de Crédito','Hacer declaraciones falsas a acreedores o burós','Proporcionar asesoramiento legal — referir a un abogado'];
 
@@ -10610,7 +10636,7 @@ function removeResVideo(lang, idx){
 // ═══════════════════════════════════════════════════════════
 //  ACTIVITY LOG SYSTEM
 // ═══════════════════════════════════════════════════════════
-const LS_ACTIVITY_LOG = 'sp_activity_log';
+const LS_ACTIVITY_LOG = 'klierd_activity_log';
 const MAX_LOG_ENTRIES = 500;
 
 function logActivity(type, action, details){
@@ -10822,9 +10848,9 @@ function renderSystemStatus(){
   setTimeout(checkEncryptionStatus, 200);
   // Count data points
   const clientCount = clients.length;
-  const ceCount     = JSON.parse(localStorage.getItem('sp_ce_clients')||'[]').length;
-  const tlCount     = JSON.parse(localStorage.getItem('sp_tl_clients')||'[]').length;
-  const scCount     = JSON.parse(localStorage.getItem('sp_sc_clients')||'[]').length;
+  const ceCount     = JSON.parse(localStorage.getItem('klierd_ce_clients')||'[]').length;
+  const tlCount     = JSON.parse(localStorage.getItem('klierd_tl_clients')||'[]').length;
+  const scCount     = JSON.parse(localStorage.getItem('klierd_sc_clients')||'[]').length;
   const logCount    = getActivityLog().length;
   const staffCount  = getStaff().length;
 
@@ -10845,11 +10871,11 @@ function renderSystemStatus(){
   // Storage info
   const storageEl = document.getElementById('admin-storage-info');
   if(storageEl){
-    const keys = ['sp_clients','sp_ce_clients','sp_tl_clients','sp_sc_clients','sp_activity_log','sp_tl_sales','sp_shelf_corps'];
+    const keys = ['klierd_clients','klierd_ce_clients','klierd_tl_clients','klierd_sc_clients','klierd_activity_log','klierd_tl_sales','klierd_shelf_corps'];
     const info = keys.map(k=>{
       const val = localStorage.getItem(k)||'';
       const kb  = (val.length/1024).toFixed(1);
-      return `<div style="display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">${k.replace('sp_','').replace(/_/g,' ')}</span><span style="color:var(--text);font-weight:600">${kb} KB</span></div>`;
+      return `<div style="display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">${k.replace('klierd_','').replace(/_/g,' ')}</span><span style="color:var(--text);font-weight:600">${kb} KB</span></div>`;
     });
     storageEl.innerHTML = info.join('');
   }
@@ -10857,8 +10883,8 @@ function renderSystemStatus(){
   // Sync status
   const syncEl = document.getElementById('admin-sync-status');
   if(syncEl){
-    const key = localStorage.getItem('sp_sync_key');
-    const bin = localStorage.getItem('sp_sync_bin');
+    const key = localStorage.getItem('klierd_sync_key');
+    const bin = localStorage.getItem('klierd_sync_bin');
     syncEl.innerHTML = key && bin
       ? `<div style="color:var(--green);font-weight:700">✅ Cloud Sync Configured</div><div style="font-size:10px;color:var(--muted);margin-top:3px">Last sync: ${lastSyncTime ? new Date(lastSyncTime).toLocaleString() : 'Not yet synced this session'}</div>`
       : `<div style="color:var(--red)">⚠ Cloud Sync Not Configured</div><div style="font-size:10px;color:var(--muted);margin-top:3px">Go to Settings → Cloud Sync to set up JSONBin.io</div>`;
@@ -10871,7 +10897,7 @@ function checkEncryptionStatus(){
   const isEncrypted = window._spEncrypted === true;
   // Try to read a raw value to confirm it's encrypted
   const rawClients = Object.prototype.toString.call(window.localStorage) === '[object Storage]'
-    ? (() => { try { const k = Object.keys(localStorage).find(k=>k.includes('sp_c')); return k ? localStorage.constructor.prototype.getItem.call(localStorage, k) : null; } catch(e){ return null; } })()
+    ? (() => { try { const k = Object.keys(localStorage).find(k=>k.includes('klierd_c')); return k ? localStorage.constructor.prototype.getItem.call(localStorage, k) : null; } catch(e){ return null; } })()
     : null;
 
   el.innerHTML = isEncrypted
@@ -10881,8 +10907,8 @@ function checkEncryptionStatus(){
 
 function exportAllData(){
   const allData = {};
-  ['sp_clients','sp_ce_clients','sp_tl_clients','sp_sc_clients','sp_activity_log',
-   'sp_tl_sales','sp_shelf_corps','sp_packages','sp_tl_packages'].forEach(k=>{
+  ['klierd_clients','klierd_ce_clients','klierd_tl_clients','klierd_sc_clients','klierd_activity_log',
+   'klierd_tl_sales','klierd_shelf_corps','klierd_packages','klierd_tl_packages'].forEach(k=>{
     try{ allData[k]=JSON.parse(localStorage.getItem(k)||'null'); }catch(e){}
   });
   const blob = new Blob([JSON.stringify(allData,null,2)],{type:'application/json'});
@@ -10897,7 +10923,7 @@ function exportAllData(){
 function confirmClearData(){
   const confirmed = prompt('Type DELETE to clear all KLIERD data. This cannot be undone:');
   if(confirmed==='DELETE'){
-    ['sp_clients','sp_ce_clients','sp_tl_clients','sp_sc_clients','sp_activity_log'].forEach(k=>localStorage.removeItem(k));
+    ['klierd_clients','klierd_ce_clients','klierd_tl_clients','klierd_sc_clients','klierd_activity_log'].forEach(k=>localStorage.removeItem(k));
     toast('⚠ All data cleared — please refresh');
   }
 }
@@ -10914,7 +10940,7 @@ function exportAnalyticsCSV(){
   const s    = calcDashboardStats();
   const fmt  = n => n > 0 ? '$'+Math.round(n).toLocaleString() : '—';
   const date = new Date().toLocaleDateString();
-  const company = localStorage.getItem('sp_brand')||'KLIERD LLC';
+  const company = localStorage.getItem('klierd_brand')||'KLIERD LLC';
 
   // Build pipeline rows
   const pipRows = clients.map(c=>[
@@ -10965,7 +10991,7 @@ function exportAnalyticsCSV(){
 
 function exportAnalyticsJSON(){
   const s = calcDashboardStats();
-  const company = localStorage.getItem('sp_brand')||'KLIERD LLC';
+  const company = localStorage.getItem('klierd_brand')||'KLIERD LLC';
   const report = {
     meta: {
       company,
@@ -11009,7 +11035,7 @@ function exportAnalyticsPDF(){
   const s       = calcDashboardStats();
   const fmt     = n => n > 0 ? '$'+Math.round(n).toLocaleString() : '—';
   const date    = new Date().toLocaleDateString();
-  const company = localStorage.getItem('sp_brand')||'KLIERD LLC';
+  const company = localStorage.getItem('klierd_brand')||'KLIERD LLC';
   const goal    = parseFloat(document.getElementById('set-goal')?.value||'50000')||50000;
   const goalPct = Math.min(100, Math.round((s.totalFees/goal)*100));
 
@@ -11200,8 +11226,8 @@ function downloadFile(content, filename, type){
 // ═══════════════════════════════════════════════
 //  STAFF LOGIN & ACCESS CONTROL
 // ═══════════════════════════════════════════════
-const LS_STAFF = 'sp_staff_members';
-const LS_SESSION = 'sp_session';
+const LS_STAFF = 'klierd_staff_members';
+const LS_SESSION = 'klierd_session';
 
 let currentStaff = null;
 
@@ -11280,7 +11306,7 @@ function grantAccess(name, pin, role) {
   
   currentStaff = { name, role };
   localStorage.setItem(LS_SESSION, JSON.stringify({ name, role, ts: Date.now() }));
-  localStorage.setItem('sp_staff_name', name);
+  localStorage.setItem('klierd_staff_name', name);
   // Track last login on staff record
   try {
     const staffList = getStaff();
@@ -11338,7 +11364,7 @@ function checkSession() {
       currentStaff = { name: s.name, role: s.role };
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('set-loggedin').textContent = s.name + ' (' + s.role + ')';
-      localStorage.setItem('sp_staff_name', s.name);
+      localStorage.setItem('klierd_staff_name', s.name);
       
       // CRITICAL: Apply role locks after restoring session
       setTimeout(applyRoleLocks, 100);
@@ -11431,7 +11457,7 @@ try { refreshPackageDropdowns(); } catch(e){}
 // Init tradeline date
 try { const _tlDate=document.getElementById('tl-sale-date'); if(_tlDate) _tlDate.value=new Date().toISOString().split('T')[0]; } catch(e){}
 // Init ITIN portal language (default Spanish for VAs)
-try { setTimeout(()=>switchItinLang(localStorage.getItem('sp_itin_lang')||'es'), 100); } catch(e){}
+try { setTimeout(()=>switchItinLang(localStorage.getItem('klierd_itin_lang')||'es'), 100); } catch(e){}
 // Pre-fill agreement dates
 try { const _agDate=document.getElementById('ag-date'); if(_agDate) _agDate.value=new Date().toLocaleDateString(); } catch(e){}
 try { const _faDate=document.getElementById('fa-date'); if(_faDate) _faDate.value=new Date().toLocaleDateString(); } catch(e){}
@@ -11446,11 +11472,11 @@ try { renderDashboard(); } catch(e){}
 // ── PRE-CONFIGURED CLOUD SYNC ──────────────────────────
 // JSONBin credentials pre-loaded — sync starts automatically
 (function(){
-  const existingKey = localStorage.getItem('sp_sync_key');
-  const existingBin = localStorage.getItem('sp_sync_bin');
+  const existingKey = localStorage.getItem('klierd_sync_key');
+  const existingBin = localStorage.getItem('klierd_sync_bin');
   if(!existingKey || !existingBin){
-    localStorage.setItem('sp_sync_key', '$2a$10$bCvsIXSk7PmuhhFnjwq7RuSB3a26L7vmIiCXkgRmjsFk..UmojKqu');
-    localStorage.setItem('sp_sync_bin', '6a04897fa52e2611991652ee');
+    localStorage.setItem('klierd_sync_key', '$2a$10$bCvsIXSk7PmuhhFnjwq7RuSB3a26L7vmIiCXkgRmjsFk..UmojKqu');
+    localStorage.setItem('klierd_sync_bin', '6a04897fa52e2611991652ee');
     console.log('✅ Cloud sync pre-configured');
   }
 })();
@@ -11477,9 +11503,9 @@ try { checkExportReminder(); } catch(e){}
 
 // Load saved integration settings
 try {
-  const _anetLogin = localStorage.getItem('sp_anet_login');
-  const _anetLink  = localStorage.getItem('sp_anet_link');
-  const _pddom     = localStorage.getItem('sp_pd_domain');
+  const _anetLogin = localStorage.getItem('klierd_anet_login');
+  const _anetLink  = localStorage.getItem('klierd_anet_link');
+  const _pddom     = localStorage.getItem('klierd_pd_domain');
   if(_anetLogin){ const el=document.getElementById('set-anet-login'); if(el) el.value=_anetLogin; }
   if(_anetLink) { const el=document.getElementById('set-anet-link');  if(el) el.value=_anetLink;  }
   if(_pddom)    {
@@ -11490,7 +11516,7 @@ try {
 
 // Pre-fill name field from last known staff name
 try {
-  const lastN = localStorage.getItem('sp_staff_name');
+  const lastN = localStorage.getItem('klierd_staff_name');
   if(lastN) document.getElementById('login-name').value = lastN;
 } catch(e){}
 
@@ -11719,8 +11745,8 @@ function fmtReply(t){
 
 // ═══ INVOICE + BROKER ENGINE ═══
 
-function getInvoices(){try{return JSON.parse(localStorage.getItem('sp_invoices')||'[]');}catch(e){return[];}}
-function saveInvoices(arr){localStorage.setItem('sp_invoices',JSON.stringify(arr));}
+function getInvoices(){try{return JSON.parse(localStorage.getItem('klierd_invoices')||'[]');}catch(e){return[];}}
+function saveInvoices(arr){localStorage.setItem('klierd_invoices',JSON.stringify(arr));}
 function genInvoiceId(){return 'INV-'+Date.now().toString(36).toUpperCase();}
 
 function autoGenerateInvoice(clientId,serviceName,amount){
@@ -11820,7 +11846,7 @@ function triggerFundingEngine(clientId){
   );
 
   // Send funding package to Railway backend for processing
-  const apiUrl=localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app';
+  const apiUrl=localStorage.getItem('klierd_api_url')||'/backend';
   const fundingPayload={
     clientId: c.id,
     name: (c.first||'')+' '+(c.last||''),
@@ -11859,9 +11885,9 @@ function triggerFundingEngine(clientId){
   })
   .catch(()=>{
     // Queue for when Railway is ready — funding intent saved locally
-    const queue=JSON.parse(localStorage.getItem('sp_funding_queue')||'[]');
+    const queue=JSON.parse(localStorage.getItem('klierd_funding_queue')||'[]');
     queue.push({...fundingPayload, queued:new Date().toLocaleString()});
-    localStorage.setItem('sp_funding_queue',JSON.stringify(queue));
+    localStorage.setItem('klierd_funding_queue',JSON.stringify(queue));
     addStaffNoteQuick('status','Funding queued locally — will auto-submit when backend is connected');
     toast('Funding queued for '+c.first+' — auto-submits when Railway is connected');
   });
@@ -11869,9 +11895,9 @@ function triggerFundingEngine(clientId){
 
 // Auto-submit any queued funding jobs when backend becomes available
 function drainFundingQueue(){
-  const queue=JSON.parse(localStorage.getItem('sp_funding_queue')||'[]');
+  const queue=JSON.parse(localStorage.getItem('klierd_funding_queue')||'[]');
   if(!queue.length)return;
-  const apiUrl=localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app';
+  const apiUrl=localStorage.getItem('klierd_api_url')||'/backend';
   const remaining=[];
   queue.forEach(job=>{
     fetch(apiUrl+'/funding/initiate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(job)})
@@ -11885,7 +11911,7 @@ function drainFundingQueue(){
     })
     .catch(()=>remaining.push(job));
   });
-  setTimeout(()=>localStorage.setItem('sp_funding_queue',JSON.stringify(remaining)),3000);
+  setTimeout(()=>localStorage.setItem('klierd_funding_queue',JSON.stringify(remaining)),3000);
 }
 
 // Drain queue on portal load
@@ -11980,12 +12006,12 @@ function scheduleInvoiceReminders(inv){
 }
 
 function sendSystemEmail(to,subject,body){
-  fetch((localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app')+'/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,subject,body,from:'info@klierd.com'})}).catch(()=>{const q=JSON.parse(localStorage.getItem('sp_email_queue')||'[]');q.push({to,subject,body,queued:new Date().toLocaleString()});localStorage.setItem('sp_email_queue',JSON.stringify(q));});
+  fetch((localStorage.getItem('klierd_api_url')||'/backend')+'/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,subject,body,from:'info@klierd.com'})}).catch(()=>{const q=JSON.parse(localStorage.getItem('klierd_email_queue')||'[]');q.push({to,subject,body,queued:new Date().toLocaleString()});localStorage.setItem('klierd_email_queue',JSON.stringify(q));});
 }
 
 function sendSystemSMS(to,body){
   if(!to)return;
-  fetch((localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app')+'/send-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,body})}).catch(()=>{const q=JSON.parse(localStorage.getItem('sp_sms_queue')||'[]');q.push({to,body,queued:new Date().toLocaleString()});localStorage.setItem('sp_sms_queue',JSON.stringify(q));});
+  fetch((localStorage.getItem('klierd_api_url')||'/backend')+'/send-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,body})}).catch(()=>{const q=JSON.parse(localStorage.getItem('klierd_sms_queue')||'[]');q.push({to,body,queued:new Date().toLocaleString()});localStorage.setItem('klierd_sms_queue',JSON.stringify(q));});
 }
 
 function toggleClientCreditCard(clientId){
@@ -12004,10 +12030,10 @@ function updateSuccessFeePct(clientId,pct){
 
 
 // BROKER FUNCTIONS
-function getBrokers(){try{return JSON.parse(localStorage.getItem('sp_brokers')||'[]');}catch(e){return[];}}
-function saveBrokers(arr){localStorage.setItem('sp_brokers',JSON.stringify(arr));}
-function getBrokerSubmissions(){try{return JSON.parse(localStorage.getItem('sp_broker_submissions')||'[]');}catch(e){return[];}}
-function saveBrokerSubmissions(arr){localStorage.setItem('sp_broker_submissions',JSON.stringify(arr));}
+function getBrokers(){try{return JSON.parse(localStorage.getItem('klierd_brokers')||'[]');}catch(e){return[];}}
+function saveBrokers(arr){localStorage.setItem('klierd_brokers',JSON.stringify(arr));}
+function getBrokerSubmissions(){try{return JSON.parse(localStorage.getItem('klierd_broker_submissions')||'[]');}catch(e){return[];}}
+function saveBrokerSubmissions(arr){localStorage.setItem('klierd_broker_submissions',JSON.stringify(arr));}
 
 function refreshBrokerPanel(){
   const brokers=getBrokers();const subs=getBrokerSubmissions();
@@ -12092,8 +12118,8 @@ function updateBrokerSubStatus(subId){
 
 // ═══ TEAM BOARD ═══
 
-const TB_TASKS_KEY = 'sp_board_tasks';
-const TB_LOG_KEY = 'sp_board_log';
+const TB_TASKS_KEY = 'klierd_board_tasks';
+const TB_LOG_KEY = 'klierd_board_log';
 
 const TB_DEFAULT_TASKS = []; // Internal task seed cleared 2026-05-20
 
@@ -12289,7 +12315,7 @@ function sendEmailFromPanel(){
 }
 
 function refreshEmailQueue(){
-  const q=JSON.parse(localStorage.getItem('sp_email_queue')||'[]');
+  const q=JSON.parse(localStorage.getItem('klierd_email_queue')||'[]');
   const countEl=document.getElementById('email-queue-count');
   if(countEl)countEl.textContent=q.length;
   const listEl=document.getElementById('email-queue-list');
@@ -12329,7 +12355,7 @@ function sendSMSFromPanel(){
 }
 
 function refreshSMSQueue(){
-  const q=JSON.parse(localStorage.getItem('sp_sms_queue')||'[]');
+  const q=JSON.parse(localStorage.getItem('klierd_sms_queue')||'[]');
   const countEl=document.getElementById('sms-queue-count');
   if(countEl)countEl.textContent=q.length;
   const listEl=document.getElementById('sms-queue-list');
@@ -12346,10 +12372,10 @@ function scheduleZoomMeeting(){
   const statusMsg=document.getElementById('zoom-status-msg');
   if(!clientId||!date||!time){if(statusMsg){statusMsg.style.display='block';statusMsg.style.color='var(--red)';statusMsg.textContent='Please fill in all fields.';}return;}
   const c=clients.find(x=>x.id==clientId);
-  const meetings=JSON.parse(localStorage.getItem('sp_zoom_meetings')||'[]');
+  const meetings=JSON.parse(localStorage.getItem('klierd_zoom_meetings')||'[]');
   const meeting={id:'ZM-'+Date.now(),clientId,clientName:(c?.first||'')+' '+(c?.last||''),clientEmail:c?.email||'',type,date,time,created:new Date().toLocaleString(),status:'scheduled'};
   meetings.unshift(meeting);
-  localStorage.setItem('sp_zoom_meetings',JSON.stringify(meetings));
+  localStorage.setItem('klierd_zoom_meetings',JSON.stringify(meetings));
   if(c?.email){sendSystemEmail(c.email,'Your Consultation is Scheduled — KLIERD',`Hi ${c.first},
 
 Your ${type} has been scheduled for ${date} at ${time}.
@@ -12369,7 +12395,7 @@ function createZoomMeeting(){
 }
 
 function refreshZoomMeetings(){
-  const meetings=JSON.parse(localStorage.getItem('sp_zoom_meetings')||'[]');
+  const meetings=JSON.parse(localStorage.getItem('klierd_zoom_meetings')||'[]');
   const countEl=document.getElementById('zoom-today');
   const today=new Date().toISOString().split('T')[0];
   if(countEl)countEl.textContent=meetings.filter(m=>m.date===today).length;

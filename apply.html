@@ -430,7 +430,7 @@ footer{background:var(--bg)!important;border-top:1px solid var(--border2)!import
     </div>
 
     <button class="submit-btn" onclick="submitIntake()">Submit Application →</button>
-    <p class="disclaimer">By submitting this form you consent to being contacted by KLIERD regarding your application. All information is kept strictly confidential. This is not a credit repair service. Results are not typical and may vary. © 2026 KLIERD — Powered by KLIERD Intelligent Funding Technology.</p>
+    <p class="disclaimer">By submitting this form you consent to being contacted by KLIERD regarding your application. All information is kept strictly confidential. KLIERD does not operate as a credit repair organization under CROA. KLIERD provides funding consulting and dispute resolution services. Results are not typical and may vary. © 2026 KLIERD — Powered by KLIERD Intelligent Funding Technology.</p>
   </div>
 
   <div class="thankyou" id="thankyou">
@@ -440,6 +440,32 @@ footer{background:var(--bg)!important;border-top:1px solid var(--border2)!import
   </div>
 </div>
 
+<script>
+/* KLIERD localStorage migration shim v1 — runs once per browser */
+(function(){
+  if(localStorage.getItem("klierd_migration_v1")==="done")return;
+  try{
+    // Encryption device-key rename
+    var oldDk=localStorage.getItem("__sp_dk")||sessionStorage.getItem("__sp_dk");
+    if(oldDk&&localStorage.getItem("__klierd_dk")===null){
+      localStorage.setItem("__klierd_dk",oldDk);
+      localStorage.removeItem("__sp_dk");
+      try{sessionStorage.removeItem("__sp_dk");}catch(e){}
+    }
+    // General prefix migration: sp_* / stackpro_* -> klierd_*
+    Object.keys(localStorage).forEach(function(k){
+      var n=null;
+      if(k.indexOf("sp_")===0)n="klierd_"+k.substring(3);
+      else if(k.indexOf("stackpro_")===0)n="klierd_"+k.substring(9);
+      if(n){
+        if(localStorage.getItem(n)===null)localStorage.setItem(n,localStorage.getItem(k));
+        localStorage.removeItem(k);
+      }
+    });
+    localStorage.setItem("klierd_migration_v1","done");
+  }catch(e){}
+})();
+</script>
 <script>
 let clientType='ssn', fundingType='personal', currentLang='en';
 
@@ -468,7 +494,7 @@ const LANG = {
     'lbl-referral':'How did you hear about us?',
     'lbl-preferred-lang-label':'Preferred Language',
     'submit-btn':'Submit Application →',
-    'disclaimer-text':'By submitting this form you consent to being contacted by KLIERD regarding your application. All information is kept strictly confidential. This is not a credit repair service. Results are not typical and may vary. © 2026 KLIERD — Powered by KLIERD Intelligent Funding Technology.',
+    'disclaimer-text':'By submitting this form you consent to being contacted by KLIERD regarding your application. All information is kept strictly confidential. KLIERD does not operate as a credit repair organization under CROA. KLIERD provides funding consulting and dispute resolution services. Results are not typical and may vary. © 2026 KLIERD — Powered by KLIERD Intelligent Funding Technology.',
     'ty-title':'Application Received!',
     'ty-body':'Thank you — our team will review your information and reach out within <strong>24–48 hours</strong> to discuss your funding options.<br><br><strong style="color:#C9A84C">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong>',
   },
@@ -496,7 +522,7 @@ const LANG = {
     'lbl-referral':'¿Cómo nos encontró?',
     'lbl-preferred-lang-label':'Idioma Preferido',
     'submit-btn':'Enviar Solicitud →',
-    'disclaimer-text':'Al enviar este formulario, acepta ser contactado por KLIERD. Toda la información es estrictamente confidencial. Este no es un servicio de reparación de crédito. Los resultados no son típicos y pueden variar. © 2026 KLIERD — Con tecnología KLIERD.',
+    'disclaimer-text':'Al enviar este formulario, acepta ser contactado por KLIERD. Toda la información es estrictamente confidencial. KLIERD no opera como organización de reparación de crédito bajo CROA. KLIERD ofrece servicios de consultoría de financiamiento y resolución de disputas. Los resultados no son típicos y pueden variar. © 2026 KLIERD — Con tecnología KLIERD.',
     'ty-title':'¡Solicitud Recibida!',
     'ty-body':'Gracias — nuestro equipo revisará su información y se comunicará en <strong>24–48 horas</strong> para hablar sobre sus opciones de financiamiento.<br><br><strong style="color:#C9A84C">KLIERD — Con tecnología KLIERD Intelligent Funding Technology</strong>',
   }
@@ -587,9 +613,9 @@ function submitIntake(){
     navStatus:g('i-nav-status'),navEmail:g('i-nav-email'),
     notes:g('i-notes'),referral:g('i-referral'),
     submitted:new Date().toLocaleString(),status:'new',source:'web_intake_form'};
-  try{const q=JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');q.unshift(data);localStorage.setItem('sp_intake_queue',JSON.stringify(q));}catch(e){}
+  try{const q=JSON.parse(localStorage.getItem('klierd_intake_queue')||'[]');q.unshift(data);localStorage.setItem('klierd_intake_queue',JSON.stringify(q));}catch(e){}
   // Primary: Railway backend (silent fail if backend sleeping)
-  fetch('https://stackpro-api-production.up.railway.app/clients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{});
+  fetch('/backend/clients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{});
   // Fallback notification: email info@colebenefitgroup.com via FormSubmit (no API key required)
   // First submission triggers a one-time verification email — Teka must click confirm link once.
   try {
@@ -741,15 +767,15 @@ function triggerKlierdAutomation(data) {
       ? `Hola ${data.first||''}! KLIERD recibió tu solicitud. Portal: ${portalUrl} — Correo: ${data.email}, PIN: ${tempPin}. KLIERando tu camino. -KLIERD`
       : `Hi ${data.first||''}! KLIERD received your application. Portal: ${portalUrl} — Email: ${data.email}, PIN: ${tempPin}. KLIERDing your path. -KLIERD`;
     try {
-      fetch('https://stackpro-api-production.up.railway.app/send-sms', {
+      fetch('/backend/send-sms', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({to: data.phone, body: sms})
       }).catch(()=>{
         try {
-          const q = JSON.parse(localStorage.getItem('sp_sms_queue') || '[]');
+          const q = JSON.parse(localStorage.getItem('klierd_sms_queue') || '[]');
           q.push({to: data.phone, body: sms, queued: new Date().toLocaleString()});
-          localStorage.setItem('sp_sms_queue', JSON.stringify(q));
+          localStorage.setItem('klierd_sms_queue', JSON.stringify(q));
         } catch(e){}
       });
     } catch(e){}

@@ -574,7 +574,7 @@ footer{background:var(--bg)!important;border-top:1px solid var(--border2)!import
       </div>
 
       <!-- BILLING DISCLAIMER -->
-      <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-billing-note">Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your advisor anytime.</div>
+      <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-billing-note">Charges are for consulting services only. Fees and scope are disclosed in writing in your engagement letter before any service begins. Questions? Email your advisor anytime.</div>
 
     </div>
 
@@ -610,12 +610,38 @@ footer{background:var(--bg)!important;border-top:1px solid var(--border2)!import
 
 <div class="footer">
   <div id="lbl-footer-text">KLIERD © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.</div>
-  <div id="lbl-footer-croa" style="margin-top:8px;font-size:9px;color:var(--muted)">This is not a credit repair service. Results are not typical and may vary.</div>
+  <div id="lbl-footer-croa" style="margin-top:8px;font-size:9px;color:var(--muted)">KLIERD does not operate as a credit repair organization under CROA. KLIERD provides funding consulting and dispute resolution services. Federal disclosures under the Fair Credit Reporting Act. Results are not typical and may vary.</div>
 </div>
 
 <script>
+/* KLIERD localStorage migration shim v1 — runs once per browser */
+(function(){
+  if(localStorage.getItem("klierd_migration_v1")==="done")return;
+  try{
+    // Encryption device-key rename
+    var oldDk=localStorage.getItem("__sp_dk")||sessionStorage.getItem("__sp_dk");
+    if(oldDk&&localStorage.getItem("__klierd_dk")===null){
+      localStorage.setItem("__klierd_dk",oldDk);
+      localStorage.removeItem("__sp_dk");
+      try{sessionStorage.removeItem("__sp_dk");}catch(e){}
+    }
+    // General prefix migration: sp_* / stackpro_* -> klierd_*
+    Object.keys(localStorage).forEach(function(k){
+      var n=null;
+      if(k.indexOf("sp_")===0)n="klierd_"+k.substring(3);
+      else if(k.indexOf("stackpro_")===0)n="klierd_"+k.substring(9);
+      if(n){
+        if(localStorage.getItem(n)===null)localStorage.setItem(n,localStorage.getItem(k));
+        localStorage.removeItem(k);
+      }
+    });
+    localStorage.setItem("klierd_migration_v1","done");
+  }catch(e){}
+})();
+</script>
+<script>
 let lang='en', currentApp=null;
-const API='https://stackpro-api-production.up.railway.app';
+const API='/backend';
 
 const T={
   en:{
@@ -642,7 +668,7 @@ const T={
     'lookup-error':'Tracking ID not found. Please check and try again.',
     'lbl-portal-tag':'Client Portal',
     'lbl-footer-text':'KLIERD © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.',
-    'lbl-footer-croa':'This is not a credit repair service. Results are not typical and may vary.',
+    'lbl-footer-croa':'KLIERD does not operate as a credit repair organization under CROA. KLIERD provides funding consulting and dispute resolution services. Federal disclosures under the Fair Credit Reporting Act. Results are not typical and may vary.',
     'lbl-na':'Your Next Action',
     'lbl-progress-bar':'Your Progress',
     'lbl-your-info':'Your Information',
@@ -673,7 +699,7 @@ const T={
     'lbl-payment-method':'Payment Method on File',
     'lbl-pm-update':'Update →',
     'lbl-payment-history':'Payment History',
-    'lbl-billing-note':'Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your advisor anytime.',
+    'lbl-billing-note':'Charges are for consulting services only. Fees and scope are disclosed in writing in your engagement letter before any service begins. Questions? Email your advisor anytime.',
     'bill-paid':'Paid in full',
     'bill-due':'Balance due',
     'bill-partial':'Partially paid',
@@ -707,7 +733,7 @@ const T={
     'lookup-error':'ID de seguimiento no encontrado. Por favor verifique e intente de nuevo.',
     'lbl-portal-tag':'Portal del Cliente',
     'lbl-footer-text':'KLIERD © 2026 · Con tecnología KLIERD Intelligent Funding Technology · Estamos despejando su camino.',
-    'lbl-footer-croa':'Este no es un servicio de reparación de crédito. Los resultados no son típicos y pueden variar.',
+    'lbl-footer-croa':'KLIERD no opera como organización de reparación de crédito bajo CROA. KLIERD ofrece consultoría de financiamiento y resolución de disputas. Divulgaciones federales bajo la Ley FCRA. Los resultados no son típicos y pueden variar.',
     'lbl-na':'Su Próxima Acción',
     'lbl-progress-bar':'Su Progreso',
     'lbl-your-info':'Su Información',
@@ -737,7 +763,7 @@ const T={
     'lbl-payment-method':'Método de Pago en Archivo',
     'lbl-pm-update':'Actualizar →',
     'lbl-payment-history':'Historial de Pagos',
-    'lbl-billing-note':'Los cargos son únicamente por servicios de consultoría. Nunca cobramos tarifas por adelantado por reparación de crédito bajo CROA. ¿Preguntas? Envíe un correo a su asesor en cualquier momento.',
+    'lbl-billing-note':'Los cargos son únicamente por servicios de consultoría. Las tarifas y el alcance se divulgan por escrito en su carta de contratación antes de iniciar cualquier servicio. ¿Preguntas? Envíe un correo a su asesor en cualquier momento.',
     'bill-paid':'Pagado en su totalidad',
     'bill-due':'Saldo Pendiente',
     'bill-partial':'Parcialmente Pagado',
@@ -770,7 +796,7 @@ function lookup(){
   errEl.style.display='none';
   let found=null;
   try{
-    const q=JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+    const q=JSON.parse(localStorage.getItem('klierd_intake_queue')||'[]');
     found=q.find(a=>a.trackingId===id);
     if(!found){const my=JSON.parse(localStorage.getItem('my_applications')||'[]');found=my.find(a=>a.trackingId===id);}
   }catch(e){}
@@ -1032,8 +1058,8 @@ function renderPortal(app){
   let agreements = lang==='es' ? [...baseES] : [...baseEN];
   if (svcIsDispute) {
     agreements.push(lang==='es'
-      ? {key:'croa_disclosure',name:'Divulgación CROA',desc:'Aviso federal CROA — sus derechos, nuestros límites, y aviso de rescisión de 3 días'}
-      : {key:'croa_disclosure',name:'CROA Disclosure',desc:'Federal CROA notice — your rights, our limits, and 3-day rescission notice'}
+      ? {key:'fcra_disclosure',name:'Divulgación FCRA',desc:'Aviso federal bajo la Ley FCRA — sus derechos de disputa y nuestro alcance de servicio'}
+      : {key:'fcra_disclosure',name:'FCRA Disclosure',desc:'Federal disclosure under the Fair Credit Reporting Act — your dispute rights and our service scope'}
     );
   }
   if (svcIsITIN) {
@@ -1214,16 +1240,16 @@ const AGREEMENT_TEXTS = {
     es: "Confirmo que la información proporcionada en mi solicitud de financiamiento es verdadera, completa y precisa. Autorizo a KLIERD Tecnología de Financiamiento Inteligente a revisar mi solicitud y contactarme sobre mis opciones de financiamiento. Los resultados no son típicos."
   },
   fee_agreement: {
-    en: "I agree to the engagement terms with KLIERD. Funding-related fees are charged as a success fee, payable after I receive funding. Optional services (credit profile optimization, dispute resolution) are billed separately and disclosed upfront before service begins. Specific fees, scope, and timing are detailed in the service agreement that accompanies this electronic signature. KLIERD does not operate as a credit repair organization under CROA.",
-    es: "Acepto los términos de contratación con KLIERD. Las tarifas relacionadas con el financiamiento se cobran como tarifa de éxito, pagadera después de recibir fondos. Los servicios opcionales (optimización de perfil de crédito, resolución de disputas) se facturan por separado y se divulgan antes del servicio. KLIERD no opera como organización de reparación de crédito bajo CROA."
+    en: "I agree to the engagement terms with KLIERD. Funding-related fees are charged as a success fee, payable after I receive funding. Optional services (credit profile optimization, dispute resolution) are billed separately and disclosed upfront before service begins. Specific fees, scope, and timing are detailed in the service agreement that accompanies this electronic signature. Dispute services commence upon execution of the engagement letter; fees earned for work performed are non-refundable. KLIERD does not operate as a credit repair organization under CROA.",
+    es: "Acepto los términos de contratación con KLIERD. Las tarifas relacionadas con el financiamiento se cobran como tarifa de éxito, pagadera después de recibir fondos. Los servicios opcionales (optimización de perfil de crédito, resolución de disputas) se facturan por separado y se divulgan antes del servicio. Los servicios de disputa comienzan al firmar la carta de contratación; las tarifas ganadas por el trabajo realizado no son reembolsables. KLIERD no opera como organización de reparación de crédito bajo CROA."
   },
   credit_auth: {
     en: "I authorize KLIERD to obtain my credit reports from Equifax, TransUnion, and Experian for the purpose of reviewing my funding application and identifying suitable lender matches. This authorization is valid for the duration of my engagement with KLIERD.",
     es: "Autorizo a KLIERD a obtener mis reportes de crédito de Equifax, TransUnion y Experian con el propósito de revisar mi solicitud de financiamiento e identificar prestamistas adecuados. Esta autorización es válida durante el tiempo de mi contratación con KLIERD."
   },
-  croa_disclosure: {
-    en: "Federal CROA Disclosure: You have a right to dispute inaccurate information in your credit report by contacting the credit bureau directly. You may also obtain a free copy of your credit report once every twelve months from each of the three major credit bureaus. KLIERD does not operate as a Credit Repair Organization. You may cancel this agreement, without penalty, within three (3) business days of signing. Results are not typical and may vary.",
-    es: "Divulgación CROA Federal: Usted tiene derecho a disputar información inexacta en su reporte de crédito contactando directamente al buró de crédito. Puede obtener una copia gratuita de su reporte de crédito una vez cada doce meses de cada uno de los tres burós principales. KLIERD no opera como Organización de Reparación de Crédito. Puede cancelar este acuerdo, sin penalización, dentro de tres (3) días hábiles después de firmar. Los resultados no son típicos."
+  fcra_disclosure: {
+    en: "Federal FCRA Disclosure: You have the right to dispute inaccurate or incomplete information in your credit report by contacting each credit bureau directly under FCRA Section 611. You may also obtain a free copy of your credit report once every twelve months from each of the three major credit bureaus at AnnualCreditReport.com. KLIERD does not operate as a credit repair organization under CROA. Dispute resolution and credit profile optimization are offered as discrete consulting services under a separate engagement letter. Services commence upon execution of the engagement letter. Results are not typical and may vary.",
+    es: "Divulgación Federal FCRA: Usted tiene el derecho a disputar información inexacta o incompleta en su reporte de crédito contactando directamente a cada buró bajo la Sección 611 de FCRA. Puede obtener una copia gratuita una vez cada doce meses de cada uno de los tres burós principales en AnnualCreditReport.com. KLIERD no opera como organización de reparación de crédito bajo CROA. La resolución de disputas y la optimización de perfil se ofrecen como servicios de consultoría discretos bajo un acuerdo separado. Los servicios comienzan al firmar el acuerdo. Los resultados no son típicos y pueden variar."
   },
   itin_attestation: {
     en: "I attest that I hold a valid Individual Taxpayer Identification Number (ITIN) issued by the Internal Revenue Service. I authorize KLIERD to use my ITIN for the purpose of identifying ITIN-friendly lenders and routing my application appropriately.",
@@ -1329,7 +1355,7 @@ async function submitSignature(){
   localStorage.setItem(auditKey, JSON.stringify(auditLog));
   // POST to backend (best-effort — falls back to local-only if endpoint not yet wired)
   try {
-    const apiUrl = localStorage.getItem('sp_api_url') || 'https://stackpro-api-production.up.railway.app';
+    const apiUrl = localStorage.getItem('klierd_api_url') || '/backend';
     fetch(apiUrl + '/agreements/sign', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
