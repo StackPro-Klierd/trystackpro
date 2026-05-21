@@ -1362,7 +1362,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
       </div>
       <div style="background:var(--dark2);border:1px solid var(--border);border-radius:var(--rs);padding:13px;margin-bottom:12px">
         <div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px">CSV Format</div>
-        <div style="font-family:'DM Mono',monospace;font-size:10.5px;color:var(--dim);line-height:1.9;overflow-x:auto">First,Last,Email,Phone,Score,SSN,EIN,DUNS,Income,Entity<br>Marcus,Thompson,mt@me.com,5550001,710,XXX-XX,XX-XXX,,75000,LLC</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10.5px;color:var(--dim);line-height:1.9;overflow-x:auto">First,Last,Email,Phone,Score,SSN,EIN,DUNS,Income,Entity<br>FirstName,LastName,email@example.com,5551234567,710,XXX-XX,XX-XXX,,75000,LLC</div>
         <button class="btn bgh bsm" style="margin-top:9px" onclick="dlTemplate()">⬇ Download Template</button>
       </div>
     </div>
@@ -1519,7 +1519,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
   </div>
 </div>
 
-<!-- ████ STACKPRO ANALYTICS ████ -->
+<!-- ████ KLIERD ANALYTICS ████ -->
 <div id="panel-analytics" class="panel">
   <div class="sh"><div><div class="st">KLIERD Analytics</div><div class="sub">Live financial tracking — all data calculated from your pipeline in real time</div></div>
   <div style="display:flex;gap:7px;flex-wrap:wrap">
@@ -3135,7 +3135,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
         <div class="fld"><label>Default Fee</label><input type="text" id="set-fee" placeholder="$1,497"/></div>
         <div class="fld"><label>Monthly Goal ($)</label><input type="number" id="set-goal" placeholder="50000" oninput="updGoal()"/></div>
         <div class="fld"><label>Phone</label><input type="text" id="set-phone" placeholder="(555) 000-0000"/></div>
-        <div class="fld"><label>Email</label><input type="email" id="set-email" placeholder="you@stackpro.com"/></div>
+        <div class="fld"><label>Email</label><input type="email" id="set-email" placeholder="you@klierd.com"/></div>
         <button class="btn bg" onclick="saveSettings()">Save Settings</button>
       </div>
       <!-- SERVICE PACKAGES -->
@@ -3302,8 +3302,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
             <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px">⚡ Option 1 — Fastest (5 min, free)</div>
             <div style="font-size:11px;color:var(--dim);line-height:1.8">
               1. Go to <a href="https://tiiny.host" target="_blank" style="color:var(--blue)">tiiny.host</a><br>
-              2. Drag and drop <strong style="color:var(--text)">stackpro_v3.html</strong><br>
-              3. Get a live URL like <code style="background:var(--dark);padding:1px 6px;border-radius:3px;color:var(--gold)">stackpro.tiiny.site</code><br>
+              2. Drag and drop <strong style="color:var(--text)">portal.html</strong><br>
+              3. Get a live URL like <code style="background:var(--dark);padding:1px 6px;border-radius:3px;color:var(--gold)">klierd.com</code><br>
               4. Share with staff — they open it in any browser
             </div>
           </div>
@@ -3312,7 +3312,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
             <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px">⭐ Option 2 — Recommended (own domain + password, ~10 min)</div>
             <div style="font-size:11px;color:var(--dim);line-height:1.8">
               1. Sign up free at <a href="https://netlify.com" target="_blank" style="color:var(--blue)">netlify.com</a><br>
-              2. Drag <strong style="color:var(--text)">stackpro_v3.html</strong> into deploy box → live instantly<br>
+              2. Drag <strong style="color:var(--text)">portal.html</strong> into deploy box → live instantly<br>
               3. Go to <strong style="color:var(--text)">Site Settings → Access Control → Password Protection</strong><br>
               4. Set one master password (protects client SSN data)<br>
               5. Buy domain at <a href="https://namecheap.com" target="_blank" style="color:var(--blue)">namecheap.com</a> once state approves your name (~$12/yr)<br>
@@ -3323,10 +3323,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
           <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px">
             <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:6px">📋 Files to deploy</div>
             <div style="font-size:11px;color:var(--dim);line-height:1.8">
-              • <strong style="color:var(--text)">stackpro_v3.html</strong> — Main staff tool (this file)<br>
-              • <strong style="color:var(--text)">stackpro_intake.html</strong> — Public client intake form (share link with prospects)<br>
-              • <strong style="color:var(--text)">stackpro_ai_reader.html</strong> — AI credit report reader<br>
-              • <strong style="color:var(--text)">stackpro_credit_report.html</strong> — Client offer document
+              • <strong style="color:var(--text)">portal.html</strong> — Main staff tool (this file)<br>
+              • <strong style="color:var(--text)">apply.html</strong> — Public client intake form (share link with prospects)<br>
+              • <strong style="color:var(--text)">reader.html</strong> — AI credit report reader<br>
+              • <strong style="color:var(--text)">credit_report.html</strong> — Client offer document
             </div>
           </div>
 
@@ -5427,8 +5427,8 @@ function renderImpPreview(){
 }
 function confirmImport(){if(!importQ.length){toast('⚠ No clients in queue');return;}clients.unshift(...importQ);document.getElementById('st-total').textContent=clients.length;updRptSel();toast('✓ '+importQ.length+' clients imported');importQ=[];renderImpPreview();}
 function clearQueue(){importQ=[];renderImpPreview();}
-function dlTemplate(){const csv='First,Last,Email,Phone,Score,SSN,EIN,DUNS,Income,Entity\nMarcus,Thompson,mt@email.com,5550001234,710,XXX-XX-XXXX,XX-XXXXXXX,12-345-6789,75000,LLC';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='stackpro_template.csv';a.click();toast('✓ Template downloaded');}
-function exportCSV(){const rows=['First,Last,Email,Phone,Score,Biz Range,Pers Range,Fee,Status,Date'];clients.forEach(c=>rows.push([c.first,c.last,c.email,c.phone||'',c.score,c.biz,c.pers,c.fee,c.status,c.date].join(',')));const b=new Blob([rows.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='stackpro_pipeline_'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('✓ Exported (no sensitive data in export)');}
+function dlTemplate(){const csv='First,Last,Email,Phone,Score,SSN,EIN,DUNS,Income,Entity\nMarcus,Thompson,mt@email.com,5550001234,710,XXX-XX-XXXX,XX-XXXXXXX,12-345-6789,75000,LLC';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='klierd_template.csv';a.click();toast('✓ Template downloaded');}
+function exportCSV(){const rows=['First,Last,Email,Phone,Score,Biz Range,Pers Range,Fee,Status,Date'];clients.forEach(c=>rows.push([c.first,c.last,c.email,c.phone||'',c.score,c.biz,c.pers,c.fee,c.status,c.date].join(',')));const b=new Blob([rows.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='klierd_pipeline_'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('✓ Exported (no sensitive data in export)');}
 
 // ═══════════════════════════════════════════════
 //  AGREEMENT
@@ -10812,7 +10812,7 @@ function exportActivityLog(){
   const blob = new Blob([csv], {type:'text/csv'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
-  a.href = url; a.download = `stackpro-activity-log-${new Date().toISOString().split('T')[0]}.csv`;
+  a.href = url; a.download = `klierd-activity-log-${new Date().toISOString().split('T')[0]}.csv`;
   a.click(); URL.revokeObjectURL(url);
   toast('✅ Activity log exported');
 }
@@ -10888,7 +10888,7 @@ function exportAllData(){
   const blob = new Blob([JSON.stringify(allData,null,2)],{type:'application/json'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
-  a.href=url; a.download=`stackpro-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.href=url; a.download=`klierd-backup-${new Date().toISOString().split('T')[0]}.json`;
   a.click(); URL.revokeObjectURL(url);
   logActivity('system','Data Export','Full system data exported to JSON');
   toast('✅ Full backup exported');
@@ -10958,7 +10958,7 @@ function exportAnalyticsCSV(){
     ...pipRows,
   ].join('\n');
 
-  downloadFile(csv, 'stackpro-analytics-'+date.replace(/\//g,'-')+'.csv', 'text/csv');
+  downloadFile(csv, 'klierd-analytics-'+date.replace(/\//g,'-')+'.csv', 'text/csv');
   logActivity('system','Analytics Exported','CSV export generated');
   toast('✅ Analytics exported to CSV');
 }
@@ -11000,7 +11000,7 @@ function exportAnalyticsJSON(){
     })),
   };
 
-  downloadFile(JSON.stringify(report, null, 2), 'stackpro-analytics-'+new Date().toISOString().split('T')[0]+'.json', 'application/json');
+  downloadFile(JSON.stringify(report, null, 2), 'klierd-analytics-'+new Date().toISOString().split('T')[0]+'.json', 'application/json');
   logActivity('system','Analytics Exported','JSON export generated');
   toast('✅ Analytics exported to JSON');
 }
@@ -11236,38 +11236,38 @@ function doLogin() {
   const err  = document.getElementById('login-err');
 
   if(!name){ err.textContent = 'Please enter your name.'; return; }
-
-  // TEKA COLE IS ALWAYS OWNER — no PIN required, cannot be blocked
-  if(name.toLowerCase() === 'teka cole' || name.toLowerCase() === 'teka'){
-    grantAccess('Teka Cole', pin || '', 'owner');
-    return;
-  }
+  if(!pin){ err.textContent = 'PIN required.'; return; }
 
   const members = getStaffMembers();
 
-  // No staff set up yet — any name, PIN optional, grant owner
+  // Bootstrap: if NO staff configured yet, only the owner setup PIN works
+  // This PIN must be changed immediately after first login via Admin Panel
   if(members.length === 0) {
-    grantAccess(name, pin || '', 'owner');
+    const OWNER_BOOTSTRAP_PIN = 'KLIERD-2026-OWNER';
+    if(pin === OWNER_BOOTSTRAP_PIN){
+      grantAccess(name, pin, 'owner');
+      try{ alert('Bootstrap login successful. Go to Admin Panel and add staff members + change your PIN immediately.'); }catch(e){}
+      return;
+    }
+    err.textContent = 'No staff configured. Use bootstrap PIN to set up.';
     return;
   }
 
-  // Find matching member — case-insensitive
+  // Find matching member — case-insensitive name + EXACT pin required
   const match = members.find(m => {
     const nameMatch = m.name.toLowerCase() === name.toLowerCase();
-    const pinMatch  = !m.pin || !pin || m.pin === pin; // if no PIN set, allow blank
+    const pinMatch  = !!m.pin && m.pin === pin; // PIN must be set and match exactly
     return nameMatch && pinMatch;
   });
 
   if(match) {
-    grantAccess(match.name, match.pin||'', match.role||'advisor');
+    grantAccess(match.name, match.pin, match.role||'advisor');
   } else {
     const nameOnly = members.find(m => m.name.toLowerCase() === name.toLowerCase());
-    if(nameOnly && pin && nameOnly.pin && nameOnly.pin !== pin) {
-      err.textContent = 'Incorrect PIN for ' + nameOnly.name + '.';
+    if(nameOnly && (!nameOnly.pin || nameOnly.pin !== pin)) {
+      err.textContent = 'Incorrect PIN.';
     } else if(!nameOnly) {
       err.textContent = 'Name not found. Check spelling or ask your admin.';
-    } else {
-      err.textContent = 'Enter your PIN to continue.';
     }
     document.getElementById('login-pin').value = '';
     document.getElementById('login-pin').focus();
@@ -11275,10 +11275,8 @@ function doLogin() {
 }
 
 function grantAccess(name, pin, role) {
-  // FORCE TEKA TO ALWAYS BE OWNER
-  if(name.toLowerCase().includes('teka')) {
-    role = 'owner';
-  }
+  // Role is determined by staff record, NOT by name match
+  // (removed automatic 'teka' → owner promotion — required real auth above)
   
   currentStaff = { name, role };
   localStorage.setItem(LS_SESSION, JSON.stringify({ name, role, ts: Date.now() }));
@@ -12097,35 +12095,11 @@ function updateBrokerSubStatus(subId){
 const TB_TASKS_KEY = 'sp_board_tasks';
 const TB_LOG_KEY = 'sp_board_log';
 
-const TB_DEFAULT_TASKS = [
-  {id:1,text:'Deploy portal.html to GoDaddy',owner:'Teka',priority:'urgent',done:false,ts:Date.now()},
-  {id:2,text:'Add ANTHROPIC_API_KEY to Railway',owner:'Millicent',priority:'urgent',done:false,ts:Date.now()},
-  {id:3,text:'Regenerate Supabase key + update Railway',owner:'Millicent',priority:'urgent',done:false,ts:Date.now()},
-  {id:4,text:'Setup SendGrid + verify klierd.com',owner:'Millicent',priority:'urgent',done:false,ts:Date.now()},
-  {id:5,text:'Zoom API credentials + enter in portal',owner:'Millicent',priority:'active',done:false,ts:Date.now()},
-  {id:6,text:'Apple Developer account ($99)',owner:'Millicent',priority:'active',done:false,ts:Date.now()},
-  {id:7,text:'Google Play Developer account ($25)',owner:'Millicent',priority:'active',done:false,ts:Date.now()},
-  {id:8,text:'Build klierd.com enterprise landing page',owner:'Claude',priority:'active',done:false,ts:Date.now()},
-  {id:9,text:'Import 7,000 client CSV',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
-  {id:10,text:'KLIERD DBA registration',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
-  {id:11,text:'File STACKPRO trademark with Melony Frank',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
-  {id:12,text:'Teka decides fee structure: Option A/B/C',owner:'Teka',priority:'urgent',done:false,ts:Date.now()},
-  {id:13,text:'Confirm monitoring subscription prices ($97/$129/$149)',owner:'Teka',priority:'active',done:false,ts:Date.now()},
-  {id:14,text:'DocuSign Developer account setup',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
-];
+const TB_DEFAULT_TASKS = []; // Internal task seed cleared 2026-05-20
 
-const TB_DEFAULT_LOG = [
-  {user:'Claude',color:'#27AE60',text:'Invoice Center + Broker Portal built into portal. Team Board merged — no more separate file.',ts:new Date().toLocaleString()},
-  {user:'Coco',color:'#8E44AD',text:'client-portal.html v2.9 deployed LIVE. Compliance scrub complete.',ts:new Date().toLocaleString()},
-];
+const TB_DEFAULT_LOG = []; // Internal status log cleared 2026-05-20
 
-const TB_FILES = [
-  {name:'portal.html',desc:'Staff portal — all panels',status:'pending',url:'Needs upload to GoDaddy'},
-  {name:'client-portal.html',desc:'Client self-service portal',status:'live',url:'klierd.com/client-portal'},
-  {name:'apply.html',desc:'Client intake + e-sign',status:'live',url:'klierd.com/apply'},
-  {name:'index.html',desc:'Landing page',status:'live',url:'trystackpro.com'},
-  {name:'klierd.com',desc:'Enterprise landing page',status:'building',url:'Not built yet'},
-];
+const TB_FILES = []; // Internal file-status defaults cleared 2026-05-20
 
 let tbUser = localStorage.getItem('tb_user')||'';
 let tbColor = localStorage.getItem('tb_color')||'#C9A84C';

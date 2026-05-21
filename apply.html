@@ -588,7 +588,31 @@ function submitIntake(){
     notes:g('i-notes'),referral:g('i-referral'),
     submitted:new Date().toLocaleString(),status:'new',source:'web_intake_form'};
   try{const q=JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');q.unshift(data);localStorage.setItem('sp_intake_queue',JSON.stringify(q));}catch(e){}
+  // Primary: Railway backend (silent fail if backend sleeping)
   fetch('https://stackpro-api-production.up.railway.app/clients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{});
+  // Fallback notification: email info@colebenefitgroup.com via FormSubmit (no API key required)
+  // First submission triggers a one-time verification email — Teka must click confirm link once.
+  try {
+    const notif = {
+      _subject: 'KLIERD — NEW APPLICATION: ' + (data.first||'') + ' ' + (data.last||''),
+      _template: 'table',
+      _captcha: 'false',
+      _replyto: data.email || '',
+      Name: (data.first||'') + ' ' + (data.last||''),
+      Email: data.email || '',
+      Phone: data.phone || '',
+      'Funding Type': data.fundingTypeLabel || data.fundingType || '',
+      Score: data.score || '',
+      Income: data.income || '',
+      Goal: data.goal || '',
+      'Business Name': data.bizName || '',
+      'Monthly Revenue': data.monthlyRev || '',
+      Notes: data.notes || '',
+      Referral: data.referral || '',
+      Submitted: data.submitted
+    };
+    fetch('https://formsubmit.co/ajax/info@colebenefitgroup.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(notif)}).catch(()=>{});
+  } catch(e){}
   document.getElementById('form-body').style.display='none';
   document.getElementById('thankyou').style.display='block';
 }
