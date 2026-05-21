@@ -4414,100 +4414,9 @@ const LOANS = [
 // ═══════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════
-let clients = [
-  {
-    id:1001, first:'Marcus', last:'Thompson',
-    email:'marcus.thompson@email.com', phone:'(404) 555-0101',
-    score:698, scoreTU:710, scoreEQ:698, scoreEX:722,
-    ssn:'', ein:'82-1234567', duns:'12-345-6789',
-    pers:'$35,000–$55,000', biz:'$50,000–$90,000',
-    fee:'$2,497', status:'funded', date:'05/01/26',
-    fundingPlaced:'87500', housing:'mortgage', taxes:'yes_both', irs:'no', employment:'business_owner',
-    navStatus:'build', navEmail:'marcus@thompson-llc.com', navDnb:'82', navExp:'78', navEq:'285', navSbss:'168', navChecked:'05/01/26',
-    bizName:'Thompson Capital LLC', entity:'llc', monitoring:true, isItin:false,
-    packageName:'Card Stacking — Done For You', docs:'DL, SS Card, Bank Statements',
-    invoices:[
-      {id:9001, service:'Card Stacking — Done For You', amount:'2497', due:'04/15/26', date:'04/10/26', status:'paid', processor:'Authorize.net'},
-      {id:9002, service:'Success Fee (3%)', amount:'2625', due:'05/05/26', date:'05/01/26', status:'paid', processor:'Authorize.net'},
-    ],
-    notes:[
-      {id:101, type:'status', txt:'Funded — $87,500 total: BCU $18K, DCU $15K, NASA $22K, Chase Freedom $8K, Amex Gold $12K, Capital One $7K, LightStream $5K, SoFi $500. Excellent result.', staff:'Teka Cole', ts:'05/01/26 10:22 AM'},
-      {id:102, type:'call', txt:'Follow-up call — client very happy. Referred 2 friends. Monitoring service activated.', staff:'Teka Cole', ts:'05/03/26 2:15 PM'},
-    ],
-    reports:[], verify:{sosChecked:true, idVerified:true, uccStatus:'Clean'},
-  },
-  {
-    id:1002, first:'Denice', last:'Williams',
-    email:'denice.williams@gmail.com', phone:'(678) 555-0202',
-    score:642, scoreTU:668, scoreEQ:642, scoreEX:671,
-    ssn:'', ein:'', duns:'',
-    pers:'$10,000–$25,000', biz:'$15,000–$40,000',
-    fee:'$1,497', status:'active', date:'05/06/26',
-    housing:'rent', taxes:'yes_both', irs:'no', employment:'employed_w2',
-    navStatus:'track', navEmail:'', navDnb:'', navExp:'', navEq:'', navSbss:'',
-    bizName:'', entity:'', monitoring:false, isItin:false,
-    packageName:'Credit Profile Optimization — Premium', docs:'DL uploaded',
-    invoices:[{id:9003, service:'Credit Profile Optimization — Premium', amount:'1497', due:'05/10/26', date:'05/06/26', status:'sent', processor:'Authorize.net'}],
-    notes:[
-      {id:103, type:'update', txt:'TU:668, EQ:642, EX:671. EQ is the bottleneck — 3 collections on Equifax. Strategy: dispute EQ collections first, then BCU(TU) → Andrews/NASA(EX) → wait for EQ before DCU.', staff:'Teka Cole', ts:'05/06/26 11:00 AM'},
-      {id:104, type:'dispute', txt:'3 Equifax collections: Medical $1,200 (2022), CC charge-off $800 (2023), Auto $2,400 (2021). Goodwill letter templates sent to client. Client disputing directly.', staff:'Teka Cole', ts:'05/08/26 9:45 AM'},
-    ],
-    reports:[], verify:{sosChecked:false, idVerified:true, uccStatus:''}, followup:'2026-05-20',
-  },
-  {
-    id:1003, first:'Carlos', last:'Mendoza',
-    email:'carlos.mendoza@hotmail.com', phone:'(305) 555-0303',
-    score:580, scoreTU:580, scoreEQ:0, scoreEX:0,
-    ssn:'', ein:'', duns:'', itin:'912-34-5678',
-    pers:'ITIN Range', biz:'EIN Range',
-    fee:'$997', status:'new', date:'05/10/26',
-    housing:'family', taxes:'itin_filed', irs:'no', employment:'self_employed',
-    navStatus:'none', navEmail:'', navDnb:'', navExp:'', navEq:'', navSbss:'',
-    bizName:'Mendoza Landscaping', entity:'sole', monitoring:false, isItin:true, lang:'es',
-    packageName:'Consultation / Strategy Session', docs:'None uploaded',
-    invoices:[],
-    notes:[
-      {id:105, type:'update', txt:'ITIN client — Spanish speaking. Referred by Facebook. ITIN filed 3 years. Only TU score (580). EQ and EX thin file. Goal: personal cards + business funding for landscaping. Path: Petal 2 → OpenSky → Capital One QuicksilverOne after 6 months → DriveTime auto for installment mix.', staff:'Maria (VA)', ts:'05/10/26 2:00 PM'},
-    ],
-    reports:[], verify:{sosChecked:false, idVerified:false, uccStatus:''}, followup:'2026-05-17',
-  },
-  {
-    id:1004, first:'Sandra', last:'Kim',
-    email:'sandra.kim@kimenterprises.com', phone:'(770) 555-0404',
-    score:688, scoreTU:695, scoreEQ:702, scoreEX:688,
-    ssn:'', ein:'91-7654321', duns:'98-765-4321',
-    pers:'$15,000–$30,000', biz:'$75,000–$150,000',
-    fee:'$2,997', status:'active', date:'05/08/26',
-    housing:'mortgage', taxes:'yes_both', irs:'no', employment:'business_owner',
-    navStatus:'expand', navEmail:'sandra@kimenterprises.com', navDnb:'78', navExp:'72', navEq:'275', navSbss:'155', navChecked:'05/08/26',
-    bizName:'Kim Enterprises LLC', entity:'llc', monitoring:true, isItin:false,
-    packageName:'Business Funding Package', docs:'DL, EIN Letter, Articles, Bank Statements',
-    invoices:[{id:9004, service:'Business Funding Package', amount:'2997', due:'05/12/26', date:'05/08/26', status:'paid', processor:'Authorize.net'}],
-    notes:[
-      {id:106, type:'update', txt:'3yr LLC, $85K/yr revenue, excellent bank history. SOS verified GA — Active. D&B PAYDEX 78 (target 80+). FICO SBSS 155 (need 160+ for SBA). 2 more Net-30 vendors needed to push PAYDEX, then SBA Express.', staff:'Teka Cole', ts:'05/08/26 10:00 AM'},
-      {id:107, type:'call', txt:'Uline and Quill Net-30 accounts opened. Report to D&B in 30-45 days. Chase Business balance $22K. Bluevine LOC submitted — $75K requested.', staff:'Advisor', ts:'05/09/26 11:00 AM'},
-      {id:108, type:'status', txt:'Bluevine LOC application submitted. Fundbox $25K submitted as backup. Client notified — decision expected 1-2 business days.', staff:'Teka Cole', ts:'05/10/26 9:30 AM'},
-    ],
-    reports:[], verify:{sosChecked:true, idVerified:true, uccStatus:'Clean'}, followup:'2026-05-15',
-  },
-  {
-    id:1005, first:'James', last:'Rivera',
-    email:'james.rivera@email.com', phone:'(214) 555-0505',
-    score:531, scoreTU:548, scoreEQ:531, scoreEX:562,
-    ssn:'', ein:'', duns:'',
-    pers:'Below threshold', biz:'N/A',
-    fee:'$997', status:'declined', date:'05/10/26',
-    housing:'rent', taxes:'no', irs:'yes_open', employment:'employed_w2',
-    navStatus:'none', bizName:'', entity:'', monitoring:false, isItin:false,
-    packageName:'Credit Analysis Report', docs:'DL uploaded',
-    invoices:[],
-    notes:[
-      {id:109, type:'status', txt:'Score below 580 threshold. 7 negative items: 4 collections, 2 late payments, 1 charge-off across all bureaus. IRS debt $3,200 unresolved. Recommended Credit Enhancement package — 90-day cleanup before any card applications.', staff:'Teka Cole', ts:'05/10/26 1:00 PM'},
-      {id:110, type:'issue', txt:'Client hesitant on CE fee. Explained that stacking with this profile = all declines + score damage from hard inquiries. Sent follow-up email with explanation. Will check in 2 weeks.', staff:'Advisor', ts:'05/10/26 2:30 PM'},
-    ],
-    reports:[], verify:{sosChecked:false, idVerified:true, uccStatus:''}, followup:'2026-05-24',
-  },
-];
+let clients = [];
+// Demo seed clients (Marcus Thompson, Denice Williams, Carlos Mendoza, Sandra Kim, James Rivera) removed 2026-05-20
+// Real clients now flow from Railway API or are added via the 'New Client' button
 
 
 // One-time cleanup: remove stale Maria Gonzalez test entry from intake queue (2026-05-20)
@@ -4521,6 +4430,29 @@ let clients = [
     }
   }catch(e){}
 })();
+
+// One-time cleanup: clear stale demo clients from localStorage (2026-05-20)
+(function cleanupDemoClients(){
+  try{
+    const flagKey = 'sp_demo_clients_cleared_v1';
+    if(localStorage.getItem(flagKey)) return;
+    const demoEmails = ['marcus.thompson@email.com','denice.williams@gmail.com','carlos.mendoza@hotmail.com','sandra.kim@kimenterprises.com','james.rivera@email.com'];
+    ['sp_clients','LS_CLIENTS','klierd_clients'].forEach(key => {
+      try{
+        const raw = localStorage.getItem(key);
+        if(!raw) return;
+        const arr = JSON.parse(raw);
+        if(!Array.isArray(arr)) return;
+        const filtered = arr.filter(c => !demoEmails.includes(c.email));
+        if(filtered.length !== arr.length){
+          localStorage.setItem(key, JSON.stringify(filtered));
+        }
+      }catch(e){}
+    });
+    localStorage.setItem(flagKey, '1');
+  }catch(e){}
+})();
+
 
 // (Test Maria Gonzalez intake injection removed 2026-05-20 — was masking real submissions)
 // To restore demo data for training purposes, see Reports/Portal_Demo_Data_Restore.md
