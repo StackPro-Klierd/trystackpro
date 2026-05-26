@@ -1445,35 +1445,37 @@ function maybeShowBillingTab(){
 }
 
 // ═══ MONITORING TAB (Program 3 — KLIERD Credit Monitoring) ═══
-// Tier dictionary — canonical names + prices (do not hardcode in UI strings)
+// Tier dictionary — canonical snake_case keys match Supabase schema
 const KLIERD_MON_TIERS={
-  monitor:    {name:'KLIERD Monitor',         price:99.00, kind:'personal'},
-  monitorPlus:{name:'KLIERD Monitor+',        price:129.99,kind:'personal'},
-  monitorPro: {name:'KLIERD Monitor Pro',     price:149.99,kind:'personal'},
-  business:   {name:'KLIERD Business Monitor',price:169.99,kind:'business'}
+  monitor_entry:{name:'KLIERD Monitor',         price:99.00, kind:'personal'},
+  monitor_mid:  {name:'KLIERD Monitor+',        price:129.99,kind:'personal'},
+  monitor_pro:  {name:'KLIERD Monitor Pro',     price:149.99,kind:'personal'},
+  monitor_biz:  {name:'KLIERD Business Monitor',price:169.99,kind:'business'}
 };
 
-// Show Monitoring tab button only if client has monitoring active OR is in setup
+// Show Monitoring tab button only if client has monitoring_active = true
 function maybeShowMonitoringTab(){
   const btn=document.getElementById('tab-btn-monitoring');
   if(!btn)return;
-  const m=currentApp&&currentApp.monitoring;
-  btn.style.display=m?'inline-flex':'none';
+  const active=!!(currentApp&&currentApp.monitoring_active);
+  btn.style.display=active?'inline-flex':'none';
 }
 
 function renderMonitoring(){
   if(!currentApp)return;
-  const m=currentApp.monitoring||{};
   const fmt=v=>'$'+Number(v).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
 
-  // Setup state — shown when monitoring exists but no tier assigned yet
   const setupCard=document.getElementById('mon-setup-card');
   const planCard=document.getElementById('mon-plan-card');
   const scoreCard=document.getElementById('mon-score-card');
   const histCard=document.getElementById('mon-history-card');
   const alertsCard=document.getElementById('mon-alerts-card');
 
-  if(!m.tier||m.status==='setup'){
+  const tierKey=currentApp.monitoring_tier;
+  const isActive=!!currentApp.monitoring_active;
+
+  // Setup state — active but no tier yet (welcome email pending)
+  if(!isActive || !tierKey){
     setupCard.style.display='block';
     planCard.style.display='none';
     scoreCard.style.display='none';
@@ -1489,32 +1491,31 @@ function renderMonitoring(){
   alertsCard.style.display='block';
 
   // Plan tier + price
-  const tier=KLIERD_MON_TIERS[m.tier]||KLIERD_MON_TIERS.monitor;
+  const tier=KLIERD_MON_TIERS[tierKey]||KLIERD_MON_TIERS.monitor_entry;
   document.getElementById('mon-tier-name').textContent=tier.name;
   document.getElementById('mon-tier-price').textContent=fmt(tier.price)+'/mo';
 
-  // Status badge
+  // Status badge (active by default — Phase 2 will track paused/cancelled via Supabase)
   const badge=document.getElementById('mon-status-badge');
-  const st=m.status||'active';
   const statusLabelsEN={active:'Active',paused:'Paused',cancelled:'Cancelled',pending:'Pending'};
   const statusLabelsES={active:'Activo',paused:'Pausado',cancelled:'Cancelado',pending:'Pendiente'};
+  const st='active';
   badge.textContent=(lang==='es'?statusLabelsES:statusLabelsEN)[st]||st;
-  badge.className='bill-badge '+(st==='active'?'paid':(st==='cancelled'?'overdue':'partial'));
+  badge.className='bill-badge paid';
 
   // Next bill line
   const nb=document.getElementById('mon-next-bill');
-  if(m.nextBillDate&&st==='active'){
-    nb.textContent=(lang==='es'?'Próximo cargo: ':'Next charge: ')+m.nextBillDate+' · '+fmt(tier.price);
+  if(currentApp.monitoring_next_billing){
+    nb.textContent=(lang==='es'?'Próximo cargo: ':'Next charge: ')+currentApp.monitoring_next_billing+' · '+fmt(tier.price);
   }else nb.textContent='';
 
-  // Current score (placeholder until API wired)
-  const scoreEl=document.getElementById('mon-score-val');
-  scoreEl.textContent=m.currentScore?m.currentScore:'—';
+  // Current score (placeholder until API wired in Phase 2)
+  document.getElementById('mon-score-val').textContent=currentApp.monitoring_current_score?currentApp.monitoring_current_score:'—';
 
-  // Score history — simple inline bar chart
+  // Score history — simple inline bar chart (reads monitoring_score_history array on client)
   const chart=document.getElementById('mon-history-chart');
   const labels=document.getElementById('mon-history-labels');
-  const hist=Array.isArray(m.scoreHistory)?m.scoreHistory:[];
+  const hist=Array.isArray(currentApp.monitoring_score_history)?currentApp.monitoring_score_history:[];
   if(hist.length===0){
     chart.innerHTML='<div style="color:var(--muted);font-size:11px;align-self:center">'+(lang==='es'?'Sin datos aún':'No data yet')+'</div>';
     labels.innerHTML='';
@@ -1526,19 +1527,20 @@ function renderMonitoring(){
       const pct=Math.round(((h.score-min)/range)*90)+10;
       return '<div style="flex:1;background:linear-gradient(180deg,var(--gold),rgba(212,175,55,0.3));height:'+pct+'%;border-radius:3px 3px 0 0;position:relative" title="'+(h.score||'')+'"></div>';
     }).join('');
-    labels.innerHTML=hist.map(h=>'<div style="flex:1;text-align:center">'+(h.date||'')+'</div>').join('');
+    labels.innerHTML=hist.map(h=>'<div style="flex:1;text-align:center">'+(h.alert_date||h.date||'')+'</div>').join('');
   }
 
-  // Alert log
+  // Alert log — reads monitoring_alerts array (Phase 2 will hydrate from Supabase monitoring_alerts table)
   const alertsList=document.getElementById('mon-alerts-list');
-  const alerts=Array.isArray(m.alerts)?m.alerts:[];
+  const alerts=Array.isArray(currentApp.monitoring_alerts)?currentApp.monitoring_alerts:[];
   if(alerts.length===0){
     alertsList.innerHTML='<div class="bill-hist-empty">'+(lang==='es'?'Sin alertas. Las nuevas indagaciones, cuentas y cambios de puntaje aparecerán aquí.':'No alerts. New inquiries, new accounts, and score changes will appear here.')+'</div>';
   }else{
-    const iconMap={inquiry:'🔍',account:'➕',score:'📈',score_drop:'📉',fraud:'⚠️'};
+    const iconMap={new_inquiry:'🔍',new_account:'➕',score_change:'📈',score_drop:'📉',derogatory:'⚠️'};
     alertsList.innerHTML=alerts.map(a=>{
-      const icon=iconMap[a.type]||'🔔';
-      return '<div class="bill-hist-row"><div class="bill-hist-info"><div class="bill-hist-date">'+icon+' '+(a.title||'')+'</div><div class="bill-hist-method">'+(a.date||'')+(a.bureau?' · '+a.bureau:'')+'</div></div></div>';
+      const icon=iconMap[a.alert_type]||'🔔';
+      const status=(a.status||'new').toUpperCase();
+      return '<div class="bill-hist-row"><div class="bill-hist-info"><div class="bill-hist-date">'+icon+' '+(a.description||a.alert_type||'')+'</div><div class="bill-hist-method">'+(a.alert_date||'')+(a.bureau?' · '+a.bureau:'')+'</div></div><div style="font-family:\'DM Mono\',monospace;font-size:10px;padding:3px 8px;border-radius:4px;background:'+(status==='NEW'?'rgba(201,168,76,0.12)':'rgba(100,100,100,0.1)')+';color:'+(status==='NEW'?'var(--gold)':'var(--muted)')+'">'+status+'</div></div>';
     }).join('');
   }
 }

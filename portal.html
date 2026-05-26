@@ -4391,7 +4391,7 @@ let clients = [
     fee:'$2,497', status:'funded', date:'05/01/26',
     fundingPlaced:'87500', housing:'mortgage', taxes:'yes_both', irs:'no', employment:'business_owner',
     navStatus:'build', navEmail:'marcus@thompson-llc.com', navDnb:'82', navExp:'78', navEq:'285', navSbss:'168', navChecked:'05/01/26',
-    bizName:'Thompson Capital LLC', entity:'llc', monitoring:true, isItin:false,
+    bizName:'Thompson Capital LLC', entity:'llc', monitoring_active:true, monitoring_tier:'monitor_biz', monitoring_start_date:'05/01/26', monitoring_next_billing:'06/01/26', isItin:false,
     packageName:'Card Stacking — Done For You', docs:'DL, SS Card, Bank Statements',
     invoices:[
       {id:9001, service:'Card Stacking — Done For You', amount:'2497', due:'04/15/26', date:'04/10/26', status:'paid', processor:'Authorize.net'},
@@ -4412,7 +4412,7 @@ let clients = [
     fee:'$1,497', status:'active', date:'05/06/26',
     housing:'rent', taxes:'yes_both', irs:'no', employment:'employed_w2',
     navStatus:'track', navEmail:'', navDnb:'', navExp:'', navEq:'', navSbss:'',
-    bizName:'', entity:'', monitoring:false, isItin:false,
+    bizName:'', entity:'', monitoring_active:false, monitoring_tier:null, isItin:false,
     packageName:'Credit Profile Optimization — Premium', docs:'DL uploaded',
     invoices:[{id:9003, service:'Credit Profile Optimization — Premium', amount:'1497', due:'05/10/26', date:'05/06/26', status:'sent', processor:'Authorize.net'}],
     notes:[
@@ -4430,7 +4430,7 @@ let clients = [
     fee:'$997', status:'new', date:'05/10/26',
     housing:'family', taxes:'itin_filed', irs:'no', employment:'self_employed',
     navStatus:'none', navEmail:'', navDnb:'', navExp:'', navEq:'', navSbss:'',
-    bizName:'Mendoza Landscaping', entity:'sole', monitoring:false, isItin:true, lang:'es',
+    bizName:'Mendoza Landscaping', entity:'sole', monitoring_active:false, monitoring_tier:null, isItin:true, lang:'es',
     packageName:'Consultation / Strategy Session', docs:'None uploaded',
     invoices:[],
     notes:[
@@ -4447,7 +4447,7 @@ let clients = [
     fee:'$2,997', status:'active', date:'05/08/26',
     housing:'mortgage', taxes:'yes_both', irs:'no', employment:'business_owner',
     navStatus:'expand', navEmail:'sandra@kimenterprises.com', navDnb:'78', navExp:'72', navEq:'275', navSbss:'155', navChecked:'05/08/26',
-    bizName:'Kim Enterprises LLC', entity:'llc', monitoring:true, isItin:false,
+    bizName:'Kim Enterprises LLC', entity:'llc', monitoring_active:true, monitoring_tier:'monitor_mid', monitoring_start_date:'05/08/26', monitoring_next_billing:'06/08/26', isItin:false,
     packageName:'Business Funding Package', docs:'DL, EIN Letter, Articles, Bank Statements',
     invoices:[{id:9004, service:'Business Funding Package', amount:'2997', due:'05/12/26', date:'05/08/26', status:'paid', processor:'Authorize.net'}],
     notes:[
@@ -4465,7 +4465,7 @@ let clients = [
     pers:'Below threshold', biz:'N/A',
     fee:'$997', status:'declined', date:'05/10/26',
     housing:'rent', taxes:'no', irs:'yes_open', employment:'employed_w2',
-    navStatus:'none', bizName:'', entity:'', monitoring:false, isItin:false,
+    navStatus:'none', bizName:'', entity:'', monitoring_active:false, monitoring_tier:null, isItin:false,
     packageName:'Credit Analysis Report', docs:'DL uploaded',
     invoices:[],
     notes:[
@@ -4503,15 +4503,16 @@ let matType='all', matScore='all';
 // ═══════════════════════════════════════════════
 //  KLIERD CREDIT MONITORING — canonical tier map (Program 3)
 //  Confirmed 2026-05-26. Do NOT hardcode prices elsewhere.
+//  Tier IDs are snake_case to match Supabase schema (canonical).
 //  Phase 1 = UI stub only. Phase 2 wires Authorize.net ARB.
 // ═══════════════════════════════════════════════
 const KLIERD_MON_TIERS = {
-  monitor:     {name:'KLIERD Monitor',          price:99.00,  kind:'personal'},
-  monitorPlus: {name:'KLIERD Monitor+',         price:129.99, kind:'personal'},
-  monitorPro:  {name:'KLIERD Monitor Pro',      price:149.99, kind:'personal'},
-  business:    {name:'KLIERD Business Monitor', price:169.99, kind:'business'}
+  monitor_entry: {name:'KLIERD Monitor',          price:99.00,  kind:'personal'},
+  monitor_mid:   {name:'KLIERD Monitor+',         price:129.99, kind:'personal'},
+  monitor_pro:   {name:'KLIERD Monitor Pro',      price:149.99, kind:'personal'},
+  monitor_biz:   {name:'KLIERD Business Monitor', price:169.99, kind:'business'}
 };
-const KLIERD_MON_TIER_ORDER = ['monitor','monitorPlus','monitorPro','business'];
+const KLIERD_MON_TIER_ORDER = ['monitor_entry','monitor_mid','monitor_pro','monitor_biz'];
 
 // ═══════════════════════════════════════════════
 //  NAV
@@ -5218,18 +5219,18 @@ function renderModalTab(tab){
       </div>
 
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;font-weight:700">KLIERD Credit Monitoring</div>
-      <div style="background:${c.monitoring?'rgba(39,174,96,0.08)':'var(--dark3)'};border:1px solid ${c.monitoring?'rgba(39,174,96,0.35)':'var(--border)'};border-radius:var(--rs);padding:14px;margin-bottom:20px">
+      <div style="background:${c.monitoring_active?'rgba(39,174,96,0.08)':'var(--dark3)'};border:1px solid ${c.monitoring_active?'rgba(39,174,96,0.35)':'var(--border)'};border-radius:var(--rs);padding:14px;margin-bottom:20px">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
           <div style="flex:1">
-            <div style="font-size:13px;font-weight:700;color:${c.monitoring?'var(--green)':'var(--muted)'}">${c.monitoring?('✅ '+(KLIERD_MON_TIERS[c.monitoringTier]?.name||'Active')+' — $'+(KLIERD_MON_TIERS[c.monitoringTier]?.price||'0.00')+'/mo'):'⬜ Inactive'}</div>
-            ${c.monitoringDate?`<div style="font-size:10px;color:var(--muted);margin-top:2px">Since: ${c.monitoringDate}</div>`:'<div style="font-size:10px;color:var(--muted);margin-top:2px">Pick a tier to activate. Phase 1 = UI stub. Phase 2 wires Authorize.net ARB + welcome email.</div>'}
+            <div style="font-size:13px;font-weight:700;color:${c.monitoring_active?'var(--green)':'var(--muted)'}">${c.monitoring_active?('✅ '+(KLIERD_MON_TIERS[c.monitoring_tier]?.name||'Active')+' — $'+(KLIERD_MON_TIERS[c.monitoring_tier]?.price||'0.00')+'/mo'):'⬜ Inactive'}</div>
+            ${c.monitoring_start_date?`<div style="font-size:10px;color:var(--muted);margin-top:2px">Since: ${c.monitoring_start_date}</div>`:'<div style="font-size:10px;color:var(--muted);margin-top:2px">Pick a tier to activate. Phase 1 = UI stub. Phase 2 wires Authorize.net ARB + welcome email.</div>'}
           </div>
-          ${c.monitoring?`<button class="btn bred bsm" onclick="setMonitoringTier(${c.id},null)">Cancel</button>`:''}
+          ${c.monitoring_active?`<button class="btn bred bsm" onclick="setMonitoringTier(${c.id},null)">Cancel</button>`:''}
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
           ${KLIERD_MON_TIER_ORDER.map(k=>{
             const t=KLIERD_MON_TIERS[k];
-            const isActive=c.monitoringTier===k;
+            const isActive=c.monitoring_tier===k;
             return `<button class="btn ${isActive?'bg':'bgh'} bsm" onclick="setMonitoringTier(${c.id},'${k}')" style="text-align:left;padding:9px 11px;line-height:1.4">
               <div style="font-size:11px;font-weight:700">${isActive?'✓ ':''}${t.name}</div>
               <div style="font-size:10px;color:${isActive?'inherit':'var(--muted)'};font-family:'DM Mono',monospace">$${t.price.toFixed(2)}/mo · ${t.kind}</div>
@@ -7024,6 +7025,55 @@ async function loadAll(){
       if(s.agPhone){ document.getElementById('ag-phone').value   = s.agPhone; }
     }
   }
+  // One-shot migration: convert any pre-rename camelCase monitoring fields
+  // (c.monitoring / c.monitoringTier / c.monitoringDate) into the canonical
+  // snake_case shape that matches Supabase. Safe to re-run.
+  migrateMonitoringFields();
+}
+
+function migrateMonitoringFields(){
+  // Old camelCase tier-key → new snake_case Supabase enum
+  const TIER_KEY_MIGRATE = {
+    monitor:     'monitor_entry',
+    monitorPlus: 'monitor_mid',
+    monitorPro:  'monitor_pro',
+    business:    'monitor_biz'
+  };
+  let migrated = 0;
+  (clients||[]).forEach(c=>{
+    let touched = false;
+    // Field rename: c.monitoring → c.monitoring_active
+    if(c.monitoring !== undefined && c.monitoring_active === undefined){
+      c.monitoring_active = !!c.monitoring;
+      touched = true;
+    }
+    // Field rename: c.monitoringTier → c.monitoring_tier (with key remap)
+    if(c.monitoringTier !== undefined && c.monitoring_tier === undefined){
+      c.monitoring_tier = TIER_KEY_MIGRATE[c.monitoringTier] || c.monitoringTier || null;
+      touched = true;
+    }
+    // Key remap on already-snake-case field if a camelCase value slipped in
+    if(c.monitoring_tier && TIER_KEY_MIGRATE[c.monitoring_tier]){
+      c.monitoring_tier = TIER_KEY_MIGRATE[c.monitoring_tier];
+      touched = true;
+    }
+    // Field rename: c.monitoringDate → c.monitoring_start_date
+    if(c.monitoringDate !== undefined && c.monitoring_start_date === undefined){
+      c.monitoring_start_date = c.monitoringDate || null;
+      touched = true;
+    }
+    // Drop the old keys after copy
+    if(touched){
+      delete c.monitoring;
+      delete c.monitoringTier;
+      delete c.monitoringDate;
+      migrated++;
+    }
+  });
+  if(migrated > 0){
+    console.log('🔄 Migrated '+migrated+' clients to snake_case monitoring schema');
+    saveAll();
+  }
 }
 
 // ── CLEAR ALL DATA ──
@@ -7362,16 +7412,23 @@ function setMonitoringTier(clientId, tierKey){
   const c = clients.find(x=>x.id===clientId);
   if(!c) return;
   if(tierKey && !KLIERD_MON_TIERS[tierKey]){ toast('Unknown tier'); return; }
-  const wasActive = !!c.monitoring;
-  c.monitoringTier = tierKey || null;
-  c.monitoring = !!tierKey;
-  c.monitoringDate = c.monitoring ? new Date().toLocaleDateString('en-US') : null;
+  c.monitoring_tier = tierKey || null;
+  c.monitoring_active = !!tierKey;
+  c.monitoring_start_date = c.monitoring_active ? new Date().toLocaleDateString('en-US') : null;
+  // monitoring_next_billing — Phase 2 will set this from Authorize.net ARB.
+  // For Phase 1 stub: 30 days from start, or null on cancel.
+  if(c.monitoring_active){
+    const d = new Date(); d.setDate(d.getDate()+30);
+    c.monitoring_next_billing = d.toLocaleDateString('en-US');
+  } else {
+    c.monitoring_next_billing = null;
+  }
   const tierLabel = tierKey ? KLIERD_MON_TIERS[tierKey].name + ' ($' + KLIERD_MON_TIERS[tierKey].price.toFixed(2) + '/mo)' : '';
-  addStaffNoteQuick('status', c.monitoring ? ('Monitoring tier set: ' + tierLabel) : 'Monitoring subscription cancelled');
+  addStaffNoteQuick('status', c.monitoring_active ? ('Monitoring tier set: ' + tierLabel) : 'Monitoring subscription cancelled');
   saveAll();
   renderModalTab(activeModalTab);
   updateMonitoringStats();
-  toast(c.monitoring ? ('✅ ' + tierLabel) : 'Monitoring cancelled');
+  toast(c.monitoring_active ? ('✅ ' + tierLabel) : 'Monitoring cancelled');
 }
 
 // Back-compat shim — older calls to toggleMonitoring still work,
@@ -7379,14 +7436,14 @@ function setMonitoringTier(clientId, tierKey){
 function toggleMonitoring(clientId){
   const c = clients.find(x=>x.id===clientId);
   if(!c) return;
-  setMonitoringTier(clientId, c.monitoring ? null : 'monitor');
+  setMonitoringTier(clientId, c.monitoring_active ? null : 'monitor_entry');
 }
 
 function updateMonitoringStats(){
-  const active = clients.filter(c=>c.monitoring);
+  const active = clients.filter(c=>c.monitoring_active);
   const count = active.length;
   const mrr = active.reduce((sum,c)=>{
-    const t = KLIERD_MON_TIERS[c.monitoringTier];
+    const t = KLIERD_MON_TIERS[c.monitoring_tier];
     return sum + (t ? t.price : 99.00);
   }, 0);
   const el = document.getElementById('st-monitoring');
@@ -8452,8 +8509,13 @@ function calcDashboardStats(){
   const approved  = clients.filter(c => c.status === 'funded').length;
   const pending   = clients.filter(c => ['active','follow_up'].includes(c.status)).length;
   const declined  = clients.filter(c => c.status === 'declined').length;
-  const monitoring= clients.filter(c => c.monitoring).length;
-  const mrrVal    = monitoring * 97;
+  const monitoringClients = clients.filter(c => c.monitoring_active);
+  const monitoring = monitoringClients.length;
+  // Real MRR = sum of each active client's KLIERD tier price (no more flat $97 stub)
+  const mrrVal    = Math.round(monitoringClients.reduce((sum,c)=>{
+    const t = KLIERD_MON_TIERS[c.monitoring_tier];
+    return sum + (t ? t.price : 99.00);
+  }, 0));
 
   // Funding placed — sum of all funded clients' invoices + fallback to fee estimate
   let totalFunding = 0;
@@ -9441,8 +9503,12 @@ function renderItinAnalytics(){
   const newC      = itinClients.filter(c=>c.status==='new').length;
   const declined  = itinClients.filter(c=>c.status==='declined').length;
   const esLang    = itinClients.filter(c=>c.lang==='es').length;
-  const monitoring= itinClients.filter(c=>c.monitoring).length;
-  const mrrVal    = monitoring * 97;
+  const itinMon   = itinClients.filter(c=>c.monitoring_active);
+  const monitoring= itinMon.length;
+  const mrrVal    = Math.round(itinMon.reduce((sum,c)=>{
+    const t = KLIERD_MON_TIERS[c.monitoring_tier];
+    return sum + (t ? t.price : 99.00);
+  }, 0));
   const rate      = total > 0 ? Math.round((funded/total)*100) : 0;
 
   const el = document.getElementById('itin-analytics-panel');
@@ -11015,7 +11081,8 @@ function exportAnalyticsCSV(){
     c.fee||'',
     c.fundingPlaced ? '$'+parseFloat(c.fundingPlaced).toLocaleString() : '',
     c.isItin ? 'ITIN' : 'SSN',
-    c.monitoring ? 'Yes' : 'No',
+    c.monitoring_active ? 'Yes' : 'No',
+    c.monitoring_tier ? (KLIERD_MON_TIERS[c.monitoring_tier]?.name||c.monitoring_tier) : '',
     c.date||'',
   ].map(v=>'"'+String(v).replace(/"/g,"'")+'"').join(','));
 
@@ -11040,7 +11107,7 @@ function exportAnalyticsCSV(){
     '"Monitoring MRR","$'+s.mrrVal.toLocaleString()+'/mo"',
     '',
     '"=== CLIENT PIPELINE ==="',
-    '"Name","Email","Phone","TU Score","EQ Score","EX Score","Status","Package","Fee","Funding Placed","Client Type","Monitoring","Date Added"',
+    '"Name","Email","Phone","TU Score","EQ Score","EX Score","Status","Package","Fee","Funding Placed","Client Type","Monitoring","Monitoring Tier","Date Added"',
     ...pipRows,
   ].join('\n');
 
@@ -11081,7 +11148,10 @@ function exportAnalyticsJSON(){
       fee:          c.fee||'',
       fundingPlaced:c.fundingPlaced||'',
       clientType:   c.isItin?'ITIN':'SSN',
-      monitoring:   !!c.monitoring,
+      monitoring_active: !!c.monitoring_active,
+      monitoring_tier:   c.monitoring_tier || null,
+      monitoring_start_date: c.monitoring_start_date || null,
+      monitoring_next_billing: c.monitoring_next_billing || null,
       dateAdded:    c.date||'',
     })),
   };
