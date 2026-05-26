@@ -2021,8 +2021,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px">
       <div style="background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:16px">
-        <div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:10px">👁 Credit Monitoring Service — $97/mo</div>
-        <div style="font-size:11px;color:var(--dim);line-height:1.8;margin-bottom:10px">Monthly monitoring of all 3 bureaus. Alerts for new inquiries, score drops, and derogatory changes.</div>
+        <div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:10px">🛡 KLIERD Credit Monitoring — Program 3</div>
+        <div style="font-size:11px;color:var(--dim);line-height:1.8;margin-bottom:10px">Monthly monitoring of all 3 bureaus. Alerts for new inquiries, score drops, and derogatory changes. Separate service from Dispute Resolution — CROA does not apply.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+          <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px"><div style="font-size:10px;color:var(--muted);font-weight:700">KLIERD Monitor</div><div style="font-size:13px;color:var(--gold);font-family:'DM Mono',monospace">$99.00/mo</div></div>
+          <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px"><div style="font-size:10px;color:var(--muted);font-weight:700">KLIERD Monitor+</div><div style="font-size:13px;color:var(--gold);font-family:'DM Mono',monospace">$129.99/mo</div></div>
+          <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px"><div style="font-size:10px;color:var(--muted);font-weight:700">KLIERD Monitor Pro</div><div style="font-size:13px;color:var(--gold);font-family:'DM Mono',monospace">$149.99/mo</div></div>
+          <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px"><div style="font-size:10px;color:var(--muted);font-weight:700">KLIERD Business Monitor</div><div style="font-size:13px;color:var(--gold);font-family:'DM Mono',monospace">$169.99/mo</div></div>
+        </div>
         <div style="display:flex;flex-direction:column;gap:5px" id="ce-monitoring-list"></div>
       </div>
       <div style="background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:16px">
@@ -3758,7 +3764,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div class="fld" style="margin:0"><label>Service</label>
             <select id="minv-service" style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:9px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none;width:100%">
-              <option>Inquiry Removal</option><option>Tax Preparation</option><option>Dispute Resolution Services</option><option>Credit Profile Optimization</option><option>Business Credit Builder</option><option>ITIN Services</option><option>Monitoring Subscription - $97/mo</option><option>Monitoring Pro - $129/mo</option><option>Monitoring Elite - $149/mo</option><option>Post-Funding Tech Fee - $500</option><option>Custom Service</option>
+              <option>Inquiry Removal</option><option>Tax Preparation</option><option>Dispute Resolution Services</option><option>Credit Profile Optimization</option><option>Business Credit Builder</option><option>ITIN Services</option><option>KLIERD Monitor - $99.00/mo</option><option>KLIERD Monitor+ - $129.99/mo</option><option>KLIERD Monitor Pro - $149.99/mo</option><option>KLIERD Business Monitor - $169.99/mo</option><option>Post-Funding Tech Fee - $500</option><option>Custom Service</option>
             </select>
           </div>
           <div class="fld" style="margin:0"><label>Amount ($)</label><input id="minv-amount" type="number" placeholder="0.00" style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:9px 12px;color:var(--gold);font-size:16px;font-weight:700;font-family:inherit;outline:none;width:100%"/></div>
@@ -4495,6 +4501,19 @@ let importQ=[], reports=[], curNotes=[], curResult=null, sensVis=false;
 let matType='all', matScore='all';
 
 // ═══════════════════════════════════════════════
+//  KLIERD CREDIT MONITORING — canonical tier map (Program 3)
+//  Confirmed 2026-05-26. Do NOT hardcode prices elsewhere.
+//  Phase 1 = UI stub only. Phase 2 wires Authorize.net ARB.
+// ═══════════════════════════════════════════════
+const KLIERD_MON_TIERS = {
+  monitor:     {name:'KLIERD Monitor',          price:99.00,  kind:'personal'},
+  monitorPlus: {name:'KLIERD Monitor+',         price:129.99, kind:'personal'},
+  monitorPro:  {name:'KLIERD Monitor Pro',      price:149.99, kind:'personal'},
+  business:    {name:'KLIERD Business Monitor', price:169.99, kind:'business'}
+};
+const KLIERD_MON_TIER_ORDER = ['monitor','monitorPlus','monitorPro','business'];
+
+// ═══════════════════════════════════════════════
 //  NAV
 // ═══════════════════════════════════════════════
 function nav(id, el){
@@ -5198,13 +5217,25 @@ function renderModalTab(tab){
         ${c.followUp?`<button class="btn bred bsm" onclick="setFollowUp(${c.id},'')">Clear</button>`:''}
       </div>
 
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;font-weight:700">Monitoring Subscription ($97/mo)</div>
-      <div style="background:${c.monitoring?'rgba(39,174,96,0.08)':'var(--dark3)'};border:1px solid ${c.monitoring?'rgba(39,174,96,0.35)':'var(--border)'};border-radius:var(--rs);padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:20px">
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:700;color:${c.monitoring?'var(--green)':'var(--muted)'}">${c.monitoring?'✅ Active':'⬜ Inactive'}</div>
-          ${c.monitoringDate?`<div style="font-size:10px;color:var(--muted);margin-top:2px">Since: ${c.monitoringDate}</div>`:'<div style="font-size:10px;color:var(--muted);margin-top:2px">Credit monitoring + alerts, D&B tracking</div>'}
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;font-weight:700">KLIERD Credit Monitoring</div>
+      <div style="background:${c.monitoring?'rgba(39,174,96,0.08)':'var(--dark3)'};border:1px solid ${c.monitoring?'rgba(39,174,96,0.35)':'var(--border)'};border-radius:var(--rs);padding:14px;margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:${c.monitoring?'var(--green)':'var(--muted)'}">${c.monitoring?('✅ '+(KLIERD_MON_TIERS[c.monitoringTier]?.name||'Active')+' — $'+(KLIERD_MON_TIERS[c.monitoringTier]?.price||'0.00')+'/mo'):'⬜ Inactive'}</div>
+            ${c.monitoringDate?`<div style="font-size:10px;color:var(--muted);margin-top:2px">Since: ${c.monitoringDate}</div>`:'<div style="font-size:10px;color:var(--muted);margin-top:2px">Pick a tier to activate. Phase 1 = UI stub. Phase 2 wires Authorize.net ARB + welcome email.</div>'}
+          </div>
+          ${c.monitoring?`<button class="btn bred bsm" onclick="setMonitoringTier(${c.id},null)">Cancel</button>`:''}
         </div>
-        <button class="btn ${c.monitoring?'bred':'bg'} bsm" onclick="toggleMonitoring(${c.id})">${c.monitoring?'Cancel':'Activate'}</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          ${KLIERD_MON_TIER_ORDER.map(k=>{
+            const t=KLIERD_MON_TIERS[k];
+            const isActive=c.monitoringTier===k;
+            return `<button class="btn ${isActive?'bg':'bgh'} bsm" onclick="setMonitoringTier(${c.id},'${k}')" style="text-align:left;padding:9px 11px;line-height:1.4">
+              <div style="font-size:11px;font-weight:700">${isActive?'✓ ':''}${t.name}</div>
+              <div style="font-size:10px;color:${isActive?'inherit':'var(--muted)'};font-family:'DM Mono',monospace">$${t.price.toFixed(2)}/mo · ${t.kind}</div>
+            </button>`;
+          }).join('')}
+        </div>
       </div>
 
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;font-weight:700">Referral Partner</div>
@@ -7320,26 +7351,46 @@ function renderFollowUpAlert(){
 }
 
 // ═══════════════════════════════════════════════════════════
-//  MONITORING SUBSCRIPTION TRACKING
-//  $97/mo recurring per client
+//  KLIERD CREDIT MONITORING — tier tracking (Program 3)
+//  Phase 1: UI stub only — no invoice add, no welcome email,
+//           no Authorize.net ARB wire. Pure tier assignment.
+//  Phase 2: hook setMonitoringTier into invoice auto-add +
+//           ARB subscribe + welcome email fire (gated on
+//           Hami's provider clearance Tue 2026-05-26).
 // ═══════════════════════════════════════════════════════════
-function toggleMonitoring(clientId){
+function setMonitoringTier(clientId, tierKey){
   const c = clients.find(x=>x.id===clientId);
   if(!c) return;
-  c.monitoring = !c.monitoring;
+  if(tierKey && !KLIERD_MON_TIERS[tierKey]){ toast('Unknown tier'); return; }
+  const wasActive = !!c.monitoring;
+  c.monitoringTier = tierKey || null;
+  c.monitoring = !!tierKey;
   c.monitoringDate = c.monitoring ? new Date().toLocaleDateString('en-US') : null;
-  addStaffNoteQuick('status', c.monitoring ? 'Monitoring subscription activated ($97/mo)' : 'Monitoring subscription cancelled');
+  const tierLabel = tierKey ? KLIERD_MON_TIERS[tierKey].name + ' ($' + KLIERD_MON_TIERS[tierKey].price.toFixed(2) + '/mo)' : '';
+  addStaffNoteQuick('status', c.monitoring ? ('Monitoring tier set: ' + tierLabel) : 'Monitoring subscription cancelled');
   saveAll();
   renderModalTab(activeModalTab);
   updateMonitoringStats();
-  toast(c.monitoring ? '✅ Monitoring activated' : 'Monitoring cancelled');
+  toast(c.monitoring ? ('✅ ' + tierLabel) : 'Monitoring cancelled');
+}
+
+// Back-compat shim — older calls to toggleMonitoring still work,
+// they just flip on/off using the default entry tier.
+function toggleMonitoring(clientId){
+  const c = clients.find(x=>x.id===clientId);
+  if(!c) return;
+  setMonitoringTier(clientId, c.monitoring ? null : 'monitor');
 }
 
 function updateMonitoringStats(){
-  const count = clients.filter(c=>c.monitoring).length;
-  const mrr   = count * 97;
+  const active = clients.filter(c=>c.monitoring);
+  const count = active.length;
+  const mrr = active.reduce((sum,c)=>{
+    const t = KLIERD_MON_TIERS[c.monitoringTier];
+    return sum + (t ? t.price : 99.00);
+  }, 0);
   const el = document.getElementById('st-monitoring');
-  if(el) el.textContent = count + ' active ($' + mrr.toLocaleString() + '/mo MRR)';
+  if(el) el.textContent = count + ' active ($' + mrr.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '/mo MRR)';
 }
 
 // ═══════════════════════════════════════════════════════════

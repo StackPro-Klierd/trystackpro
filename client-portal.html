@@ -336,6 +336,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       <button class="tab" onclick="showTab('analysis',this)">📊 <span id="lbl-tab-analysis">My Analysis</span></button>
       <button class="tab" onclick="showTab('agreements',this)">✍ <span id="lbl-tab-agreements">Agreements</span></button>
       <button class="tab" onclick="showTab('billing',this)" id="tab-btn-billing" style="display:none">💳 <span id="lbl-tab-billing">Billing</span></button>
+      <button class="tab" onclick="showTab('monitoring',this)" id="tab-btn-monitoring" style="display:none">🛡 <span id="lbl-tab-monitoring">Monitoring</span></button>
       <button class="tab" onclick="showTab('scores',this)">📈 <span id="lbl-tab-scores">Credit Profile</span></button>
     </div>
 
@@ -526,6 +527,61 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
     </div>
 
+    <!-- MONITORING TAB (Program 3 — KLIERD Credit Monitoring) -->
+    <div id="tab-monitoring" style="display:none">
+
+      <!-- SETUP STATE (shown until activated by staff) -->
+      <div class="card" id="mon-setup-card" style="display:none">
+        <div class="card-title" id="lbl-mon-setup-title">🛡 KLIERD Credit Monitoring</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-mon-setup-body">Your KLIERD Credit Monitoring is being set up. You will receive an email within 24 hours.</p>
+      </div>
+
+      <!-- PLAN TIER + BILLING STATUS -->
+      <div class="card" id="mon-plan-card" style="display:none">
+        <div class="card-title" id="lbl-mon-plan-title">Your Plan</div>
+        <div class="bh-row">
+          <div class="bh-col">
+            <div class="bh-label" id="lbl-mon-tier">Current Tier</div>
+            <div class="bh-val" id="mon-tier-name" style="font-size:22px">—</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px" id="mon-tier-price">—</div>
+          </div>
+          <div class="bh-status">
+            <span class="bill-badge" id="mon-status-badge">—</span>
+            <div class="bh-next" id="mon-next-bill"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+          <button class="btn-ghost" onclick="monChangeTier('up')" id="btn-mon-upgrade">⬆ <span id="lbl-mon-upgrade">Upgrade</span></button>
+          <button class="btn-ghost" onclick="monChangeTier('down')" id="btn-mon-downgrade">⬇ <span id="lbl-mon-downgrade">Downgrade</span></button>
+          <button class="btn-ghost" onclick="monManageBilling()" id="btn-mon-billing">💳 <span id="lbl-mon-billing">Manage Billing</span></button>
+        </div>
+      </div>
+
+      <!-- CURRENT SCORE -->
+      <div class="card" id="mon-score-card" style="display:none">
+        <div class="card-title" id="lbl-mon-score-title">Current Score</div>
+        <div style="text-align:center;padding:16px 0">
+          <div id="mon-score-val" style="font-size:56px;font-family:'DM Mono',monospace;color:var(--gold);line-height:1">—</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:8px" id="lbl-mon-score-pending">Score will populate once monitoring is fully connected.</div>
+        </div>
+      </div>
+
+      <!-- SCORE HISTORY -->
+      <div class="card" id="mon-history-card" style="display:none">
+        <div class="card-title" id="lbl-mon-history-title">Score History</div>
+        <div id="mon-history-chart" style="height:140px;display:flex;align-items:flex-end;justify-content:space-around;gap:6px;padding:10px 4px;border-bottom:1px solid var(--border)"></div>
+        <div id="mon-history-labels" style="display:flex;justify-content:space-around;gap:6px;padding:6px 4px 0;font-size:10px;color:var(--muted)"></div>
+        <p style="font-size:10px;color:var(--muted);text-align:center;margin-top:8px" id="lbl-mon-history-note">Chart populates once monitoring data is connected.</p>
+      </div>
+
+      <!-- ALERT LOG -->
+      <div class="card" id="mon-alerts-card" style="display:none">
+        <div class="card-title" id="lbl-mon-alerts-title">Alert Log</div>
+        <div id="mon-alerts-list"></div>
+      </div>
+
+    </div>
+
     <!-- SCORES TAB -->
     <div id="tab-scores" style="display:none">
       <div class="card">
@@ -630,6 +686,19 @@ const T={
     'bill-next-due':'Next payment due:',
     'bill-no-items':'No charges yet. Your advisor will add line items after your consultation.',
     'bill-no-history':'No payments yet.',
+    'lbl-tab-monitoring':'Monitoring',
+    'lbl-mon-setup-title':'🛡 KLIERD Credit Monitoring',
+    'lbl-mon-setup-body':'Your KLIERD Credit Monitoring is being set up. You will receive an email within 24 hours.',
+    'lbl-mon-plan-title':'Your Plan',
+    'lbl-mon-tier':'Current Tier',
+    'lbl-mon-upgrade':'Upgrade',
+    'lbl-mon-downgrade':'Downgrade',
+    'lbl-mon-billing':'Manage Billing',
+    'lbl-mon-score-title':'Current Score',
+    'lbl-mon-score-pending':'Score will populate once monitoring is fully connected.',
+    'lbl-mon-history-title':'Score History',
+    'lbl-mon-history-note':'Chart populates once monitoring data is connected.',
+    'lbl-mon-alerts-title':'Alert Log',
   },
   es:{
     'lbl-title':'Bienvenido a Su Portal',
@@ -695,6 +764,19 @@ const T={
     'bill-no-items':'Sin cargos aún. Su asesor agregará los conceptos después de su consulta.',
     'bill-no-history':'Aún sin pagos.',
     'lbl-milestones':'Hitos',
+    'lbl-tab-monitoring':'Monitoreo',
+    'lbl-mon-setup-title':'🛡 Monitoreo de Crédito KLIERD',
+    'lbl-mon-setup-body':'Su Monitoreo de Crédito KLIERD se está configurando. Recibirá un correo electrónico dentro de 24 horas.',
+    'lbl-mon-plan-title':'Su Plan',
+    'lbl-mon-tier':'Nivel Actual',
+    'lbl-mon-upgrade':'Aumentar',
+    'lbl-mon-downgrade':'Reducir',
+    'lbl-mon-billing':'Gestionar Facturación',
+    'lbl-mon-score-title':'Puntaje Actual',
+    'lbl-mon-score-pending':'El puntaje aparecerá una vez que el monitoreo esté completamente conectado.',
+    'lbl-mon-history-title':'Historial de Puntajes',
+    'lbl-mon-history-note':'El gráfico se completa una vez que los datos de monitoreo estén conectados.',
+    'lbl-mon-alerts-title':'Registro de Alertas',
   }
 };
 
@@ -739,6 +821,7 @@ function showPortal(app){
   document.getElementById('portalScreen').classList.add('show');
   renderPortal(app);
   maybeShowBillingTab();
+  maybeShowMonitoringTab();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1273,13 +1356,14 @@ function handleDrop(e){
 }
 
 function showTab(tab,btn){
-  ['status','docs','messages','analysis','agreements','billing','scores'].forEach(t=>{
+  ['status','docs','messages','analysis','agreements','billing','monitoring','scores'].forEach(t=>{
     const el=document.getElementById('tab-'+t);
     if(el)el.style.display=t===tab?'block':'none';
   });
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if(btn)btn.classList.add('active');
   if(tab==='billing')renderBilling();
+  if(tab==='monitoring')renderMonitoring();
 }
 
 // ═══ BILLING TAB (v3.0) ═══
@@ -1358,6 +1442,118 @@ function maybeShowBillingTab(){
   if(!btn)return;
   const hasBilling=currentApp&&currentApp.billing&&(((currentApp.billing.lineItems||[]).length>0)||currentApp.billing.paidToDate>0);
   btn.style.display=hasBilling?'inline-flex':'none';
+}
+
+// ═══ MONITORING TAB (Program 3 — KLIERD Credit Monitoring) ═══
+// Tier dictionary — canonical names + prices (do not hardcode in UI strings)
+const KLIERD_MON_TIERS={
+  monitor:    {name:'KLIERD Monitor',         price:99.00, kind:'personal'},
+  monitorPlus:{name:'KLIERD Monitor+',        price:129.99,kind:'personal'},
+  monitorPro: {name:'KLIERD Monitor Pro',     price:149.99,kind:'personal'},
+  business:   {name:'KLIERD Business Monitor',price:169.99,kind:'business'}
+};
+
+// Show Monitoring tab button only if client has monitoring active OR is in setup
+function maybeShowMonitoringTab(){
+  const btn=document.getElementById('tab-btn-monitoring');
+  if(!btn)return;
+  const m=currentApp&&currentApp.monitoring;
+  btn.style.display=m?'inline-flex':'none';
+}
+
+function renderMonitoring(){
+  if(!currentApp)return;
+  const m=currentApp.monitoring||{};
+  const fmt=v=>'$'+Number(v).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+
+  // Setup state — shown when monitoring exists but no tier assigned yet
+  const setupCard=document.getElementById('mon-setup-card');
+  const planCard=document.getElementById('mon-plan-card');
+  const scoreCard=document.getElementById('mon-score-card');
+  const histCard=document.getElementById('mon-history-card');
+  const alertsCard=document.getElementById('mon-alerts-card');
+
+  if(!m.tier||m.status==='setup'){
+    setupCard.style.display='block';
+    planCard.style.display='none';
+    scoreCard.style.display='none';
+    histCard.style.display='none';
+    alertsCard.style.display='none';
+    return;
+  }
+
+  setupCard.style.display='none';
+  planCard.style.display='block';
+  scoreCard.style.display='block';
+  histCard.style.display='block';
+  alertsCard.style.display='block';
+
+  // Plan tier + price
+  const tier=KLIERD_MON_TIERS[m.tier]||KLIERD_MON_TIERS.monitor;
+  document.getElementById('mon-tier-name').textContent=tier.name;
+  document.getElementById('mon-tier-price').textContent=fmt(tier.price)+'/mo';
+
+  // Status badge
+  const badge=document.getElementById('mon-status-badge');
+  const st=m.status||'active';
+  const statusLabelsEN={active:'Active',paused:'Paused',cancelled:'Cancelled',pending:'Pending'};
+  const statusLabelsES={active:'Activo',paused:'Pausado',cancelled:'Cancelado',pending:'Pendiente'};
+  badge.textContent=(lang==='es'?statusLabelsES:statusLabelsEN)[st]||st;
+  badge.className='bill-badge '+(st==='active'?'paid':(st==='cancelled'?'overdue':'partial'));
+
+  // Next bill line
+  const nb=document.getElementById('mon-next-bill');
+  if(m.nextBillDate&&st==='active'){
+    nb.textContent=(lang==='es'?'Próximo cargo: ':'Next charge: ')+m.nextBillDate+' · '+fmt(tier.price);
+  }else nb.textContent='';
+
+  // Current score (placeholder until API wired)
+  const scoreEl=document.getElementById('mon-score-val');
+  scoreEl.textContent=m.currentScore?m.currentScore:'—';
+
+  // Score history — simple inline bar chart
+  const chart=document.getElementById('mon-history-chart');
+  const labels=document.getElementById('mon-history-labels');
+  const hist=Array.isArray(m.scoreHistory)?m.scoreHistory:[];
+  if(hist.length===0){
+    chart.innerHTML='<div style="color:var(--muted);font-size:11px;align-self:center">'+(lang==='es'?'Sin datos aún':'No data yet')+'</div>';
+    labels.innerHTML='';
+  }else{
+    const max=Math.max(...hist.map(h=>h.score||0),850);
+    const min=Math.min(...hist.map(h=>h.score||850),300);
+    const range=Math.max(1,max-min);
+    chart.innerHTML=hist.map(h=>{
+      const pct=Math.round(((h.score-min)/range)*90)+10;
+      return '<div style="flex:1;background:linear-gradient(180deg,var(--gold),rgba(212,175,55,0.3));height:'+pct+'%;border-radius:3px 3px 0 0;position:relative" title="'+(h.score||'')+'"></div>';
+    }).join('');
+    labels.innerHTML=hist.map(h=>'<div style="flex:1;text-align:center">'+(h.date||'')+'</div>').join('');
+  }
+
+  // Alert log
+  const alertsList=document.getElementById('mon-alerts-list');
+  const alerts=Array.isArray(m.alerts)?m.alerts:[];
+  if(alerts.length===0){
+    alertsList.innerHTML='<div class="bill-hist-empty">'+(lang==='es'?'Sin alertas. Las nuevas indagaciones, cuentas y cambios de puntaje aparecerán aquí.':'No alerts. New inquiries, new accounts, and score changes will appear here.')+'</div>';
+  }else{
+    const iconMap={inquiry:'🔍',account:'➕',score:'📈',score_drop:'📉',fraud:'⚠️'};
+    alertsList.innerHTML=alerts.map(a=>{
+      const icon=iconMap[a.type]||'🔔';
+      return '<div class="bill-hist-row"><div class="bill-hist-info"><div class="bill-hist-date">'+icon+' '+(a.title||'')+'</div><div class="bill-hist-method">'+(a.date||'')+(a.bureau?' · '+a.bureau:'')+'</div></div></div>';
+    }).join('');
+  }
+}
+
+function monChangeTier(direction){
+  const subject=encodeURIComponent((direction==='up'?'Upgrade':'Downgrade')+' my KLIERD Credit Monitoring — '+(currentApp?.trackingId||''));
+  const body=encodeURIComponent((lang==='es'?'Hola, me gustaría '+(direction==='up'?'actualizar':'reducir')+' mi plan de monitoreo de crédito KLIERD.':'Hi, I would like to '+(direction==='up'?'upgrade':'downgrade')+' my KLIERD Credit Monitoring plan.')+'\n\nTracking ID: '+(currentApp?.trackingId||''));
+  window.location.href='mailto:info@klierd.com?subject='+subject+'&body='+body;
+}
+
+function monManageBilling(){
+  // Phase 1 — UI only. Phase 2 will wire to Authorize.net ARB subscription portal.
+  const subject=encodeURIComponent('Manage monitoring billing — '+(currentApp?.trackingId||''));
+  const body=encodeURIComponent((lang==='es'?'Hola, necesito gestionar la facturación de mi monitoreo de crédito.':'Hi, I need to manage my credit monitoring billing.')+'\n\nTracking ID: '+(currentApp?.trackingId||''));
+  window.location.href='mailto:info@klierd.com?subject='+subject+'&body='+body;
 }
 
 function goBack(){
