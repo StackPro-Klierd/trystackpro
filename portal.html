@@ -4688,6 +4688,12 @@ function routeForClient(client, candidates) {
       const requiredIncome = item.hi * incomeFactor;
       if (clientIncome < requiredIncome) return false;
     }
+    // APPROVAL RIGOR (Teka 2026-05-27): hard-rigor lenders (Amex Platinum, US Bank
+    // Business, Wells Business LOC) may request tax returns + bank statements at
+    // underwriting. We don't EXCLUDE them — staff sees the warning and decides.
+    // But: if client.docs_ready is set and the lender's required docs aren't all
+    // present, the advisor gets a warning at submission time (handled in UI layer).
+    // Engine does no filtering here — sorting + UI warning are separate concerns.
     // TIER APPROPRIATENESS (Teka 2026-05-27, refined): exclude only OBVIOUS waste,
     // keep options for approvals. Score-tier is a PRIORITY signal (the advisor or
     // auto-submit engine should TRY Tier 1 first for high-score clients), but we
