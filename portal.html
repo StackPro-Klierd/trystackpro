@@ -4632,28 +4632,71 @@ const KLIERD_MON_TIER_ORDER = ['monitor_entry','monitor_mid','monitor_pro','moni
 function routeForClient(client, candidates) {
   if (!Array.isArray(candidates)) return [];
   if (!client) return candidates;
+  // Normalize excluded_lenders into a fast lookup set of lowercased names + banks.
+  // Excludes lenders the client ALREADY has (per credit report) — never apply to a card they have.
+  // Sources: client.excluded_lenders (advisor-entered) + future auto-detect from credit report.
+  const excludedSet = new Set();
+  if (Array.isArray(client.excluded_lenders)) {
+    for (const e of client.excluded_lenders) {
+      if (e && typeof e === 'string') excludedSet.add(e.trim().toLowerCase());
+    }
+  }
   return candidates.filter(item => {
+    // EXCLUSION (Teka 2026-05-27): if client already has this lender or bank, skip.
+    // Match by lender name (item.n) OR issuing bank (item.bank).
+    if (excludedSet.size) {
+      const nLower = (item.n || '').trim().toLowerCase();
+      const bLower = (item.bank || '').trim().toLowerCase();
+      if (excludedSet.has(nLower) || excludedSet.has(bLower)) return false;
+    }
     // PROGRAM LANE routing (Teka 2026-05-27): two-lane model.
     //   PERSONAL client → personal-lane lenders (type personal+secured)
     //   BUSINESS client → business-lane lenders (type business+startup+revenue)
     //   'both' / 'dispute' / 'itin' fundingType → no lane filter (sees both lanes)
-    // Items without a lane field are treated as universal (legacy pre-rebuild entries).
     if (item.lane && client.fundingType) {
       const ft = client.fundingType;
       if ((ft === 'personal' || ft === 'business') && item.lane !== ft) return false;
     }
-    // ITIN lane routing: ITIN clients see ONLY items tagged itin:true.
-    // SSN clients see EVERYTHING (no ITIN filter applied — full SSN lane intact).
+    // ITIN lane routing.
     if (client.is_itin && item.itin !== true) return false;
-    // Score-model match: lender's scoring model must match a model we have for this client.
+    // Score-model match.
     if (item.score_model && client.scores) {
       const hasModel = client.scores[item.score_model];
       if (!hasModel) return false;
     }
-    // Language preference: ES clients get ES template variants where templates are language-tagged.
+    // Language preference.
     if (client.lang === 'es' && item.lang && item.lang !== 'es') return false;
     return true;
   });
+}
+
+// ═══════════════════════════════════════════════
+//  EXCLUDED LENDERS — helper for advisors to mark "client already has this"
+//  Phase 1: advisor enters lender names manually in client modal
+//  Phase 2: auto-detect from uploaded credit report parse
+// ═══════════════════════════════════════════════
+function addExcludedLender(clientId, lenderNameOrBank) {
+  const c = clients.find(x => x.id === clientId);
+  if (!c || !lenderNameOrBank || !lenderNameOrBank.trim()) return;
+  if (!Array.isArray(c.excluded_lenders)) c.excluded_lenders = [];
+  const trimmed = lenderNameOrBank.trim();
+  const lower = trimmed.toLowerCase();
+  if (c.excluded_lenders.some(e => e.trim().toLowerCase() === lower)) {
+    toast('Already excluded'); return;
+  }
+  c.excluded_lenders.push(trimmed);
+  addStaffNoteQuick('status', 'Marked existing lender (excluded from new apps): ' + trimmed);
+  saveAll();
+  toast('✅ Excluded: ' + trimmed);
+}
+
+function removeExcludedLender(clientId, lenderNameOrBank) {
+  const c = clients.find(x => x.id === clientId);
+  if (!c || !Array.isArray(c.excluded_lenders)) return;
+  const lower = (lenderNameOrBank || '').trim().toLowerCase();
+  c.excluded_lenders = c.excluded_lenders.filter(e => e.trim().toLowerCase() !== lower);
+  saveAll();
+  toast('Removed exclusion: ' + lenderNameOrBank);
 }
 
 // ═══════════════════════════════════════════════
