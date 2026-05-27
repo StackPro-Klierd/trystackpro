@@ -4391,7 +4391,7 @@ let clients = [
     fee:'$2,497', status:'funded', date:'05/01/26',
     fundingPlaced:'87500', housing:'mortgage', taxes:'yes_both', irs:'no', employment:'business_owner',
     navStatus:'build', navEmail:'marcus@thompson-llc.com', navDnb:'82', navExp:'78', navEq:'285', navSbss:'168', navChecked:'05/01/26',
-    bizName:'Thompson Capital LLC', entity:'llc', monitoring_active:true, monitoring_tier:'monitor_biz', monitoring_start_date:'05/01/26', monitoring_next_billing:'06/01/26', isItin:false,
+    bizName:'Thompson Capital LLC', entity:'llc', monitoring_active:true, monitoring_tier:'monitor_biz', monitoring_start_date:'05/01/26', monitoring_next_billing:'06/01/26', is_itin:false,
     packageName:'Card Stacking — Done For You', docs:'DL, SS Card, Bank Statements',
     invoices:[
       {id:9001, service:'Card Stacking — Done For You', amount:'2497', due:'04/15/26', date:'04/10/26', status:'paid', processor:'Authorize.net'},
@@ -4412,7 +4412,7 @@ let clients = [
     fee:'$1,497', status:'active', date:'05/06/26',
     housing:'rent', taxes:'yes_both', irs:'no', employment:'employed_w2',
     navStatus:'track', navEmail:'', navDnb:'', navExp:'', navEq:'', navSbss:'',
-    bizName:'', entity:'', monitoring_active:false, monitoring_tier:null, isItin:false,
+    bizName:'', entity:'', monitoring_active:false, monitoring_tier:null, is_itin:false,
     packageName:'Credit Profile Optimization — Premium', docs:'DL uploaded',
     invoices:[{id:9003, service:'Credit Profile Optimization — Premium', amount:'1497', due:'05/10/26', date:'05/06/26', status:'sent', processor:'Authorize.net'}],
     notes:[
@@ -4430,7 +4430,7 @@ let clients = [
     fee:'$997', status:'new', date:'05/10/26',
     housing:'family', taxes:'itin_filed', irs:'no', employment:'self_employed',
     navStatus:'none', navEmail:'', navDnb:'', navExp:'', navEq:'', navSbss:'',
-    bizName:'Mendoza Landscaping', entity:'sole', monitoring_active:false, monitoring_tier:null, isItin:true, lang:'es',
+    bizName:'Mendoza Landscaping', entity:'sole', monitoring_active:false, monitoring_tier:null, is_itin:true, itin_number:'912-34-5678', lang:'es',
     packageName:'Consultation / Strategy Session', docs:'None uploaded',
     invoices:[],
     notes:[
@@ -4447,7 +4447,7 @@ let clients = [
     fee:'$2,997', status:'active', date:'05/08/26',
     housing:'mortgage', taxes:'yes_both', irs:'no', employment:'business_owner',
     navStatus:'expand', navEmail:'sandra@kimenterprises.com', navDnb:'78', navExp:'72', navEq:'275', navSbss:'155', navChecked:'05/08/26',
-    bizName:'Kim Enterprises LLC', entity:'llc', monitoring_active:true, monitoring_tier:'monitor_mid', monitoring_start_date:'05/08/26', monitoring_next_billing:'06/08/26', isItin:false,
+    bizName:'Kim Enterprises LLC', entity:'llc', monitoring_active:true, monitoring_tier:'monitor_mid', monitoring_start_date:'05/08/26', monitoring_next_billing:'06/08/26', is_itin:false,
     packageName:'Business Funding Package', docs:'DL, EIN Letter, Articles, Bank Statements',
     invoices:[{id:9004, service:'Business Funding Package', amount:'2997', due:'05/12/26', date:'05/08/26', status:'paid', processor:'Authorize.net'}],
     notes:[
@@ -4465,7 +4465,7 @@ let clients = [
     pers:'Below threshold', biz:'N/A',
     fee:'$997', status:'declined', date:'05/10/26',
     housing:'rent', taxes:'no', irs:'yes_open', employment:'employed_w2',
-    navStatus:'none', bizName:'', entity:'', monitoring_active:false, monitoring_tier:null, isItin:false,
+    navStatus:'none', bizName:'', entity:'', monitoring_active:false, monitoring_tier:null, is_itin:false,
     packageName:'Credit Analysis Report', docs:'DL uploaded',
     invoices:[],
     notes:[
@@ -4513,6 +4513,35 @@ const KLIERD_MON_TIERS = {
   monitor_biz:   {name:'KLIERD Business Monitor', price:169.99, kind:'business'}
 };
 const KLIERD_MON_TIER_ORDER = ['monitor_entry','monitor_mid','monitor_pro','monitor_biz'];
+
+// ═══════════════════════════════════════════════
+//  UNIVERSAL ROUTING — routeForClient()
+//  Consumed by Funding, Dispute, Monitoring.
+//  Implements the SSN lane + ITIN lane model:
+//    SSN client → sees full candidates list (SSN lane = all ~100+ lenders)
+//    ITIN client → sees only candidates with itin:true (ITIN lane subset)
+//  We NEVER drop a lender for not supporting ITIN. The ITIN lane is
+//  additive — ITIN-friendly lenders appear in both lanes.
+// ═══════════════════════════════════════════════
+function routeForClient(client, candidates) {
+  if (!Array.isArray(candidates)) return [];
+  if (!client) return candidates;
+  return candidates.filter(item => {
+    // ITIN lane routing: ITIN clients see ONLY items tagged itin:true.
+    // SSN clients see EVERYTHING (no ITIN filter applied — full SSN lane intact).
+    if (client.is_itin && item.itin !== true) return false;
+    // Score-model match: lender's scoring model must match a model we have for this client.
+    // If candidate doesn't declare score_model, treat as universal (most lenders work this way).
+    if (item.score_model && client.scores) {
+      const hasModel = client.scores[item.score_model];
+      if (!hasModel) return false;
+    }
+    // Language preference: ES clients get ES template variants where templates are language-tagged.
+    // Untagged templates (no item.lang) are universal — show to everyone.
+    if (client.lang === 'es' && item.lang && item.lang !== 'es') return false;
+    return true;
+  });
+}
 
 // ═══════════════════════════════════════════════
 //  NAV
@@ -6740,7 +6769,7 @@ function renderItinCards() {
 Nombre: ${client.firstName} ${client.lastName}
 Email: ${client.email}
 Teléfono: ${client.phone}
-ITIN: ${client.itin}
+ITIN: ${client.itin_number||''}
 Ingresos Anuales: ${client.income}
 Banco: ${card.bank}
 URL: ${card.applyUrl}
@@ -6751,7 +6780,7 @@ First Name: ${client.firstName}
 Last Name: ${client.lastName}
 Email: ${client.email}
 Phone: ${client.phone}
-ITIN: ${client.itin}
+ITIN: ${client.itin_number||''}
 Annual Income: ${client.income}
 Bank: ${card.bank}
 Apply URL: ${card.applyUrl}
@@ -6839,8 +6868,8 @@ function copyCardInfo(cardIndex){
   };
   const lang = itinLang;
   const txt = lang === 'es'
-    ? `SOLICITUD: ${c.n}\n-------------------------------\nNombre: ${client.firstName} ${client.lastName}\nEmail: ${client.email}\nTeléfono: ${client.phone}\nITIN: ${client.itin}\nIngresos: ${client.income}\nBanco: ${c.bank}\n-------------------------------\nURL: ${c.applyUrl}\nNotas: ${c.applyNote}`
-    : `APPLICATION: ${c.n}\n-------------------------------\nFirst Name: ${client.firstName}\nLast Name: ${client.lastName}\nEmail: ${client.email}\nPhone: ${client.phone}\nITIN: ${client.itin}\nAnnual Income: ${client.income}\nBank: ${c.bank}\n-------------------------------\nApply URL: ${c.applyUrl}\nNotes: ${c.applyNote}`;
+    ? `SOLICITUD: ${c.n}\n-------------------------------\nNombre: ${client.firstName} ${client.lastName}\nEmail: ${client.email}\nTeléfono: ${client.phone}\nITIN: ${client.itin_number||''}\nIngresos: ${client.income}\nBanco: ${c.bank}\n-------------------------------\nURL: ${c.applyUrl}\nNotas: ${c.applyNote}`
+    : `APPLICATION: ${c.n}\n-------------------------------\nFirst Name: ${client.firstName}\nLast Name: ${client.lastName}\nEmail: ${client.email}\nPhone: ${client.phone}\nITIN: ${client.itin_number||''}\nAnnual Income: ${client.income}\nBank: ${c.bank}\n-------------------------------\nApply URL: ${c.applyUrl}\nNotes: ${c.applyNote}`;
   navigator.clipboard.writeText(txt).then(()=>
     toast(`✅ ${lang==='es'?'Datos copiados para':'Info copied for'} ${c.n} — ${lang==='es'?'pega en la solicitud':'paste into application'}`)
   );
@@ -6862,7 +6891,7 @@ function addItinToPipeline(){
   const goal    = document.getElementById('it-goal')?.value||'';
   const notes   = document.getElementById('it-notes')?.value||'';
   const score=parseInt(document.getElementById('it-score').value)||0;
-  clients.unshift({id:Date.now(),first,last,email,phone:'',score,ssn:'',ein:'',duns:'',itin:document.getElementById('it-itin').value,pers:'ITIN Range',biz:'EIN Range',fee:'$997',status:'new',housing,taxes,goal,isItin:true,lang:document.getElementById('it-lang')?.value||'es',date:new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit'}),notes:[{id:Date.now(),txt:'ITIN/Latino client — Language: '+(document.getElementById('it-lang')?.value==='es'?'Español':'English')+'. Goal: '+goal+(notes?' | Notes: '+notes:''),ts:new Date().toLocaleString()}],reports:[]});
+  clients.unshift({id:Date.now(),first,last,email,phone:'',score,ssn:'',ein:'',duns:'',itin_number:document.getElementById('it-itin').value,pers:'ITIN Range',biz:'EIN Range',fee:'$997',status:'new',housing,taxes,goal,is_itin:true,lang:document.getElementById('it-lang')?.value||'es',date:new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit'}),notes:[{id:Date.now(),txt:'ITIN/Latino client — Language: '+(document.getElementById('it-lang')?.value==='es'?'Español':'English')+'. Goal: '+goal+(notes?' | Notes: '+notes:''),ts:new Date().toLocaleString()}],reports:[]});
   document.getElementById('st-total').textContent=clients.length;
   saveAll();
   updRptSel();
@@ -7069,9 +7098,30 @@ function migrateMonitoringFields(){
       delete c.monitoringDate;
       migrated++;
     }
+    // ── ITIN field normalization (SSN lane / ITIN lane routing) ──
+    // Existing data uses isItin (boolean) OR itin (could be the ITIN number string).
+    // Converge to c.is_itin (bool) + c.itin_number (string, optional).
+    if(c.isItin !== undefined && c.is_itin === undefined){
+      c.is_itin = !!c.isItin;
+      delete c.isItin;
+      touched = true;
+    }
+    // c.itin: if it's a non-empty string, that's the ITIN number → move to c.itin_number
+    if(c.itin !== undefined){
+      if(typeof c.itin === 'string' && c.itin.trim().length > 0){
+        if(c.itin_number === undefined) c.itin_number = c.itin;
+        if(c.is_itin === undefined) c.is_itin = true;
+      } else if(c.itin === true){
+        if(c.is_itin === undefined) c.is_itin = true;
+      }
+      delete c.itin;
+      touched = true;
+    }
+    if(c.is_itin === undefined) c.is_itin = false; // default — SSN lane
+    if(touched) migrated++;
   });
   if(migrated > 0){
-    console.log('🔄 Migrated '+migrated+' clients to snake_case monitoring schema');
+    console.log('🔄 Migrated '+migrated+' clients to snake_case monitoring + ITIN schema');
     saveAll();
   }
 }
@@ -7646,9 +7696,9 @@ function importIntake(index){
     income:     q.income||'',
     goal:       q.goal||'',
     fundingType: q.fundingType||'personal',
-    isItin:     q.fundingType==='itin',
+    is_itin:    q.fundingType==='itin',
     lang:       q.lang||'en',
-    itin:       q.itin||'',
+    itin_number: q.itin||'',
     taxes:      q.taxes||'',
     bizName:    q.bizName||'',
     entity:     q.entity||'',
@@ -9204,7 +9254,7 @@ function renderItinPipeline(){
   const el = document.getElementById('itin-pipeline-list');
   if(!el) return;
 
-  const itinClients = clients.filter(c => c.isItin || c.itin);
+  const itinClients = clients.filter(c => c.is_itin);
 
   if(!itinClients.length){
     const msg = itinLang === 'es'
@@ -9494,7 +9544,7 @@ function renderShelfCorpsPanel(){
 //  Dedicated stats for ITIN client pipeline
 // ═══════════════════════════════════════════════════════════
 function renderItinAnalytics(){
-  const itinClients = clients.filter(c => c.isItin || c.itin);
+  const itinClients = clients.filter(c => c.is_itin);
   if(!itinClients.length) return;
 
   const total     = itinClients.length;
@@ -11080,7 +11130,7 @@ function exportAnalyticsCSV(){
     c.packageName||'',
     c.fee||'',
     c.fundingPlaced ? '$'+parseFloat(c.fundingPlaced).toLocaleString() : '',
-    c.isItin ? 'ITIN' : 'SSN',
+    c.is_itin ? 'ITIN' : 'SSN',
     c.monitoring_active ? 'Yes' : 'No',
     c.monitoring_tier ? (KLIERD_MON_TIERS[c.monitoring_tier]?.name||c.monitoring_tier) : '',
     c.date||'',
@@ -11147,7 +11197,7 @@ function exportAnalyticsJSON(){
       package:      c.packageName||'',
       fee:          c.fee||'',
       fundingPlaced:c.fundingPlaced||'',
-      clientType:   c.isItin?'ITIN':'SSN',
+      clientType:   c.is_itin?'ITIN':'SSN',
       monitoring_active: !!c.monitoring_active,
       monitoring_tier:   c.monitoring_tier || null,
       monitoring_start_date: c.monitoring_start_date || null,
@@ -11318,7 +11368,7 @@ function exportAnalyticsPDF(){
           <td style="font-size:10px">${c.packageName||'—'}</td>
           <td style="font-weight:700">${c.fee||'—'}</td>
           <td style="color:#1a8a4a;font-weight:700">${c.fundingPlaced?'$'+parseFloat(c.fundingPlaced).toLocaleString():'—'}</td>
-          <td>${c.isItin?'🌎 ITIN':'🇺🇸 SSN'}</td>
+          <td>${c.is_itin?'🌎 ITIN':'🇺🇸 SSN'}</td>
           <td style="color:#888">${c.date||''}</td>
         </tr>`).join('')}
       </tbody>
@@ -11794,7 +11844,7 @@ async function sendChat(){
   try{
     if(typeof activeModalClient!=='undefined'&&activeModalClient){
       const c=activeModalClient;
-      ctx='[Client: '+c.first+' '+c.last+' TU:'+(c.scoreTU||c.score||'?')+' EQ:'+(c.scoreEQ||'?')+' EX:'+(c.scoreEX||'?')+' status:'+c.status+(c.isItin?', ITIN':'')+']\n\n'+text;
+      ctx='[Client: '+c.first+' '+c.last+' TU:'+(c.scoreTU||c.score||'?')+' EQ:'+(c.scoreEQ||'?')+' EX:'+(c.scoreEX||'?')+' status:'+c.status+(c.is_itin?', ITIN':'')+']\n\n'+text;
     }
   }catch(e){}
   inp.value=''; inp.style.height='38px';
