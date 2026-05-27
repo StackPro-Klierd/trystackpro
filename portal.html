@@ -4660,10 +4660,21 @@ function routeForClient(client, candidates) {
     const effectiveMin = item.override_min || item.min;
     if (effectiveMin && bestScore > 0 && bestScore < effectiveMin) return false;
     // INCOME / REVENUE MATCH (Teka 2026-05-27): banks extend ~60% of income as
-    // total available credit. override_income_factor wins when set.
-    const clientIncome = parseFloat(
-      String(client.income || client.revenue || client.annualIncome || '0').replace(/[^0-9.]/g, '')
-    ) || 0;
+    // total available credit. Income is NOT locked — clients can enhance with
+    // additional sources (second job, 1099, rental, household, business rev).
+    // Sum from income_sources[] array first; fall back to primary income field.
+    let clientIncome = 0;
+    if (Array.isArray(client.income_sources)) {
+      clientIncome = client.income_sources.reduce((sum, s) => {
+        const amt = parseFloat(String(s.amount || s || '0').replace(/[^0-9.]/g, '')) || 0;
+        return sum + amt;
+      }, 0);
+    }
+    if (clientIncome === 0) {
+      clientIncome = parseFloat(
+        String(client.income || client.revenue || client.annualIncome || '0').replace(/[^0-9.]/g, '')
+      ) || 0;
+    }
     if (item.hi && clientIncome > 0) {
       const incomeFactor = item.override_income_factor || 0.6;
       const requiredIncome = item.hi * incomeFactor;
