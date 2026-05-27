@@ -4653,6 +4653,17 @@ function routeForClient(client, candidates) {
     }
     // MIN SCORE: don't apply to lenders the client doesn't qualify for (would deny)
     if (item.min && bestScore > 0 && bestScore < item.min) return false;
+    // INCOME / REVENUE MATCH (Teka 2026-05-27): banks extend ~60% of income as
+    // total available credit. Don't route a $30K-income client to a card with
+    // a $40K limit ceiling — they'll get approved at $2K, wasting a hard pull.
+    // For business apps, use client.revenue (business revenue) instead of income.
+    const clientIncome = parseFloat(
+      String(client.income || client.revenue || client.annualIncome || '0').replace(/[^0-9.]/g, '')
+    ) || 0;
+    if (item.hi && clientIncome > 0) {
+      const requiredIncome = item.hi * 0.6; // rough rule of thumb
+      if (clientIncome < requiredIncome) return false;
+    }
     // TIER APPROPRIATENESS (Teka 2026-05-27): don't waste hard pulls on low-tier cards
     // when the client qualifies for higher-tier products.
     //   750+ → Tier 1 only (premium cards — Chase Sapphire Reserve, Amex Platinum, etc.)
