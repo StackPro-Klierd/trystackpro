@@ -4651,17 +4651,18 @@ function routeForClient(client, candidates) {
       const bLower = (item.bank || '').trim().toLowerCase();
       if (excludedSet.has(nLower) || excludedSet.has(bLower)) return false;
     }
-    // MIN SCORE: don't apply to lenders the client doesn't qualify for (would deny)
-    if (item.min && bestScore > 0 && bestScore < item.min) return false;
+    // MIN SCORE: don't apply to lenders the client doesn't qualify for (would deny).
+    // override_min (advisor-set, empirical) wins over published min.
+    const effectiveMin = item.override_min || item.min;
+    if (effectiveMin && bestScore > 0 && bestScore < effectiveMin) return false;
     // INCOME / REVENUE MATCH (Teka 2026-05-27): banks extend ~60% of income as
-    // total available credit. Don't route a $30K-income client to a card with
-    // a $40K limit ceiling — they'll get approved at $2K, wasting a hard pull.
-    // For business apps, use client.revenue (business revenue) instead of income.
+    // total available credit. override_income_factor wins when set.
     const clientIncome = parseFloat(
       String(client.income || client.revenue || client.annualIncome || '0').replace(/[^0-9.]/g, '')
     ) || 0;
     if (item.hi && clientIncome > 0) {
-      const requiredIncome = item.hi * 0.6; // rough rule of thumb
+      const incomeFactor = item.override_income_factor || 0.6;
+      const requiredIncome = item.hi * incomeFactor;
       if (clientIncome < requiredIncome) return false;
     }
     // TIER APPROPRIATENESS (Teka 2026-05-27): don't waste hard pulls on low-tier cards
