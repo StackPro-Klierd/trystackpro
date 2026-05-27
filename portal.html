@@ -4685,6 +4685,13 @@ function routeForClient(client, candidates) {
       const ft = client.fundingType;
       if ((ft === 'personal' || ft === 'business') && item.lane !== ft) return false;
     }
+    // BUSINESS LANE requires EIN (Teka 2026-05-27): SSN alone cannot apply to
+    // business cards. Client must have EIN as business entity ID; SSN/ITIN is
+    // the personal guarantor on the form. Skip business lenders if no EIN.
+    if (item.lane === 'business') {
+      const ein = (client.ein || '').toString().trim();
+      if (!ein) return false;
+    }
     // ITIN lane routing
     if (client.is_itin && item.itin !== true) return false;
     // Score-model match
