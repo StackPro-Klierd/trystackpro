@@ -4659,6 +4659,14 @@ function routeForClient(client, candidates) {
     // override_min (advisor-set, empirical) wins over published min.
     const effectiveMin = item.override_min || item.min;
     if (effectiveMin && bestScore > 0 && bestScore < effectiveMin) return false;
+    // INQUIRY SENSITIVITY (Teka 2026-05-27): hard pulls in last 6 months reduce
+    // approval odds. Lenders with item.inquiry_sensitive:true (or implied by Tier 1
+    // premium status) get filtered out when client has too many recent inquiries.
+    // Counts: c.recent_inquiries_count (preferred) or length of c.inquiries[]
+    // filtered to last 180 days. Default threshold: 3 recent = caution, 5+ = skip.
+    const recentInq = parseInt(client.recent_inquiries_count) || 0;
+    if (item.tier === 1 && recentInq >= 5) return false;
+    if (item.inquiry_sensitive && recentInq >= 3) return false;
     // INCOME / REVENUE MATCH (Teka 2026-05-27): banks extend ~60% of income as
     // total available credit. Income is NOT locked — clients can enhance with
     // additional sources (second job, 1099, rental, household, business rev).
@@ -4680,18 +4688,14 @@ function routeForClient(client, candidates) {
       const requiredIncome = item.hi * incomeFactor;
       if (clientIncome < requiredIncome) return false;
     }
-    // TIER APPROPRIATENESS (Teka 2026-05-27): don't waste hard pulls on low-tier cards
-    // when the client qualifies for higher-tier products.
-    //   750+ → Tier 1 only (premium cards — Chase Sapphire Reserve, Amex Platinum, etc.)
-    //   680–749 → Tier 1 + Tier 2 (most lenders)
-    //   620–679 → Tier 2 + Tier 3 (mid-tier + credit-builders)
-    //   <620 → Tier 2 + Tier 3 (rebuilding range)
-    if (item.tier && bestScore > 0) {
-      if (bestScore >= 750 && item.tier > 1) return false;
-      if (bestScore >= 680 && bestScore < 750 && item.tier > 2) return false;
-      // 620–679 sees all tiers (no further filter)
-      // <620: see all tiers — they need every approval they can get
-    }
+    // TIER APPROPRIATENESS (Teka 2026-05-27, refined): exclude only OBVIOUS waste,
+    // keep options for approvals. Score-tier is a PRIORITY signal (the advisor or
+    // auto-submit engine should TRY Tier 1 first for high-score clients), but we
+    // don't lock high-score clients out of Tier 2 — sometimes Tier 2 approves more
+    // reliably than Tier 1 and the client wants the options.
+    // Only hard exclusion: Tier 3 (credit-builder/secured) for 750+ — clearly wasted.
+    if (item.tier && bestScore >= 750 && item.tier >= 3) return false;
+    // Everyone else sees all tiers. Auto-submit ordering handles priority.
     // PROGRAM LANE routing
     if (item.lane && client.fundingType) {
       const ft = client.fundingType;
