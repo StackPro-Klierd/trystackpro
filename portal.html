@@ -7667,15 +7667,30 @@ function renderFollowUpAlert(){
 //           ARB subscribe + welcome email fire (gated on
 //           Hami's provider clearance Tue 2026-05-26).
 // ═══════════════════════════════════════════════════════════
+// Railway API for monitoring subscription lifecycle (Coco 2026-05-28)
+const KLIERD_API = 'https://stackpro-api-production.up.railway.app';
+const KLIERD_API_KEY = 'stackpro_secure_2026';
+
+async function klierdMonitoringAPI(path, body){
+  try{
+    const r = await fetch(KLIERD_API+path, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':KLIERD_API_KEY},
+      body: JSON.stringify(body||{})
+    });
+    if(!r.ok){ console.warn('monitoring API non-2xx:', r.status); return null; }
+    return await r.json();
+  }catch(e){ console.warn('monitoring API failed:', e); return null; }
+}
+
 function setMonitoringTier(clientId, tierKey){
   const c = clients.find(x=>x.id===clientId);
   if(!c) return;
   if(tierKey && !KLIERD_MON_TIERS[tierKey]){ toast('Unknown tier'); return; }
+  const wasActive = !!c.monitoring_active;
   c.monitoring_tier = tierKey || null;
   c.monitoring_active = !!tierKey;
   c.monitoring_start_date = c.monitoring_active ? new Date().toLocaleDateString('en-US') : null;
-  // monitoring_next_billing — Phase 2 will set this from Authorize.net ARB.
-  // For Phase 1 stub: 30 days from start, or null on cancel.
   if(c.monitoring_active){
     const d = new Date(); d.setDate(d.getDate()+30);
     c.monitoring_next_billing = d.toLocaleDateString('en-US');
@@ -7688,6 +7703,25 @@ function setMonitoringTier(clientId, tierKey){
   renderModalTab(activeModalTab);
   updateMonitoringStats();
   toast(c.monitoring_active ? ('✅ ' + tierLabel) : 'Monitoring cancelled');
+
+  // Call Railway API to persist + fire welcome email (Coco 2026-05-28)
+  // Graceful: localStorage state updated above regardless of API result.
+  const cid = c.trackingId || c.id;
+  if(!wasActive && c.monitoring_active){
+    // Net-new subscription
+    klierdMonitoringAPI('/api/monitoring/subscribe', {
+      client_id: cid,
+      tier_key: tierKey,
+      language: c.lang || 'en',
+      is_itin: !!c.is_itin
+    }).then(r=>{ if(r?.subscription) console.log('📬 Monitoring subscription created in API + welcome email queued'); });
+  } else if(wasActive && c.monitoring_active && tierKey){
+    // Tier change
+    klierdMonitoringAPI('/api/monitoring/upgrade', { client_id: cid, new_tier_key: tierKey });
+  } else if(wasActive && !c.monitoring_active){
+    // Cancellation
+    klierdMonitoringAPI('/api/monitoring/cancel', { client_id: cid, reason: 'staff cancellation via portal' });
+  }
 }
 
 // Back-compat shim — older calls to toggleMonitoring still work,
