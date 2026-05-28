@@ -3926,8 +3926,6 @@ const CARDS = [
   {n:'Navy Federal Platinum',t:'personal',lane:'personal',e:'💳',min:580,lo:1000,hi:50000,apr:'0% 12mo',pull:true,rep:'All 3 bureaus',note:'Military/family eligible. Very high limits. Most lenient major lender for 580-650 range.',tier:2,bank:'Navy Federal CU',itin:false},
   {n:'Navy Federal cashRewards',t:'personal',lane:'personal',e:'💳',min:580,lo:1000,hi:35000,apr:'N/A',pull:true,rep:'All 3 bureaus',note:'Apply same day as Navy Platinum. NFCU allows multiple cards same session.',tier:2,bank:'Navy Federal CU',itin:false},
   {n:'Mission Lane Visa',t:'personal',lane:'personal',e:'💳',min:580,lo:300,hi:5000,apr:'N/A',pull:true,rep:'All 3 bureaus',note:'⭐ FINTECH ALTERNATIVE. Approves 580+, no deposit. Cash flow-based underwriting. CLI every 6 mo.',tier:2,bank:'Mission Lane',itin:true},
-  {n:'Petal 2 Visa',t:'personal',lane:'personal',e:'💳',min:0,lo:500,hi:10000,apr:'N/A',pull:false,rep:'All 3 bureaus',note:'⭐ NO CREDIT HISTORY NEEDED. Bank data-based approval. 1.5% cash back. No SSN required initially.',tier:2,bank:'Petal',itin:true},
-  {n:'Petal 1 Visa',t:'personal',lane:'personal',e:'💳',min:0,lo:300,hi:5000,apr:'N/A',pull:false,rep:'All 3 bureaus',note:'Soft pull only. Cash flow underwriting. Good for ITIN users and thin credit files.',tier:2,bank:'Petal',itin:true},
   {n:'Avant Card',t:'personal',lane:'personal',e:'💳',min:580,lo:300,hi:3000,apr:'N/A',pull:true,rep:'All 3 bureaus',note:'Fintech issuer. Approves 580+. No deposit. Reports all 3 bureaus.',tier:2,bank:'Avant',itin:true},
   {n:'Credit One Bank Wander Amex',t:'personal',lane:'personal',e:'💳',min:620,lo:500,hi:3000,apr:'N/A',pull:true,rep:'All 3 bureaus',note:'5X on travel/dining. Approves fair credit 620+. Good for thin file stacking.',tier:2,bank:'Credit One',itin:false},
   {n:'Surge Platinum Mastercard',t:'personal',lane:'personal',e:'💳',min:580,lo:300,hi:1000,apr:'N/A',pull:true,rep:'All 3 bureaus',note:'Continental Finance. Easy approval 580+. Use for credit building only — high fees.',tier:2,bank:'Continental Finance',itin:false},
@@ -6644,19 +6642,7 @@ const ITIN_CARDS = [
    applyNote:'Supports pre-fill ✓ — deposit required $200',
    spanish:'Requiere depósito de $200. Se convierte en tarjeta no garantizada en 6 meses'},
 
-  {n:'Petal 2 Visa',cat:'personal',e:'💳',min:0,lo:500,hi:10000,itin:true,pull:false,rep:'All 3 bureaus',
-   note:'⭐ No credit check. Bank data underwriting. ITIN accepted. No fees. Best for thin file.',bank:'Petal',
-   applyUrl:'https://www.petalcard.com/apply',
-   prefill:'clipboard',
-   applyNote:'Copy-paste only — open application, paste from clipboard',
-   spanish:'Sin verificación de crédito. Aprobación basada en historial bancario'},
 
-  {n:'Petal 1 Visa',cat:'personal',e:'💳',min:0,lo:300,hi:5000,itin:true,pull:false,rep:'All 3 bureaus',
-   note:'Soft pull only. Cash flow underwriting. ITIN accepted. Good for recent arrivals.',bank:'Petal',
-   applyUrl:'https://www.petalcard.com/apply',
-   prefill:'clipboard',
-   applyNote:'Copy-paste only — connects to bank account for approval',
-   spanish:'Solo jala crédito suave. Buena para recién llegados'},
 
   {n:'OpenSky Secured Visa',cat:'personal',e:'💳',min:0,lo:200,hi:3000,itin:true,pull:false,rep:'All 3 bureaus',
    note:'No credit check at all. ITIN accepted. Highest approval rate for any background.',bank:'OpenSky',
