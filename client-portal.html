@@ -1401,7 +1401,13 @@ function showTab(tab,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if(btn)btn.classList.add('active');
   if(tab==='billing')renderBilling();
-  if(tab==='monitoring')renderMonitoring();
+  if(tab==='monitoring'){
+    // Hydrate from API first (graceful fallback to existing data on error), then render
+    fetchMonitoringFromAPI().then(()=>{
+      maybeShowMonitoringTab();
+      renderMonitoring();
+    });
+  }
 }
 
 // ═══ BILLING TAB (v3.0) ═══
@@ -1490,6 +1496,34 @@ const KLIERD_MON_TIERS={
   monitor_pro:{name:'KLIERD Monitor Pro',     price:149.99,kind:'personal'},
   monitor_biz:{name:'KLIERD Business Monitor',price:169.99,kind:'business'}
 };
+
+// Fetch live monitoring state from Railway API + populate currentApp.monitoring_*
+async function fetchMonitoringFromAPI(){
+  if(!currentApp) return;
+  const cid = currentApp.trackingId || currentApp.id;
+  if(!cid) return;
+  try{
+    const r = await fetch(API+'/api/monitoring/'+encodeURIComponent(cid), {
+      headers:{'x-api-key':'stackpro_secure_2026'}
+    });
+    if(!r.ok) return; // graceful — keep existing data
+    const j = await r.json();
+    if(j.subscription){
+      currentApp.monitoring_active       = (j.subscription.status==='active');
+      currentApp.monitoring_tier         = j.subscription.tier_key;
+      currentApp.monitoring_status       = j.subscription.status;
+      currentApp.monitoring_start_date   = j.subscription.start_date;
+      currentApp.monitoring_next_billing = j.subscription.next_billing;
+    }
+    if(j.scores_latest){
+      currentApp.monitoring_scores         = j.scores_latest;
+      currentApp.monitoring_scores_prior   = j.scores_prior || {};
+      currentApp.monitoring_scores_updated = j.scores_latest.updated || null;
+    }
+    if(j.scores_history) currentApp.monitoring_score_history = j.scores_history;
+    if(j.alerts) currentApp.monitoring_alerts = j.alerts;
+  }catch(e){ console.warn('monitoring fetch failed:', e); }
+}
 
 // Show Monitoring tab button only if client has monitoring_active = true
 function maybeShowMonitoringTab(){
