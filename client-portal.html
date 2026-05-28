@@ -299,10 +299,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <button class="btn-primary" onclick="lookup()" id="btn-lookup">Check Status</button>
       </div>
       <div class="error-msg" id="lookup-error"></div>
-      <p class="hint" id="lbl-hint">Your Tracking ID was in your confirmation. Format: CBG-XXXXXXXX</p>
-      <hr class="divider"/>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:8px" id="lbl-not-applied">Haven't applied yet?</p>
-      <a href="/apply.html" style="font-size:12px;color:var(--gold);font-weight:600;text-decoration:none" id="lbl-apply-link">Submit Your Application →</a>
+      <p class="hint" id="lbl-hint">Your Tracking ID was in your welcome email and text. Format: CBG-XXXXXXXX</p>
     </div>
   </div>
 
@@ -396,7 +393,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <div class="contact-row">
           <a href="mailto:info@klierd.com" class="btn-ghost">✉ info@klierd.com</a>
           <a href="tel:+1" class="btn-ghost" id="lbl-call">📞 Call Us</a>
-          <a href="/apply.html" class="btn-ghost" id="lbl-new-app">+ New Application</a>
         </div>
       </div>
     </div>
@@ -665,13 +661,12 @@ const T={
     'lbl-subtitle':'Please enter your Tracking ID to view your application status, upload documents, and message your advisor.',
     'btn-lookup':'Check Status',
     'lbl-hint':'Your Tracking ID was in your confirmation. Format: CBG-XXXXXXXX',
-    'lbl-not-applied':"Haven't applied yet?",'lbl-apply-link':'Submit Your Application →',
     'lbl-back':'Back',
     'lbl-tab-status':'Status','lbl-tab-docs':'Documents','lbl-tab-msgs':'Messages','lbl-tab-scores':'Credit Profile',
     'lbl-submitted':'Submitted','lbl-app-type':'Application Type','lbl-goal':'Funding Goal','lbl-lang-pref':'Language',
     'lbl-progress':'Application Progress','lbl-next':'What Happens Next',
     'lbl-contact':'Have questions? We are here to help.',
-    'lbl-call':'📞 Call Us','lbl-new-app':'+ New Application',
+    'lbl-call':'📞 Call Us',
     'lbl-upload':'Upload Documents','lbl-drop':'Click to upload or drag and drop',
     'lbl-file-types':'PDF, JPG, PNG, DOC — Max 10MB per file',
     'lbl-checklist':'Document Checklist',
@@ -742,14 +737,13 @@ const T={
     'lbl-title':'Bienvenido a Su Portal',
     'lbl-subtitle':'Por favor ingrese su ID de seguimiento para ver su solicitud, cargar documentos y enviar mensajes a su asesor.',
     'btn-lookup':'Verificar Estado',
-    'lbl-hint':'Su ID de seguimiento estaba en su correo de confirmación. Formato: CBG-XXXXXXXX',
-    'lbl-not-applied':'¿Aún no ha aplicado?','lbl-apply-link':'Enviar Su Solicitud →',
+    'lbl-hint':'Su ID de seguimiento estaba en su correo y mensaje de texto de bienvenida. Formato: CBG-XXXXXXXX',
     'lbl-back':'Regresar',
     'lbl-tab-status':'Estado','lbl-tab-docs':'Documentos','lbl-tab-msgs':'Mensajes','lbl-tab-scores':'Perfil de Crédito',
     'lbl-submitted':'Enviado','lbl-app-type':'Tipo de Solicitud','lbl-goal':'Meta de Financiamiento','lbl-lang-pref':'Idioma',
     'lbl-progress':'Progreso de Solicitud','lbl-next':'Próximos Pasos',
     'lbl-contact':'¿Preguntas? Estamos aquí para ayudar.',
-    'lbl-call':'📞 Llámenos','lbl-new-app':'+ Nueva Solicitud',
+    'lbl-call':'📞 Llámenos',
     'lbl-upload':'Cargar Documentos','lbl-drop':'Haga clic para cargar o arrastre y suelte',
     'lbl-file-types':'PDF, JPG, PNG, DOC — Máximo 10MB por archivo',
     'lbl-checklist':'Lista de Documentos Requeridos',
