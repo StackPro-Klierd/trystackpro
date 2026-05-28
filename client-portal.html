@@ -1677,11 +1677,31 @@ function renderMonitoring(){
     labels.innerHTML='';
   }else{
     const max=Math.max(...hist.map(h=>h.score||0),850);
-    const min=Math.min(...hist.map(h=>h.score||850),300);
-    const range=Math.max(1,max-min);
-    chart.innerHTML=hist.map(h=>{
-      const pct=Math.round(((h.score-min)/range)*90)+10;
-      return '<div style="flex:1;background:linear-gradient(180deg,var(--gold),rgba(212,175,55,0.3));height:'+pct+'%;border-radius:3px 3px 0 0;position:relative" title="'+(h.score||'')+'"></div>';
+    // 3-bureau multi-line chart (per Phase 2 — Smart Credit Intelligence shows all 3 bureaus)
+    // Each history point: { date, tu, eq, ex } — supports legacy { date, score } shape too
+    const allScores = [];
+    hist.forEach(h => {
+      ['tu','eq','ex','score'].forEach(k => { if(h[k] && parseInt(h[k])) allScores.push(parseInt(h[k])); });
+    });
+    const minS = Math.min(...allScores, 850);
+    const maxS = Math.max(...allScores, 300);
+    const span = Math.max(1, maxS - minS);
+    const W = 100; // percentage width per data point
+    function colHTML(label, val, color){
+      if(!val) return '<div style="flex:1"></div>';
+      const pct = Math.round(((parseInt(val)-minS)/span)*80)+15;
+      return '<div style="flex:1;display:flex;align-items:flex-end;justify-content:center"><div style="width:6px;background:'+color+';height:'+pct+'%;border-radius:2px;position:relative" title="'+label+': '+val+'"></div></div>';
+    }
+    chart.innerHTML = hist.map(h => {
+      // For each history point, draw 3 mini-bars (TU/EQ/EX) clustered
+      const tuv = h.tu||h.TU||(h.score && h.bureau==='TU'?h.score:null);
+      const eqv = h.eq||h.EQ||(h.score && h.bureau==='EQ'?h.score:null);
+      const exv = h.ex||h.EX||(h.score && h.bureau==='EX'?h.score:null);
+      return '<div style="flex:1;display:flex;flex-direction:row;justify-content:center;gap:2px;align-items:flex-end;height:100%">'
+        + colHTML('TU', tuv, '#41a0e8')
+        + colHTML('EQ', eqv, '#27AE60')
+        + colHTML('EX', exv, '#D4AF37')
+        + '</div>';
     }).join('');
     labels.innerHTML=hist.map(h=>'<div style="flex:1;text-align:center">'+(h.alert_date||h.date||'')+'</div>').join('');
   }
