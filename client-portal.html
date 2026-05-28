@@ -1514,25 +1514,36 @@ function klierdReadinessTier(scoreTU, scoreEQ, scoreEX, isItin, isBusiness){
     combined:{ name:isES?'Combinado Premium':'Combined Premium Stack',
                range:isBusiness?'$50K–$750K':'$50K–$250K' }
   };
-  let cur, next, eta;
+  // ETA reflects KLIERD-accelerated timeline (profile optimization + dispute + tradelines
+  // + advisor-led sequencing) — NOT organic credit growth which would take years.
+  // Capped at 180 days (6 months). Aspirational, sales-positive framing.
+  let cur, next, etaDays;
   if(best >= 750){
     cur = T.combined;
     next = null;
-    eta = isES?'Estás en el rango superior':'You are at the top range';
+    etaDays = 0;
   } else if(best >= 680){
     cur = T.premium;
     next = T.combined;
-    eta = isES?'Aprox. '+Math.max(15,(750-best)*3)+' días al siguiente rango':'~'+Math.max(15,(750-best)*3)+' days to next range';
+    etaDays = 30 + Math.floor((750-best)/2);  // 30-65 days
   } else if(best >= 620){
     cur = T.mid;
     next = T.premium;
-    eta = isES?'Aprox. '+Math.max(20,(680-best)*4)+' días al siguiente rango':'~'+Math.max(20,(680-best)*4)+' days to next range';
+    etaDays = 45 + Math.floor((680-best)*1.5); // 45-135 days
+  } else if(best >= 550){
+    cur = T.entry;
+    next = T.mid;
+    etaDays = 90 + Math.floor((620-best)*1.3); // 90-180 days
   } else {
     cur = T.entry;
     next = T.mid;
-    eta = isES?'Aprox. '+Math.max(30,(620-best)*5)+' días al siguiente rango':'~'+Math.max(30,(620-best)*5)+' days to next range';
+    etaDays = 180; // capped — needs dispute + builder work first
   }
-  return { ...cur, nextName: next?next.name:null, nextRange: next?next.range:null, nextEta: eta };
+  if(etaDays > 180) etaDays = 180;
+  const etaText = etaDays === 0
+    ? (isES?'Estás en el rango superior — el siguiente paso es ejecutar el stack':'You are at the top range — next step is stack execution')
+    : (isES?'~'+etaDays+' días con optimización KLIERD':'~'+etaDays+' days with KLIERD optimization');
+  return { ...cur, nextName: next?next.name:null, nextRange: next?next.range:null, nextEta: etaText };
 }
 
 function renderMonitoring(){
