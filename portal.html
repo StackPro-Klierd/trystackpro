@@ -4714,6 +4714,15 @@ function routeForClient(client, candidates) {
       const ein = (client.ein || '').toString().trim();
       if (!ein) return false;
     }
+    // MCA / REVENUE-BASED FINANCING — last resort only (Teka 2026-05-28).
+    // High-cost (factor rate 1.2-1.5), UCC filing blocks traditional funding
+    // for 12-24 months. Surface ONLY when explicitly needed.
+    if (item.priority_tier === 'last_resort' || item.t === 'revenue') {
+      const needsCash = !!client.urgent_cash_need;
+      const exhausted = !!client.exhausted_traditional;
+      const requested = !!client.requested_mca;
+      if (!needsCash && !exhausted && !requested) return false;
+    }
     // ITIN lane routing
     if (client.is_itin && item.itin !== true) return false;
     // Score-model match
