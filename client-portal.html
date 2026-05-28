@@ -1446,11 +1446,11 @@ function maybeShowBillingTab(){
 
 // ═══ MONITORING TAB (Program 3 — KLIERD Credit Monitoring) ═══
 // Tier dictionary — canonical snake_case keys match Supabase schema
+// $99 Monitor entry tier dropped 2026-05-28. Offering starts at $129.99.
 const KLIERD_MON_TIERS={
-  monitor_entry:{name:'KLIERD Monitor',         price:99.00, kind:'personal'},
-  monitor_mid:  {name:'KLIERD Monitor+',        price:129.99,kind:'personal'},
-  monitor_pro:  {name:'KLIERD Monitor Pro',     price:149.99,kind:'personal'},
-  monitor_biz:  {name:'KLIERD Business Monitor',price:169.99,kind:'business'}
+  monitor_mid:{name:'KLIERD Monitor+',        price:129.99,kind:'personal'},
+  monitor_pro:{name:'KLIERD Monitor Pro',     price:149.99,kind:'personal'},
+  monitor_biz:{name:'KLIERD Business Monitor',price:169.99,kind:'business'}
 };
 
 // Show Monitoring tab button only if client has monitoring_active = true

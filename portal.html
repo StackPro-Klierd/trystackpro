@@ -4616,13 +4616,14 @@ let matType='all', matScore='all';
 //  Tier IDs are snake_case to match Supabase schema (canonical).
 //  Phase 1 = UI stub only. Phase 2 wires Authorize.net ARB.
 // ═══════════════════════════════════════════════
+// KLIERD Monitor entry tier ($99) dropped per Teka 2026-05-28.
+// Current product offering: 3 tiers starting at $129.99.
 const KLIERD_MON_TIERS = {
-  monitor_entry: {name:'KLIERD Monitor',          price:99.00,  kind:'personal'},
-  monitor_mid:   {name:'KLIERD Monitor+',         price:129.99, kind:'personal'},
-  monitor_pro:   {name:'KLIERD Monitor Pro',      price:149.99, kind:'personal'},
-  monitor_biz:   {name:'KLIERD Business Monitor', price:169.99, kind:'business'}
+  monitor_mid: {name:'KLIERD Monitor+',         price:129.99, kind:'personal'},
+  monitor_pro: {name:'KLIERD Monitor Pro',      price:149.99, kind:'personal'},
+  monitor_biz: {name:'KLIERD Business Monitor', price:169.99, kind:'business'}
 };
-const KLIERD_MON_TIER_ORDER = ['monitor_entry','monitor_mid','monitor_pro','monitor_biz'];
+const KLIERD_MON_TIER_ORDER = ['monitor_mid','monitor_pro','monitor_biz'];
 
 // ═══════════════════════════════════════════════
 //  UNIVERSAL ROUTING — routeForClient()
@@ -7708,7 +7709,8 @@ function setMonitoringTier(clientId, tierKey){
 function toggleMonitoring(clientId){
   const c = clients.find(x=>x.id===clientId);
   if(!c) return;
-  setMonitoringTier(clientId, c.monitoring_active ? null : 'monitor_entry');
+  // Entry tier dropped 2026-05-28. Default activation now Monitor+ ($129.99).
+  setMonitoringTier(clientId, c.monitoring_active ? null : 'monitor_mid');
 }
 
 function updateMonitoringStats(){
