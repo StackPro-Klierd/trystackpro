@@ -558,20 +558,58 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
 
       <!-- CURRENT SCORE -->
+      <!-- CURRENT SCORE — 3-bureau FICO grid -->
       <div class="card" id="mon-score-card" style="display:none">
-        <div class="card-title" id="lbl-mon-score-title">Current Score</div>
-        <div style="text-align:center;padding:16px 0">
-          <div id="mon-score-val" style="font-size:56px;font-family:'DM Mono',monospace;color:var(--gold);line-height:1">—</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:8px" id="lbl-mon-score-pending">Score will populate once monitoring is fully connected.</div>
+        <div class="card-title" id="lbl-mon-score-title">Your FICO Scores</div>
+        <div class="score-grid" style="margin-top:12px">
+          <div class="score-box">
+            <div class="score-bureau" style="color:#41a0e8" id="lbl-mon-tu">TransUnion</div>
+            <div class="score-val" style="color:#41a0e8" id="mon-score-tu">—</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px" id="mon-score-tu-delta"></div>
+          </div>
+          <div class="score-box">
+            <div class="score-bureau" style="color:#27AE60" id="lbl-mon-eq">Equifax</div>
+            <div class="score-val" style="color:#27AE60" id="mon-score-eq">—</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px" id="mon-score-eq-delta"></div>
+          </div>
+          <div class="score-box">
+            <div class="score-bureau" style="color:var(--gold)" id="lbl-mon-ex">Experian</div>
+            <div class="score-val" style="color:var(--gold)" id="mon-score-ex">—</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px" id="mon-score-ex-delta"></div>
+          </div>
+        </div>
+        <div id="mon-score-updated" style="font-size:10px;color:var(--muted);text-align:center;margin-top:10px">—</div>
+        <div id="mon-score-freshness-banner" style="display:none;margin-top:10px;padding:8px 12px;border-radius:var(--rs);font-size:11px;text-align:center"></div>
+      </div>
+
+      <!-- SMART TECHNOLOGY FUNDING-READINESS -->
+      <div class="card" id="mon-readiness-card" style="display:none">
+        <div class="card-title" id="lbl-mon-readiness-title">🛡 Smart Funding-Readiness</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px" id="lbl-mon-readiness-sub">Powered by KLIERD Smart Technology — projects your eligibility window across stack-potential ranges. Specific lenders are matched and disclosed when KLIERD executes.</div>
+        <div id="mon-readiness-tier" style="background:var(--dark3);border:1px solid var(--gold);border-radius:var(--rs);padding:12px 14px;margin-top:8px">
+          <div style="font-size:10px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;font-weight:700">Current Tier</div>
+          <div id="mon-readiness-tier-name" style="font-family:'DM Serif Display',serif;font-size:18px;color:#fff;margin-top:4px">—</div>
+          <div id="mon-readiness-tier-range" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--gold);margin-top:2px">—</div>
+          <div id="mon-readiness-tier-note" style="font-size:11px;color:var(--dim);margin-top:6px;line-height:1.5">—</div>
+        </div>
+        <div id="mon-readiness-next" style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-top:8px">
+          <div style="font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;font-weight:700">Next Tier — projected eligibility</div>
+          <div id="mon-readiness-next-name" style="font-size:14px;color:#fff;margin-top:4px">—</div>
+          <div id="mon-readiness-next-range" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--gold);margin-top:2px">—</div>
+          <div id="mon-readiness-next-eta" style="font-size:11px;color:var(--dim);margin-top:6px">—</div>
         </div>
       </div>
 
-      <!-- SCORE HISTORY -->
+      <!-- SCORE HISTORY — per-bureau lines -->
       <div class="card" id="mon-history-card" style="display:none">
         <div class="card-title" id="lbl-mon-history-title">Score History</div>
         <div id="mon-history-chart" style="height:140px;display:flex;align-items:flex-end;justify-content:space-around;gap:6px;padding:10px 4px;border-bottom:1px solid var(--border)"></div>
         <div id="mon-history-labels" style="display:flex;justify-content:space-around;gap:6px;padding:6px 4px 0;font-size:10px;color:var(--muted)"></div>
-        <p style="font-size:10px;color:var(--muted);text-align:center;margin-top:8px" id="lbl-mon-history-note">Chart populates once monitoring data is connected.</p>
+        <div style="display:flex;justify-content:center;gap:14px;margin-top:8px;font-size:10px;color:var(--muted)">
+          <span><span style="display:inline-block;width:8px;height:8px;background:#41a0e8;border-radius:2px;margin-right:4px"></span>TU</span>
+          <span><span style="display:inline-block;width:8px;height:8px;background:#27AE60;border-radius:2px;margin-right:4px"></span>EQ</span>
+          <span><span style="display:inline-block;width:8px;height:8px;background:var(--gold);border-radius:2px;margin-right:4px"></span>EX</span>
+        </div>
       </div>
 
       <!-- ALERT LOG -->
@@ -1461,6 +1499,42 @@ function maybeShowMonitoringTab(){
   btn.style.display=active?'inline-flex':'none';
 }
 
+// Smart Funding-Readiness tier bands (per Rule 6h + Rule #9 extension — qualifier ranges only, no lender names)
+// Returns { name, range, note, nextName, nextRange, nextEta } based on best score across 3 bureaus
+function klierdReadinessTier(scoreTU, scoreEQ, scoreEX, isItin, isBusiness){
+  const best = Math.max(parseInt(scoreTU)||0, parseInt(scoreEQ)||0, parseInt(scoreEX)||0);
+  const isES = (lang==='es');
+  const T = {
+    entry:   { name:isES?'Entrada / Construcción':'Entry / Building',
+               range:isBusiness?'$5K–$25K':'$1K–$10K' },
+    mid:     { name:isES?'Recompensas Medias':'Mid-Tier Rewards',
+               range:isBusiness?'$25K–$100K':'$10K–$50K' },
+    premium: { name:isES?'Premium / Nivel 1':'Premium / Tier 1',
+               range:isBusiness?'$50K–$500K':'$25K–$150K' },
+    combined:{ name:isES?'Combinado Premium':'Combined Premium Stack',
+               range:isBusiness?'$50K–$750K':'$50K–$250K' }
+  };
+  let cur, next, eta;
+  if(best >= 750){
+    cur = T.combined;
+    next = null;
+    eta = isES?'Estás en el rango superior':'You are at the top range';
+  } else if(best >= 680){
+    cur = T.premium;
+    next = T.combined;
+    eta = isES?'Aprox. '+Math.max(15,(750-best)*3)+' días al siguiente rango':'~'+Math.max(15,(750-best)*3)+' days to next range';
+  } else if(best >= 620){
+    cur = T.mid;
+    next = T.premium;
+    eta = isES?'Aprox. '+Math.max(20,(680-best)*4)+' días al siguiente rango':'~'+Math.max(20,(680-best)*4)+' days to next range';
+  } else {
+    cur = T.entry;
+    next = T.mid;
+    eta = isES?'Aprox. '+Math.max(30,(620-best)*5)+' días al siguiente rango':'~'+Math.max(30,(620-best)*5)+' days to next range';
+  }
+  return { ...cur, nextName: next?next.name:null, nextRange: next?next.range:null, nextEta: eta };
+}
+
 function renderMonitoring(){
   if(!currentApp)return;
   const fmt=v=>'$'+Number(v).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
@@ -1468,17 +1542,19 @@ function renderMonitoring(){
   const setupCard=document.getElementById('mon-setup-card');
   const planCard=document.getElementById('mon-plan-card');
   const scoreCard=document.getElementById('mon-score-card');
+  const readinessCard=document.getElementById('mon-readiness-card');
   const histCard=document.getElementById('mon-history-card');
   const alertsCard=document.getElementById('mon-alerts-card');
 
   const tierKey=currentApp.monitoring_tier;
   const isActive=!!currentApp.monitoring_active;
 
-  // Setup state — active but no tier yet (welcome email pending)
+  // Setup state — active but no tier yet
   if(!isActive || !tierKey){
     setupCard.style.display='block';
     planCard.style.display='none';
     scoreCard.style.display='none';
+    if(readinessCard) readinessCard.style.display='none';
     histCard.style.display='none';
     alertsCard.style.display='none';
     return;
@@ -1487,21 +1563,22 @@ function renderMonitoring(){
   setupCard.style.display='none';
   planCard.style.display='block';
   scoreCard.style.display='block';
+  if(readinessCard) readinessCard.style.display='block';
   histCard.style.display='block';
   alertsCard.style.display='block';
 
   // Plan tier + price
-  const tier=KLIERD_MON_TIERS[tierKey]||KLIERD_MON_TIERS.monitor_entry;
+  const tier=KLIERD_MON_TIERS[tierKey]||KLIERD_MON_TIERS.monitor_mid;
   document.getElementById('mon-tier-name').textContent=tier.name;
   document.getElementById('mon-tier-price').textContent=fmt(tier.price)+'/mo';
 
-  // Status badge (active by default — Phase 2 will track paused/cancelled via Supabase)
+  // Status badge
   const badge=document.getElementById('mon-status-badge');
   const statusLabelsEN={active:'Active',paused:'Paused',cancelled:'Cancelled',pending:'Pending'};
   const statusLabelsES={active:'Activo',paused:'Pausado',cancelled:'Cancelado',pending:'Pendiente'};
-  const st='active';
+  const st=currentApp.monitoring_status||'active';
   badge.textContent=(lang==='es'?statusLabelsES:statusLabelsEN)[st]||st;
-  badge.className='bill-badge paid';
+  badge.className='bill-badge '+(st==='active'?'paid':(st==='cancelled'?'overdue':'partial'));
 
   // Next bill line
   const nb=document.getElementById('mon-next-bill');
@@ -1509,8 +1586,75 @@ function renderMonitoring(){
     nb.textContent=(lang==='es'?'Próximo cargo: ':'Next charge: ')+currentApp.monitoring_next_billing+' · '+fmt(tier.price);
   }else nb.textContent='';
 
-  // Current score (placeholder until API wired in Phase 2)
-  document.getElementById('mon-score-val').textContent=currentApp.monitoring_current_score?currentApp.monitoring_current_score:'—';
+  // ── 3-BUREAU FICO SCORES ──
+  const scores = currentApp.monitoring_scores || {};
+  const tu = scores.tu||scores.TU||currentApp.scoreTU||'—';
+  const eq = scores.eq||scores.EQ||currentApp.scoreEQ||'—';
+  const ex = scores.ex||scores.EX||currentApp.scoreEX||'—';
+  document.getElementById('mon-score-tu').textContent=tu;
+  document.getElementById('mon-score-eq').textContent=eq;
+  document.getElementById('mon-score-ex').textContent=ex;
+
+  // Score deltas (vs prior pull)
+  const prior = currentApp.monitoring_scores_prior || {};
+  function deltaText(curr, prev){
+    if(!curr||!prev||curr==='—'||prev==='—') return '';
+    const d = parseInt(curr)-parseInt(prev);
+    if(d===0) return (lang==='es'?'sin cambio':'no change');
+    return (d>0?'▲ +':'▼ ')+Math.abs(d)+(lang==='es'?' pts':' pts');
+  }
+  document.getElementById('mon-score-tu-delta').textContent=deltaText(tu,prior.tu);
+  document.getElementById('mon-score-eq-delta').textContent=deltaText(eq,prior.eq);
+  document.getElementById('mon-score-ex-delta').textContent=deltaText(ex,prior.ex);
+
+  // Last updated + freshness banner (Rule 6e — 7-day preferred, 30-day cap)
+  const updated = currentApp.monitoring_scores_updated || currentApp.credit_report_date;
+  const updatedEl = document.getElementById('mon-score-updated');
+  const freshEl = document.getElementById('mon-score-freshness-banner');
+  if(updated){
+    updatedEl.textContent=(lang==='es'?'Actualizado: ':'Updated: ')+updated;
+    const daysOld = Math.floor((Date.now() - new Date(updated).getTime())/(1000*60*60*24));
+    if(daysOld <= 7){
+      freshEl.style.display='block';
+      freshEl.style.background='rgba(39,174,96,0.12)';
+      freshEl.style.border='1px solid rgba(39,174,96,0.35)';
+      freshEl.style.color='var(--green)';
+      freshEl.textContent=(lang==='es'?'✓ Datos frescos ':'✓ Fresh data — ')+daysOld+(lang==='es'?' días':' days old');
+    } else if(daysOld <= 30){
+      freshEl.style.display='block';
+      freshEl.style.background='rgba(201,168,76,0.10)';
+      freshEl.style.border='1px solid rgba(201,168,76,0.30)';
+      freshEl.style.color='var(--gold)';
+      freshEl.textContent=(lang==='es'?'⚠ ':'⚠ ')+daysOld+(lang==='es'?' días — datos envejeciendo':' days old — data aging');
+    } else {
+      freshEl.style.display='block';
+      freshEl.style.background='rgba(231,76,60,0.10)';
+      freshEl.style.border='1px solid rgba(231,76,60,0.30)';
+      freshEl.style.color='var(--red)';
+      freshEl.textContent=(lang==='es'?'❌ ':'❌ ')+daysOld+(lang==='es'?' días — solicita un informe nuevo':' days old — request fresh report');
+    }
+  } else {
+    updatedEl.textContent='';
+    freshEl.style.display='none';
+  }
+
+  // ── SMART FUNDING-READINESS (qualifier band, no lender names per Rule #9) ──
+  const isBiz = (currentApp.fundingType==='business' || currentApp.fundingType==='both' || tierKey==='monitor_biz');
+  const isItin = !!currentApp.is_itin;
+  const readiness = klierdReadinessTier(tu, eq, ex, isItin, isBiz);
+  document.getElementById('mon-readiness-tier-name').textContent=readiness.name;
+  document.getElementById('mon-readiness-tier-range').textContent=readiness.range+(lang==='es'?' rango':' range');
+  document.getElementById('mon-readiness-tier-note').textContent=lang==='es'
+    ? 'Rangos reflejan el potencial total de stack en este nivel. Los prestamistas específicos se divulgan cuando KLIERD ejecuta.'
+    : 'Ranges reflect total stack potential at this tier. Specific lenders disclosed when KLIERD executes.';
+  if(readiness.nextName){
+    document.getElementById('mon-readiness-next').style.display='block';
+    document.getElementById('mon-readiness-next-name').textContent=readiness.nextName;
+    document.getElementById('mon-readiness-next-range').textContent=readiness.nextRange+(lang==='es'?' rango':' range');
+    document.getElementById('mon-readiness-next-eta').textContent=readiness.nextEta;
+  } else {
+    document.getElementById('mon-readiness-next').style.display='none';
+  }
 
   // Score history — simple inline bar chart (reads monitoring_score_history array on client)
   const chart=document.getElementById('mon-history-chart');
