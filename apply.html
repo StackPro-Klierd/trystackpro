@@ -413,7 +413,7 @@ body{background:#09090F;color:#E8E8F0;font-family:'Inter',-apple-system,sans-ser
   <div class="thankyou" id="thankyou">
     <div style="font-size:52px;margin-bottom:16px">✅</div>
     <h2>Application Received!</h2>
-    <p>Thank you — our team will review your information and reach out within <strong>24–48 hours</strong> to discuss your funding options.<br><br><strong style="color:#C9A84C">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong></p>
+    <p id="ty-body">Thank you — your KLIERD portal is being set up right now. <strong>Check your email and phone in 60 seconds</strong> for your portal login link (sent via both email and text). You can start working with KLIERD immediately — no waiting.<br><br><strong style="color:#C9A84C">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong></p>
   </div>
 </div>
 
@@ -564,8 +564,31 @@ function submitIntake(){
     navStatus:g('i-nav-status'),navEmail:g('i-nav-email'),
     notes:g('i-notes'),referral:g('i-referral'),
     submitted:new Date().toLocaleString(),status:'new',source:'web_intake_form'};
+  // Map intake form fields to the public intake endpoint contract
+  const payload = {
+    first: data.first, last: data.last, email: data.email, phone: data.phone,
+    lang: data.lang, clientType: data.clientType, fundingType: data.fundingType,
+    creditServices: data.creditServices,
+    personalGoal: data.goalPersonal, businessGoal: data.goalBusiness,
+    useOfFunds: data.useOfFunds, timeline: data.urgency,
+    raw: data
+  };
+  // Mirror to localStorage for offline-safety (so the form never feels broken)
   try{const q=JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');q.unshift(data);localStorage.setItem('sp_intake_queue',JSON.stringify(q));}catch(e){}
-  fetch('https://stackpro-api-production.up.railway.app/clients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{});
+
+  // POST to the PUBLIC intake endpoint — auto-creates portal, fires welcome email
+  fetch('https://stackpro-api-production.up.railway.app/api/intake/public',{
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
+  })
+  .then(r => r.json())
+  .then(resp => {
+    if(resp && resp.success){
+      const tyMsg = document.getElementById('ty-body');
+      if(tyMsg && resp.message) tyMsg.innerHTML = resp.message + '<br><br><strong style="color:#C9A84C">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong>';
+    }
+  })
+  .catch(()=>{ /* offline-safe: thank-you screen still shows */ });
+
   document.getElementById('form-body').style.display='none';
   document.getElementById('thankyou').style.display='block';
 }
