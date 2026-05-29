@@ -5344,6 +5344,10 @@ function renderModalTab(tab){
           </div>
           ${c.monitoring_active?`<button class="btn bred bsm" onclick="setMonitoringTier(${c.id},null)">Cancel</button>`:''}
         </div>
+        ${c.monitoring_active?`<div style="display:flex;gap:6px;margin-top:8px">
+          <button class="btn bgh bsm" onclick="klierdManualScoreEntry(${c.id})" style="flex:1">+ FICO Score</button>
+          <button class="btn bgh bsm" onclick="klierdManualAlertEntry(${c.id})" style="flex:1">+ Alert</button>
+        </div>`:''}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
           ${KLIERD_MON_TIER_ORDER.map(k=>{
             const t=KLIERD_MON_TIERS[k];
@@ -7452,6 +7456,73 @@ function toggleMonitoring(clientId){
   if(!c) return;
   // Entry tier dropped 2026-05-28. Default activation now Monitor+ ($129.99).
   setMonitoringTier(clientId, c.monitoring_active ? null : 'monitor_mid');
+}
+
+// ═══════════════════════════════════════════════════════════
+// Manual FICO score entry — staff pulls FICO from external source
+// (myFICO, bureau direct, etc.) and pushes into client's record.
+// Fires bureau webhook handler → client gets email + SMS notification.
+// ═══════════════════════════════════════════════════════════
+async function klierdManualScoreEntry(clientId){
+  const c = clients.find(x=>x.id===clientId);
+  if(!c){ alert('Client not found'); return; }
+  const bureau = prompt(`Manual FICO score entry for ${c.first_name} ${c.last_name}\n\nBureau (experian / transunion / equifax):`);
+  if(!bureau) return;
+  const lcBureau = bureau.toLowerCase().trim();
+  if(!['experian','transunion','equifax'].includes(lcBureau)){
+    alert('Bureau must be: experian, transunion, or equifax'); return;
+  }
+  const scoreStr = prompt(`FICO score for ${lcBureau.toUpperCase()} (300-850):`);
+  if(!scoreStr) return;
+  const score = parseInt(scoreStr,10);
+  if(isNaN(score) || score < 300 || score > 850){
+    alert('Score must be a number between 300 and 850'); return;
+  }
+  const scoreModel = prompt('Score model (FICO8 / FICO9 / FICO10):','FICO8') || 'FICO8';
+  try {
+    const r = await klierdMonitoringAPI('/api/monitoring/score-manual', {
+      client_id: clientId, bureau: lcBureau, score, score_model: scoreModel
+    });
+    if(r && r.success){
+      alert(`✓ Score recorded.\n${lcBureau.toUpperCase()} ${scoreModel}: ${score}\nClient notified via email + SMS.`);
+    } else {
+      alert('Score entry failed: ' + (r?.error || 'unknown error'));
+    }
+  } catch(e){
+    alert('Network error: ' + e.message);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// Manual alert entry — staff records a credit event observed outside
+// the bureau webhook flow (e.g., from MyScore/IdentityIQ/Nav pull).
+// ═══════════════════════════════════════════════════════════
+async function klierdManualAlertEntry(clientId){
+  const c = clients.find(x=>x.id===clientId);
+  if(!c){ alert('Client not found'); return; }
+  const types = 'new_inquiry / new_account / score_change / derogatory / address_change / name_change';
+  const alertType = prompt(`Manual alert entry for ${c.first_name} ${c.last_name}\n\nAlert type (${types}):`);
+  if(!alertType) return;
+  const valid = ['new_inquiry','new_account','score_change','derogatory','address_change','name_change'];
+  if(!valid.includes(alertType.toLowerCase().trim())){
+    alert('Invalid alert type. Must be one of: ' + types); return;
+  }
+  const bureau = prompt('Bureau (experian / transunion / equifax — leave blank if unknown):') || null;
+  const description = prompt('Description (one line summary — client will see this):');
+  if(!description) return;
+  try {
+    const r = await klierdMonitoringAPI('/api/monitoring/alert-manual', {
+      client_id: clientId, alert_type: alertType.toLowerCase().trim(),
+      bureau: bureau ? bureau.toLowerCase().trim() : null, description
+    });
+    if(r && r.success){
+      alert(`✓ Alert recorded.\nClient notified via email + SMS.`);
+    } else {
+      alert('Alert entry failed: ' + (r?.error || 'unknown error'));
+    }
+  } catch(e){
+    alert('Network error: ' + e.message);
+  }
 }
 
 function updateMonitoringStats(){
