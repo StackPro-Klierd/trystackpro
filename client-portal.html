@@ -532,15 +532,21 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-mon-setup-body">Your KLIERD Credit Monitoring is being set up. You will receive an email within 24 hours.</p>
       </div>
 
-      <!-- UPLOAD CREDIT REPORT (FICO only — interim until auto-bureau-pull live) -->
+      <!-- UPLOAD CREDIT REPORT (FICO only, < 30 days — interim until auto-bureau-pull live) -->
       <div class="card" id="mon-upload-card" style="display:none">
         <div class="card-title" id="lbl-mon-upload-title">📄 Upload Your Credit Report</div>
         <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-mon-upload-body">
-          Upload a recent credit report that includes <strong>FICO scores</strong> from myFICO, Experian.com, Discover Credit Scorecard, or your bank statement. KLIERD's Smart Technology reads your report and updates your monitoring within 60 seconds.
+          Optional — gives you a head start while we activate your full monitoring. Upload a recent credit report that includes <strong>FICO scores</strong>. KLIERD's Smart Technology reads your report and updates your monitoring within 60 seconds.
         </p>
-        <p style="font-size:11px;color:var(--muted);margin-top:8px" id="lbl-mon-upload-vantage-note">
-          ⚠ Credit Karma, Capital One CreditWise, and similar free services use VantageScore — not FICO. Lenders use FICO. Please upload a FICO-based report.
-        </p>
+
+        <div style="background:var(--dark3);border:1px solid var(--gold);border-radius:var(--rs);padding:10px 12px;margin-top:10px;font-size:12px">
+          <div style="font-weight:700;color:var(--gold);margin-bottom:6px" id="lbl-mon-upload-rules-title">Two strict rules:</div>
+          <div style="color:var(--dim);line-height:1.6" id="lbl-mon-upload-rules-body">
+            <div>1. Must be <strong>FICO</strong> — from myFICO.com, Experian.com (FICO product), Discover Credit Scorecard, or your bank if it says FICO. <span style="color:var(--red)">Credit Karma, CreditWise, and Vantage-only reports will be rejected.</span></div>
+            <div style="margin-top:6px">2. Must be pulled <strong>within the last 30 days</strong>. Older reports will be rejected.</div>
+          </div>
+        </div>
+
         <input type="file" id="mon-upload-input" accept="application/pdf,image/png,image/jpeg" style="display:none" onchange="klierdUploadCreditReport(this.files[0])"/>
         <button class="btn-primary" onclick="document.getElementById('mon-upload-input').click()" id="lbl-mon-upload-btn" style="margin-top:12px;width:100%">Upload Credit Report PDF</button>
         <div id="mon-upload-status" style="margin-top:10px;font-size:12px;display:none"></div>
@@ -682,8 +688,9 @@ const T={
     'lbl-contact':'Have questions? We are here to help.',
     'lbl-call':'📞 Call Us',
     'lbl-mon-upload-title':'📄 Upload Your Credit Report',
-    'lbl-mon-upload-body':"Upload a recent credit report that includes <strong>FICO scores</strong> from myFICO, Experian.com, Discover Credit Scorecard, or your bank statement. KLIERD's Smart Technology reads your report and updates your monitoring within 60 seconds.",
-    'lbl-mon-upload-vantage-note':'⚠ Credit Karma, Capital One CreditWise, and similar free services use VantageScore — not FICO. Lenders use FICO. Please upload a FICO-based report.',
+    'lbl-mon-upload-body':"Optional — gives you a head start while we activate your full monitoring. Upload a recent credit report that includes <strong>FICO scores</strong>. KLIERD's Smart Technology reads your report and updates your monitoring within 60 seconds.",
+    'lbl-mon-upload-rules-title':'Two strict rules:',
+    'lbl-mon-upload-rules-body':'<div>1. Must be <strong>FICO</strong> — from myFICO.com, Experian.com (FICO product), Discover Credit Scorecard, or your bank if it says FICO. <span style="color:var(--red)">Credit Karma, CreditWise, and Vantage-only reports will be rejected.</span></div><div style="margin-top:6px">2. Must be pulled <strong>within the last 30 days</strong>. Older reports will be rejected.</div>',
     'lbl-mon-upload-btn':'Upload Credit Report PDF',
     'lbl-upload':'Upload Documents','lbl-drop':'Click to upload or drag and drop',
     'lbl-file-types':'PDF, JPG, PNG, DOC — Max 10MB per file',
@@ -763,8 +770,9 @@ const T={
     'lbl-contact':'¿Preguntas? Estamos aquí para ayudar.',
     'lbl-call':'📞 Llámenos',
     'lbl-mon-upload-title':'📄 Subir Su Reporte de Crédito',
-    'lbl-mon-upload-body':'Suba un reporte de crédito reciente que incluya <strong>puntajes FICO</strong> de myFICO, Experian.com, Discover Credit Scorecard o su estado de cuenta bancario. La Tecnología Inteligente de KLIERD lee su reporte y actualiza su monitoreo en 60 segundos.',
-    'lbl-mon-upload-vantage-note':'⚠ Credit Karma, Capital One CreditWise y servicios gratuitos similares usan VantageScore — no FICO. Los prestamistas usan FICO. Por favor suba un reporte basado en FICO.',
+    'lbl-mon-upload-body':'Opcional — le da una ventaja mientras activamos su monitoreo completo. Suba un reporte de crédito reciente que incluya <strong>puntajes FICO</strong>. La Tecnología Inteligente de KLIERD lee su reporte y actualiza su monitoreo en 60 segundos.',
+    'lbl-mon-upload-rules-title':'Dos reglas estrictas:',
+    'lbl-mon-upload-rules-body':'<div>1. Debe ser <strong>FICO</strong> — de myFICO.com, Experian.com (producto FICO), Discover Credit Scorecard, o su banco si dice FICO. <span style="color:var(--red)">Credit Karma, CreditWise y reportes solo VantageScore serán rechazados.</span></div><div style="margin-top:6px">2. Debe estar emitido en los <strong>últimos 30 días</strong>. Reportes más antiguos serán rechazados.</div>',
     'lbl-mon-upload-btn':'Subir Reporte de Crédito en PDF',
     'lbl-upload':'Cargar Documentos','lbl-drop':'Haga clic para cargar o arrastre y suelte',
     'lbl-file-types':'PDF, JPG, PNG, DOC — Máximo 10MB por archivo',
