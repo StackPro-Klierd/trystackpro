@@ -523,13 +523,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
     </div>
 
-    <!-- MONITORING TAB (Program 3 — KLIERD Credit Monitoring) -->
+    <!-- MONITORING TAB (Program 3 — KLIERD Monitoring) -->
     <div id="tab-monitoring" style="display:none">
 
       <!-- SETUP STATE (shown until activated by staff) -->
       <div class="card" id="mon-setup-card" style="display:none">
-        <div class="card-title" id="lbl-mon-setup-title">🛡 KLIERD Credit Monitoring</div>
-        <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-mon-setup-body">Your KLIERD Credit Monitoring is being set up. You will receive an email within 24 hours.</p>
+        <div class="card-title" id="lbl-mon-setup-title">🛡 KLIERD Monitoring</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-mon-setup-body">Your KLIERD Monitoring is being set up. You will receive an email within 24 hours.</p>
       </div>
 
       <!-- UPLOAD CREDIT REPORT (FICO only, < 30 days — interim until auto-bureau-pull live) -->
@@ -745,8 +745,8 @@ const T={
     'bill-no-items':'No charges yet. Your advisor will add line items after your consultation.',
     'bill-no-history':'No payments yet.',
     'lbl-tab-monitoring':'Monitoring',
-    'lbl-mon-setup-title':'🛡 KLIERD Credit Monitoring',
-    'lbl-mon-setup-body':'Your KLIERD Credit Monitoring is being set up. You will receive an email within 24 hours.',
+    'lbl-mon-setup-title':'🛡 KLIERD Monitoring',
+    'lbl-mon-setup-body':'Your KLIERD Monitoring is being set up. You will receive an email within 24 hours.',
     'lbl-mon-plan-title':'Your Plan',
     'lbl-mon-tier':'Current Tier',
     'lbl-mon-upgrade':'Upgrade',
@@ -827,8 +827,8 @@ const T={
     'bill-no-history':'Aún sin pagos.',
     'lbl-milestones':'Hitos',
     'lbl-tab-monitoring':'Monitoreo',
-    'lbl-mon-setup-title':'🛡 Monitoreo de Crédito KLIERD',
-    'lbl-mon-setup-body':'Su Monitoreo de Crédito KLIERD se está configurando. Recibirá un correo electrónico dentro de 24 horas.',
+    'lbl-mon-setup-title':'🛡 Monitoreo KLIERD',
+    'lbl-mon-setup-body':'Su Monitoreo KLIERD se está configurando. Recibirá un correo electrónico dentro de 24 horas.',
     'lbl-mon-plan-title':'Su Plan',
     'lbl-mon-tier':'Nivel Actual',
     'lbl-mon-upgrade':'Aumentar',
@@ -973,7 +973,7 @@ function renderPortal(app){
     isITIN?{name:'ITIN Letter (IRS CP565)',key:'itin'}:{name:'Social Security Card',key:'ssn'},
     {name:'Last 3 Months Bank Statements',key:'bank'},
     {name:'Most Recent Pay Stubs (last 2)',key:'paystubs'},
-    {name:'Credit Monitoring Login',key:'monitoring'},
+    {name:'KLIERD Monitoring Login',key:'monitoring'},
     {name:'Voided Check',key:'check'},
     ...(isBiz?[
       {name:'EIN Confirmation Letter (IRS CP575)',key:'ein'},
@@ -1512,7 +1512,7 @@ function maybeShowBillingTab(){
   btn.style.display=hasBilling?'inline-flex':'none';
 }
 
-// ═══ MONITORING TAB (Program 3 — KLIERD Credit Monitoring) ═══
+// ═══ MONITORING TAB (Program 3 — KLIERD Monitoring) ═══
 // Tier dictionary — canonical snake_case keys match Supabase schema
 // $99 Monitor entry tier dropped 2026-05-28. Offering starts at $129.99.
 const KLIERD_MON_TIERS={
@@ -1841,8 +1841,8 @@ function renderMonitoring(){
 }
 
 function monChangeTier(direction){
-  const subject=encodeURIComponent((direction==='up'?'Upgrade':'Downgrade')+' my KLIERD Credit Monitoring — '+(currentApp?.trackingId||''));
-  const body=encodeURIComponent((lang==='es'?'Hola, me gustaría '+(direction==='up'?'actualizar':'reducir')+' mi plan de monitoreo de crédito KLIERD.':'Hi, I would like to '+(direction==='up'?'upgrade':'downgrade')+' my KLIERD Credit Monitoring plan.')+'\n\nTracking ID: '+(currentApp?.trackingId||''));
+  const subject=encodeURIComponent((direction==='up'?'Upgrade':'Downgrade')+' my KLIERD Monitoring — '+(currentApp?.trackingId||''));
+  const body=encodeURIComponent((lang==='es'?'Hola, me gustaría '+(direction==='up'?'actualizar':'reducir')+' mi plan de monitoreo KLIERD.':'Hi, I would like to '+(direction==='up'?'upgrade':'downgrade')+' my KLIERD Monitoring plan.')+'\n\nTracking ID: '+(currentApp?.trackingId||''));
   window.location.href='mailto:info@klierd.com?subject='+subject+'&body='+body;
 }
 
