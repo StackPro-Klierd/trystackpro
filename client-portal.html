@@ -532,6 +532,20 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-mon-setup-body">Your KLIERD Credit Monitoring is being set up. You will receive an email within 24 hours.</p>
       </div>
 
+      <!-- UPLOAD CREDIT REPORT (FICO only — interim until auto-bureau-pull live) -->
+      <div class="card" id="mon-upload-card" style="display:none">
+        <div class="card-title" id="lbl-mon-upload-title">📄 Upload Your Credit Report</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-mon-upload-body">
+          Upload a recent credit report that includes <strong>FICO scores</strong> from myFICO, Experian.com, Discover Credit Scorecard, or your bank statement. KLIERD's Smart Technology reads your report and updates your monitoring within 60 seconds.
+        </p>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px" id="lbl-mon-upload-vantage-note">
+          ⚠ Credit Karma, Capital One CreditWise, and similar free services use VantageScore — not FICO. Lenders use FICO. Please upload a FICO-based report.
+        </p>
+        <input type="file" id="mon-upload-input" accept="application/pdf,image/png,image/jpeg" style="display:none" onchange="klierdUploadCreditReport(this.files[0])"/>
+        <button class="btn-primary" onclick="document.getElementById('mon-upload-input').click()" id="lbl-mon-upload-btn" style="margin-top:12px;width:100%">Upload Credit Report PDF</button>
+        <div id="mon-upload-status" style="margin-top:10px;font-size:12px;display:none"></div>
+      </div>
+
       <!-- PLAN TIER + BILLING STATUS -->
       <div class="card" id="mon-plan-card" style="display:none">
         <div class="card-title" id="lbl-mon-plan-title">Your Plan</div>
@@ -667,6 +681,10 @@ const T={
     'lbl-progress':'Application Progress','lbl-next':'What Happens Next',
     'lbl-contact':'Have questions? We are here to help.',
     'lbl-call':'📞 Call Us',
+    'lbl-mon-upload-title':'📄 Upload Your Credit Report',
+    'lbl-mon-upload-body':"Upload a recent credit report that includes <strong>FICO scores</strong> from myFICO, Experian.com, Discover Credit Scorecard, or your bank statement. KLIERD's Smart Technology reads your report and updates your monitoring within 60 seconds.",
+    'lbl-mon-upload-vantage-note':'⚠ Credit Karma, Capital One CreditWise, and similar free services use VantageScore — not FICO. Lenders use FICO. Please upload a FICO-based report.',
+    'lbl-mon-upload-btn':'Upload Credit Report PDF',
     'lbl-upload':'Upload Documents','lbl-drop':'Click to upload or drag and drop',
     'lbl-file-types':'PDF, JPG, PNG, DOC — Max 10MB per file',
     'lbl-checklist':'Document Checklist',
@@ -744,6 +762,10 @@ const T={
     'lbl-progress':'Progreso de Solicitud','lbl-next':'Próximos Pasos',
     'lbl-contact':'¿Preguntas? Estamos aquí para ayudar.',
     'lbl-call':'📞 Llámenos',
+    'lbl-mon-upload-title':'📄 Subir Su Reporte de Crédito',
+    'lbl-mon-upload-body':'Suba un reporte de crédito reciente que incluya <strong>puntajes FICO</strong> de myFICO, Experian.com, Discover Credit Scorecard o su estado de cuenta bancario. La Tecnología Inteligente de KLIERD lee su reporte y actualiza su monitoreo en 60 segundos.',
+    'lbl-mon-upload-vantage-note':'⚠ Credit Karma, Capital One CreditWise y servicios gratuitos similares usan VantageScore — no FICO. Los prestamistas usan FICO. Por favor suba un reporte basado en FICO.',
+    'lbl-mon-upload-btn':'Subir Reporte de Crédito en PDF',
     'lbl-upload':'Cargar Documentos','lbl-drop':'Haga clic para cargar o arrastre y suelte',
     'lbl-file-types':'PDF, JPG, PNG, DOC — Máximo 10MB por archivo',
     'lbl-checklist':'Lista de Documentos Requeridos',
@@ -1491,6 +1513,63 @@ const KLIERD_MON_TIERS={
   monitor_biz:{name:'KLIERD Business Monitor',price:169.99,kind:'business'}
 };
 
+// Client uploads their FICO credit report — Cecil's parser extracts scores + alerts
+async function klierdUploadCreditReport(file){
+  if(!file) return;
+  if(!currentApp){ alert('Please log in first.'); return; }
+  const cid = currentApp.trackingId || currentApp.id;
+  if(!cid){ alert('Client ID not found.'); return; }
+  const statusEl = document.getElementById('mon-upload-status');
+  const btnEl = document.getElementById('lbl-mon-upload-btn');
+  const isES = currentLang === 'es';
+
+  if(file.size > 18 * 1024 * 1024){
+    statusEl.style.display='block';
+    statusEl.style.color='var(--red)';
+    statusEl.innerHTML = isES ? '⚠ Archivo demasiado grande (máximo 18MB).' : '⚠ File too large (max 18MB).';
+    return;
+  }
+
+  statusEl.style.display='block';
+  statusEl.style.color='var(--muted)';
+  statusEl.innerHTML = isES ? '⏳ Leyendo su reporte con tecnología KLIERD...' : '⏳ KLIERD Smart Technology is reading your report...';
+  btnEl.disabled = true;
+  if(btnEl) btnEl.style.opacity = '0.6';
+
+  try {
+    const buf = await file.arrayBuffer();
+    const b64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+
+    const r = await fetch(API+'/api/monitoring/upload-report', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ client_id: cid, file_base64: b64, filename: file.name })
+    });
+    const j = await r.json();
+
+    if(j.success){
+      statusEl.style.color='var(--gold)';
+      const scoreText = (j.score_summary || []).join(', ');
+      statusEl.innerHTML = isES
+        ? `✓ Procesado. Puntajes encontrados: ${scoreText || j.scores_recorded}. ${j.alerts_recorded||0} alertas. Su portal se actualizará pronto.`
+        : `✓ Processed. Scores found: ${scoreText || j.scores_recorded}. ${j.alerts_recorded||0} alerts. Your portal will refresh shortly.`;
+      // Refresh monitoring data
+      setTimeout(()=>{ fetchMonitoringFromAPI().then(()=>updateMonitoringUI && updateMonitoringUI()); }, 2000);
+    } else {
+      statusEl.style.color='var(--red)';
+      let msg = j.error || (isES ? 'Falló el procesamiento.' : 'Processing failed.');
+      if(j.message) msg += '<br><span style="font-size:11px;color:var(--muted)">' + j.message + '</span>';
+      statusEl.innerHTML = '⚠ ' + msg;
+    }
+  } catch(e){
+    statusEl.style.color='var(--red)';
+    statusEl.innerHTML = (isES ? '⚠ Error de red: ' : '⚠ Network error: ') + e.message;
+  } finally {
+    btnEl.disabled = false;
+    if(btnEl) btnEl.style.opacity = '1';
+  }
+}
+
 // Fetch live monitoring state from Railway API + populate currentApp.monitoring_*
 async function fetchMonitoringFromAPI(){
   if(!currentApp) return;
@@ -1581,6 +1660,7 @@ function renderMonitoring(){
 
   const setupCard=document.getElementById('mon-setup-card');
   const planCard=document.getElementById('mon-plan-card');
+  const uploadCard=document.getElementById('mon-upload-card');
   const scoreCard=document.getElementById('mon-score-card');
   const readinessCard=document.getElementById('mon-readiness-card');
   const histCard=document.getElementById('mon-history-card');
@@ -1588,6 +1668,9 @@ function renderMonitoring(){
 
   const tierKey=currentApp.monitoring_tier;
   const isActive=!!currentApp.monitoring_active;
+
+  // Show upload card whenever monitoring is active (regardless of whether we have scores yet)
+  if(uploadCard) uploadCard.style.display = isActive ? 'block' : 'none';
 
   // Setup state — active but no tier yet
   if(!isActive || !tierKey){
