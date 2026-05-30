@@ -440,6 +440,35 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
       <div class="fld"><label>Date of Birth</label><input type="text" id="f-dob" placeholder="MM/DD/YYYY"/></div>
     </div>
 
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:12px;font-weight:700">🛡 KLIERD Workflow Status</div>
+    <div class="fg" style="margin-bottom:14px">
+      <div class="fld">
+        <label>KLIERD Assigned Email <span style="font-size:9px;color:var(--gold);font-weight:700">FOR LENDER RESPONSES</span></label>
+        <input type="email" id="f-klierd-email" placeholder="client123@klierd.com"/>
+        <div class="fhint">Use this email on all lender applications. Responses route into the KLIERD portal automatically.</div>
+      </div>
+      <div class="fld">
+        <label>Persona Identity Verification <span style="font-size:9px;color:var(--gold);font-weight:700">SSN OR ITIN FLOW</span></label>
+        <select id="f-verification-status">
+          <option value="pending">⏳ Pending — not yet started</option>
+          <option value="in_review">🔄 In Review — submitted, awaiting decision</option>
+          <option value="verified">✅ Verified — identity confirmed</option>
+          <option value="failed">❌ Failed — re-attempt needed</option>
+        </select>
+        <div class="fhint">Status auto-updates when client completes the Persona flow in their portal.</div>
+      </div>
+      <div class="fld">
+        <label>Broker Attribution <span style="font-size:9px;color:var(--gold);font-weight:700">IF REFERRED</span></label>
+        <input type="text" id="f-broker-code" placeholder="KLD-BROKER123" maxlength="20"/>
+        <div class="fhint">Broker code from /apply.html?ref= attribution. Earnings auto-credited to broker on funding.</div>
+      </div>
+      <div class="fld">
+        <label>Pre-Funding Services Requested <span style="font-size:9px;color:var(--muted);font-weight:700">FROM CLIENT PORTAL</span></label>
+        <textarea id="f-prefunding-requested" rows="2" placeholder="—" style="font-size:11px"></textarea>
+        <div class="fhint">Auto-populated when client taps "Request Quote" in portal. Comma-separated service IDs.</div>
+      </div>
+    </div>
+
     <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--red);margin-bottom:8px;font-weight:700">Sensitive IDs — Session Only (Never Transmitted)</div>
     <div class="sec-note"><strong>Security:</strong> SSN, EIN, DUNS stored only in your browser session. Clear browser data after each session or use incognito. Never transmit this file unencrypted. Comply with applicable data protection laws.</div>
     <div class="fg3" style="margin-bottom:8px">
@@ -3707,13 +3736,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
       <div class="fld" style="margin:0"><label>Email</label><input type="email" id="br-email" placeholder="broker@email.com"/></div>
       <div class="fld" style="margin:0"><label>Phone</label><input type="tel" id="br-phone" placeholder="(000) 000-0000"/></div>
       <div class="fld" style="margin:0"><label>Tier</label>
-        <select id="br-tier" onchange="document.getElementById('br-tier-detail').textContent=this.value==='white_label'?'$5,000 setup + $500/mo - custom markup up to 25%':'$2,500 setup + $500/mo - 5% commission, client pays 20% total'">
-          <option value="standard">Standard - $2,500 + $500/mo</option>
-          <option value="white_label">White Label - $5,000 + $500/mo</option>
+        <select id="br-tier" onchange="document.getElementById('br-tier-detail').textContent=this.value==='white_label'?'$5,000 setup + $500/mo · custom markup up to 25%':'$2,500 setup + $500/mo · 5% commission, client pays cap total'">
+          <option value="standard">Standard · $2,500 + $500/mo</option>
+          <option value="white_label">White Label · $5,000 + $500/mo</option>
         </select>
-        <div id="br-tier-detail" class="fhint">$2,500 setup + $500/mo - 5% commission, client pays 20% total</div>
+        <div id="br-tier-detail" class="fhint">$2,500 setup + $500/mo · 5% commission</div>
       </div>
-      <div class="fld" style="margin:0"><label>Fee Cap % (max 25)</label><input type="number" id="br-fee-cap" value="20" min="15" max="25"/><div class="fhint">Max % broker can charge on top of CBG 15%</div></div>
+      <div class="fld" style="margin:0"><label>Fee Cap % (max 25)</label><input type="number" id="br-fee-cap" value="20" min="15" max="25"/><div class="fhint">Max % broker can charge on top of KLIERD success fee</div></div>
     </div>
     <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:var(--rs);padding:10px 14px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.7">Broker Agreement required before activation. KLIERD not responsible for broker taxes. DRAFT - pending Melony Frank review.</div>
     <div style="display:flex;gap:8px"><button class="btn bg" onclick="addBroker()" style="flex:1">Add Broker</button><button class="btn bgh" onclick="document.getElementById('add-broker-form').style.display='none'">Cancel</button></div>
