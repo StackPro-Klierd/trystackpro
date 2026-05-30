@@ -1,0 +1,13 @@
+# Files in this list are NOT deployed to Vercel.
+# Add anything that should stay in git history but not serve publicly.
+
+# Legacy pre-v3.0 portal backups — kept in git for reference, not for serving
+_legacy/
+
+# Pre-merge snapshots
+_pre_v30_snapshot/
+
+# Local dev scratch
+*.bak
+*.swp
+.DS_Store
