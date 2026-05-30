@@ -346,6 +346,28 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <div class="welcome-body" id="welcome-body">—</div>
       </div>
 
+      <!-- YOUR ACTION PLAN — service-specific checklist that drives what client does next -->
+      <div class="card" id="action-plan-card">
+        <div class="card-title" id="lbl-action-plan">🎯 Your KLIERD Action Plan</div>
+        <div id="action-plan-body" style="font-size:13px;color:var(--dim);line-height:1.6"></div>
+      </div>
+
+      <!-- YOUR KLIERD EMAIL — assigned email for lender response routing -->
+      <div class="card" id="klierd-email-card" style="display:none">
+        <div class="card-title" id="lbl-klierd-email">📬 Your KLIERD Email Address</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-klierd-email-body">
+          When you apply for funding through KLIERD, use this email address on your applications. Responses route directly into your KLIERD portal so nothing gets lost.
+        </p>
+        <div style="background:var(--dark3);border:1px solid var(--gold);border-radius:var(--rs);padding:12px 16px;margin-top:10px;font-family:monospace;font-size:15px;color:var(--gold);word-break:break-all" id="klierd-email-value">—</div>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px" id="lbl-klierd-email-note">Coming soon — your dedicated email will be assigned once Cece's email-per-client routing is live.</p>
+      </div>
+
+      <!-- YOUR ANALYSIS — shows dispute opportunities + score summary -->
+      <div class="card" id="analysis-card" style="display:none">
+        <div class="card-title" id="lbl-analysis">🧠 Your KLIERD Smart Analysis</div>
+        <div id="analysis-body" style="font-size:13px;color:var(--dim);line-height:1.6"></div>
+      </div>
+
       <!-- PROGRESS BAR -->
       <div class="card">
         <div class="card-title" id="lbl-progress-bar">Your Progress</div>
@@ -967,6 +989,140 @@ function renderPortal(app){
   document.getElementById('ci-email').textContent = app.email || '—';
   document.getElementById('ci-phone').textContent = app.phone || '—';
   document.getElementById('ci-biz').textContent = app.bizName || app.businessName || (lang==='es' ? 'No aplica' : 'N/A');
+
+  // === YOUR KLIERD ACTION PLAN — service-specific next steps checklist ===
+  (function renderActionPlan(){
+    const services = (app.services || []).map(s => String(s).toLowerCase());
+    const isEs = lang === 'es';
+    const STEP_LIBRARY = {
+      monitoring: {
+        en: [
+          { icon:'📄', title:'Upload your most recent FICO credit report', body:'Go to the Monitoring tab and upload a PDF from myFICO, Experian.com, Discover Credit Scorecard, or your bank — must be FICO (not VantageScore) and under 30 days old.' },
+          { icon:'🔔', title:'Confirm alert preferences', body:'You will receive email and text alerts the moment your score changes or a new item appears on your file.' },
+          { icon:'📊', title:'Review your 3-bureau dashboard', body:'See Experian, TransUnion, and Equifax side by side with score history charts and KLIERD Smart Credit Intelligence signals.' },
+        ],
+        es: [
+          { icon:'📄', title:'Suba su reporte de crédito FICO más reciente', body:'Vaya a la pestaña Monitoreo y suba un PDF de myFICO, Experian.com, Discover Credit Scorecard, o su banco — debe ser FICO (no VantageScore) y de menos de 30 días.' },
+          { icon:'🔔', title:'Confirme sus preferencias de alertas', body:'Recibirá alertas por correo y mensaje en el momento que su puntaje cambie o aparezca un nuevo elemento en su archivo.' },
+          { icon:'📊', title:'Revise su panel de 3 burós', body:'Vea Experian, TransUnion y Equifax lado a lado con gráficos de historial y señales de KLIERD Smart Credit Intelligence.' },
+        ],
+      },
+      dispute: {
+        en: [
+          { icon:'✍️', title:'Sign your Dispute Resolution Services Agreement', body:'Check your email — Hami sent you the Agreement via DocuSign. Sign it to begin dispute work on your file.' },
+          { icon:'📄', title:'Upload your credit report', body:'Go to the Monitoring tab and upload a recent FICO credit report so KLIERD can identify your highest-leverage dispute opportunities.' },
+          { icon:'🧠', title:'Review your Smart Analysis', body:'Within minutes of upload, KLIERD ranks every disputable item by likely score lift and removal probability.' },
+          { icon:'📬', title:'Mail your dispute letters', body:'KLIERD generates each letter for you — you mail them from your address (FCRA requirement). Tracking lives in this portal.' },
+          { icon:'⏱️', title:'30 to 60 day window', body:'Most resolutions complete within 30–60 days; many finish sooner. Bureau responses route automatically to your file.' },
+        ],
+        es: [
+          { icon:'✍️', title:'Firme su Acuerdo de Resolución de Disputas', body:'Revise su correo — Hami le envió el Acuerdo vía DocuSign. Fírmelo para comenzar el trabajo de disputas.' },
+          { icon:'📄', title:'Suba su reporte de crédito', body:'Vaya a la pestaña Monitoreo y suba un reporte FICO reciente para que KLIERD identifique sus disputas de mayor impacto.' },
+          { icon:'🧠', title:'Revise su Smart Analysis', body:'Minutos después de subir, KLIERD clasifica cada elemento disputable por impacto probable y probabilidad de eliminación.' },
+          { icon:'📬', title:'Envíe sus cartas de disputa', body:'KLIERD genera cada carta — usted las envía desde su dirección (requisito FCRA). El seguimiento vive en este portal.' },
+          { icon:'⏱️', title:'Ventana de 30 a 60 días', body:'La mayoría de las resoluciones se completan en 30–60 días; muchas terminan antes.' },
+        ],
+      },
+      funding: {
+        en: [
+          { icon:'✍️', title:'Sign your Funding Engagement Letter', body:'Check your email for the engagement letter from Hami via DocuSign.' },
+          { icon:'🪪', title:'Upload your ID and income docs', body:'Go to the Documents tab and upload: driver license or passport, two most recent pay stubs (or W2 / 1099), and proof of address.' },
+          { icon:'💼', title:'Business clients: add your EIN docs', body:'If pursuing business funding, upload Articles of Organization, EIN letter, and last 3 months of business bank statements.' },
+          { icon:'🧠', title:'KLIERD Smart Technology builds your strategy', body:'Within 24 hours, your dedicated advisor reviews your profile and KLIERD ranks every lender by approval probability.' },
+          { icon:'🚀', title:'Approve and submit', body:'You approve the strategy in this portal. KLIERD submits the applications. Responses route to your KLIERD Email above.' },
+        ],
+        es: [
+          { icon:'✍️', title:'Firme su Carta de Compromiso de Financiamiento', body:'Revise su correo — Hami le envió la carta vía DocuSign.' },
+          { icon:'🪪', title:'Suba su identificación y comprobantes', body:'Vaya a la pestaña Documentos y suba: licencia o pasaporte, dos talones recientes (o W2 / 1099), y comprobante de domicilio.' },
+          { icon:'💼', title:'Clientes empresariales: agregue documentos de EIN', body:'Si busca financiamiento empresarial, suba Artículos de Organización, carta de EIN, y los últimos 3 meses de estados bancarios.' },
+          { icon:'🧠', title:'KLIERD Smart Technology construye su estrategia', body:'En 24 horas, su asesor dedicado revisa su perfil y KLIERD clasifica cada prestamista por probabilidad de aprobación.' },
+          { icon:'🚀', title:'Aprobar y enviar', body:'Usted aprueba la estrategia en este portal. KLIERD envía las solicitudes. Las respuestas se dirigen a su correo KLIERD arriba.' },
+        ],
+      },
+      card: {
+        en: [
+          { icon:'⏳', title:'KLIERD Card — coming soon', body:'You are early on the KLIERD Card waitlist. The secured and unsecured KLIERD Card builds your credit through monthly bureau tradeline reporting. We will notify you the moment it launches.' },
+        ],
+        es: [
+          { icon:'⏳', title:'KLIERD Card — pronto', body:'Está en la lista de espera de la KLIERD Card. La tarjeta asegurada y no asegurada construye su crédito con reportes mensuales a los burós. Le avisaremos en el momento del lanzamiento.' },
+        ],
+      },
+    };
+    let steps = [];
+    if (services.includes('dispute'))    steps = steps.concat(STEP_LIBRARY.dispute[isEs ? 'es' : 'en']);
+    if (services.includes('funding'))    steps = steps.concat(STEP_LIBRARY.funding[isEs ? 'es' : 'en']);
+    if (services.includes('monitoring')) steps = steps.concat(STEP_LIBRARY.monitoring[isEs ? 'es' : 'en']);
+    if (services.includes('card'))       steps = steps.concat(STEP_LIBRARY.card[isEs ? 'es' : 'en']);
+    if (steps.length === 0) {
+      steps = STEP_LIBRARY.monitoring[isEs ? 'es' : 'en'];
+    }
+    const body = document.getElementById('action-plan-body');
+    if (body) {
+      body.innerHTML = '<ol style="margin:0;padding-left:0;list-style:none">' + steps.map((s,i) => `
+        <li style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+          <div style="flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--dark3);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px">${s.icon}</div>
+          <div>
+            <div style="font-weight:700;color:var(--text);font-size:13px;margin-bottom:2px">${i+1}. ${s.title}</div>
+            <div style="font-size:12px;color:var(--dim);line-height:1.55">${s.body}</div>
+          </div>
+        </li>
+      `).join('') + '</ol>';
+    }
+
+    // KLIERD Assigned Email — show ONLY when client has funding service (this is where lender responses route)
+    const emailCard = document.getElementById('klierd-email-card');
+    if (emailCard) {
+      if (services.includes('funding')) {
+        emailCard.style.display = 'block';
+        // Show assigned email if it exists in app payload; otherwise show "coming soon" placeholder
+        const assignedEmail = app.assigned_email || app.klierd_email || '';
+        const val = document.getElementById('klierd-email-value');
+        const note = document.getElementById('lbl-klierd-email-note');
+        if (val) val.textContent = assignedEmail || (isEs ? '— Pendiente de asignación —' : '— Pending assignment —');
+        if (note) note.textContent = assignedEmail
+          ? (isEs ? 'Usa este correo en todas tus solicitudes. Las respuestas llegan aquí automáticamente.' : 'Use this email on all your applications. Responses arrive here automatically.')
+          : (isEs ? 'Pronto — su correo dedicado será asignado cuando la asignación de correos por cliente esté activa.' : 'Coming soon — your dedicated email will be assigned once the per-client email routing is live.');
+      } else {
+        emailCard.style.display = 'none';
+      }
+    }
+
+    // KLIERD Smart Analysis — shows dispute opportunities if available in app.dispute_opportunities or fetched separately
+    const analysisCard = document.getElementById('analysis-card');
+    const analysisBody = document.getElementById('analysis-body');
+    if (analysisCard && analysisBody) {
+      const opps = app.dispute_opportunities || null;
+      const scoresLatest = app.scores_latest || null;
+      const hasAny = (opps && opps.count > 0) || scoresLatest;
+      if (hasAny) {
+        analysisCard.style.display = 'block';
+        let html = '';
+        if (scoresLatest) {
+          html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">';
+          ['eq','ex','tu'].forEach(b => {
+            const score = scoresLatest[b] || '—';
+            const label = b === 'eq' ? 'Equifax' : (b === 'ex' ? 'Experian' : 'TransUnion');
+            html += `<div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px;text-align:center"><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">${label}</div><div style="font-size:22px;font-weight:700;color:var(--gold);margin-top:4px">${score}</div></div>`;
+          });
+          html += '</div>';
+        }
+        if (opps && opps.count > 0) {
+          html += `<div style="font-weight:700;color:var(--text);font-size:13px;margin-bottom:6px">${isEs ? 'Oportunidades de disputa identificadas:' : 'Dispute opportunities identified:'} <span style="color:var(--gold)">${opps.count}</span></div>`;
+          html += '<ul style="margin:0;padding-left:18px;font-size:12px;color:var(--dim)">';
+          (opps.top_3 || []).forEach(o => {
+            const t = o.item_type || o.type || 'item';
+            const tpl = o.template || '';
+            html += `<li style="margin-bottom:4px"><strong style="color:var(--text)">${t}</strong>${tpl ? ' — ' + tpl : ''}</li>`;
+          });
+          html += '</ul>';
+          html += `<p style="font-size:11px;color:var(--muted);margin-top:10px">${isEs ? 'KLIERD genera cada carta de disputa para que usted las envíe (requisito FCRA).' : 'KLIERD generates each dispute letter for you to mail (FCRA requirement).'}</p>`;
+        }
+        analysisBody.innerHTML = html || `<p style="font-size:13px;color:var(--dim)">${isEs ? 'Suba su reporte de crédito para ver su análisis.' : 'Upload your credit report to see your analysis.'}</p>`;
+      } else {
+        analysisCard.style.display = 'none';
+      }
+    }
+  })();
 
   // Timeline
   const stepsEN=[
