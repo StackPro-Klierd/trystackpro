@@ -368,6 +368,24 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <div id="analysis-body" style="font-size:13px;color:var(--dim);line-height:1.6"></div>
       </div>
 
+      <!-- PRE-FUNDING SERVICES — system recommends based on analysis, client chooses, each invoiced separately -->
+      <div class="card" id="prefunding-card" style="display:none">
+        <div class="card-title" id="lbl-prefunding">⚡ Recommended Services</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:12px" id="lbl-prefunding-intro">
+          Based on your analysis, these services strengthen your file before funding submissions. Each is invoiced separately and paid before service begins.
+        </p>
+        <div id="prefunding-list" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+
+      <!-- SUBMISSIONS STATUS — anonymized status timeline. NO lender names until decisions return. -->
+      <div class="card" id="submissions-card" style="display:none">
+        <div class="card-title" id="lbl-submissions">🚀 Your Submissions</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:12px" id="lbl-submissions-intro">
+          Real-time tracking of your funding submissions. Lender details are confidential until decisions return.
+        </p>
+        <div id="submissions-list" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+
       <!-- PROGRESS BAR -->
       <div class="card">
         <div class="card-title" id="lbl-progress-bar">Your Progress</div>
@@ -1123,6 +1141,158 @@ function renderPortal(app){
       }
     }
   })();
+
+  // PRE-FUNDING SERVICES — render recommended services by lane (Personal/Business)
+  // System recommends, client chooses, each invoiced separately, fixed fee paid before service begins
+  (function renderPreFunding(){
+    const isEs = lang === 'es';
+    const lane = (app.lane || app.funding_type || '').toLowerCase();
+    const services = (app.services || []).map(s => String(s).toLowerCase());
+    // Show for funding clients OR clients with both personal+business needs
+    const showCard = services.includes('funding') || lane === 'personal' || lane === 'business' || lane === 'both';
+    const card = document.getElementById('prefunding-card');
+    const list = document.getElementById('prefunding-list');
+    if (!card || !list) return;
+    if (!showCard) { card.style.display = 'none'; return; }
+
+    const PREFUNDING = {
+      personal: [
+        { id:'au_tradelines',  icon:'💳', en:{t:'Authorized User Tradelines',          d:'Be added as authorized user on seasoned high-limit accounts to lift your score before applications.'},
+                                          es:{t:'Tradelines como Usuario Autorizado',     d:'Sea agregado como usuario autorizado en cuentas establecidas con límites altos para subir su puntaje antes de aplicar.'} },
+        { id:'dispute_resolution', icon:'⚖️', en:{t:'Dispute Resolution Services',     d:'KLIERD identifies and challenges every inaccurate item on your credit file. The platform runs the full workflow — classification, packets, certified mail, response tracking.'},
+                                              es:{t:'Servicios de Resolución de Disputas', d:'KLIERD identifica y desafía cada elemento inexacto en su archivo. La plataforma ejecuta el flujo completo — clasificación, paquetes, correo certificado, seguimiento de respuestas.'} },
+        { id:'monitoring',     icon:'🛡️', en:{t:'Credit Monitoring Activation',       d:'3-bureau monitoring with real-time alerts. Detect changes the moment they happen.'},
+                                          es:{t:'Activación de Monitoreo de Crédito',     d:'Monitoreo de 3 burós con alertas en tiempo real. Detecte cambios al instante.'} },
+        { id:'address_verify', icon:'📍', en:{t:'Address Verification',                 d:'Confirm your file address matches across all 3 bureaus — critical for lender approvals.'},
+                                          es:{t:'Verificación de Domicilio',              d:'Confirme que su domicilio coincide en los 3 burós — crítico para aprobaciones de prestamistas.'} },
+      ],
+      business: [
+        { id:'biz_tradelines', icon:'💳', en:{t:'Business Tradelines',                  d:'Build business credit through verified Net-30 vendors and revolving tradelines that report to D&B, Experian Business, and Equifax Business.'},
+                                          es:{t:'Tradelines Empresariales',              d:'Construya crédito empresarial con vendedores Net-30 verificados y tradelines que reportan a D&B, Experian Business y Equifax Business.'} },
+        { id:'biz_compliance', icon:'🏢', en:{t:'Business Compliance Setup',            d:'Phone, email, website, virtual office — KLIERD sets up everything lenders verify, for a fixed fee.'},
+                                          es:{t:'Configuración de Cumplimiento Empresarial', d:'Teléfono, correo, sitio web, oficina virtual — KLIERD configura todo lo que los prestamistas verifican, por una tarifa fija.'} },
+        { id:'tax_prep',       icon:'📋', en:{t:'Tax Preparation',                      d:'Bring filings current — required for most business funding products.'},
+                                          es:{t:'Preparación de Impuestos',              d:'Ponga al día sus declaraciones — requerido para la mayoría de productos de financiamiento empresarial.'} },
+        { id:'biz_eval',       icon:'🧠', en:{t:'Business Evaluation',                  d:'Full readiness review: SOS, NAV, UCC, D&B, financials — every blocker identified before submission.'},
+                                          es:{t:'Evaluación Empresarial',                d:'Revisión completa de preparación: SOS, NAV, UCC, D&B, finanzas — cada obstáculo identificado antes del envío.'} },
+        { id:'shelf_corp',     icon:'🏛️', en:{t:'Shelf Corporation',                    d:'Acquire an aged, seasoned shelf corporation for premium business funding access.'},
+                                          es:{t:'Corporación de Estante',                d:'Adquiera una corporación de estante establecida para acceso a financiamiento empresarial premium.'} },
+        { id:'biz_monitoring', icon:'🛡️', en:{t:'Business Credit Monitoring',          d:'Personal + business monitoring with real-time alerts across all bureaus.'},
+                                          es:{t:'Monitoreo de Crédito Empresarial',      d:'Monitoreo personal + empresarial con alertas en tiempo real en todos los burós.'} },
+      ],
+    };
+
+    const showPersonal = lane === 'personal' || lane === 'both' || services.includes('funding');
+    const showBusiness = lane === 'business' || lane === 'both';
+    const items = [];
+    if (showPersonal) PREFUNDING.personal.forEach(s => items.push({ ...s, laneTag: isEs ? 'Personal' : 'Personal' }));
+    if (showBusiness) PREFUNDING.business.forEach(s => items.push({ ...s, laneTag: isEs ? 'Empresarial' : 'Business' }));
+
+    const requestedSet = new Set((app.prefunding_requested || []).map(x => String(x)));
+    const ctaReq = isEs ? 'Solicitar Cotización' : 'Request Quote';
+    const ctaRequested = isEs ? '✓ Solicitado' : '✓ Requested';
+    const feeNote = isEs ? 'Tarifa mostrada al confirmar' : 'Fee shown on quote';
+
+    list.innerHTML = items.map(s => {
+      const copy = s[isEs ? 'es' : 'en'];
+      const reqd = requestedSet.has(s.id);
+      return `
+        <div style="display:flex;gap:12px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);align-items:flex-start">
+          <div style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--dark2);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px">${s.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px">
+              <span style="font-weight:700;color:var(--text);font-size:13px">${copy.t}</span>
+              <span style="font-size:9px;color:var(--gold);background:var(--dark2);border:1px solid var(--gold);border-radius:999px;padding:2px 8px;letter-spacing:0.5px;text-transform:uppercase">${s.laneTag}</span>
+            </div>
+            <div style="font-size:12px;color:var(--dim);line-height:1.55;margin-bottom:8px">${copy.d}</div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <span style="font-size:10px;color:var(--muted)">${feeNote}</span>
+              <button onclick="requestPreFunding('${s.id}', this)" ${reqd ? 'disabled' : ''} style="background:${reqd?'var(--dark2)':'var(--gold)'};color:${reqd?'var(--muted)':'#000'};border:none;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:${reqd?'default':'pointer'};letter-spacing:0.3px;text-transform:uppercase">${reqd ? ctaRequested : ctaReq}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    card.style.display = 'block';
+  })();
+
+  // SUBMISSIONS STATUS — anonymized status timeline. NO lender names until decisions return.
+  (function renderSubmissions(){
+    const isEs = lang === 'es';
+    const submissions = Array.isArray(app.submissions) ? app.submissions : [];
+    const card = document.getElementById('submissions-card');
+    const list = document.getElementById('submissions-list');
+    if (!card || !list) return;
+    if (submissions.length === 0) { card.style.display = 'none'; return; }
+
+    const STATUS = {
+      submitted:  { icon:'✅', en:'Submission Success', es:'Envío Exitoso',     color:'var(--green)' },
+      pending:    { icon:'⏳', en:'Pending',           es:'Pendiente',           color:'var(--gold)'  },
+      processing: { icon:'🔄', en:'Processing',        es:'En Proceso',          color:'var(--gold)'  },
+      approved:   { icon:'✅', en:'Approved',          es:'Aprobado',            color:'var(--green)' },
+      declined:   { icon:'❌', en:'Declined',          es:'Rechazado',           color:'#E74C3C'      },
+    };
+
+    list.innerHTML = submissions.map(s => {
+      const st = STATUS[String(s.status||'').toLowerCase()] || STATUS.pending;
+      const label = isEs ? st.es : st.en;
+      // Pre-decision: NO lender name. Post-decision (approved/declined): show lender + amount.
+      const isDecided = s.status === 'approved' || s.status === 'declined';
+      const ref = s.ref_id || s.id || '—';
+      const submittedAt = s.submitted_at ? new Date(s.submitted_at).toLocaleDateString() : '—';
+      let detail = '';
+      if (isDecided) {
+        const lender = s.lender_name || (isEs ? 'Detalles pendientes' : 'Details pending');
+        const amount = s.approved_amount ? '$' + Number(s.approved_amount).toLocaleString() : '';
+        detail = `
+          <div style="font-size:12px;color:var(--text);margin-top:4px">
+            <strong>${lender}</strong>${amount ? ' — <span style="color:var(--gold);font-weight:700">' + amount + '</span>' : ''}
+          </div>
+        `;
+      } else {
+        detail = `
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;font-style:italic">
+            ${isEs ? 'Detalles del prestamista visibles cuando regrese la decisión' : 'Lender details visible when decision returns'}
+          </div>
+        `;
+      }
+      return `
+        <div style="display:flex;gap:12px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);align-items:flex-start">
+          <div style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--dark2);border:2px solid ${st.color};display:flex;align-items:center;justify-content:center;font-size:18px">${st.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:2px">
+              <span style="font-weight:700;color:${st.color};font-size:13px">${label}</span>
+              <span style="font-size:10px;color:var(--muted)">${isEs ? 'Ref' : 'Ref'} #${ref}</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted)">${isEs ? 'Enviado' : 'Submitted'}: ${submittedAt}</div>
+            ${detail}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    card.style.display = 'block';
+  })();
+
+  // Pre-funding request handler — stub that calls backend (or shows confirmation in Phase 1)
+  window.requestPreFunding = async function(serviceId, btn){
+    const isEs = lang === 'es';
+    const trackingId = (app.tracking_id || '').toUpperCase();
+    if (!trackingId) return;
+    btn.disabled = true;
+    btn.style.background = 'var(--dark2)';
+    btn.style.color = 'var(--muted)';
+    btn.style.cursor = 'default';
+    btn.textContent = isEs ? '✓ Solicitado' : '✓ Requested';
+    try {
+      await fetch((window.API_BASE||'') + '/api/clients/' + encodeURIComponent(trackingId) + '/prefunding/request', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ service_id: serviceId })
+      });
+    } catch(e) { /* Phase 1: UI confirmation only; backend wires in next pass */ }
+  };
 
   // Timeline
   const stepsEN=[
