@@ -8806,7 +8806,7 @@ function markFunded(clientId){
   const inv={id:invId,clientId:c.id,clientName:(c.first||'')+' '+(c.last||''),clientEmail:c.email||'',type:'post_funding',service:pct+'% Success Fee + $500 Technology Fee',successFee,techFee,amount:totalDue,fundedAmount:amt,payMethod:c.allowCreditCard?'cc_enabled':'ach',status:'pending',note:'Auto-generated on funding.',created:new Date().toLocaleString(),paid:null,reminders:[],reminderSchedule:[1,3,7]};
   const allInv=getInvoices();allInv.unshift(inv);saveInvoices(allInv);
   scheduleInvoiceReminders(inv);
-  sendSystemEmail(c.email,'Action Required: Payment Due - KLIERD','Hi '+c.first+',\n\nCongratulations your funding of $'+amt.toLocaleString()+' has been approved!\n\nPayment due: $'+totalDue.toLocaleString()+'\n- '+pct+'% Success Fee: $'+successFee.toLocaleString()+'\n- Technology Fee: $'+techFee.toLocaleString()+'\n\nLog into your portal to pay:\n'+window.location.origin+'/client-portal.html\n\nYou are KLIERD.\n- The KLIERD Team');
+  sendSystemEmail(c.email,'Action Required: Payment Due - KLIERD','Hi '+c.first+',\n\nCongratulations your funding of $'+amt.toLocaleString()+' has been approved!\n\nPayment due: $'+totalDue.toLocaleString()+'\n- '+pct+'% Success Fee: $'+successFee.toLocaleString()+'\n- Technology Fee: $'+techFee.toLocaleString()+'\n\nLog into your portal to pay:\n'+window.location.origin+'/client-portal.html\n\nYou are now KLIERed.\n- The KLIERD Team');
   sendSystemSMS(c.phone,'Hi '+c.first+'! Funding of $'+amt.toLocaleString()+' approved! Payment of $'+totalDue.toLocaleString()+' due. Pay in portal: '+window.location.origin+'/client-portal.html -KLIERD');
   addStaffNoteQuick('status','Client FUNDED $'+amt.toLocaleString()+' - Invoice '+invId+' $'+totalDue.toLocaleString()+' due - Email+SMS sent');
   saveAll();renderPip();refreshInvPanel();renderModalTab('funding');
@@ -12056,7 +12056,7 @@ function triggerFundingEngine(clientId){
   sendSystemEmail(
     c.email,
     'Your Funding is Underway — KLIERD',
-    'Hi '+c.first+',\n\nGreat news — your payment has been received and KLIERD Intelligent Funding Technology is now processing your funding.\n\nYou will receive updates as your applications are submitted and decisions come in. Please log into your portal to track your status.\n\n'+window.location.origin+'/client-portal.html\n\nYou are KLIERD.\n— The KLIERD Team'
+    'Hi '+c.first+',\n\nGreat news — your payment has been received and KLIERD Intelligent Funding Technology is now processing your funding.\n\nYou will receive updates as your applications are submitted and decisions come in. Please log into your portal to track your status.\n\n'+window.location.origin+'/client-portal.html\n\nYou are now KLIERed.\n— The KLIERD Team'
   );
   sendSystemSMS(
     c.phone,
