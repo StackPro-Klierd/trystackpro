@@ -368,6 +368,24 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <div id="analysis-body" style="font-size:13px;color:var(--dim);line-height:1.6"></div>
       </div>
 
+      <!-- IDENTITY VERIFICATION — Persona (withpersona.com). Two flows: SSN (gov ID + selfie + liveness) and ITIN (passport + selfie + liveness, no SSN field). -->
+      <div class="card" id="verify-card" style="display:none;border:1px solid var(--gold);background:linear-gradient(180deg,var(--dark2) 0%,rgba(201,168,76,0.04) 100%)">
+        <div class="card-title" id="lbl-verify">🛡 Identity Verification</div>
+        <div id="verify-body" style="font-size:13px;color:var(--dim);line-height:1.6"></div>
+        <div id="verify-consent" style="display:none;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-top:14px">
+          <p style="font-size:12px;color:var(--text);line-height:1.6;margin-bottom:10px" id="lbl-verify-consent-body">
+            I consent to KLIERD verifying my identity through Persona (withpersona.com), including capturing a government-issued ID, a live selfie with liveness check, and an immutable audit record of this session (timestamp, IP, device, and document images). I understand this is required to proceed with my application.
+          </p>
+          <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer">
+            <input type="checkbox" id="verify-consent-cb" style="margin-top:3px;accent-color:var(--gold)"/>
+            <span style="font-size:12px;color:var(--text);line-height:1.5" id="lbl-verify-consent-check">I have read and agree to the identity verification consent above.</span>
+          </label>
+          <button onclick="launchPersona()" id="btn-launch-persona" disabled style="margin-top:12px;background:var(--gold);color:#000;border:none;border-radius:6px;padding:10px 18px;font-size:12px;font-weight:700;cursor:not-allowed;letter-spacing:0.5px;text-transform:uppercase;opacity:0.5">
+            Start Verification →
+          </button>
+        </div>
+      </div>
+
       <!-- PRE-FUNDING SERVICES — system recommends based on analysis, client chooses, each invoiced separately -->
       <div class="card" id="prefunding-card" style="display:none">
         <div class="card-title" id="lbl-prefunding">⚡ Recommended Services</div>
@@ -1274,6 +1292,110 @@ function renderPortal(app){
 
     card.style.display = 'block';
   })();
+
+  // IDENTITY VERIFICATION — Persona scaffold (Teka 2026-05-30 spec lock)
+  // Two flows: SSN (government ID + selfie + liveness) | ITIN (passport + selfie + liveness, no SSN field)
+  (function renderVerification(){
+    const isEs = lang === 'es';
+    const idType = (app.is_itin || app.identity_type === 'itin') ? 'itin' : 'ssn';
+    const status = (app.verification_status || app.persona_status || 'pending').toLowerCase();
+    const card = document.getElementById('verify-card');
+    const body = document.getElementById('verify-body');
+    const consent = document.getElementById('verify-consent');
+    if (!card || !body) return;
+
+    // Only show card if verification is not yet complete
+    if (status === 'verified' || status === 'approved') {
+      body.innerHTML = `
+        <div style="display:flex;gap:12px;align-items:center;padding:12px;background:rgba(39,174,96,0.08);border:1px solid var(--green);border-radius:var(--rs)">
+          <div style="font-size:28px">✅</div>
+          <div>
+            <div style="font-weight:700;color:var(--green);font-size:14px">${isEs ? 'Identidad Verificada' : 'Identity Verified'}</div>
+            <div style="font-size:11px;color:var(--dim);margin-top:2px">${isEs ? 'Su identidad fue verificada con éxito.' : 'Your identity has been successfully verified.'}</div>
+          </div>
+        </div>
+      `;
+      card.style.display = 'block';
+      return;
+    }
+
+    if (status === 'in_review' || status === 'review') {
+      body.innerHTML = `
+        <div style="display:flex;gap:12px;align-items:center;padding:12px;background:rgba(230,126,34,0.08);border:1px solid var(--orange);border-radius:var(--rs)">
+          <div style="font-size:28px">⏳</div>
+          <div>
+            <div style="font-weight:700;color:var(--orange);font-size:14px">${isEs ? 'Verificación en Revisión' : 'Verification in Review'}</div>
+            <div style="font-size:11px;color:var(--dim);margin-top:2px">${isEs ? 'Su envío está siendo revisado. Le notificaremos en 24 horas.' : 'Your submission is being reviewed. We will notify you within 24 hours.'}</div>
+          </div>
+        </div>
+      `;
+      card.style.display = 'block';
+      return;
+    }
+
+    // Pending — show flow-specific instructions + consent
+    const flowDocs = idType === 'itin'
+      ? (isEs ? ['Pasaporte vigente','Selfie en vivo con verificación de vida'] : ['Valid passport','Live selfie with liveness check'])
+      : (isEs ? ['Licencia de conducir o identificación estatal (frente y reverso)','Selfie en vivo con verificación de vida'] : ['Driver license or state ID (front and back)','Live selfie with liveness check']);
+
+    const flowLabel = idType === 'itin'
+      ? (isEs ? 'ITIN — Verificación con Pasaporte' : 'ITIN — Passport Verification')
+      : (isEs ? 'SSN — Verificación con Identificación' : 'SSN — Government ID Verification');
+
+    body.innerHTML = `
+      <div style="font-weight:700;color:var(--text);font-size:14px;margin-bottom:6px">${isEs ? 'Verifique su identidad para continuar' : 'Verify your identity to proceed'}</div>
+      <p style="font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:12px">${isEs ? 'KLIERD usa Persona, una plataforma líder de verificación de identidad, para confirmar su identidad de forma segura. Toda la sesión se registra de forma inmutable para cumplimiento y auditoría.' : 'KLIERD uses Persona, an industry-leading identity verification platform, to securely confirm your identity. The full session is recorded immutably for compliance and audit.'}</p>
+      <div style="background:var(--dark3);border:1px solid var(--gold);border-radius:var(--rs);padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:700;margin-bottom:6px">${isEs ? 'Su flujo' : 'Your flow'}</div>
+        <div style="font-weight:700;color:var(--text);font-size:13px;margin-bottom:8px">${flowLabel}</div>
+        <ul style="margin:0;padding-left:18px;font-size:12px;color:var(--dim);line-height:1.7">
+          ${flowDocs.map(d => `<li>${d}</li>`).join('')}
+        </ul>
+      </div>
+      <p style="font-size:11px;color:var(--muted);line-height:1.5">${isEs ? '🔒 Cifrado de extremo a extremo. La sesión es registrada de forma inmutable (marca de tiempo, IP, dispositivo, imágenes de documentos).' : '🔒 End-to-end encrypted. Session is recorded immutably (timestamp, IP, device, document images).'}</p>
+    `;
+    if (consent) consent.style.display = 'block';
+    card.style.display = 'block';
+  })();
+
+  // E-sign consent gating — only enable Start button when checkbox is checked
+  document.addEventListener('change', function(e){
+    if (e.target && e.target.id === 'verify-consent-cb') {
+      const btn = document.getElementById('btn-launch-persona');
+      if (btn) {
+        btn.disabled = !e.target.checked;
+        btn.style.opacity = e.target.checked ? '1' : '0.5';
+        btn.style.cursor = e.target.checked ? 'pointer' : 'not-allowed';
+      }
+    }
+  });
+
+  // Launch Persona flow — calls backend to create Inquiry, redirects to Persona
+  window.launchPersona = async function(){
+    const trackingId = (app.tracking_id || '').toUpperCase();
+    if (!trackingId) return;
+    const idType = (app.is_itin || app.identity_type === 'itin') ? 'itin' : 'ssn';
+    const btn = document.getElementById('btn-launch-persona');
+    btn.disabled = true;
+    btn.textContent = lang === 'es' ? 'Iniciando…' : 'Starting…';
+    try {
+      const r = await fetch((window.API_BASE||'') + '/api/persona/init', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ tracking_id: trackingId, flow: idType, consent_timestamp: new Date().toISOString() })
+      });
+      if (r.ok) {
+        const data = await r.json();
+        if (data.inquiry_url) { window.location.href = data.inquiry_url; return; }
+      }
+      btn.disabled = false;
+      btn.textContent = lang === 'es' ? 'Reintentar Verificación →' : 'Retry Verification →';
+      alert(lang === 'es' ? 'No se pudo iniciar la verificación. Por favor intente de nuevo o contacte a KLIERD.' : 'Could not start verification. Please try again or contact KLIERD.');
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = lang === 'es' ? 'Reintentar Verificación →' : 'Retry Verification →';
+    }
+  };
 
   // Pre-funding request handler — stub that calls backend (or shows confirmation in Phase 1)
   window.requestPreFunding = async function(serviceId, btn){
