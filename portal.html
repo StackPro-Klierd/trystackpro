@@ -3075,7 +3075,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
         <div class="fld" style="margin:0"><label>Full Name</label><input type="text" id="admin-new-name" placeholder="Maria Rodriguez"/></div>
         <div class="fld" style="margin:0"><label>Role</label>
           <select id="admin-new-role" style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:7px 9px;color:var(--text);font-size:12px;font-family:inherit;outline:none">
-            <option value="advisor">Advisor</option>
+            <option value="advisor">Funding Manager</option>
             <option value="admin">Admin</option>
             <option value="owner">Owner</option>
           </select>
@@ -3088,12 +3088,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
         <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:6px">Role Permissions</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
           <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:9px 11px">
-            <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px">Advisor</div>
+            <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px">Funding Manager</div>
             <div style="font-size:10px;color:var(--muted);line-height:1.65">View clients, add notes, run decisions, use ITIN portal, access funding tools & resources. Cannot see SSN, fees, or settings.</div>
           </div>
           <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:9px 11px">
             <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px">Admin</div>
-            <div style="font-size:10px;color:var(--muted);line-height:1.65">Everything Advisor can do + view SSN/EIN, send invoices, generate agreements, manage monitoring logins. Cannot access Settings or fee data.</div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.65">Everything Funding Manager can do + view SSN/EIN, send invoices, generate agreements, manage monitoring logins. Cannot access Settings or fee data.</div>
           </div>
           <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:9px 11px">
             <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:4px">Owner</div>
@@ -3303,7 +3303,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
             <div class="fld" style="margin:0">
               <label>Role</label>
               <select id="new-staff-role">
-                <option value="advisor">Advisor</option>
+                <option value="advisor">Funding Manager</option>
                 <option value="admin">Admin</option>
                 <option value="owner">Owner</option>
               </select>
@@ -4456,7 +4456,7 @@ let clients = [
     invoices:[{id:9004, service:'Business Funding Package', amount:'2997', due:'05/12/26', date:'05/08/26', status:'paid', processor:'Authorize.net'}],
     notes:[
       {id:106, type:'update', txt:'3yr LLC, $85K/yr revenue, excellent bank history. SOS verified GA — Active. D&B PAYDEX 78 (target 80+). FICO SBSS 155 (need 160+ for SBA). 2 more Net-30 vendors needed to push PAYDEX, then SBA Express.', staff:'Teka Cole', ts:'05/08/26 10:00 AM'},
-      {id:107, type:'call', txt:'Uline and Quill Net-30 accounts opened. Report to D&B in 30-45 days. Chase Business balance $22K. Bluevine LOC submitted — $75K requested.', staff:'Advisor', ts:'05/09/26 11:00 AM'},
+      {id:107, type:'call', txt:'Uline and Quill Net-30 accounts opened. Report to D&B in 30-45 days. Chase Business balance $22K. Bluevine LOC submitted — $75K requested.', staff:'Funding Manager', ts:'05/09/26 11:00 AM'},
       {id:108, type:'status', txt:'Bluevine LOC application submitted. Fundbox $25K submitted as backup. Client notified — decision expected 1-2 business days.', staff:'Teka Cole', ts:'05/10/26 9:30 AM'},
     ],
     reports:[], verify:{sosChecked:true, idVerified:true, uccStatus:'Clean'}, followup:'2026-05-15',
@@ -4474,7 +4474,7 @@ let clients = [
     invoices:[],
     notes:[
       {id:109, type:'status', txt:'Score below 580 threshold. 7 negative items: 4 collections, 2 late payments, 1 charge-off across all bureaus. IRS debt $3,200 unresolved. Recommended Credit Enhancement package — 90-day cleanup before any card applications.', staff:'Teka Cole', ts:'05/10/26 1:00 PM'},
-      {id:110, type:'issue', txt:'Client hesitant on CE fee. Explained that stacking with this profile = all declines + score damage from hard inquiries. Sent follow-up email with explanation. Will check in 2 weeks.', staff:'Advisor', ts:'05/10/26 2:30 PM'},
+      {id:110, type:'issue', txt:'Client hesitant on CE fee. Explained that stacking with this profile = all declines + score damage from hard inquiries. Sent follow-up email with explanation. Will check in 2 weeks.', staff:'Funding Manager', ts:'05/10/26 2:30 PM'},
     ],
     reports:[], verify:{sosChecked:false, idVerified:true, uccStatus:''}, followup:'2026-05-24',
   },
@@ -4551,7 +4551,7 @@ function routeForClient(client, candidates) {
       if (excludedSet.has(nLower) || excludedSet.has(bLower)) return false;
     }
     // MIN SCORE: don't apply to lenders the client doesn't qualify for (would deny).
-    // override_min (advisor-set, empirical) wins over published min.
+    // override_min (Funding Manager-set, empirical) wins over published min.
     const effectiveMin = item.override_min || item.min;
     if (effectiveMin && bestScore > 0 && bestScore < effectiveMin) return false;
     // INQUIRY SENSITIVITY (Teka 2026-05-27): hard pulls in last 6 months reduce
@@ -4587,10 +4587,10 @@ function routeForClient(client, candidates) {
     // Business, Wells Business LOC) may request tax returns + bank statements at
     // underwriting. We don't EXCLUDE them — staff sees the warning and decides.
     // But: if client.docs_ready is set and the lender's required docs aren't all
-    // present, the advisor gets a warning at submission time (handled in UI layer).
+    // present, the system flags a warning at submission time (handled in UI layer).
     // Engine does no filtering here — sorting + UI warning are separate concerns.
     // TIER APPROPRIATENESS (Teka 2026-05-27, refined): exclude only OBVIOUS waste,
-    // keep options for approvals. Score-tier is a PRIORITY signal (the advisor or
+    // keep options for approvals. Score-tier is a PRIORITY signal (IFT engine or
     // auto-submit engine should TRY Tier 1 first for high-score clients), but we
     // don't lock high-score clients out of Tier 2 — sometimes Tier 2 approves more
     // reliably than Tier 1 and the client wants the options.
@@ -4632,8 +4632,8 @@ function routeForClient(client, candidates) {
 }
 
 // ═══════════════════════════════════════════════
-//  EXCLUDED LENDERS — helper for advisors to mark "client already has this"
-//  Phase 1: advisor enters lender names manually in client modal
+//  EXCLUDED LENDERS — helper for staff to mark "client already has this"
+//  Phase 1: staff enters lender names manually in client modal
 //  Phase 2: auto-detect from uploaded credit report parse
 // ═══════════════════════════════════════════════
 function addExcludedLender(clientId, lenderNameOrBank) {
@@ -4989,7 +4989,7 @@ function openModal(id){
   const smsBtn   = document.getElementById('m-btn-sms');
   if(emailBtn) emailBtn.href = email ? `mailto:${email}?subject=KLIERD%20Funding%20Update%20-%20${name}` : '#';
   if(callBtn)  callBtn.href  = phone ? `tel:+1${phone}` : '#';
-  if(smsBtn)   smsBtn.href   = phone ? `sms:+1${phone}?body=Hi%20${encodeURIComponent(c.first)}%2C%20this%20is%20your%20KLIERD%20funding%20advisor.%20` : '#';
+  if(smsBtn)   smsBtn.href   = phone ? `sms:+1${phone}?body=Hi%20${encodeURIComponent(c.first)}%2C%20this%20is%20your%20KLIERD%20Funding%20Manager.%20` : '#';
   if(emailBtn) emailBtn.style.opacity = email ? '1' : '0.35';
   if(callBtn)  callBtn.style.opacity  = phone ? '1' : '0.35';
   if(smsBtn)   smsBtn.style.opacity   = phone ? '1' : '0.35';
@@ -5095,7 +5095,7 @@ function renderModalTab(tab){
           const tagLabel = {update:'Update',call:'Call',doc:'Document',status:'Status Change',issue:'Issue'}[n.type]||'Update';
           return `<div class="note-bubble ${n.staff===getStaffName()?'self':''}">
             <div class="note-meta">
-              <span><span class="note-staff">${n.staff||'Advisor'}</span><span class="note-tag ${tagClass}">${tagLabel}</span></span>
+              <span><span class="note-staff">${n.staff||'Funding Manager'}</span><span class="note-tag ${tagClass}">${tagLabel}</span></span>
               <span>${n.ts}</span>
             </div>
             <div class="note-body">${escHtml(n.txt)}</div>
@@ -5429,7 +5429,7 @@ function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').r
 
 function lastStaffName(){ return localStorage.getItem('sp_staff_name')||''; }
 function getStaffName(){
-  const n = document.getElementById('m-note-staff')?.value || document.getElementById('m-quick-staff')?.value || lastStaffName() || 'Advisor';
+  const n = document.getElementById('m-note-staff')?.value || document.getElementById('m-quick-staff')?.value || lastStaffName() || 'Funding Manager';
   if(n) localStorage.setItem('sp_staff_name', n);
   return n;
 }
@@ -5442,7 +5442,7 @@ function addStaffNote(mode='quick'){
   const typeEl  = document.getElementById(mode==='thread'?'m-note-type':'m-quick-type');
   const txt = txtEl?.value?.trim();
   if(!txt){ toast('⚠ Write a note first'); return; }
-  const staff = staffEl?.value?.trim() || 'Advisor';
+  const staff = staffEl?.value?.trim() || 'Funding Manager';
   const type  = typeEl?.value || 'update';
   localStorage.setItem('sp_staff_name', staff);
   if(!c.notes) c.notes = [];
@@ -5456,7 +5456,7 @@ function addStaffNote(mode='quick'){
 function addStaffNoteQuick(type, txt){
   const c = activeModalClient;
   if(!c) return;
-  const staff = lastStaffName() || 'Advisor';
+  const staff = lastStaffName() || 'Funding Manager';
   if(!c.notes) c.notes = [];
   c.notes.push({id:Date.now(), txt, staff, type, ts: new Date().toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'})});
   saveLS();
@@ -7857,7 +7857,7 @@ function captureSignature(){
 
 // ═══════════════════════════════════════════════════════════
 //  ROLE LOCKING
-//  Owner sees everything. Admin/Advisor get locked sections.
+//  Owner sees everything. Admin/Funding Manager get locked sections.
 // ═══════════════════════════════════════════════════════════
 const OWNER_SECTIONS = [
   'panel-calculator',   // Fee & revenue numbers
@@ -9169,7 +9169,7 @@ function recordTlSale(){
     id: Date.now(),
     client, pkg: pkg?.name||'Unknown', pkgId, amount,
     date, type: pkg?.type||'au_personal',
-    staff: currentStaff?.name||'Advisor'
+    staff: currentStaff?.name||'Funding Manager'
   });
   localStorage.setItem(LS_TL_SALES, JSON.stringify(sales));
 
@@ -9230,7 +9230,7 @@ const ITIN_STRINGS = {
     add_btn:      'Add to Pipeline',
     pipeline_title:'ITIN Client Pipeline',
     pipeline_sub: 'ITIN clients only — dedicated view',
-    notes_label:  'Advisor Notes',
+    notes_label:  'Funding Manager Notes',
     fname:        'First Name',
     lname:        'Last Name',
     lang:         'Preferred Language',
@@ -10080,7 +10080,7 @@ function addCENote(){
   if(!activeCEClient.notes) activeCEClient.notes=[];
   activeCEClient.notes.unshift({
     id:Date.now(), type, txt,
-    staff: currentStaff?.name||'Advisor',
+    staff: currentStaff?.name||'Funding Manager',
     ts: new Date().toLocaleString()
   });
   document.getElementById('cef-note-txt').value='';
@@ -10315,7 +10315,7 @@ function renderTLInvHistory(){
 function addTLReminder(days){ if(!activeTLClient) return; if(!activeTLClient.reminders) activeTLClient.reminders=[]; const d=new Date(); d.setDate(d.getDate()+parseInt(days)); activeTLClient.reminders.push({id:Date.now(),days,dueDate:d.toLocaleDateString(),done:false}); saveTLClients(); renderTLReminders(); toast(`✅ ${days}-day reminder set`); }
 function renderTLReminders(){ const el=document.getElementById('tlf-reminders'); if(!el||!activeTLClient) return; const r=activeTLClient.reminders||[]; if(!r.length){el.innerHTML='<div style="font-size:11px;color:var(--muted)">No reminders</div>';return;} el.innerHTML=r.map(x=>`<div style="background:var(--dark3);border:1px solid ${x.done?'var(--border)':'rgba(201,168,76,.3)'};border-radius:var(--rs);padding:7px 10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><span style="font-size:11px;color:${x.done?'var(--muted)':'var(--gold)'}">${x.days}-day reminder — Due ${x.dueDate}</span><button onclick="markTLReminderDone(${x.id})" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:10px;font-family:inherit">${x.done?'✓':'Done'}</button></div>`).join('');}
 function markTLReminderDone(id){ if(!activeTLClient||!activeTLClient.reminders) return; const r=activeTLClient.reminders.find(x=>x.id===id); if(r) r.done=true; saveTLClients(); renderTLReminders(); }
-function addTLNote(){ if(!activeTLClient) return; const type=document.getElementById('tlf-note-type')?.value||'update'; const txt=document.getElementById('tlf-note-txt')?.value?.trim(); if(!txt){toast('⚠ Enter note');return;} if(!activeTLClient.notes) activeTLClient.notes=[]; activeTLClient.notes.unshift({id:Date.now(),type,txt,staff:currentStaff?.name||'Advisor',ts:new Date().toLocaleString()}); document.getElementById('tlf-note-txt').value=''; saveTLClients(); renderTLNotes(); toast('✅ Note added'); }
+function addTLNote(){ if(!activeTLClient) return; const type=document.getElementById('tlf-note-type')?.value||'update'; const txt=document.getElementById('tlf-note-txt')?.value?.trim(); if(!txt){toast('⚠ Enter note');return;} if(!activeTLClient.notes) activeTLClient.notes=[]; activeTLClient.notes.unshift({id:Date.now(),type,txt,staff:currentStaff?.name||'Funding Manager',ts:new Date().toLocaleString()}); document.getElementById('tlf-note-txt').value=''; saveTLClients(); renderTLNotes(); toast('✅ Note added'); }
 function renderTLNotes(){ const el=document.getElementById('tlf-notes-list'); if(!el||!activeTLClient) return; const notes=activeTLClient.notes||[]; if(!notes.length){el.innerHTML='<div style="font-size:11px;color:var(--muted)">No notes yet</div>';return;} const tc={update:'var(--blue)',call:'var(--green)',placed:'var(--gold)',reporting:'var(--green)',payment:'var(--gold)',issue:'var(--red)'}; el.innerHTML=notes.map(n=>`<div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;margin-bottom:7px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="display:flex;gap:7px"><span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(0,0,0,.2);color:${tc[n.type]||'var(--muted)'};border:1px solid ${tc[n.type]||'var(--muted)'}40;text-transform:capitalize">${n.type}</span><span style="font-size:10px;color:var(--muted)">${n.staff}</span></div><span style="font-size:10px;color:var(--muted)">${n.ts}</span></div><div style="font-size:12px;color:var(--dim);line-height:1.6">${n.txt}</div></div>`).join('');}
 
 // ═══════════════════════════════════════════════════════════
@@ -10508,7 +10508,7 @@ function renderSCInvHistory(){ const el=document.getElementById('scf-inv-history
 function addSCReminder(days){ if(!activeSCClient) return; if(!activeSCClient.reminders) activeSCClient.reminders=[]; const d=new Date(); d.setDate(d.getDate()+parseInt(days)); activeSCClient.reminders.push({id:Date.now(),days,dueDate:d.toLocaleDateString(),done:false}); saveSCClients(); renderSCReminders(); toast(`✅ ${days}-day reminder set`); }
 function renderSCReminders(){ const el=document.getElementById('scf-reminders'); if(!el||!activeSCClient) return; const r=activeSCClient.reminders||[]; if(!r.length){el.innerHTML='<div style="font-size:11px;color:var(--muted)">No reminders</div>';return;} el.innerHTML=r.map(x=>`<div style="background:var(--dark3);border:1px solid ${x.done?'var(--border)':'rgba(201,168,76,.3)'};border-radius:var(--rs);padding:7px 10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><span style="font-size:11px;color:${x.done?'var(--muted)':'var(--gold)'}">${x.days}-day reminder — Due ${x.dueDate}</span><button onclick="markSCReminderDone(${x.id})" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:10px;font-family:inherit">${x.done?'✓':'Done'}</button></div>`).join('');}
 function markSCReminderDone(id){ if(!activeSCClient||!activeSCClient.reminders) return; const r=activeSCClient.reminders.find(x=>x.id===id); if(r) r.done=true; saveSCClients(); renderSCReminders(); }
-function addSCNote(){ if(!activeSCClient) return; const type=document.getElementById('scf-note-type')?.value||'update'; const txt=document.getElementById('scf-note-txt')?.value?.trim(); if(!txt){toast('⚠ Enter note');return;} if(!activeSCClient.notes) activeSCClient.notes=[]; activeSCClient.notes.unshift({id:Date.now(),type,txt,staff:currentStaff?.name||'Advisor',ts:new Date().toLocaleString()}); document.getElementById('scf-note-txt').value=''; saveSCClients(); renderSCNotes(); toast('✅ Note added'); }
+function addSCNote(){ if(!activeSCClient) return; const type=document.getElementById('scf-note-type')?.value||'update'; const txt=document.getElementById('scf-note-txt')?.value?.trim(); if(!txt){toast('⚠ Enter note');return;} if(!activeSCClient.notes) activeSCClient.notes=[]; activeSCClient.notes.unshift({id:Date.now(),type,txt,staff:currentStaff?.name||'Funding Manager',ts:new Date().toLocaleString()}); document.getElementById('scf-note-txt').value=''; saveSCClients(); renderSCNotes(); toast('✅ Note added'); }
 function renderSCNotes(){ const el=document.getElementById('scf-notes-list'); if(!el||!activeSCClient) return; const notes=activeSCClient.notes||[]; if(!notes.length){el.innerHTML='<div style="font-size:11px;color:var(--muted)">No notes yet</div>';return;} const tc={update:'var(--blue)',call:'var(--green)',transfer:'var(--gold)',payment:'var(--gold)',issue:'var(--red)'}; el.innerHTML=notes.map(n=>`<div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;margin-bottom:7px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="display:flex;gap:7px"><span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(0,0,0,.2);color:${tc[n.type]||'var(--muted)'};border:1px solid ${tc[n.type]||'var(--muted)'}40;text-transform:capitalize">${n.type}</span><span style="font-size:10px;color:var(--muted)">${n.staff}</span></div><span style="font-size:10px;color:var(--muted)">${n.ts}</span></div><div style="font-size:12px;color:var(--dim);line-height:1.6">${n.txt}</div></div>`).join('');}
 
 
@@ -10814,7 +10814,7 @@ function renderEscalation(){
     <div style="font-size:11px;color:var(--muted);margin-bottom:10px">When in doubt, escalate. Never guess on compliance, legal, or complex credit situations.</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px">
-        <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Owner / Senior Advisor</div>
+        <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">Owner / Senior Funding Manager</div>
         <div style="font-size:11px;color:var(--muted)">Complex cases, legal questions, large funding packages, difficult clients, payment disputes</div>
       </div>
       <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px">
@@ -10826,7 +10826,7 @@ function renderEscalation(){
   const elEn = document.getElementById('escalation-en');
   const elEs = document.getElementById('escalation-es');
   if(elEn && !elEn.innerHTML) elEn.innerHTML = content;
-  if(elEs && !elEs.innerHTML) elEs.innerHTML = content.replace('Owner / Senior Advisor','Dueño / Asesor Senior').replace('When to Stop & Escalate','Cuándo Parar y Escalar').replace('Complex cases','Casos complejos').replace('difficult clients','clientes difíciles').replace('payment disputes','disputas de pago').replace("Client asks you to do something you're unsure about","El cliente le pide algo de lo que no está seguro").replace('Any question about legality','Cualquier pregunta sobre legalidad').replace('Client is upset or threatening','El cliente está molesto o amenaza').replace('Anything involving large amounts of money','Cualquier cosa que involucre grandes cantidades de dinero');
+  if(elEs && !elEs.innerHTML) elEs.innerHTML = content.replace('Owner / Senior Funding Manager','Dueño / Gerente de Financiamiento Senior').replace('When to Stop & Escalate','Cuándo Parar y Escalar').replace('Complex cases','Casos complejos').replace('difficult clients','clientes difíciles').replace('payment disputes','disputas de pago').replace("Client asks you to do something you're unsure about","El cliente le pide algo de lo que no está seguro").replace('Any question about legality','Cualquier pregunta sobre legalidad').replace('Client is upset or threatening','El cliente está molesto o amenaza').replace('Anything involving large amounts of money','Cualquier cosa que involucre grandes cantidades de dinero');
 }
 
 function renderResVideos(){
@@ -11861,7 +11861,7 @@ if(clients.length > 0){
 // ═══════════════════════════════════════════════════════════
 //  AI CHAT ASSISTANT — Powered by Claude
 // ═══════════════════════════════════════════════════════════
-const STAFF_SYSTEM_PROMPT = `You are the KLIERD AI Assistant for KLIERD LLC. You help staff advisors and VAs with credit strategy, funding guidance, and client scripts.
+const STAFF_SYSTEM_PROMPT = `You are the KLIERD Intelligent Funding Technology assistant for KLIERD INC. You help Funding Managers and VAs with credit strategy, funding guidance, and client scripts.
 
 CREDIT STRATEGY: Bureau targeting: BCU/Alliant/SchoolsFirst=TransUnion, DCU/Dept of Interior=Equifax, Andrews/NASA/PenFed=Experian. Always use LOWEST of 3 bureau scores. Stack same-bureau CUs same day. ITIN accepted: Capital One, Petal, OpenSky, Chime, Zolve, Discover, BofA, Citi, Wells Fargo. Business credit: Need EIN + bank 90 days + D-U-N-S. PAYDEX 80+ before business cards. AU tradelines add 30-80pts in 30-45 days. Utilization under 9% = fastest score boost.
 

@@ -291,7 +291,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div id="lookupScreen">
     <div class="lookup">
       <h1 id="lbl-title">Welcome to Your Portal</h1>
-      <p id="lbl-subtitle">Please enter your Tracking ID to view your application status, upload documents, and message your advisor.</p>
+      <p id="lbl-subtitle">Please enter your Tracking ID to view your application status, upload documents, and message your KLIERD Funding Manager.</p>
       <div class="lookup-row">
         <input type="text" id="tracking-input" placeholder="CBG-XXXXXXXX" maxlength="12"
           oninput="this.value=this.value.toUpperCase()"
@@ -478,7 +478,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <!-- MESSAGES TAB -->
     <div id="tab-messages" style="display:none">
       <div class="card">
-        <div class="card-title" id="lbl-msgs-title">Messages with Your Advisor</div>
+        <div class="card-title" id="lbl-msgs-title">Messages with Your KLIERD Funding Manager</div>
         <div class="messages-wrap" id="messages-wrap"></div>
         <div class="msg-row">
           <input type="text" class="msg-input" id="msg-input" id="lbl-msg-placeholder"
@@ -577,7 +577,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
 
       <!-- BILLING DISCLAIMER -->
-      <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-billing-note">Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your advisor anytime.</div>
+      <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-billing-note">Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your KLIERD Funding Manager anytime.</div>
 
     </div>
 
@@ -703,7 +703,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <div class="score-box"><div class="score-bureau" style="color:#27AE60">Equifax</div><div class="score-val" style="color:#27AE60" id="p-eq">—</div></div>
           <div class="score-box"><div class="score-bureau" style="color:var(--gold)">Experian</div><div class="score-val" style="color:var(--gold)" id="p-ex">—</div></div>
         </div>
-        <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px" id="lbl-scores-note">Scores appear here once your advisor reviews your credit profile.</p>
+        <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px" id="lbl-scores-note">Scores appear here once KLIERD Smart Credit Technology processes your credit profile.</p>
       </div>
       <div class="card">
         <div class="card-title" id="lbl-funding-range">Estimated Funding Range</div>
@@ -736,7 +736,7 @@ const API='https://stackpro-api-production.up.railway.app';
 const T={
   en:{
     'lbl-title':'Welcome to Your Portal',
-    'lbl-subtitle':'Please enter your Tracking ID to view your application status, upload documents, and message your advisor.',
+    'lbl-subtitle':'Please enter your Tracking ID to view your application status, upload documents, and message your KLIERD Funding Manager.',
     'btn-lookup':'Check Status',
     'lbl-hint':'Your Tracking ID was in your confirmation. Format: CBG-XXXXXXXX',
     'lbl-back':'Back',
@@ -753,9 +753,9 @@ const T={
     'lbl-upload':'Upload Documents','lbl-drop':'Click to upload or drag and drop',
     'lbl-file-types':'PDF, JPG, PNG, DOC — Max 10MB per file',
     'lbl-checklist':'Document Checklist',
-    'lbl-msgs-title':'Messages with Your Advisor','btn-send':'Send',
+    'lbl-msgs-title':'Messages with Your KLIERD Funding Manager','btn-send':'Send',
     'lbl-scores':'Your Credit Scores',
-    'lbl-scores-note':'Scores appear here once your advisor reviews your credit profile.',
+    'lbl-scores-note':'Scores appear here once KLIERD Smart Credit Technology processes your credit profile.',
     'lbl-funding-range':'Estimated Funding Range',
     'lbl-personal-range':'Personal Funding','lbl-biz-range':'Business Funding',
     'lbl-disclaimer':'Estimates based on your profile. Results are not typical and may vary.',
@@ -773,7 +773,7 @@ const T={
     'lbl-tab-analysis':'My Analysis',
     'lbl-tab-agreements':'Agreements',
     'lbl-analysis-title':'Your Analysis',
-    'lbl-analysis-intro':'After you submit your documents, your advisor will review your profile. We will provide your personalized analysis shortly — you will see it here when it is ready.',
+    'lbl-analysis-intro':'After you submit your documents, KLIERD Intelligent Funding Technology processes your profile. Your personalized analysis appears here when ready.',
     'lbl-an-credit-title':'Credit Analysis',
     'lbl-an-credit-desc':'A complete review of your credit profile prepared by our team.',
     'lbl-an-funding-title':'Funding Analysis',
@@ -793,14 +793,14 @@ const T={
     'lbl-payment-method':'Payment Method on File',
     'lbl-pm-update':'Update →',
     'lbl-payment-history':'Payment History',
-    'lbl-billing-note':'Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your advisor anytime.',
+    'lbl-billing-note':'Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your KLIERD Funding Manager anytime.',
     'bill-paid':'Paid in full',
     'bill-due':'Balance due',
     'bill-partial':'Partially paid',
     'bill-overdue':'Overdue',
     'bill-no-charges':'No charges',
     'bill-next-due':'Next payment due:',
-    'bill-no-items':'No charges yet. Your advisor will add line items after your consultation.',
+    'bill-no-items':'No charges yet. Line items appear once your funding strategy is confirmed.',
     'bill-no-history':'No payments yet.',
     'lbl-tab-monitoring':'Monitoring',
     'lbl-mon-setup-title':'🛡 KLIERD Monitoring',
@@ -818,7 +818,7 @@ const T={
   },
   es:{
     'lbl-title':'Bienvenido a Su Portal',
-    'lbl-subtitle':'Por favor ingrese su ID de seguimiento para ver su solicitud, cargar documentos y enviar mensajes a su asesor.',
+    'lbl-subtitle':'Por favor ingrese su ID de seguimiento para ver su solicitud, cargar documentos y enviar mensajes a su Gerente de Financiamiento KLIERD.',
     'btn-lookup':'Verificar Estado',
     'lbl-hint':'Su ID de seguimiento estaba en su correo y mensaje de texto de bienvenida. Formato: CBG-XXXXXXXX',
     'lbl-back':'Regresar',
@@ -835,9 +835,9 @@ const T={
     'lbl-upload':'Cargar Documentos','lbl-drop':'Haga clic para cargar o arrastre y suelte',
     'lbl-file-types':'PDF, JPG, PNG, DOC — Máximo 10MB por archivo',
     'lbl-checklist':'Lista de Documentos Requeridos',
-    'lbl-msgs-title':'Mensajes con Su Asesor','btn-send':'Enviar',
+    'lbl-msgs-title':'Mensajes con Su Gerente de Financiamiento KLIERD','btn-send':'Enviar',
     'lbl-scores':'Sus Puntajes de Crédito',
-    'lbl-scores-note':'Los puntajes aparecen aquí una vez que su asesor revise su perfil.',
+    'lbl-scores-note':'Los puntajes aparecen aquí una vez que KLIERD Smart Credit Technology procese su perfil.',
     'lbl-funding-range':'Rango de Financiamiento Estimado',
     'lbl-personal-range':'Financiamiento Personal','lbl-biz-range':'Financiamiento Empresarial',
     'lbl-disclaimer':'Estimados basados en su perfil. Los resultados no son típicos y pueden variar.',
@@ -855,7 +855,7 @@ const T={
     'lbl-tab-analysis':'Mi Análisis',
     'lbl-tab-agreements':'Acuerdos',
     'lbl-analysis-title':'Su Análisis',
-    'lbl-analysis-intro':'Después de que envíe sus documentos, su asesor revisará su perfil. Le proporcionaremos su análisis personalizado en breve — lo verá aquí cuando esté listo.',
+    'lbl-analysis-intro':'Después de que envíe sus documentos, KLIERD Intelligent Funding Technology procesa su perfil. Su análisis personalizado aparece aquí cuando esté listo.',
     'lbl-an-credit-title':'Análisis de Crédito',
     'lbl-an-credit-desc':'Una revisión completa de su perfil de crédito preparada por nuestro equipo.',
     'lbl-an-funding-title':'Análisis de Financiamiento',
@@ -874,14 +874,14 @@ const T={
     'lbl-payment-method':'Método de Pago en Archivo',
     'lbl-pm-update':'Actualizar →',
     'lbl-payment-history':'Historial de Pagos',
-    'lbl-billing-note':'Los cargos son únicamente por servicios de consultoría. Nunca cobramos tarifas por adelantado por reparación de crédito bajo CROA. ¿Preguntas? Envíe un correo a su asesor en cualquier momento.',
+    'lbl-billing-note':'Los cargos son únicamente por servicios de consultoría. Nunca cobramos tarifas por adelantado por reparación de crédito bajo CROA. ¿Preguntas? Envíe un correo a su Gerente de Financiamiento KLIERD en cualquier momento.',
     'bill-paid':'Pagado en su totalidad',
     'bill-due':'Saldo Pendiente',
     'bill-partial':'Parcialmente Pagado',
     'bill-overdue':'Vencido',
     'bill-no-charges':'Sin cargos',
     'bill-next-due':'Próximo pago vence:',
-    'bill-no-items':'Sin cargos aún. Su asesor agregará los conceptos después de su consulta.',
+    'bill-no-items':'Sin cargos aún. Los conceptos aparecen una vez confirmada su estrategia de financiamiento.',
     'bill-no-history':'Aún sin pagos.',
     'lbl-milestones':'Hitos',
     'lbl-tab-monitoring':'Monitoreo',
@@ -1009,12 +1009,12 @@ function renderPortal(app){
   const welcomeTitleEN = `Welcome to KLIERD, ${first}.`;
   const welcomeTitleES = `Bienvenido(a) a KLIERD, ${first}.`;
   const welcomeBodyEN = `<p>Thank you for trusting our team with your funding journey. Your application has been received and your profile is now in our review queue.</p>
-    <p><strong>What happens next:</strong> A funding advisor will contact you within 24–48 business hours to discuss your credit profile, your funding goals, and the strategy best suited to your situation. To accelerate this process, please use the Documents tab to upload your identification, recent bank statements, and credit monitoring access.</p>
+    <p><strong>What happens next:</strong> KLIERD Intelligent Funding Technology starts processing your profile the moment your identity verification and documents land. Your KLIERD Funding Manager confirms the strategy within 24–48 business hours. To accelerate the process, please use the Documents tab to upload your identification, recent bank statements, and credit monitoring access.</p>
     <p>If at any point you have questions, use the Messages tab. Our team responds in English and Spanish within one business day.</p>
     <p>KLIERD is committed to serving every entrepreneur with transparent, compliant funding strategies powered by KLIERD Intelligent Funding Technology.</p>
     <p>— The KLIERD Team</p>`;
   const welcomeBodyES = `<p>Gracias por confiar en nuestro equipo con su camino hacia el financiamiento. Su solicitud ha sido recibida y su perfil está en nuestra cola de revisión.</p>
-    <p><strong>Lo que sigue:</strong> Un asesor de financiamiento le contactará dentro de 24–48 horas hábiles para discutir su perfil crediticio, sus metas de financiamiento y la estrategia más adecuada a su situación. Para acelerar el proceso, por favor use la pestaña Documentos para cargar su identificación, estados de cuenta recientes y acceso a monitoreo de crédito.</p>
+    <p><strong>Lo que sigue:</strong> KLIERD Intelligent Funding Technology comienza a procesar su perfil en el momento que su verificación de identidad y documentos lleguen. Su Gerente de Financiamiento KLIERD confirma la estrategia dentro de 24–48 horas hábiles. Para acelerar el proceso, por favor use la pestaña Documentos para cargar su identificación, estados de cuenta recientes y acceso a monitoreo de crédito.</p>
     <p>Si tiene preguntas en cualquier momento, use la pestaña Mensajes. Nuestro equipo responde en inglés y español dentro de un día hábil.</p>
     <p>KLIERD está comprometido con servir a cada emprendedor con estrategias de financiamiento transparentes y conformes, impulsadas por la Tecnología de Financiamiento Inteligente KLIERD.</p>
     <p>— El Equipo de KLIERD</p>`;
@@ -1064,14 +1064,14 @@ function renderPortal(app){
           { icon:'✍️', title:'Sign your Funding Engagement Letter', body:'Check your email for the engagement letter from Hami via DocuSign.' },
           { icon:'🪪', title:'Upload your ID and income docs', body:'Go to the Documents tab and upload: driver license or passport, two most recent pay stubs (or W2 / 1099), and proof of address.' },
           { icon:'💼', title:'Business clients: add your EIN docs', body:'If pursuing business funding, upload Articles of Organization, EIN letter, and last 3 months of business bank statements.' },
-          { icon:'🧠', title:'KLIERD Smart Technology builds your strategy', body:'Within 24 hours, your dedicated advisor reviews your profile and KLIERD ranks every lender by approval probability.' },
+          { icon:'🧠', title:'KLIERD Smart Technology builds your strategy', body:'Within 24 hours, KLIERD Intelligent Funding Technology ranks every lender by approval probability and your KLIERD Funding Manager confirms the strategy.' },
           { icon:'🚀', title:'Approve and submit', body:'You approve the strategy in this portal. KLIERD submits the applications. Responses route to your KLIERD Email above.' },
         ],
         es: [
           { icon:'✍️', title:'Firme su Carta de Compromiso de Financiamiento', body:'Revise su correo — Hami le envió la carta vía DocuSign.' },
           { icon:'🪪', title:'Suba su identificación y comprobantes', body:'Vaya a la pestaña Documentos y suba: licencia o pasaporte, dos talones recientes (o W2 / 1099), y comprobante de domicilio.' },
           { icon:'💼', title:'Clientes empresariales: agregue documentos de EIN', body:'Si busca financiamiento empresarial, suba Artículos de Organización, carta de EIN, y los últimos 3 meses de estados bancarios.' },
-          { icon:'🧠', title:'KLIERD Smart Technology construye su estrategia', body:'En 24 horas, su asesor dedicado revisa su perfil y KLIERD clasifica cada prestamista por probabilidad de aprobación.' },
+          { icon:'🧠', title:'KLIERD Smart Technology construye su estrategia', body:'En 24 horas, KLIERD Intelligent Funding Technology clasifica cada prestamista por probabilidad de aprobación y su Gerente de Financiamiento KLIERD confirma la estrategia.' },
           { icon:'🚀', title:'Aprobar y enviar', body:'Usted aprueba la estrategia en este portal. KLIERD envía las solicitudes. Las respuestas se dirigen a su correo KLIERD arriba.' },
         ],
       },
@@ -1420,13 +1420,13 @@ function renderPortal(app){
   const stepsEN=[
     {label:'Application Received',sub:'Your application was successfully submitted'},
     {label:'Under Review',sub:'Our team is reviewing your credit profile'},
-    {label:'Strategy in Progress',sub:'Your advisor is building your personalized funding strategy'},
+    {label:'Strategy in Progress',sub:'KLIERD Intelligent Funding Technology is building your personalized funding strategy'},
     {label:'Completed',sub:'Funding approved or dispute resolution complete'},
   ];
   const stepsES=[
     {label:'Solicitud Recibida',sub:'Su solicitud fue enviada exitosamente'},
     {label:'Bajo Revisión',sub:'Nuestro equipo está revisando su perfil crediticio'},
-    {label:'Estrategia en Proceso',sub:'Su asesor está construyendo su estrategia personalizada'},
+    {label:'Estrategia en Proceso',sub:'KLIERD Intelligent Funding Technology está construyendo su estrategia personalizada'},
     {label:'Completado',sub:'Financiamiento aprobado o resolución completa'},
   ];
   const steps=lang==='es'?stepsES:stepsEN;
@@ -1439,12 +1439,12 @@ function renderPortal(app){
 
   // Next steps
   const nextEN=[
-    {icon:'📞',title:'Expect a call within 24–48 hours',body:'One of our funding advisors will reach out to discuss your profile and build your personalized strategy.'},
+    {icon:'📞',title:'Expect a confirmation call within 24–48 hours',body:'Your KLIERD Funding Manager reaches out to confirm the strategy the technology produced and answer any questions.'},
     {icon:'📎',title:'Upload your documents',body:'Click the Documents tab above to upload your ID, bank statements, pay stubs, and credit monitoring login.'},
     {icon:'💬',title:'Message us anytime',body:'Use the Messages tab to ask questions. We speak English and Spanish and reply within 24 hours.'},
   ];
   const nextES=[
-    {icon:'📞',title:'Espere una llamada en 24–48 horas',body:'Uno de nuestros asesores se comunicará para discutir su perfil y construir su estrategia personalizada.'},
+    {icon:'📞',title:'Espere una llamada de confirmación en 24–48 horas',body:'Su Gerente de Financiamiento KLIERD se comunicará para confirmar la estrategia que produjo la tecnología y responder cualquier pregunta.'},
     {icon:'📎',title:'Cargue sus documentos',body:'Haga clic en la pestaña Documentos para cargar su identificación, estados de cuenta, talones de pago y acceso a monitoreo de crédito.'},
     {icon:'💬',title:'Escríbanos en cualquier momento',body:'Use la pestaña Mensajes para hacer preguntas. Hablamos inglés y español y respondemos en 24 horas.'},
   ];
@@ -1508,7 +1508,7 @@ function renderPortal(app){
     localStorage.setItem('msgs_'+app.trackingId,JSON.stringify(msgs));
   }
   // === SMART PROGRESS BAR ===
-  const totalSteps = docs.length + 3; // docs + (advisor call/review/scores) approximations
+  const totalSteps = docs.length + 3; // docs + (manager review/system scoring/strategy) approximations
   const docsUploaded = docs.filter(d => !!uploaded[d.key]).length;
   let statusBonus = 0;
   if(['review','active','funded'].includes(status))statusBonus = 1;
@@ -1519,8 +1519,8 @@ function renderPortal(app){
   document.getElementById('progress-pct').textContent = pct + '%';
   document.getElementById('progress-fill').style.width = pct + '%';
   const missingDocs = docs.length - docsUploaded;
-  const detailEN = pct === 100 ? 'All steps complete' : missingDocs > 0 ? `${missingDocs} document${missingDocs===1?'':'s'} remaining` : 'Awaiting advisor review';
-  const detailES = pct === 100 ? 'Todos los pasos completos' : missingDocs > 0 ? `${missingDocs} documento${missingDocs===1?'':'s'} pendiente${missingDocs===1?'':'s'}` : 'Esperando revisión del asesor';
+  const detailEN = pct === 100 ? 'All steps complete' : missingDocs > 0 ? `${missingDocs} document${missingDocs===1?'':'s'} remaining` : 'Awaiting Funding Manager review';
+  const detailES = pct === 100 ? 'Todos los pasos completos' : missingDocs > 0 ? `${missingDocs} documento${missingDocs===1?'':'s'} pendiente${missingDocs===1?'':'s'}` : 'Esperando revisión del Gerente de Financiamiento';
   document.getElementById('progress-detail').textContent = lang==='es' ? detailES : detailEN;
 
   // === MILESTONES CARD ===
@@ -1548,10 +1548,10 @@ function renderPortal(app){
   if (docsUploaded === totalDocs && totalDocs > 0) {
     msList.push({
       icon: '🏆',
-      title_en: 'Ready for advisor review',
-      title_es: 'Listo para revisión del asesor',
-      sub_en: 'Your advisor will reach out within 24 business hours',
-      sub_es: 'Su asesor le contactará en 24 horas hábiles',
+      title_en: 'Ready for Funding Manager review',
+      title_es: 'Listo para revisión del Gerente de Financiamiento',
+      sub_en: 'Your KLIERD Funding Manager will confirm within 24 business hours',
+      sub_es: 'Su Gerente de Financiamiento KLIERD le confirmará en 24 horas hábiles',
       complete: ['active','funded'].includes(status)
     });
   }
@@ -1589,7 +1589,7 @@ function renderPortal(app){
   localStorage.setItem('cbg_last_pct_' + app.trackingId, pct);
   // === SERVICE DETECTION (clients can have one OR both) ===
   const svc = app.fundingType || app.clientType || '';
-  // Dispute service: explicit fundingType='dispute' OR flagged by advisor for dispute work
+  // Dispute service: explicit fundingType='dispute' OR flagged by Funding Manager for dispute work
   const hasDispute = svc === 'dispute' || app.disputeFlag === true || app.needsDispute === true;
   // Funding service: anything other than dispute-only (or explicitly flagged)
   const hasFunding = svc !== 'dispute' || app.fundingFlag === true;
@@ -1646,16 +1646,16 @@ function renderPortal(app){
     const showFunding_pre = hasFunding;
     if (showCredit_pre && showFunding_pre) {
       introEl.textContent = lang==='es'
-        ? 'Le proporcionaremos sus análisis personalizados en breve. Su asesor está revisando su solicitud.'
-        : "We'll provide your personalized analyses shortly. Your advisor is reviewing your submission now.";
+        ? 'Le proporcionaremos sus análisis personalizados en breve. KLIERD Intelligent Funding Technology está procesando su solicitud.'
+        : "We'll provide your personalized analyses shortly. KLIERD Intelligent Funding Technology is processing your submission now.";
     } else if (showCredit_pre) {
       introEl.textContent = lang==='es'
-        ? 'Le proporcionaremos su Análisis de Crédito detallado en breve. Su asesor está revisando su solicitud.'
-        : "We'll provide your detailed Credit Analysis shortly. Your advisor is reviewing your submission now.";
+        ? 'Le proporcionaremos su Análisis de Crédito detallado en breve. KLIERD Intelligent Funding Technology está procesando su solicitud.'
+        : "We'll provide your detailed Credit Analysis shortly. KLIERD Intelligent Funding Technology is processing your submission now.";
     } else {
       introEl.textContent = lang==='es'
-        ? 'Le proporcionaremos su Análisis de Financiamiento detallado en breve. Su asesor está revisando su solicitud.'
-        : "We'll provide your detailed Funding Analysis shortly. Your advisor is reviewing your submission now.";
+        ? 'Le proporcionaremos su Análisis de Financiamiento detallado en breve. KLIERD Intelligent Funding Technology está procesando su solicitud.'
+        : "We'll provide your detailed Funding Analysis shortly. KLIERD Intelligent Funding Technology is processing your submission now.";
     }
   }
 
@@ -1689,12 +1689,12 @@ function renderPortal(app){
       actEl.innerHTML = `<a class="ag-btn primary" href="#" onclick="viewAnalysis('${kind}');return false;">📄 ${lang==='es'?'Ver análisis':'View analysis'}</a>`;
     } else if (st === 'inprogress') {
       stEl.classList.add('inprogress');
-      stEl.textContent = lang==='es' ? 'En proceso con su asesor' : 'In progress with advisor';
-      actEl.innerHTML = `<span style="font-size:11px;color:var(--muted);font-style:italic">${lang==='es'?'Su asesor está revisando su solicitud — su análisis viene pronto':'Your advisor is reviewing your submission — your analysis is on the way'}</span>`;
+      stEl.textContent = lang==='es' ? 'En proceso con la tecnología' : 'In progress with KLIERD Technology';
+      actEl.innerHTML = `<span style="font-size:11px;color:var(--muted);font-style:italic">${lang==='es'?'KLIERD está procesando su solicitud — su análisis viene pronto':'KLIERD is processing your submission — your analysis is on the way'}</span>`;
     } else {
       stEl.classList.add('notstarted');
       stEl.textContent = lang==='es' ? 'Aún no iniciado' : 'Not yet started';
-      actEl.innerHTML = `<span style="font-size:11px;color:var(--muted);font-style:italic">${lang==='es'?'Comienza después de que su asesor revise su solicitud':'Begins after your advisor reviews your submission'}</span>`;
+      actEl.innerHTML = `<span style="font-size:11px;color:var(--muted);font-style:italic">${lang==='es'?'Comienza después de que KLIERD procese su solicitud':'Begins after KLIERD processes your submission'}</span>`;
     }
   });
   // === ANALYSIS WOW MOMENT ===
@@ -1733,8 +1733,8 @@ function renderPortal(app){
     banner.style.display = 'flex';
   } else if(status === 'new' || status === 'review'){
     naIcon.textContent = '📞';
-    naTitle.textContent = lang==='es' ? 'Espere la llamada de su asesor' : 'Expect your advisor\'s call';
-    naBody.textContent = lang==='es' ? 'Todos los documentos recibidos. Su asesor le llamará dentro de 24–48 horas hábiles.' : 'All documents received. Your advisor will call within 24–48 business hours.';
+    naTitle.textContent = lang==='es' ? 'Espere la llamada de su Gerente de Financiamiento KLIERD' : 'Expect your KLIERD Funding Manager\'s call';
+    naBody.textContent = lang==='es' ? 'Todos los documentos recibidos. Su Gerente de Financiamiento KLIERD le llamará dentro de 24–48 horas hábiles.' : 'All documents received. Your KLIERD Funding Manager will call within 24–48 business hours.';
     naCta.textContent = lang==='es' ? 'Escribirnos →' : 'Message us →';
     naCta.classList.remove('done');
     window._naMode = 'messages';
@@ -1742,13 +1742,13 @@ function renderPortal(app){
   } else if(status === 'funded'){
     naIcon.textContent = '🎉';
     naTitle.textContent = lang==='es' ? '¡Felicidades — su financiamiento está aprobado!' : 'Congratulations — your funding is approved!';
-    naBody.textContent = lang==='es' ? 'Revise su perfil de crédito y comuníquese con su asesor sobre los próximos pasos.' : 'Review your credit profile and message your advisor about next steps.';
+    naBody.textContent = lang==='es' ? 'Revise su perfil de crédito y comuníquese con su Gerente de Financiamiento KLIERD sobre los próximos pasos.' : 'Review your credit profile and message your KLIERD Funding Manager about next steps.';
     naCta.textContent = '✅';
     naCta.classList.add('done');
     banner.style.display = 'flex';
   } else {
     naIcon.textContent = '⚡';
-    naTitle.textContent = lang==='es' ? 'Su asesor está trabajando en su estrategia' : 'Your advisor is building your strategy';
+    naTitle.textContent = lang==='es' ? 'KLIERD está construyendo su estrategia' : 'KLIERD is building your strategy';
     naBody.textContent = lang==='es' ? 'No se requiere acción de su parte ahora mismo.' : 'No action needed from you right now.';
     naCta.textContent = lang==='es' ? 'Mensajes' : 'Messages';
     naCta.classList.remove('done');
@@ -1796,8 +1796,8 @@ function viewAnalysis(kind){
   );
   showToast(
     lang==='es'
-      ? '📄 Su asesor le enviará el análisis dentro de 24–48 horas hábiles.'
-      : '📄 Your advisor will deliver your analysis within 24–48 business hours.',
+      ? '📄 Su análisis será entregado dentro de 24–48 horas hábiles.'
+      : '📄 Your analysis will be delivered within 24–48 business hours.',
     'success'
   );
   setTimeout(()=>{ window.location.href = 'mailto:info@klierd.com?subject=' + subject + '&body=' + body; }, 600);
@@ -1814,8 +1814,8 @@ function viewAgreement(key){
   );
 }
 function signAgreement(key){
-  // Phase 1.5 — advisor sends agreement via DocuSign from staff portal. Client gets email with secure signing link.
-  // Until DocuSign integration is live, surface the next step clearly + offer to ping advisor.
+  // Phase 1.5 — system sends agreement via DocuSign automatically when triggered. Funding Manager confirms it landed.
+  // Until DocuSign integration is live, surface the next step clearly + offer to ping the Funding Manager.
   const subject = encodeURIComponent('Send my agreement for signature — ' + (currentApp?.trackingId || ''));
   const body = encodeURIComponent(
     (lang==='es'
@@ -1825,8 +1825,8 @@ function signAgreement(key){
   );
   showToast(
     lang==='es'
-      ? '✎ Su asesor le enviará el enlace de firma electrónica dentro de 1 día hábil. Revise su correo.'
-      : '✎ Your advisor will send the e-signature link within 1 business day. Watch your email.',
+      ? '✎ El enlace de firma electrónica será enviado dentro de 1 día hábil. Revise su correo.'
+      : '✎ The e-signature link will be sent within 1 business day. Watch your email.',
     'success'
   );
   setTimeout(()=>{ window.location.href = 'mailto:info@klierd.com?subject=' + subject + '&body=' + body; }, 800);
@@ -1890,8 +1890,8 @@ function sendMsg(){
   // Send to Railway
   fetch(`${API}/messages`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({trackingId:currentApp.trackingId,from:'client',text,time:new Date().toLocaleString()})}).catch(()=>{});
   setTimeout(()=>{
-    const autoEN='Thank you for your message! Your advisor will respond within 24 hours. — KLIERD Team';
-    const autoES='¡Gracias por su mensaje! Su asesor responderá en 24 horas. — Equipo KLIERD';
+    const autoEN='Thank you for your message! Your KLIERD Funding Manager will respond within 24 hours. — KLIERD Team';
+    const autoES='¡Gracias por su mensaje! Su Gerente de Financiamiento KLIERD responderá en 24 horas. — Equipo KLIERD';
     msgs.push({from:'advisor',text:lang==='es'?autoES:autoEN,time:new Date().toLocaleString()});
     localStorage.setItem('msgs_'+currentApp.trackingId,JSON.stringify(msgs));
     renderMessages(msgs);
@@ -1994,7 +1994,7 @@ function renderBilling(){
   // Line items
   const liWrap=document.getElementById('bill-line-items');
   if(items.length===0){
-    liWrap.innerHTML='<div class="bill-hist-empty">'+(T[lang]['bill-no-items']||'No charges yet. Your advisor will add line items after your consultation.')+'</div>';
+    liWrap.innerHTML='<div class="bill-hist-empty">'+(T[lang]['bill-no-items']||'No charges yet. Line items appear once your funding strategy is confirmed.')+'</div>';
   }else{
     liWrap.innerHTML=items.map(i=>'<div class="bill-li"><div class="bill-li-info"><div class="bill-li-name">'+(i.name||'')+'</div>'+(i.desc?'<div class="bill-li-desc">'+i.desc+'</div>':'')+'</div><div class="bill-li-amt">'+fmt(i.amount||0)+'</div></div>').join('');
   }
@@ -2156,7 +2156,7 @@ function klierdReadinessTier(scoreTU, scoreEQ, scoreEX, isItin, isBusiness){
   };
   // ETA reflects KLIERD Smart Technology acceleration: dispute resolution (30-45d
   // for negative item removal) + tradeline boost (20-50 pts in 30d) + utilization
-  // fixes (10-30 pts next reporting) + advisor-led bureau sequencing.
+  // fixes (10-30 pts next reporting) + system-driven bureau sequencing.
   // Aggressive — matches the Smart Technology marketing voice — capped at 120 days max.
   let cur, next, etaDays;
   if(best >= 750){
