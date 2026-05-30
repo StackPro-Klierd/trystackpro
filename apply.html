@@ -584,7 +584,9 @@ function submitIntake(){
   .then(resp => {
     if(resp && resp.success){
       const tyMsg = document.getElementById('ty-body');
-      if(tyMsg && resp.message) tyMsg.innerHTML = resp.message + '<br><br><strong style="color:#C9A84C">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong>';
+      const tid = resp.tracking_id || '';
+      const tidLine = tid ? `<br><br><strong>Your tracking ID: <span style="color:#C9A84C;font-family:monospace;font-size:18px">${tid}</span></strong><br><span style="font-size:12px;color:#9A9580">Save this — you will use it to log into your portal.</span>` : '';
+      if(tyMsg && resp.message) tyMsg.innerHTML = resp.message + tidLine + '<br><br><strong style="color:#C9A84C">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong>';
     }
   })
   .catch(()=>{ /* offline-safe: thank-you screen still shows */ });

@@ -867,15 +867,53 @@ function lookup(){
     if(!found){const my=JSON.parse(localStorage.getItem('my_applications')||'[]');found=my.find(a=>a.trackingId===id);}
   }catch(e){}
   if(found){showPortal(found);return;}
-  // Try Railway API
-  fetch(`${API}/clients?trackingId=${id}`)
+  // Try Railway API — NEW public lookup endpoint with full client+monitoring+activity rollup
+  fetch(`${API}/api/clients/lookup?trackingId=${encodeURIComponent(id)}`)
     .then(r=>r.json())
     .then(data=>{
-      if(data&&data.length>0){showPortal(data[0]);}
-      else{errEl.style.display='block';errEl.textContent='❌ '+T[lang]['lookup-error'];}
+      if(data && data.success && data.client){
+        // Normalize to the shape the rest of the portal expects
+        const c = data.client;
+        const app = {
+          trackingId: c.tracking_id || id,
+          id: c.id,
+          first: c.first_name, last: c.last_name,
+          email: c.email, phone: c.phone, lang: c.lang || 'en',
+          clientType: c.client_type, fundingType: c.funding_type,
+          services: c.services || [],
+          primary_service: c.primary_service,
+          status: c.status, submitted: c.created_at,
+          goalPersonal: c.personal_goal, goalBusiness: c.business_goal,
+          useOfFunds: c.use_of_funds, urgency: c.timeline,
+          // Pull monitoring rollup into app object so renderPortal sees it
+          monitoring_tier: data.monitoring?.tier || null,
+          monitoring_active: !!(data.monitoring && data.monitoring.status === 'active'),
+          monitoring_start_date: data.monitoring?.started_at || null,
+        };
+        showPortal(app);
+      } else {
+        errEl.style.display='block';errEl.textContent='❌ '+T[lang]['lookup-error'];
+      }
     })
-    .catch(()=>{errEl.style.display='block';errEl.textContent='❌ '+T[lang]['lookup-error'];});
+    .catch((err)=>{
+      console.error('lookup error',err);
+      errEl.style.display='block';errEl.textContent='❌ '+T[lang]['lookup-error'];
+    });
 }
+
+// Auto-login from URL ?id=CBG-XXXXXXXX — when client clicks portal link in welcome email/SMS
+(function autoLoginFromUrl(){
+  try{
+    const params = new URLSearchParams(window.location.search);
+    const idFromUrl = (params.get('id') || params.get('trackingId') || '').trim().toUpperCase();
+    if(idFromUrl){
+      const tin = document.getElementById('tracking-input');
+      if(tin) tin.value = idFromUrl;
+      // Defer to ensure DOM ready
+      setTimeout(()=>{ try { lookup(); } catch(e){ console.error('auto-login failed:', e); } }, 100);
+    }
+  }catch(e){ /* graceful */ }
+})();
 
 function showPortal(app){
   currentApp=app;
