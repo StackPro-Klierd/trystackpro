@@ -88,6 +88,22 @@ print(len(blocks))
     echo "  ✅ Compliance scan: clean"
   fi
 
+  # 3b. FORBIDDEN LENDER scan — Teka 2026-05-30 lock (Cece hard-removed 14 lenders)
+  # Whole-word match so 'mercury-mining' or 'relay-state' don't false-trigger.
+  LENDER_ERRS=0
+  for LENDER in "Brex" "Ramp" "OnDeck" "Mercury" "Divvy" "Stripe Corp" "Nova Credit" "Petal 1" "Petal 2"; do
+    HITS=$(grep -c -w "$LENDER" "$FILE" 2>/dev/null | head -1 | tr -d ' \n')
+    HITS=${HITS:-0}
+    if [ "$HITS" -gt 0 ] 2>/dev/null; then
+      echo "  ❌ FORBIDDEN LENDER: '$LENDER' found $HITS time(s) — Teka said remove this"
+      ERRORS=$((ERRORS+1))
+      LENDER_ERRS=$((LENDER_ERRS+1))
+    fi
+  done
+  if [ "$LENDER_ERRS" -eq 0 ]; then
+    echo "  ✅ Forbidden lender scan: clean"
+  fi
+
   # 4. CROA disclaimer presence (client-portal.html only)
   if [ "$FILE" = "client-portal.html" ]; then
     if grep -q -i "not a credit repair" "$FILE"; then

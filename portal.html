@@ -4438,7 +4438,7 @@ let clients = [
     packageName:'Consultation / Strategy Session', docs:'None uploaded',
     invoices:[],
     notes:[
-      {id:105, type:'update', txt:'ITIN client — Spanish speaking. Referred by Facebook. ITIN filed 3 years. Only TU score (580). EQ and EX thin file. Goal: personal cards + business funding for landscaping. Path: Petal 2 → OpenSky → Capital One QuicksilverOne after 6 months → DriveTime auto for installment mix.', staff:'Maria (VA)', ts:'05/10/26 2:00 PM'},
+      {id:105, type:'update', txt:'ITIN client — Spanish speaking. Referred by Facebook. ITIN filed 3 years. Only TU score (580). EQ and EX thin file. Goal: personal cards + business funding for landscaping. Path: OpenSky Secured → Capital One QuicksilverOne after 6 months → DriveTime auto for installment mix.', staff:'Maria (VA)', ts:'05/10/26 2:00 PM'},
     ],
     reports:[], verify:{sosChecked:false, idVerified:false, uccStatus:''}, followup:'2026-05-17',
   },
@@ -4793,11 +4793,11 @@ function runDecision(){
   if(util>50){pR=pR.map(v=>Math.round(v*.8));notes.push('⚠️ Utilization '+util+'% — pay down below 30% before applying.');}
   else if(util<20) notes.push('✅ Low utilization ('+util+'%) — excellent for approvals.');
   if(negs>3){pR=pR.map(v=>Math.round(v*.7));bR=bR.map(v=>Math.round(v*.75));notes.push('⚠️ '+negs+' negative items — recommend credit profile optimization before stacking.');}
-  if(bk>0) notes.push('🔴 Bankruptcy on file — secured cards and EIN-only cards (Brex/Ramp/Divvy) are the primary path. Personal card approvals limited for 2+ years post-discharge.');
-  if(entity==='llc'||entity==='scorp'||entity==='ccorp'){bR=bR.map(v=>Math.round(v*1.1));notes.push('✅ Established entity — eligible for EIN-only cards with no personal guarantee (Brex, Ramp, Divvy, Stripe).');}
+  if(bk>0) notes.push('🔴 Bankruptcy on file — secured cards and KLIERD-vetted EIN-only business cards are the primary path. Personal card approvals limited for 2+ years post-discharge.');
+  if(entity==='llc'||entity==='scorp'||entity==='ccorp'){bR=bR.map(v=>Math.round(v*1.1));notes.push('✅ Established entity — eligible for KLIERD-vetted EIN-only business cards with no personal guarantee.');}
   else if(entity==='none') notes.push('⚠️ No business entity — form LLC before applying. Personal guarantee required until entity established.');
   if(score<620) notes.push('🔴 Score below 620 — focus on secured personal + EIN-only business cards. Run credit profile optimization to remove negative items. Re-run decision after score improves.');
-  else if(score<650) notes.push('🟡 Score 620–649 — limited personal card options. Strong business stack possible with EIN-only cards (Brex, Ramp, Divvy). Credit profile optimization recommended.');
+  else if(score<650) notes.push('🟡 Score 620–649 — limited personal card options. Strong business stack possible with KLIERD-vetted EIN-only business cards. Credit profile optimization recommended.');
   if(existing>0) notes.push('ℹ️ $'+existing.toLocaleString()+' existing limits — call each issuer for CLI (credit limit increase) before new applications.');
   if(notes.length===0) notes.push('✅ Clean profile — proceed with full stacking sequence as recommended below.');
 
@@ -4848,7 +4848,7 @@ function showCTab(type,el){
 function renderSeq(){
   const seqs=[
     {t:'Pre-Qualify & Clean Up',d:'Confirm score via soft pull. Pay utilization below 30%. Dispute any errors on all 3 bureaus before applying.',tm:'Week 1'},
-    {t:'Apply — EIN-Only Cards First (No Hard Pull)',d:'Apply for Brex, Ramp, Divvy, Stripe using EIN only. No personal impact. Instant decisions.',tm:'Day 1 — First'},
+    {t:'Apply — EIN-Only Cards First (No Hard Pull)',d:'Apply for KLIERD-vetted EIN-only business cards. No personal credit impact. Fast decisions.',tm:'Day 1 — First'},
     {t:'Same-Day Bundle — Personal + Business',d:'Apply to all Tier 1 personal AND business cards same day. Multiple inquiries from same bank type within 14 days count as one inquiry.',tm:'Day 1 — Same Window'},
     {t:'Wait for Decisions (Do Not Apply More)',d:'Most cards: instant online. Some: 7–10 days. Do NOT apply for any new credit during this period.',tm:'Days 2–14'},
     {t:'Reconsideration Calls',d:'Call each bank\'s reconsideration line for declines or low limits. Have income documentation ready. Request CLI.',tm:'Days 7–14'},
@@ -5689,7 +5689,7 @@ Consultant agrees to provide:
 
   1. Comprehensive credit profile analysis (personal + business)
   2. Personal and business credit card sequencing strategy
-  3. EIN-only application guidance (Brex, Ramp, Divvy, etc.)
+  3. EIN-only application guidance (KLIERD-vetted business card stack)
   4. Application timing, sequencing, and documentation support
   5. Reconsideration support and credit limit increase strategy
   6. Business credit building roadmap and vendor account strategy
@@ -6124,7 +6124,6 @@ const BIZ_LOANS = [
   {n:'Amex Business Gold',t:'business',lane:'business',e:'🏢',min:680,lo:10000,hi:75000,apr:'N/A',pull:true,rep:'Business bureau only',note:'⚠️ Amex lifetime language. No preset limit. 4x on top 2 categories. Verify eligibility before applying.',tier:1,bank:'Amex ⚠️Lifetime',itin:false},
   {n:'Amex Business Platinum',t:'business',lane:'business',e:'🏢',min:700,lo:15000,hi:100000,apr:'N/A',pull:true,rep:'Business bureau only',note:'⚠️ Amex lifetime language. $695 annual fee. Only recommend for 700+ clients with specific travel needs.',tier:1,bank:'Amex ⚠️Lifetime',itin:false},
   {n:'Fulton Bank Business Visa',t:'business',lane:'business',e:'🏢',min:680,lo:1000,hi:500000,apr:'Variable',pull:true,rep:'Business bureau only',note:'$1K-$500K limits. No annual fee. Relationship manager for larger limits. No known velocity rules.',tier:2,bank:'Fulton Bank',itin:false},
-  {n:'OnDeck Business Loan',t:'business',lane:'business',e:'🏢',min:625,lo:5000,hi:250000,apr:'Variable',pull:false,rep:'Business bureau only',note:'Revenue-based. 625+ min. $250K max. 1 year in business required. Fast funding.',tier:2,bank:'OnDeck',itin:false},
   {n:'Credibly Business Loan',t:'business',lane:'business',e:'🏢',min:550,lo:5000,hi:400000,apr:'Variable',pull:false,rep:'Business bureau only',note:'550+ min — low threshold. $400K max. 6 months in business. Revenue-based.',tier:2,bank:'Credibly',itin:false},
   {n:'Fora Financial',t:'business',lane:'business',e:'🏢',min:500,lo:5000,hi:1500000,apr:'Variable',pull:false,rep:'Business bureau only',note:'500+ min. $1.5M max. 6 months in business. Revenue-based. High approval rate.',tier:2,bank:'Fora Financial',itin:false},
   {n:'American Express Business Line',t:'business',lane:'business',e:'🏢',min:660,lo:2000,hi:250000,apr:'Variable',pull:false,rep:'Business bureau only',note:'Amex Pay Over Time. 660+ min. $250K max. Soft pull. Existing Amex relationship helps.',tier:1,bank:'Amex',itin:false},
@@ -6148,8 +6147,6 @@ const BIZ_LOANS = [
   {n:'Fundbox',t:'business',lane:'business',e:'🏢',min:600,lo:1000,hi:150000,apr:'Variable',pull:false,rep:'Business bureau only',note:'Bank data based. 600+ min. 3 mo bank history. Cash flow focus.',tier:2,bank:'Fundbox',itin:false},
   {n:'Kabbage (American Express)',t:'business',lane:'business',e:'🏢',min:620,lo:2000,hi:250000,apr:'Variable',pull:false,rep:'Business bureau only',note:'Now under Amex. Revenue-based. Soft pull only. Strong for consistent deposits.',tier:2,bank:'Amex/Kabbage',itin:false},
   {n:'Lendio (Marketplace)',t:'business',lane:'business',e:'🏢',min:550,lo:500,hi:5000000,apr:'Variable',pull:false,rep:'Business bureau only',note:'Marketplace — 75+ lenders. 550+ min. Not direct lender — aggregator. Great for low score.',tier:2,bank:'Lendio',itin:false},
-  {n:'OnDeck Line of Credit',t:'business',lane:'business',e:'🏢',min:625,lo:6000,hi:100000,apr:'Variable',pull:false,rep:'Business bureau only',note:'Revolving line. 625+ min. 1yr in business. Fast decisions. Same day funding.',tier:2,bank:'OnDeck',itin:false},
-  {n:'OnDeck Term Loan',t:'business',lane:'business',e:'🏢',min:625,lo:5000,hi:250000,apr:'Variable',pull:false,rep:'Business bureau only',note:'3-24 month terms. 625+ min. Revenue-based. 1yr in business required.',tier:2,bank:'OnDeck',itin:false},
   {n:'PayPal Working Capital',t:'business',lane:'business',e:'🏢',min:0,lo:1000,hi:300000,apr:'Variable',pull:false,rep:'Business bureau only',note:'No credit check. Based on PayPal sales history. Must have PayPal business account.',tier:2,bank:'PayPal',itin:false},
   {n:'Quill Net-30',t:'business',lane:'business',e:'🏢',min:0,lo:500,hi:5000,apr:'N/A',pull:false,rep:'D&B + Equifax Biz',note:'EIN only. Reports D&B + Equifax Business. Easy net-30 approval.',tier:3,bank:'Quill',itin:false},
   {n:'SBA 504 Loan',t:'business',lane:'business',e:'🏢',min:680,lo:50000,hi:5500000,apr:'Variable',pull:true,rep:'Business bureau only',note:'Commercial real estate and equipment. 680+ min. 10-25 yr term. Low rate.',tier:1,bank:'SBA/Bank',itin:false},
@@ -6660,7 +6657,7 @@ function runItinDecision() {
 
   if(bank==='yes'){pR=pR.map(v=>Math.round(v*1.3));notes.push(lang==='es'?'✅ Cuenta bancaria en EE.UU. — mejora significativamente las opciones de aprobación':'✅ US bank account on file — significantly improves approval odds.');}
   else{notes.push(lang==='es'?'⚠️ Sin cuenta bancaria en EE.UU. — abrir una cuenta primero en Chase, BofA, o una cooperativa de crédito local':'⚠️ No US bank account — open one first at Chase, BofA, or a local credit union before applying.');}
-  if(entity==='llc'){bR=bR.map(v=>Math.round(v*2));notes.push(lang==='es'?'✅ LLC formada — elegible para tarjetas EIN-only (Ramp, Brex, Divvy) sin garantía personal':'✅ LLC formed — eligible for EIN-only cards (Ramp, Brex, Divvy) with no personal guarantee.');}
+  if(entity==='llc'){bR=bR.map(v=>Math.round(v*2));notes.push(lang==='es'?'✅ LLC formada — elegible para tarjetas empresariales EIN-only vetadas por KLIERD sin garantía personal':'✅ LLC formed — eligible for KLIERD-vetted EIN-only business cards with no personal guarantee.');}
   if(score===0){notes.push(lang==='es'?'ℹ️ Sin historial en EE.UU. — comenzar con una tarjeta asegurada. El puntaje se construye en 6–12 meses con pagos a tiempo':'ℹ️ No US credit history — start with a secured card. Score builds in 6–12 months with on-time payments.');}
   if(time<1){notes.push(lang==='es'?'ℹ️ Recién llegado — Amex puede acceder al historial de crédito internacional de algunos países':'ℹ️ Recent arrival — Amex can access international credit history from some countries.');}
   notes.push(lang==='es'?'📋 Documentos necesarios: ITIN, pasaporte o matrícula consular, dirección en EE.UU., comprobante de ingresos':'📋 Documents needed: ITIN, passport or consular ID, US address, proof of income.');
@@ -10536,8 +10533,8 @@ const FUNDING_FLOWS = {
     steps: [
       { num:'1', color:'var(--blue)', title:'Verify Business Setup', body:'Client must have: LLC/Corp formed, EIN from IRS, business bank account (90+ days), D-U-N-S number registered at dnb.com. No EIN = no business credit. Check SOS status.', action:'📋 Agreement Builder', nav:'agreement' },
       { num:'2', color:'var(--blue)', title:'Build Business Credit Foundation', body:'Start with Level 1 vendor accounts (Uline, Quill, Grainger). Apply 5 accounts → wait 45 days → check D&B PAYDEX. Repeat for Level 2. Need 80+ PAYDEX before applying for business cards.', action:'📈 Biz Credit Builder', nav:'bizcredit' },
-      { num:'3', color:'var(--gold)', title:'Apply for EIN-Only Business Cards', body:'Once PAYDEX is 80+: Ramp (no PG), Brex (no PG), Divvy (no PG). Then Capital One Spark Classic (ITIN/SSN accepted). These report to business bureaus only — no personal credit impact.', action:'▣ Card Matrix', nav:'cards' },
-      { num:'4', color:'var(--gold)', title:'Layer in Business Loans', body:'After 6+ months of business credit history: Bluevine LOC, Fundbox, OnDeck, or Credibly for revenue-based. 12+ months + $100K revenue = term loans. SBA after 2 years.', action:'🏢 Business Loans', nav:'bizloans' },
+      { num:'3', color:'var(--gold)', title:'Apply for EIN-Only Business Cards', body:'Once PAYDEX is 80+: apply for the KLIERD-vetted EIN-only business card stack (Capital One Spark Classic accepts ITIN/SSN). These report to business bureaus only — no personal credit impact.', action:'▣ Card Matrix', nav:'cards' },
+      { num:'4', color:'var(--gold)', title:'Layer in Business Loans', body:'After 6+ months of business credit history: Bluevine LOC, Fundbox, or Credibly for revenue-based. 12+ months + $100K revenue = term loans. SBA after 2 years.', action:'🏢 Business Loans', nav:'bizloans' },
       { num:'5', color:'var(--green)', title:'Consider Shelf Corp (if needed)', body:'If client needs instant aged business entity to qualify for lender requirements (2+ years in business), source and sell an appropriate shelf corp first. Then build credit on top.', action:'🏛 Shelf Corps', nav:'shelfcorp' },
       { num:'6', color:'var(--green)', title:'Document & Invoice', body:'Generate success fee agreement. Record total funding placed. Invoice client and set payment reminders. Offer monitoring service for ongoing business credit tracking.', action:'📋 Agreement Builder', nav:'agreement' },
     ]
@@ -10548,10 +10545,10 @@ const FUNDING_FLOWS = {
     sub: 'Credit building path for ITIN holders — no SSN required',
     steps: [
       { num:'1', color:'var(--blue)', title:'ITIN Client Intake', body:'Use the ITIN Client Portal — not the main New Client form. Capture ITIN number, housing status, tax filing history, remittances, and funding goal. All fields bilingual for Spanish VAs.', action:'🌎 ITIN Client Portal', nav:'itin' },
-      { num:'2', color:'var(--blue)', title:'Start with No-Check Cards', body:'Best first cards: Petal 2 (bank data, no credit check), OpenSky Secured (no check, ITIN accepted), Chime Credit Builder. These build the credit file from zero. Do NOT apply for Chase or Amex yet.', action:'🌎 ITIN Client Portal', nav:'itin' },
+      { num:'2', color:'var(--blue)', title:'Start with No-Check Cards', body:'Best first cards: OpenSky Secured (no check, ITIN accepted), Chime Credit Builder, KLIERD-vetted no-credit-check builders. These build the credit file from zero. Do NOT apply for Chase or Amex yet.', action:'🌎 ITIN Client Portal', nav:'itin' },
       { num:'3', color:'var(--gold)', title:'Build Credit Mix — Auto Loan', body:'After 3-6 months of on-time card payments: DriveTime, Credit Acceptance, or Carvana auto loan (all accept ITIN). This adds installment account — critical for score jump. Capital One auto also accepts ITIN.', action:'🔗 Tradelines', nav:'tradelines' },
       { num:'4', color:'var(--gold)', title:'Upgrade to Rewards Cards', body:'After 6-12 months + 650+ score: Capital One QuicksilverOne (ITIN accepted, 1.5% cash back), Zolve, Amex (uses international credit history). Stack 3-5 cards across issuers.', action:'🌎 ITIN Client Portal', nav:'itin' },
-      { num:'5', color:'var(--green)', title:'Business Credit (if applicable)', body:'If client has LLC + EIN: Uline Net-30 (EIN only), Ramp/Brex (EIN only), Bluevine (ITIN + EIN). Capital One Spark Classic accepts ITIN for business. Fundbox accepts ITIN + EIN.', action:'📈 Biz Credit Builder', nav:'bizcredit' },
+      { num:'5', color:'var(--green)', title:'Business Credit (if applicable)', body:'If client has LLC + EIN: Uline Net-30 (EIN only), KLIERD-vetted EIN-only cards, Bluevine (ITIN + EIN). Capital One Spark Classic accepts ITIN for business. Fundbox accepts ITIN + EIN.', action:'📈 Biz Credit Builder', nav:'bizcredit' },
       { num:'6', color:'var(--green)', title:'Document & Invoice', body:'Generate consulting agreement from Agreement Builder. Note ITIN-specific terms. Invoice via Authorize.net. Spanish clients — all agreements can be translated on request.', action:'📋 Agreement Builder', nav:'agreement' },
     ]
   },
@@ -10607,9 +10604,9 @@ function renderFundingScoreRef(){
   const el = document.getElementById('funding-score-ref');
   if(!el) return;
   const tiers = [
-    {range:'Below 580', color:'#922B21', personal:'Secured cards only (OpenSky, Petal, Self)', biz:'EIN-only (Ramp, Brex) if entity exists', first:'⚡ Credit Enhancement'},
+    {range:'Below 580', color:'#922B21', personal:'Secured cards only (OpenSky, Self)', biz:'KLIERD-vetted EIN-only stack if entity exists', first:'⚡ Credit Enhancement'},
     {range:'580–619',   color:'#E74C3C', personal:'Capital One Platinum, Discover Secured, Chime', biz:'Fundbox, Credibly (revenue-based)', first:'⚡ Credit Enhancement + secured cards'},
-    {range:'620–659',   color:'#E67E22', personal:'Capital One QuicksilverOne, Petal 2, BCU (TU)', biz:'Bluevine LOC, OnDeck, Capital One Spark', first:'💰 CU Stack — BCU first'},
+    {range:'620–659',   color:'#E67E22', personal:'Capital One QuicksilverOne, BCU (TU)', biz:'Bluevine LOC, Capital One Spark, Fundbox', first:'💰 CU Stack — BCU first'},
     {range:'660–699',   color:'#F39C12', personal:'Most CUs, Chase Freedom, Amex, DCU', biz:'Most business LOCs + term loans', first:'💰 Full CU bureau stack'},
     {range:'700–749',   color:'#27AE60', personal:'Premium CU products, Chase Sapphire, Amex Gold', biz:'SBA Express, all major LOCs', first:'▣ Card Matrix — premium tier'},
     {range:'750+',      color:'#1A8A4A', personal:'All products — best rates, highest limits', biz:'SBA 7(a), all programs available', first:'▣ Card Matrix — top tier'},
