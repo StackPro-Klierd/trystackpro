@@ -347,6 +347,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
     <div class="ni" onclick="nav('import',this)"><span class="ni-ico">↑</span><span class="nav-lbl" data-en="Import Clients" data-es="Importar Clientes">Import Clients</span></div>
     <div class="ni" onclick="nav('agreement',this)"><span class="ni-ico">◻</span><span class="nav-lbl" data-en="Agreement" data-es="Contrato">Agreement</span></div>
     <div class="ni" onclick="nav('invoices',this)"><span class="ni-ico">💳</span><span class="nav-lbl" data-en="Invoice Center" data-es="Facturas">Invoice Center</span></div>
+    <div class="ni" onclick="nav('iftruns',this)"><span class="ni-ico">🤖</span><span class="nav-lbl" data-en="IFT Run History" data-es="Historial IFT">IFT Run History</span></div>
     <div class="ni" onclick="nav('brokers',this)"><span class="ni-ico">🤝</span><span class="nav-lbl" data-en="Broker Portal" data-es="Portal Brokers">Broker Portal</span></div>
     <div class="ni" onclick="nav('teamboard',this)"><span class="ni-ico">📋</span><span class="nav-lbl" data-en="Team Board" data-es="Equipo">Team Board</span></div>
     <div class="ni" onclick="nav('email',this)"><span class="ni-ico">✉</span><span class="nav-lbl" data-en="Email Center" data-es="Correos">Email Center</span></div>
@@ -3720,6 +3721,45 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
   </div>
 </div>
 
+<!-- IFT RUN HISTORY PANEL — read-only oversight per Option C lock (Teka 2026-05-30) -->
+<!-- Staff portal = monitoring only. NO trigger buttons. NO submit actions. -->
+<div id="panel-iftruns" class="panel">
+  <div class="sh">
+    <div>
+      <div class="st">🤖 IFT Run History</div>
+      <div class="sub">Read-only view of what KLIERD Intelligent Funding Technology produced per client. Override edge cases here, but the engine runs automatically.</div>
+    </div>
+    <div>
+      <button class="btn bgh bsm" onclick="refreshIFTRuns()">🔄 Refresh</button>
+    </div>
+  </div>
+
+  <div class="fc">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px">
+      <div class="sc"><div class="sl">Total Runs (24h)</div><div class="sv" id="ift-runs-24h">—</div></div>
+      <div class="sc"><div class="sl">Successful Runs</div><div class="sv" id="ift-runs-ok" style="color:var(--green)">—</div></div>
+      <div class="sc"><div class="sl">Submissions Created</div><div class="sv" id="ift-subs-total" style="color:var(--gold)">—</div></div>
+      <div class="sc"><div class="sl">Approved Outcomes</div><div class="sv" id="ift-approved" style="color:var(--green)">—</div></div>
+      <div class="sc"><div class="sl">Avg Duration</div><div class="sv" id="ift-avg-ms">—</div></div>
+    </div>
+
+    <div style="background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.2);border-radius:var(--rs);padding:12px 16px;margin-bottom:16px;font-size:11px;color:var(--gold);line-height:1.7">
+      📌 <strong>This panel is read-only.</strong> The IFT engine auto-fires when (verification + docs + credit report) all land. Funding Manager review happens AFTER the system produces a strategy. Use the override controls per row only when an edge case requires it.
+    </div>
+  </div>
+
+  <div class="fc">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:600;margin-bottom:12px">Recent IFT Runs</div>
+    <div id="ift-runs-list">
+      <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px">
+        <div style="font-size:32px;opacity:0.4;margin-bottom:8px">🤖</div>
+        <div>No IFT runs yet. The first run fires when a client completes verification + docs + credit report.</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px">Make sure server.js has IFT endpoints deployed and Supabase migration has run.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- BROKER PORTAL PANEL -->
 <div id="panel-brokers" class="panel">
   <div class="sh"><div><div class="st">Broker Portal</div><div class="sub">Manage brokers, client submissions, earnings, white label</div></div><div><button class="btn bg" onclick="document.getElementById('add-broker-form').style.display=document.getElementById('add-broker-form').style.display==='none'?'block':'none'">+ Add Broker</button></div></div>
@@ -4684,6 +4724,7 @@ function nav(id, el){
   if(id==='analytics')  renderDashboard();
   if(id==='invoices')   refreshInvPanel('all');
   if(id==='brokers')    refreshBrokerPanel();
+  if(id==='iftruns')    refreshIFTRuns();
   if(id==='teamboard')  renderTeamBoard();
   if(id==='admin')      { renderAdminPanel(); }
   if(id==='shelfcorp')     { loadSCClients(); renderSCClientList(); renderShelfCorpsPanel(); }
@@ -12282,6 +12323,89 @@ function getBrokers(){try{return JSON.parse(localStorage.getItem('sp_brokers')||
 function saveBrokers(arr){localStorage.setItem('sp_brokers',JSON.stringify(arr));}
 function getBrokerSubmissions(){try{return JSON.parse(localStorage.getItem('sp_broker_submissions')||'[]');}catch(e){return[];}}
 function saveBrokerSubmissions(arr){localStorage.setItem('sp_broker_submissions',JSON.stringify(arr));}
+
+// ═══════════════════════════════════════════════════════════════
+// IFT RUN HISTORY — read-only oversight (Teka 2026-05-30 Option C lock)
+// Reads sp_ift_runs + sp_submissions from Railway. Phase 1: stubbed
+// localStorage fallback so the panel works even before backend is live.
+// ═══════════════════════════════════════════════════════════════
+async function refreshIFTRuns(){
+  const list = document.getElementById('ift-runs-list');
+  if (!list) return;
+
+  let runs = [];
+  let subsTotal = 0;
+  let subsApproved = 0;
+
+  try {
+    const apiBase = (window.KLIERD_API_BASE || 'https://stackpro-api-production.up.railway.app');
+    const r = await fetch(apiBase + '/api/ift/runs?limit=50');
+    if (r.ok) {
+      const data = await r.json();
+      runs = Array.isArray(data?.runs) ? data.runs : [];
+      subsTotal = Number(data?.submissions_total || 0);
+      subsApproved = Number(data?.approved_total || 0);
+    }
+  } catch (e) { /* fall through to empty state */ }
+
+  // Stats
+  const now = Date.now();
+  const runs24h = runs.filter(r => (now - new Date(r.run_at).getTime()) < 86400000);
+  const ok = runs24h.filter(r => r.status === 'completed').length;
+  const avgMs = runs24h.length ? Math.round(runs24h.reduce((s,r) => s + (Number(r.duration_ms)||0), 0) / runs24h.length) : 0;
+  document.getElementById('ift-runs-24h').textContent = runs24h.length;
+  document.getElementById('ift-runs-ok').textContent = ok;
+  document.getElementById('ift-subs-total').textContent = subsTotal || runs.reduce((s,r) => s + (r.submissions_count||0), 0);
+  document.getElementById('ift-approved').textContent = subsApproved || '—';
+  document.getElementById('ift-avg-ms').textContent = avgMs ? (avgMs + 'ms') : '—';
+
+  if (runs.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px">
+      <div style="font-size:32px;opacity:0.4;margin-bottom:8px">🤖</div>
+      <div>No IFT runs yet. The first run fires when a client completes verification + docs + credit report.</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">Make sure server.js has IFT endpoints deployed and Supabase migration has run.</div>
+    </div>`;
+    return;
+  }
+
+  const STATUS_COLOR = {
+    completed: 'var(--green)',
+    partial:   'var(--orange)',
+    failed:    'var(--red)',
+    skipped_ineligible: 'var(--muted)',
+  };
+  const TRIGGER_LABEL = {
+    auto: '⚡ Auto-fire',
+    manual_override: '🛠 Manual override',
+    retry: '🔄 Retry',
+  };
+
+  list.innerHTML = runs.map(r => {
+    const dt = r.run_at ? new Date(r.run_at).toLocaleString() : '—';
+    const lenders = Array.isArray(r.matched_lenders) ? r.matched_lenders : [];
+    const lenderPreview = lenders.slice(0,3).map(l => l.n || l.bank || '—').join(', ') + (lenders.length > 3 ? `, +${lenders.length-3} more` : '');
+    return `<div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px">
+        <div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">Run #${r.id || '?'} · ${TRIGGER_LABEL[r.trigger_source] || r.trigger_source || 'auto'}</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text)">Tracking ${r.tracking_id || '—'}</div>
+        </div>
+        <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:4px 10px;border-radius:99px;background:${(STATUS_COLOR[r.status]||'var(--muted)') + '20'};color:${STATUS_COLOR[r.status]||'var(--muted)'};border:1px solid ${STATUS_COLOR[r.status]||'var(--muted)'}">${r.status || '—'}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;font-size:11px;color:var(--dim)">
+        <div><span style="color:var(--muted)">Submissions:</span> <strong style="color:var(--gold)">${r.submissions_count || 0}</strong></div>
+        <div><span style="color:var(--muted)">Skipped:</span> ${r.skipped_count || 0}</div>
+        <div><span style="color:var(--muted)">Errors:</span> ${r.error_count || 0}</div>
+        <div><span style="color:var(--muted)">Duration:</span> ${r.duration_ms || 0}ms</div>
+        <div><span style="color:var(--muted)">When:</span> ${dt}</div>
+      </div>
+      ${lenders.length > 0 ? `<div style="font-size:11px;color:var(--dim);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
+        <span style="color:var(--muted)">Lenders matched:</span> ${lenderPreview}
+      </div>` : ''}
+      ${r.error_message ? `<div style="font-size:11px;color:var(--red);margin-top:8px">${r.error_message}</div>` : ''}
+    </div>`;
+  }).join('');
+}
 
 function refreshBrokerPanel(){
   const brokers=getBrokers();const subs=getBrokerSubmissions();
