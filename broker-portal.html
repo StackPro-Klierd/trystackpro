@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KLIERD Broker Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#C9A84C;--gold-light:#E8CB7A;--dark:#09090F;--dark2:#0f0f0f;--dark3:#161616;
+  --border:rgba(201,168,76,0.15);--border-hi:rgba(201,168,76,0.4);
+  --text:#F0EDE6;--dim:#9A9580;--muted:#5A5648;
+  --green:#27AE60;--red:#E74C3C;--blue:#2980B9;--orange:#E67E22;
+  --r:12px;--rs:8px;
+}
+body{background:var(--dark);color:var(--text);font-family:'Sora',sans-serif;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 80% 10%,rgba(201,168,76,0.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 28px;height:64px;background:rgba(9,9,15,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold);}
+.logo span{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;font-family:'Sora',sans-serif;font-weight:400;}
+.header-right{display:flex;gap:12px;align-items:center;}
+.lang-toggle{display:flex;gap:6px;}
+.lang-btn{padding:4px 12px;border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .15s;font-family:'Sora',sans-serif;}
+.lang-btn.active{background:rgba(201,168,76,0.1);border-color:var(--border-hi);color:var(--gold);}
+.broker-pill{padding:5px 12px;border-radius:99px;font-size:11px;font-weight:700;background:rgba(201,168,76,0.1);border:1px solid var(--border-hi);color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:1px;}
+.wrap{max-width:1000px;margin:0 auto;padding:88px 20px 60px;position:relative;z-index:1;}
+.login{background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:40px 32px;max-width:480px;margin:60px auto;}
+.login h1{font-family:'DM Serif Display',serif;font-size:32px;color:var(--gold);margin-bottom:8px;letter-spacing:-0.5px;text-align:center;}
+.login p{font-size:13px;color:var(--dim);margin-bottom:28px;line-height:1.7;text-align:center;}
+.f{margin-bottom:14px;}
+.f label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:6px;font-weight:700;}
+.f input,.f select,.f textarea{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:11px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:13px;outline:none;transition:border-color .15s;}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--gold);}
+.btn-primary{padding:12px 22px;background:var(--gold);color:#000;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;white-space:nowrap;transition:all .15s;letter-spacing:0.5px;text-transform:uppercase;}
+.btn-primary:hover{background:var(--gold-light);}
+.btn-primary[disabled]{opacity:0.5;cursor:not-allowed;}
+.btn-ghost{padding:9px 18px;border-radius:var(--rs);font-size:12px;font-weight:600;text-decoration:none;border:1px solid var(--border);color:var(--dim);background:var(--dark3);font-family:'Sora',sans-serif;transition:all .15s;cursor:pointer;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.error-msg{color:var(--red);font-size:12px;margin-top:8px;display:none;text-align:center;}
+.hint{font-size:11px;color:var(--muted);margin-top:6px;}
+.divider{border:none;border-top:1px solid var(--border);margin:24px 0;}
+.dashboard{display:none;}
+.dashboard.show{display:block;}
+.tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
+.tab{padding:9px 16px;border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--dark2);color:var(--muted);transition:all .15s;}
+.tab.active{background:rgba(201,168,76,0.1);border-color:var(--border-hi);color:var(--gold);}
+.card{background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-weight:700;margin-bottom:14px;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:14px;}
+.stat-box{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:16px;}
+.stat-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:6px;font-weight:700;}
+.stat-val{font-size:24px;font-weight:700;color:var(--gold);font-family:'DM Mono',monospace;}
+.stat-sub{font-size:11px;color:var(--dim);margin-top:4px;}
+.table-wrap{overflow-x:auto;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--dark2);text-align:left;padding:10px 14px;font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-weight:700;border-bottom:1px solid var(--border);}
+td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--dark2);}
+.badge{padding:4px 10px;border-radius:99px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:inline-block;}
+.badge-new{background:rgba(41,128,185,0.15);color:var(--blue);border:1px solid rgba(41,128,185,0.3);}
+.badge-active{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
+.badge-funded{background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);}
+.badge-declined{background:rgba(231,76,60,0.15);color:var(--red);border:1px solid rgba(231,76,60,0.3);}
+.badge-paid{background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);}
+.badge-pending{background:rgba(230,126,34,0.15);color:var(--orange);border:1px solid rgba(230,126,34,0.3);}
+.broker-link{background:var(--dark3);border:1px solid var(--gold);border-radius:var(--rs);padding:12px 16px;font-family:'DM Mono',monospace;font-size:13px;color:var(--gold);word-break:break-all;margin-bottom:8px;cursor:pointer;}
+.broker-link:hover{background:var(--dark2);}
+.copy-hint{font-size:10px;color:var(--muted);}
+.plan-pill{display:inline-block;padding:5px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid var(--border-hi);}
+.pricing-note{background:rgba(230,126,34,0.05);border:1px solid rgba(230,126,34,0.2);border-radius:var(--rs);padding:12px 16px;font-size:11px;color:var(--orange);margin-bottom:14px;}
+.footer{text-align:center;padding:28px;font-size:10px;color:var(--muted);border-top:1px solid var(--border);position:relative;z-index:1;}
+.empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;}
+.empty-icon{font-size:36px;margin-bottom:12px;opacity:0.4;}
+@media(max-width:600px){
+  .header{padding:0 16px;}
+  .logo{font-size:17px;}
+  .wrap{padding:80px 14px 40px;}
+  .login{padding:28px 22px;margin:30px auto;}
+  .login h1{font-size:26px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">KLIERD<span id="lbl-broker-portal">Broker Portal</span></div>
+  <div class="header-right">
+    <div class="broker-pill" id="broker-pill" style="display:none">— BROKER —</div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="es" onclick="setLang('es')">ES</button>
+    </div>
+    <button class="btn-ghost" id="logout-btn" onclick="logout()" style="display:none">Sign Out</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- LOGIN SCREEN -->
+  <div class="login" id="login-screen">
+    <h1 id="lbl-login-title">Broker Login</h1>
+    <p id="lbl-login-sub">Sign in to manage your referrals, track earnings, and submit new clients to KLIERD.</p>
+    <div class="f">
+      <label id="lbl-email">Email</label>
+      <input type="email" id="i-email" placeholder="broker@example.com" autocomplete="email"/>
+    </div>
+    <div class="f">
+      <label id="lbl-password">Password</label>
+      <input type="password" id="i-password" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+    <button class="btn-primary" style="width:100%" onclick="doLogin()" id="btn-login">Sign In</button>
+    <div class="error-msg" id="login-err">—</div>
+    <hr class="divider"/>
+    <p style="font-size:11px;color:var(--muted);text-align:center" id="lbl-no-account">
+      Not a broker yet? <a href="mailto:brokers@klierd.com" style="color:var(--gold);text-decoration:none">Email brokers@klierd.com →</a>
+    </p>
+  </div>
+
+  <!-- DASHBOARD (post-login) -->
+  <div class="dashboard" id="dashboard">
+
+    <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text)" id="welcome-name">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="welcome-code">—</div>
+      </div>
+      <div>
+        <span class="plan-pill" id="plan-pill">—</span>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('overview',this)" id="tab-btn-overview">📊 <span id="lbl-tab-overview">Overview</span></button>
+      <button class="tab" onclick="showTab('submit',this)" id="tab-btn-submit">➕ <span id="lbl-tab-submit">Submit Referral</span></button>
+      <button class="tab" onclick="showTab('clients',this)" id="tab-btn-clients">👥 <span id="lbl-tab-clients">My Clients</span></button>
+      <button class="tab" onclick="showTab('earnings',this)" id="tab-btn-earnings">💰 <span id="lbl-tab-earnings">Earnings</span></button>
+      <button class="tab" onclick="showTab('account',this)" id="tab-btn-account">⚙ <span id="lbl-tab-account">Account</span></button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="tab-overview">
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-label" id="lbl-stat-month">Referrals This Month</div>
+          <div class="stat-val" id="stat-month">0</div>
+          <div class="stat-sub" id="lbl-stat-month-sub">New clients introduced</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label" id="lbl-stat-active">Active Clients</div>
+          <div class="stat-val" id="stat-active">0</div>
+          <div class="stat-sub" id="lbl-stat-active-sub">In KLIERD workflows</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label" id="lbl-stat-funded">Funded Clients</div>
+          <div class="stat-val" id="stat-funded">0</div>
+          <div class="stat-sub" id="lbl-stat-funded-sub">Approved + closed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label" id="lbl-stat-earnings">Lifetime Earnings</div>
+          <div class="stat-val" id="stat-earnings">$0</div>
+          <div class="stat-sub" id="lbl-stat-earnings-sub">Paid + pending</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" id="lbl-recent-activity">Recent Activity</div>
+        <div id="recent-activity-list">
+          <div class="empty">
+            <div class="empty-icon">📭</div>
+            <div id="lbl-empty-activity">No activity yet. Submit your first referral to get started.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT REFERRAL -->
+    <div id="tab-submit" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-new-referral">New Client Referral</div>
+        <p style="font-size:12px;color:var(--dim);margin-bottom:16px;line-height:1.6" id="lbl-referral-intro">
+          Introduce a new client to KLIERD. We will reach out within 24 hours, run intake, and route them to the right service. You earn on every funded outcome.
+        </p>
+
+        <div class="f">
+          <label id="lbl-r-name">Client Full Name *</label>
+          <input type="text" id="r-name" placeholder="Jane Doe"/>
+        </div>
+        <div class="f">
+          <label id="lbl-r-email">Client Email *</label>
+          <input type="email" id="r-email" placeholder="jane@example.com"/>
+        </div>
+        <div class="f">
+          <label id="lbl-r-phone">Client Phone *</label>
+          <input type="tel" id="r-phone" placeholder="(555) 555-5555"/>
+        </div>
+        <div class="f">
+          <label id="lbl-r-type">Service Interest *</label>
+          <select id="r-type">
+            <option value="">—</option>
+            <option value="personal_funding" data-en="Personal Funding (up to $250K)" data-es="Financiamiento Personal (hasta $250K)">Personal Funding (up to $250K)</option>
+            <option value="business_funding" data-en="Business Funding (up to $500K)" data-es="Financiamiento Empresarial (hasta $500K)">Business Funding (up to $500K)</option>
+            <option value="startup_funding" data-en="Startup Funding (up to $100K)" data-es="Financiamiento de Startup (hasta $100K)">Startup Funding (up to $100K)</option>
+            <option value="dispute" data-en="Dispute Resolution Services" data-es="Servicios de Resolución de Disputas">Dispute Resolution Services</option>
+            <option value="monitoring" data-en="Credit Monitoring" data-es="Monitoreo de Crédito">Credit Monitoring</option>
+            <option value="both" data-en="Personal + Business" data-es="Personal + Empresarial">Personal + Business</option>
+          </select>
+        </div>
+        <div class="f">
+          <label id="lbl-r-id">Identity Type</label>
+          <select id="r-id">
+            <option value="">—</option>
+            <option value="ssn">SSN</option>
+            <option value="itin">ITIN</option>
+            <option value="unknown" data-en="Not Sure" data-es="No Estoy Seguro">Not Sure</option>
+          </select>
+        </div>
+        <div class="f">
+          <label id="lbl-r-notes">Notes (optional)</label>
+          <textarea id="r-notes" rows="3" placeholder=""></textarea>
+        </div>
+        <button class="btn-primary" onclick="submitReferral()" id="btn-submit-ref">Submit Referral</button>
+        <div class="error-msg" id="ref-err">—</div>
+        <div id="ref-success" style="display:none;background:rgba(39,174,96,0.1);border:1px solid var(--green);border-radius:var(--rs);padding:14px;margin-top:14px;color:var(--green);font-size:13px"></div>
+      </div>
+    </div>
+
+    <!-- MY CLIENTS -->
+    <div id="tab-clients" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-my-clients">My Client Referrals</div>
+        <div class="table-wrap">
+          <table id="clients-table">
+            <thead>
+              <tr>
+                <th id="lbl-c-name">Client</th>
+                <th id="lbl-c-service">Service</th>
+                <th id="lbl-c-status">Status</th>
+                <th id="lbl-c-date">Submitted</th>
+                <th id="lbl-c-earn">Earnings</th>
+              </tr>
+            </thead>
+            <tbody id="clients-tbody">
+              <tr><td colspan="5" class="empty">
+                <div class="empty-icon">👥</div>
+                <div id="lbl-empty-clients">No referrals yet.</div>
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- EARNINGS -->
+    <div id="tab-earnings" style="display:none">
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-label" id="lbl-stat-paid">Paid This Month</div>
+          <div class="stat-val" id="stat-paid">$0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label" id="lbl-stat-pending-pay">Pending Payout</div>
+          <div class="stat-val" id="stat-pending-pay">$0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label" id="lbl-stat-ytd">Year to Date</div>
+          <div class="stat-val" id="stat-ytd">$0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" id="lbl-earnings-ledger">Earnings Ledger</div>
+        <div class="table-wrap">
+          <table id="earnings-table">
+            <thead>
+              <tr>
+                <th id="lbl-e-date">Date</th>
+                <th id="lbl-e-client">Client</th>
+                <th id="lbl-e-service">Service</th>
+                <th id="lbl-e-amt">Amount</th>
+                <th id="lbl-e-status">Status</th>
+              </tr>
+            </thead>
+            <tbody id="earnings-tbody">
+              <tr><td colspan="5" class="empty">
+                <div class="empty-icon">💰</div>
+                <div id="lbl-empty-earnings">No earnings yet. Earnings post when referred clients are funded.</div>
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div id="tab-account" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-broker-link">Your Referral Link</div>
+        <p style="font-size:12px;color:var(--dim);margin-bottom:10px;line-height:1.6" id="lbl-link-intro">
+          Share this link with potential clients. Anyone who applies through it is automatically attributed to your account.
+        </p>
+        <div class="broker-link" id="referral-link" onclick="copyLink(this)">—</div>
+        <div class="copy-hint" id="lbl-copy-hint">Click to copy</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" id="lbl-plan-details">Your Plan</div>
+        <div id="plan-details-body" style="font-size:13px;color:var(--dim);line-height:1.7"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" id="lbl-payout-info">Payout Information</div>
+        <p style="font-size:12px;color:var(--dim);line-height:1.6" id="lbl-payout-body">
+          Commissions are paid monthly via ACH on the 15th. Update your payout details by emailing accounts@klierd.com.
+        </p>
+      </div>
+
+      <div class="pricing-note" id="lbl-pricing-note">
+        ⏳ Broker contract pending legal review. Pricing shown is provisional and may adjust before contract signing.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div id="lbl-footer">© 2026 KLIERD — Broker Portal · <a href="mailto:brokers@klierd.com" style="color:var(--gold);text-decoration:none">brokers@klierd.com</a></div>
+</div>
+
+<script>
+// ============================================================================
+// KLIERD Broker Portal v0 — Phase 1 UI (Teka 2026-05-30)
+// Backend wires in next pass. Contract pending Melony Frank legal review.
+// ============================================================================
+
+const API_BASE = ''; // set when Railway endpoint is live
+let broker = null;   // { id, email, name, code, plan: 'wl'|'nwl', ... }
+let lang = (localStorage.getItem('klierd_broker_lang') || 'en');
+
+// ----- i18n -----
+const I18N = {
+  en: {
+    'lbl-broker-portal':'Broker Portal',
+    'lbl-login-title':'Broker Login',
+    'lbl-login-sub':'Sign in to manage your referrals, track earnings, and submit new clients to KLIERD.',
+    'lbl-email':'Email','lbl-password':'Password','lbl-no-account':'Not a broker yet? <a href="mailto:brokers@klierd.com" style="color:var(--gold);text-decoration:none">Email brokers@klierd.com →</a>',
+    'btn-login':'Sign In','logout-btn':'Sign Out',
+    'lbl-tab-overview':'Overview','lbl-tab-submit':'Submit Referral','lbl-tab-clients':'My Clients','lbl-tab-earnings':'Earnings','lbl-tab-account':'Account',
+    'lbl-stat-month':'Referrals This Month','lbl-stat-month-sub':'New clients introduced',
+    'lbl-stat-active':'Active Clients','lbl-stat-active-sub':'In KLIERD workflows',
+    'lbl-stat-funded':'Funded Clients','lbl-stat-funded-sub':'Approved + closed',
+    'lbl-stat-earnings':'Lifetime Earnings','lbl-stat-earnings-sub':'Paid + pending',
+    'lbl-recent-activity':'Recent Activity','lbl-empty-activity':'No activity yet. Submit your first referral to get started.',
+    'lbl-new-referral':'New Client Referral',
+    'lbl-referral-intro':'Introduce a new client to KLIERD. We will reach out within 24 hours, run intake, and route them to the right service. You earn on every funded outcome.',
+    'lbl-r-name':'Client Full Name *','lbl-r-email':'Client Email *','lbl-r-phone':'Client Phone *','lbl-r-type':'Service Interest *','lbl-r-id':'Identity Type','lbl-r-notes':'Notes (optional)',
+    'btn-submit-ref':'Submit Referral',
+    'lbl-my-clients':'My Client Referrals','lbl-c-name':'Client','lbl-c-service':'Service','lbl-c-status':'Status','lbl-c-date':'Submitted','lbl-c-earn':'Earnings','lbl-empty-clients':'No referrals yet.',
+    'lbl-stat-paid':'Paid This Month','lbl-stat-pending-pay':'Pending Payout','lbl-stat-ytd':'Year to Date',
+    'lbl-earnings-ledger':'Earnings Ledger','lbl-e-date':'Date','lbl-e-client':'Client','lbl-e-service':'Service','lbl-e-amt':'Amount','lbl-e-status':'Status','lbl-empty-earnings':'No earnings yet. Earnings post when referred clients are funded.',
+    'lbl-broker-link':'Your Referral Link',
+    'lbl-link-intro':'Share this link with potential clients. Anyone who applies through it is automatically attributed to your account.',
+    'lbl-copy-hint':'Click to copy',
+    'lbl-plan-details':'Your Plan',
+    'lbl-payout-info':'Payout Information',
+    'lbl-payout-body':'Commissions are paid monthly via ACH on the 15th. Update your payout details by emailing accounts@klierd.com.',
+    'lbl-pricing-note':'⏳ Broker contract pending legal review. Pricing shown is provisional and may adjust before contract signing.',
+    'lbl-footer':'© 2026 KLIERD — Broker Portal · <a href="mailto:brokers@klierd.com" style="color:var(--gold);text-decoration:none">brokers@klierd.com</a>',
+  },
+  es: {
+    'lbl-broker-portal':'Portal de Brokers',
+    'lbl-login-title':'Acceso para Brokers',
+    'lbl-login-sub':'Inicie sesión para gestionar sus referidos, ver sus ganancias y enviar nuevos clientes a KLIERD.',
+    'lbl-email':'Correo','lbl-password':'Contraseña','lbl-no-account':'¿Aún no es broker? <a href="mailto:brokers@klierd.com" style="color:var(--gold);text-decoration:none">Escriba a brokers@klierd.com →</a>',
+    'btn-login':'Iniciar Sesión','logout-btn':'Cerrar Sesión',
+    'lbl-tab-overview':'Resumen','lbl-tab-submit':'Enviar Referido','lbl-tab-clients':'Mis Clientes','lbl-tab-earnings':'Ganancias','lbl-tab-account':'Cuenta',
+    'lbl-stat-month':'Referidos Este Mes','lbl-stat-month-sub':'Nuevos clientes presentados',
+    'lbl-stat-active':'Clientes Activos','lbl-stat-active-sub':'En flujos de KLIERD',
+    'lbl-stat-funded':'Clientes Financiados','lbl-stat-funded-sub':'Aprobados + cerrados',
+    'lbl-stat-earnings':'Ganancias Totales','lbl-stat-earnings-sub':'Pagadas + pendientes',
+    'lbl-recent-activity':'Actividad Reciente','lbl-empty-activity':'Sin actividad. Envíe su primer referido para comenzar.',
+    'lbl-new-referral':'Nuevo Referido de Cliente',
+    'lbl-referral-intro':'Presente un nuevo cliente a KLIERD. Nos comunicaremos en 24 horas, haremos la entrevista y lo enviaremos al servicio adecuado. Usted gana en cada resultado financiado.',
+    'lbl-r-name':'Nombre Completo del Cliente *','lbl-r-email':'Correo del Cliente *','lbl-r-phone':'Teléfono del Cliente *','lbl-r-type':'Servicio de Interés *','lbl-r-id':'Tipo de Identidad','lbl-r-notes':'Notas (opcional)',
+    'btn-submit-ref':'Enviar Referido',
+    'lbl-my-clients':'Mis Referidos de Clientes','lbl-c-name':'Cliente','lbl-c-service':'Servicio','lbl-c-status':'Estado','lbl-c-date':'Enviado','lbl-c-earn':'Ganancias','lbl-empty-clients':'Sin referidos aún.',
+    'lbl-stat-paid':'Pagado Este Mes','lbl-stat-pending-pay':'Pago Pendiente','lbl-stat-ytd':'Año en Curso',
+    'lbl-earnings-ledger':'Libro de Ganancias','lbl-e-date':'Fecha','lbl-e-client':'Cliente','lbl-e-service':'Servicio','lbl-e-amt':'Monto','lbl-e-status':'Estado','lbl-empty-earnings':'Sin ganancias aún. Las ganancias se acreditan cuando los referidos son financiados.',
+    'lbl-broker-link':'Su Enlace de Referido',
+    'lbl-link-intro':'Comparta este enlace con clientes potenciales. Cualquiera que aplique a través de él se atribuye automáticamente a su cuenta.',
+    'lbl-copy-hint':'Click para copiar',
+    'lbl-plan-details':'Su Plan',
+    'lbl-payout-info':'Información de Pago',
+    'lbl-payout-body':'Las comisiones se pagan mensualmente por ACH el día 15. Actualice sus datos de pago escribiendo a accounts@klierd.com.',
+    'lbl-pricing-note':'⏳ Contrato de broker en revisión legal. Los precios mostrados son provisionales y pueden ajustarse antes de la firma.',
+    'lbl-footer':'© 2026 KLIERD — Portal de Brokers · <a href="mailto:brokers@klierd.com" style="color:var(--gold);text-decoration:none">brokers@klierd.com</a>',
+  },
+};
+
+function setLang(l) {
+  lang = l;
+  localStorage.setItem('klierd_broker_lang', l);
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+  const dict = I18N[l] || I18N.en;
+  Object.keys(dict).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = dict[id];
+  });
+  // dropdown options with data-en/data-es
+  document.querySelectorAll('option[data-en]').forEach(o => {
+    o.textContent = o.getAttribute('data-' + l) || o.getAttribute('data-en');
+  });
+  // re-render dashboard text if logged in
+  if (broker) renderPlanDetails();
+}
+
+function showTab(name, el) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  ['overview','submit','clients','earnings','account'].forEach(t => {
+    const div = document.getElementById('tab-' + t);
+    if (div) div.style.display = (t === name) ? 'block' : 'none';
+  });
+}
+
+async function doLogin() {
+  const email = document.getElementById('i-email').value.trim();
+  const pw = document.getElementById('i-password').value;
+  const err = document.getElementById('login-err');
+  err.style.display = 'none';
+  if (!email || !pw) {
+    err.textContent = lang === 'es' ? 'Ingrese correo y contraseña.' : 'Enter email and password.';
+    err.style.display = 'block';
+    return;
+  }
+  document.getElementById('btn-login').disabled = true;
+  document.getElementById('btn-login').textContent = lang === 'es' ? 'Iniciando…' : 'Signing in…';
+  try {
+    // Phase 1: stub — backend wires next pass. Accept any email/password to demo UI.
+    const r = API_BASE ? await fetch(API_BASE + '/api/broker/login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pw })
+    }) : null;
+    if (r && r.ok) {
+      broker = await r.json();
+    } else if (r) {
+      throw new Error('login_failed');
+    } else {
+      // Phase 1 demo — fabricate broker session
+      broker = {
+        id: 'BR-' + Date.now().toString(36).toUpperCase().slice(-5),
+        email,
+        name: email.split('@')[0],
+        code: 'KLD-' + email.split('@')[0].toUpperCase().slice(0,6),
+        plan: 'nwl', // 'wl' or 'nwl'
+        referrals: [],
+        earnings: [],
+      };
+    }
+    onLoggedIn();
+  } catch(e) {
+    err.textContent = lang === 'es' ? 'No se pudo iniciar sesión. Revise sus credenciales.' : 'Could not sign in. Check your credentials.';
+    err.style.display = 'block';
+    document.getElementById('btn-login').disabled = false;
+    document.getElementById('btn-login').textContent = (I18N[lang]||I18N.en)['btn-login'];
+  }
+}
+
+function onLoggedIn() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').classList.add('show');
+  document.getElementById('logout-btn').style.display = 'inline-flex';
+  document.getElementById('broker-pill').style.display = 'inline-block';
+  document.getElementById('broker-pill').textContent = '— ' + (broker.code || 'BROKER') + ' —';
+  document.getElementById('welcome-name').textContent = broker.name || broker.email;
+  document.getElementById('welcome-code').textContent = (lang === 'es' ? 'Código: ' : 'Code: ') + (broker.code || '—');
+  const planLabel = broker.plan === 'wl' ? (lang === 'es' ? 'Marca Blanca' : 'White Label') : (lang === 'es' ? 'Estándar' : 'Standard');
+  document.getElementById('plan-pill').textContent = planLabel;
+  // referral link
+  const link = window.location.origin + '/apply.html?ref=' + (broker.code || '');
+  document.getElementById('referral-link').textContent = link;
+  renderPlanDetails();
+  renderOverview();
+}
+
+function renderPlanDetails() {
+  const el = document.getElementById('plan-details-body');
+  if (!el) return;
+  const isEs = lang === 'es';
+  const wl = broker && broker.plan === 'wl';
+  el.innerHTML = wl
+    ? (isEs
+        ? '<strong style="color:var(--gold)">Marca Blanca</strong> — $5,000 instalación + $500/mes<br><br>Portal con su marca, dominio personalizado, soporte de marca completo. Servicios KLIERD respaldan toda la entrega.'
+        : '<strong style="color:var(--gold)">White Label</strong> — $5,000 setup + $500/mo<br><br>Your-brand portal, custom domain, full brand support. KLIERD services power all delivery behind the scenes.')
+    : (isEs
+        ? '<strong style="color:var(--gold)">Estándar</strong> — $2,500 instalación + $500/mes<br><br>Portal de broker estándar con marca KLIERD. Comisiones de referidos en cada cliente financiado.'
+        : '<strong style="color:var(--gold)">Standard</strong> — $2,500 setup + $500/mo<br><br>Standard broker portal with KLIERD branding. Referral commissions on every funded client.');
+}
+
+function renderOverview() {
+  document.getElementById('stat-month').textContent = (broker.referrals || []).filter(r => isThisMonth(r.date)).length;
+  document.getElementById('stat-active').textContent = (broker.referrals || []).filter(r => r.status === 'active' || r.status === 'review').length;
+  document.getElementById('stat-funded').textContent = (broker.referrals || []).filter(r => r.status === 'funded').length;
+  const total = (broker.earnings || []).reduce((s,e) => s + (Number(e.amount)||0), 0);
+  document.getElementById('stat-earnings').textContent = '$' + total.toLocaleString();
+}
+
+function isThisMonth(d) {
+  if (!d) return false;
+  const dt = new Date(d);
+  const now = new Date();
+  return dt.getMonth() === now.getMonth() && dt.getFullYear() === now.getFullYear();
+}
+
+async function submitReferral() {
+  const name = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim();
+  const phone = document.getElementById('r-phone').value.trim();
+  const type = document.getElementById('r-type').value;
+  const id = document.getElementById('r-id').value;
+  const notes = document.getElementById('r-notes').value.trim();
+  const err = document.getElementById('ref-err');
+  const success = document.getElementById('ref-success');
+  err.style.display = 'none';
+  success.style.display = 'none';
+  if (!name || !email || !phone || !type) {
+    err.textContent = lang === 'es' ? 'Por favor complete los campos requeridos.' : 'Please fill in the required fields.';
+    err.style.display = 'block';
+    return;
+  }
+  const btn = document.getElementById('btn-submit-ref');
+  btn.disabled = true;
+  btn.textContent = lang === 'es' ? 'Enviando…' : 'Submitting…';
+  try {
+    if (API_BASE) {
+      const r = await fetch(API_BASE + '/api/broker/referral', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ broker_id: broker.id, broker_code: broker.code, name, email, phone, type, id_type: id, notes })
+      });
+      if (!r.ok) throw new Error('referral_failed');
+    }
+    // Phase 1: also push to local state for instant UI feedback
+    broker.referrals = broker.referrals || [];
+    broker.referrals.unshift({
+      ref_id: 'CBG-' + Date.now().toString(36).toUpperCase().slice(-4),
+      name, email, phone, type, id_type: id, notes,
+      status: 'new', date: new Date().toISOString(), earnings: 0,
+    });
+    success.innerHTML = (lang === 'es'
+      ? '✅ Referido enviado. KLIERD se comunicará con su cliente en 24 horas.'
+      : '✅ Referral submitted. KLIERD will reach out to your client within 24 hours.');
+    success.style.display = 'block';
+    ['r-name','r-email','r-phone','r-type','r-id','r-notes'].forEach(k => { const el = document.getElementById(k); if (el) el.value = ''; });
+    renderOverview();
+    renderClients();
+  } catch(e) {
+    err.textContent = lang === 'es' ? 'No se pudo enviar el referido. Intente de nuevo.' : 'Could not submit referral. Please try again.';
+    err.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = (I18N[lang]||I18N.en)['btn-submit-ref'];
+  }
+}
+
+function renderClients() {
+  const tbody = document.getElementById('clients-tbody');
+  const refs = broker.referrals || [];
+  if (refs.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty"><div class="empty-icon">👥</div><div>' + ((I18N[lang]||I18N.en)['lbl-empty-clients']) + '</div></td></tr>';
+    return;
+  }
+  const STATUS_BADGE = {
+    new: { en:'New', es:'Nuevo', cls:'badge-new' },
+    review: { en:'Review', es:'Revisión', cls:'badge-active' },
+    active: { en:'Active', es:'Activo', cls:'badge-active' },
+    funded: { en:'Funded', es:'Financiado', cls:'badge-funded' },
+    declined: { en:'Declined', es:'Rechazado', cls:'badge-declined' },
+  };
+  tbody.innerHTML = refs.map(r => {
+    const s = STATUS_BADGE[r.status] || STATUS_BADGE.new;
+    const slabel = lang === 'es' ? s.es : s.en;
+    const dt = r.date ? new Date(r.date).toLocaleDateString() : '—';
+    const earn = r.earnings ? '$' + Number(r.earnings).toLocaleString() : '—';
+    return `<tr>
+      <td><strong>${r.name}</strong><br><span style="font-size:10px;color:var(--muted)">${r.email}</span></td>
+      <td style="font-size:11px;color:var(--dim)">${r.type || '—'}</td>
+      <td><span class="badge ${s.cls}">${slabel}</span></td>
+      <td style="font-size:11px;color:var(--dim)">${dt}</td>
+      <td style="font-weight:700;color:var(--gold);font-family:'DM Mono',monospace">${earn}</td>
+    </tr>`;
+  }).join('');
+}
+
+function copyLink(el) {
+  const t = el.textContent;
+  if (!t || t === '—') return;
+  try {
+    navigator.clipboard.writeText(t);
+    const hint = document.getElementById('lbl-copy-hint');
+    const orig = hint.textContent;
+    hint.textContent = lang === 'es' ? '✓ Copiado' : '✓ Copied';
+    setTimeout(() => { hint.textContent = orig; }, 2000);
+  } catch(e) {}
+}
+
+function logout() {
+  broker = null;
+  document.getElementById('login-screen').style.display = 'block';
+  document.getElementById('dashboard').classList.remove('show');
+  document.getElementById('logout-btn').style.display = 'none';
+  document.getElementById('broker-pill').style.display = 'none';
+  document.getElementById('i-email').value = '';
+  document.getElementById('i-password').value = '';
+}
+
+// Init
+setLang(lang);
+</script>
+
+</body>
+</html>
