@@ -88,10 +88,10 @@ print(len(blocks))
     echo "  ✅ Compliance scan: clean"
   fi
 
-  # 3b. FORBIDDEN LENDER scan — Teka 2026-05-30 lock (Cece hard-removed 14 lenders)
-  # Whole-word match so 'mercury-mining' or 'relay-state' don't false-trigger.
+  # 3b. FORBIDDEN LENDER scan — hard-fails on permanently-banned names only.
+  # OnDeck / Nova Credit / Divvy are UNDER REVIEW (Teka 2026-05-30) — warned, not errored.
   LENDER_ERRS=0
-  for LENDER in "Brex" "Ramp" "OnDeck" "Mercury" "Divvy" "Stripe Corp" "Nova Credit" "Petal 1" "Petal 2"; do
+  for LENDER in "Brex" "Ramp" "Mercury" "Stripe Corp" "Petal 1" "Petal 2"; do
     HITS=$(grep -c -w "$LENDER" "$FILE" 2>/dev/null | head -1 | tr -d ' \n')
     HITS=${HITS:-0}
     if [ "$HITS" -gt 0 ] 2>/dev/null; then
@@ -103,6 +103,14 @@ print(len(blocks))
   if [ "$LENDER_ERRS" -eq 0 ]; then
     echo "  ✅ Forbidden lender scan: clean"
   fi
+  # UNDER REVIEW — warning only, not commit-blocking. Teka checking guidelines.
+  for LENDER in "OnDeck" "Nova Credit" "Divvy"; do
+    HITS=$(grep -c -w "$LENDER" "$FILE" 2>/dev/null | head -1 | tr -d ' \n')
+    HITS=${HITS:-0}
+    if [ "$HITS" -gt 0 ] 2>/dev/null; then
+      echo "  ⚠️  UNDER REVIEW: '$LENDER' found $HITS time(s) — pending Teka's guideline check"
+    fi
+  done
 
   # 4. CROA disclaimer presence (client-portal.html only)
   if [ "$FILE" = "client-portal.html" ]; then
