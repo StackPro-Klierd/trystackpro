@@ -1105,19 +1105,19 @@ function renderPortal(app){
       `).join('') + '</ol>';
     }
 
-    // KLIERD Assigned Email — show ONLY when client has funding service (this is where lender responses route)
+    // KLIERD Assigned Email — show ONLY when (a) client has funding service AND (b) assigned email exists
+    // No "coming soon" placeholder — card stays hidden until backend assigns the email
     const emailCard = document.getElementById('klierd-email-card');
     if (emailCard) {
-      if (services.includes('funding')) {
+      const assignedEmail = app.assigned_email || app.klierd_email || '';
+      if (services.includes('funding') && assignedEmail) {
         emailCard.style.display = 'block';
-        // Show assigned email if it exists in app payload; otherwise show "coming soon" placeholder
-        const assignedEmail = app.assigned_email || app.klierd_email || '';
         const val = document.getElementById('klierd-email-value');
         const note = document.getElementById('lbl-klierd-email-note');
-        if (val) val.textContent = assignedEmail || (isEs ? '— Pendiente de asignación —' : '— Pending assignment —');
-        if (note) note.textContent = assignedEmail
-          ? (isEs ? 'Usa este correo en todas tus solicitudes. Las respuestas llegan aquí automáticamente.' : 'Use this email on all your applications. Responses arrive here automatically.')
-          : (isEs ? 'Pronto — su correo dedicado será asignado cuando la asignación de correos por cliente esté activa.' : 'Coming soon — your dedicated email will be assigned once the per-client email routing is live.');
+        if (val) val.textContent = assignedEmail;
+        if (note) note.textContent = isEs
+          ? 'Use este correo en todas sus solicitudes. Las respuestas llegan aquí automáticamente.'
+          : 'Use this email on all your applications. Responses arrive here automatically.';
       } else {
         emailCard.style.display = 'none';
       }
@@ -1784,13 +1784,52 @@ function fireConfetti(){
 }
 
 function viewAnalysis(kind){
-  showToast(lang==='es' ? '📄 Análisis — descarga disponible pronto' : '📄 Analysis — download coming soon', 'success');
+  // If backend provides analysis PDF URL on the client record, open it. Otherwise show next-step message.
+  const url = (currentApp && (currentApp.analyses && currentApp.analyses[kind]) ) || '';
+  if (url) { window.open(url, '_blank', 'noopener'); return; }
+  const subject = encodeURIComponent('Analysis request — ' + (currentApp?.trackingId || ''));
+  const body = encodeURIComponent(
+    (lang==='es'
+      ? 'Hola, me gustaría revisar mi análisis cuando esté listo.\n\nID: '
+      : 'Hi, I would like to review my analysis when it is ready.\n\nTracking ID: ')
+    + (currentApp?.trackingId || '')
+  );
+  showToast(
+    lang==='es'
+      ? '📄 Su asesor le enviará el análisis dentro de 24–48 horas hábiles.'
+      : '📄 Your advisor will deliver your analysis within 24–48 business hours.',
+    'success'
+  );
+  setTimeout(()=>{ window.location.href = 'mailto:info@klierd.com?subject=' + subject + '&body=' + body; }, 600);
 }
 function viewAgreement(key){
-  showToast(lang==='es' ? '📄 Documento firmado — descarga disponible pronto' : '📄 Signed document — download coming soon', 'success');
+  // Open the signed agreement PDF if it has been uploaded back to the portal. Otherwise, show explainer.
+  const ag = (currentApp && currentApp.agreements && currentApp.agreements[key]) || null;
+  if (ag && ag.signed_url) { window.open(ag.signed_url, '_blank', 'noopener'); return; }
+  showToast(
+    lang==='es'
+      ? '📄 Su copia firmada aparecerá aquí una vez completada por todas las partes.'
+      : '📄 Your signed copy will appear here once countersigned by all parties.',
+    'success'
+  );
 }
 function signAgreement(key){
-  showToast(lang==='es' ? '✎ Firma electrónica — disponible pronto vía DocuSign' : '✎ E-signature — coming soon via DocuSign', 'success');
+  // Phase 1.5 — advisor sends agreement via DocuSign from staff portal. Client gets email with secure signing link.
+  // Until DocuSign integration is live, surface the next step clearly + offer to ping advisor.
+  const subject = encodeURIComponent('Send my agreement for signature — ' + (currentApp?.trackingId || ''));
+  const body = encodeURIComponent(
+    (lang==='es'
+      ? 'Hola, por favor envíenme el acuerdo (' + key + ') para firmar.\n\nID: '
+      : 'Hi, please send me the agreement (' + key + ') for e-signature.\n\nTracking ID: ')
+    + (currentApp?.trackingId || '')
+  );
+  showToast(
+    lang==='es'
+      ? '✎ Su asesor le enviará el enlace de firma electrónica dentro de 1 día hábil. Revise su correo.'
+      : '✎ Your advisor will send the e-signature link within 1 business day. Watch your email.',
+    'success'
+  );
+  setTimeout(()=>{ window.location.href = 'mailto:info@klierd.com?subject=' + subject + '&body=' + body; }, 800);
 }
 
 function naAction(){
