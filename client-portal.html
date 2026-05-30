@@ -1183,6 +1183,9 @@ function renderPortal(app){
                                           es:{t:'Activación de Monitoreo de Crédito',     d:'Monitoreo de 3 burós con alertas en tiempo real. Detecte cambios al instante.'} },
         { id:'address_verify', icon:'📍', en:{t:'Address Verification',                 d:'Confirm your file address matches across all 3 bureaus — critical for lender approvals.'},
                                           es:{t:'Verificación de Domicilio',              d:'Confirme que su domicilio coincide en los 3 burós — crítico para aprobaciones de prestamistas.'} },
+        { id:'nova_credit_translation', icon:'🌎', itinOnly:true,
+          en:{t:'International Credit History Translation', d:'If you have credit history in Mexico, India, UK, Canada, Australia, Brazil, Dominican Republic, Kenya, Nigeria, Philippines, or South Korea — KLIERD partners with Nova Credit to translate your home-country credit into US-readable history. Unlocks premium lenders (Amex and others) that you would otherwise be denied for thin file.'},
+          es:{t:'Traducción de Historial de Crédito Internacional', d:'Si tiene historial de crédito en México, India, Reino Unido, Canadá, Australia, Brasil, República Dominicana, Kenia, Nigeria, Filipinas, o Corea del Sur — KLIERD se asocia con Nova Credit para traducir su historial de crédito de origen al formato US. Desbloquea prestamistas premium (Amex y otros) que de otro modo le rechazarían por archivo delgado.'} },
       ],
       business: [
         { id:'biz_tradelines', icon:'💳', en:{t:'Business Tradelines',                  d:'Build business credit through verified Net-30 vendors and revolving tradelines that report to D&B, Experian Business, and Equifax Business.'},
@@ -1202,9 +1205,17 @@ function renderPortal(app){
 
     const showPersonal = lane === 'personal' || lane === 'both' || services.includes('funding');
     const showBusiness = lane === 'business' || lane === 'both';
+    const isITINClient = !!app.is_itin;
     const items = [];
-    if (showPersonal) PREFUNDING.personal.forEach(s => items.push({ ...s, laneTag: isEs ? 'Personal' : 'Personal' }));
-    if (showBusiness) PREFUNDING.business.forEach(s => items.push({ ...s, laneTag: isEs ? 'Empresarial' : 'Business' }));
+    if (showPersonal) PREFUNDING.personal.forEach(s => {
+      // Filter ITIN-only services (e.g., Nova Credit international credit translation)
+      if (s.itinOnly && !isITINClient) return;
+      items.push({ ...s, laneTag: isEs ? 'Personal' : 'Personal' });
+    });
+    if (showBusiness) PREFUNDING.business.forEach(s => {
+      if (s.itinOnly && !isITINClient) return;
+      items.push({ ...s, laneTag: isEs ? 'Empresarial' : 'Business' });
+    });
 
     const requestedSet = new Set((app.prefunding_requested || []).map(x => String(x)));
     const ctaReq = isEs ? 'Solicitar Cotización' : 'Request Quote';
