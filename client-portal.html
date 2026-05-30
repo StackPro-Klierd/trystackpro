@@ -938,6 +938,8 @@ function lookup(){
           first: c.first_name, last: c.last_name,
           email: c.email, phone: c.phone, lang: c.lang || 'en',
           clientType: c.client_type, fundingType: c.funding_type,
+          // lane is sometimes funding_type, normalize for renderPreFunding
+          lane: (c.funding_type || '').toLowerCase(),
           services: c.services || [],
           primary_service: c.primary_service,
           status: c.status, submitted: c.created_at,
@@ -947,6 +949,20 @@ function lookup(){
           monitoring_tier: data.monitoring?.tier || null,
           monitoring_active: !!(data.monitoring && data.monitoring.status === 'active'),
           monitoring_start_date: data.monitoring?.started_at || null,
+          // IFT-related fields — populated when SQL migration runs + server reads them
+          is_itin: !!c.is_itin,
+          identity_type: c.is_itin ? 'itin' : 'ssn',
+          assigned_email: c.assigned_email || '',
+          verification_status: c.verification_status || 'pending',
+          broker_code: c.broker_code || null,
+          ift_eligible: !!c.ift_eligible,
+          // Submissions + pre-funding requests + scores come from related tables
+          submissions: data.submissions || [],
+          prefunding_requested: (data.prefunding || []).map(p => p.service_id),
+          scores_latest: data.scores_latest || null,
+          dispute_opportunities: data.dispute_opportunities || null,
+          analyses: data.analyses || null,
+          agreements: data.agreements || null,
         };
         showPortal(app);
       } else {
