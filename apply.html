@@ -584,9 +584,28 @@ function submitIntake(){
   .then(resp => {
     if(resp && resp.success){
       const tyMsg = document.getElementById('ty-body');
-      const tid = resp.tracking_id || '';
-      const tidLine = tid ? `<br><br><strong>Your tracking ID: <span style="color:#C9A84C;font-family:monospace;font-size:18px">${tid}</span></strong><br><span style="font-size:12px;color:#9A9580">Save this — you will use it to log into your portal.</span>` : '';
-      if(tyMsg && resp.message) tyMsg.innerHTML = resp.message + tidLine + '<br><br><strong style="color:#C9A84C">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong>';
+      // Field name lock — server returns tracking_id (snake_case). camelCase as defensive fallback only.
+      const tid = resp.tracking_id || resp.trackingId || '';
+      const isEs = (typeof lang !== 'undefined' && lang === 'es');
+
+      // Big prominent tracking ID display — 32px gold monospace, gold-bordered card
+      const tidBlock = tid ? `
+        <div style="background:#161616;border:2px solid #C9A84C;border-radius:8px;padding:24px;margin:20px 0;text-align:center;box-shadow:0 0 24px rgba(201,168,76,0.15)">
+          <div style="font-size:11px;color:#C9A84C;text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:10px">${isEs ? 'Su ID de Seguimiento' : 'Your Tracking ID'}</div>
+          <div style="font-family:'DM Mono','Courier New',monospace;font-size:32px;color:#C9A84C;font-weight:700;letter-spacing:3px;line-height:1.2">${tid}</div>
+          <div style="font-size:13px;color:#F0EDE6;margin-top:14px;line-height:1.5">${isEs ? '<strong>Guarde este ID</strong> — lo necesitará para acceder a su portal.' : '<strong>Save this ID</strong> — you will use it to access your portal.'}</div>
+        </div>
+        <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:6px;padding:12px 16px;margin:14px 0;font-size:12px;color:#9A9580;line-height:1.6">
+          ${isEs ? '📧 Revise su correo y mensaje de texto en los próximos 60 segundos — le enviaremos el enlace directo a su portal.' : '📧 Check your email and text messages in the next 60 seconds — we are sending the direct link to your portal.'}
+        </div>` : '';
+
+      // Server's pre-formatted bilingual message goes first (or plain-text fallback if missing)
+      const headerMsg = resp.message
+        || (isEs ? '¡Gracias! Su solicitud ha sido recibida.' : 'Thank you! Your application has been received.');
+
+      if (tyMsg) {
+        tyMsg.innerHTML = headerMsg + tidBlock + '<div style="margin-top:18px;text-align:center"><strong style="color:#C9A84C;font-size:13px">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong></div>';
+      }
     }
   })
   .catch(()=>{ /* offline-safe: thank-you screen still shows */ });
