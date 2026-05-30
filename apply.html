@@ -73,6 +73,7 @@ body{background:#09090F;color:#E8E8F0;font-family:'Inter',-apple-system,sans-ser
       <button class="type-btn active" id="btn-personal" onclick="setFundingType('personal',this)">Personal Funding</button>
       <button class="type-btn" id="btn-business" onclick="setFundingType('business',this)">Business Funding</button>
       <button class="type-btn" id="btn-both" onclick="setFundingType('both',this)">Both Personal + Business</button>
+      <button class="type-btn" id="btn-dispute" onclick="setFundingType('dispute',this)">Dispute Resolution</button>
     </div>
     <div class="itin-toggle">
       <button class="itin-btn active" id="btn-ssn" onclick="setClientType('ssn',this)">🇺🇸 SSN — U.S. Citizen</button>
@@ -427,6 +428,7 @@ const LANG = {
     'btn-personal-text':'Personal Funding',
     'btn-business-text':'Business Funding',
     'btn-both-text':'Both Personal + Business',
+    'btn-dispute-text':'Dispute Resolution',
     'btn-ssn-text':'🇺🇸 SSN — U.S. Citizen',
     'btn-itin-text':'🌎 ITIN — Immigrant / No SSN',
     'lbl-personal-info':'Personal Information',
@@ -454,6 +456,7 @@ const LANG = {
     'lbl-applying':'Estoy Solicitando',
     'btn-personal-text':'Financiamiento Personal',
     'btn-business-text':'Financiamiento Empresarial',
+    'btn-dispute-text':'Resolución de Disputas',
     'btn-both-text':'Ambos — Personal + Empresarial',
     'btn-ssn-text':'🇺🇸 SSN — Ciudadano EE.UU.',
     'btn-itin-text':'🌎 ITIN — Inmigrante / Sin SSN',
@@ -490,6 +493,7 @@ function setLang(lang,btn){
     if(key==='btn-personal-text'){const el=document.getElementById('btn-personal');if(el)el.textContent=t[key];return;}
     if(key==='btn-business-text'){const el=document.getElementById('btn-business');if(el)el.textContent=t[key];return;}
     if(key==='btn-both-text'){const el=document.getElementById('btn-both');if(el)el.textContent=t[key];return;}
+    if(key==='btn-dispute-text'){const el=document.getElementById('btn-dispute');if(el)el.textContent=t[key];return;}
     if(key==='btn-ssn-text'){const el=document.getElementById('btn-ssn');if(el)el.textContent=t[key];return;}
     if(key==='btn-itin-text'){const el=document.getElementById('btn-itin');if(el)el.textContent=t[key];return;}
     if(key==='submit-btn'){const el=document.querySelector('.submit-btn');if(el)el.textContent=t[key];return;}
@@ -513,11 +517,19 @@ function setFundingType(type,btn){
   fundingType=type;
   document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
+  // Dispute-only flow hides ALL funding-amount + business sections (client doesn't need them)
+  const isDispute = type==='dispute';
   document.getElementById('all-biz-sections').style.display=(type==='business'||type==='both')?'':'none';
-  document.getElementById('personal-goal-wrap').style.display=(type==='personal'||type==='both')?'':'none';
-  document.getElementById('business-goal-wrap').style.display=(type==='business'||type==='both')?'':'none';
+  document.getElementById('personal-goal-wrap').style.display=(!isDispute && (type==='personal'||type==='both'))?'':'none';
+  document.getElementById('business-goal-wrap').style.display=(!isDispute && (type==='business'||type==='both'))?'':'none';
   document.getElementById('biz-required-note').style.display=(type==='business'||type==='both')?'block':'none';
   ['i-biz-name','i-ein','i-biz-type','i-entity','i-time-biz','i-monthly-rev'].forEach(id=>{const el=document.getElementById(id);if(el)el.required=(type==='business'||type==='both');});
+  // When client picks Dispute Resolution, auto-set the credit services dropdown so server-side
+  // services[] array gets 'dispute' instead of 'funding'. Saves the client an extra click.
+  if (isDispute) {
+    const csEl = document.getElementById('i-credit-services');
+    if (csEl) csEl.value = 'yes_dispute';
+  }
 }
 
 function setClientType(type,btn){
