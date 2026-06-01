@@ -588,19 +588,32 @@ function submitIntake(){
   // Mirror to localStorage for offline-safety (so the form never feels broken)
   try{const q=JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');q.unshift(data);localStorage.setItem('sp_intake_queue',JSON.stringify(q));}catch(e){}
 
+  const isEs = (typeof lang !== 'undefined' && lang === 'es');
+
+  // Disable submit + show loading state — prevents double-submit and tells client something is happening
+  const submitBtn = document.querySelector('.submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.dataset.original = submitBtn.textContent;
+    submitBtn.textContent = isEs ? 'Enviando…' : 'Submitting…';
+    submitBtn.style.opacity = '0.6';
+    submitBtn.style.cursor = 'wait';
+  }
+
+  // 30-second timeout so a slow/dead backend doesn't hang the client forever
+  const ctrl = new AbortController();
+  const timeoutId = setTimeout(() => ctrl.abort(), 30000);
+
   // POST to the PUBLIC intake endpoint — auto-creates portal, fires welcome email
   fetch('https://stackpro-api-production.up.railway.app/api/intake/public',{
-    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload),
+    signal: ctrl.signal,
   })
   .then(r => r.json())
   .then(resp => {
-    if(resp && resp.success){
-      const tyMsg = document.getElementById('ty-body');
-      // Field name lock — server returns tracking_id (snake_case). camelCase as defensive fallback only.
+    clearTimeout(timeoutId);
+    if (resp && resp.success) {
       const tid = resp.tracking_id || resp.trackingId || '';
-      const isEs = (typeof lang !== 'undefined' && lang === 'es');
-
-      // Big prominent tracking ID display — 32px gold monospace, gold-bordered card
       const tidBlock = tid ? `
         <div style="background:#161616;border:2px solid #C9A84C;border-radius:8px;padding:24px;margin:20px 0;text-align:center;box-shadow:0 0 24px rgba(201,168,76,0.15)">
           <div style="font-size:11px;color:#C9A84C;text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:10px">${isEs ? 'Su ID de Seguimiento' : 'Your Tracking ID'}</div>
@@ -611,19 +624,68 @@ function submitIntake(){
           ${isEs ? '📧 Revise su correo y mensaje de texto en los próximos 60 segundos — le enviaremos el enlace directo a su portal.' : '📧 Check your email and text messages in the next 60 seconds — we are sending the direct link to your portal.'}
         </div>` : '';
 
-      // Server's pre-formatted bilingual message goes first (or plain-text fallback if missing)
-      const headerMsg = resp.message
-        || (isEs ? '¡Gracias! Su solicitud ha sido recibida.' : 'Thank you! Your application has been received.');
+      const headerMsg = resp.message || (isEs ? '¡Gracias! Su solicitud ha sido recibida.' : 'Thank you! Your application has been received.');
+      const tyMsg = document.getElementById('ty-body');
+      if (tyMsg) tyMsg.innerHTML = headerMsg + tidBlock + '<div style="margin-top:18px;text-align:center"><strong style="color:#C9A84C;font-size:13px">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong></div>';
 
-      if (tyMsg) {
-        tyMsg.innerHTML = headerMsg + tidBlock + '<div style="margin-top:18px;text-align:center"><strong style="color:#C9A84C;font-size:13px">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong></div>';
-      }
+      // Reveal thank-you only on confirmed success
+      document.getElementById('form-body').style.display='none';
+      document.getElementById('thankyou').style.display='block';
+      // Restore submit button (in case client returns to form)
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = submitBtn.dataset.original || submitBtn.textContent; submitBtn.style.opacity = ''; submitBtn.style.cursor = ''; }
+    } else {
+      // Server returned a non-success payload — show error state with retry + backup contact
+      showSubmitError(isEs, resp && resp.error ? resp.error : null);
     }
   })
-  .catch(()=>{ /* offline-safe: thank-you screen still shows */ });
+  .catch((err) => {
+    clearTimeout(timeoutId);
+    // Network failure, timeout, or bad JSON — show error state with retry + backup contact path
+    showSubmitError(isEs, err && err.name === 'AbortError' ? 'timeout' : 'network');
+  });
+}
 
-  document.getElementById('form-body').style.display='none';
-  document.getElementById('thankyou').style.display='block';
+function showSubmitError(isEs, reason) {
+  const tyMsg = document.getElementById('ty-body');
+  if (tyMsg) {
+    const reasonNote = reason === 'timeout'
+      ? (isEs ? 'La conexión tardó demasiado.' : 'The connection took too long.')
+      : (isEs ? 'No pudimos conectarnos al servidor en este momento.' : 'We could not connect to the server at this moment.');
+
+    tyMsg.innerHTML = `
+      <div style="background:rgba(231,76,60,0.08);border:2px solid #E74C3C;border-radius:8px;padding:24px;margin:20px 0;text-align:left">
+        <div style="font-size:18px;color:#E74C3C;font-weight:700;margin-bottom:10px">${isEs ? '⚠ No pudimos procesar su solicitud' : '⚠ We could not process your submission'}</div>
+        <div style="font-size:13px;color:#F0EDE6;line-height:1.7;margin-bottom:14px">
+          ${reasonNote} ${isEs ? 'Su información se guardó localmente en este navegador, pero aún no se envió a KLIERD.' : 'Your information was saved locally in this browser but has not yet reached KLIERD.'}
+        </div>
+        <div style="font-size:13px;color:#F0EDE6;line-height:1.7;margin-bottom:18px">
+          <strong style="color:#C9A84C">${isEs ? 'Qué hacer ahora:' : 'What to do now:'}</strong><br>
+          ${isEs ? '1. Intente enviar de nuevo en unos segundos.' : '1. Try submitting again in a few seconds.'}<br>
+          ${isEs ? '2. Si el problema persiste, envíenos su solicitud a info@klierd.com con la palabra "INTAKE" en el asunto.' : '2. If the problem persists, email your application to info@klierd.com with "INTAKE" in the subject line.'}<br>
+          ${isEs ? '3. O llámenos directamente — un Gerente de Financiamiento KLIERD le atenderá.' : '3. Or call us directly — a KLIERD Funding Manager will assist you.'}
+        </div>
+        <button onclick="retrySubmit()" style="background:#C9A84C;color:#09090F;border:none;padding:12px 24px;border-radius:6px;font-weight:700;cursor:pointer;font-size:13px;letter-spacing:1px;text-transform:uppercase">${isEs ? '↻ Reintentar' : '↻ Try Again'}</button>
+        <a href="mailto:info@klierd.com?subject=INTAKE&body=${encodeURIComponent('Hello KLIERD,\n\nMy online application did not submit successfully. Please contact me to complete the intake.\n\nThank you.')}" style="background:transparent;color:#C9A84C;border:1px solid #C9A84C;padding:12px 24px;border-radius:6px;font-weight:700;text-decoration:none;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-left:10px;display:inline-block">✉ ${isEs ? 'Enviar por Correo' : 'Email Us'}</a>
+      </div>
+    `;
+  }
+  document.getElementById('form-body').style.display = 'none';
+  document.getElementById('thankyou').style.display = 'block';
+}
+
+function retrySubmit() {
+  // Restore form view, restore submit button, let user try again
+  document.getElementById('thankyou').style.display = 'none';
+  document.getElementById('form-body').style.display = '';
+  const submitBtn = document.querySelector('.submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = submitBtn.dataset.original || submitBtn.textContent;
+    submitBtn.style.opacity = '';
+    submitBtn.style.cursor = '';
+  }
+  // Scroll to top so user sees the form
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 setFundingType('personal',document.getElementById('btn-personal'));
