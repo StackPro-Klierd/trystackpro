@@ -605,7 +605,7 @@ function submitIntake(){
   const timeoutId = setTimeout(() => ctrl.abort(), 30000);
 
   // POST to the PUBLIC intake endpoint — auto-creates portal, fires welcome email
-  fetch('https://stackpro-api-production.up.railway.app/api/intake/public',{
+  fetch('https://klierd-api-production.up.railway.app/api/intake/public',{
     method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload),
     signal: ctrl.signal,
   })

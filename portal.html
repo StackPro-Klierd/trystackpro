@@ -1549,7 +1549,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
   </div>
 </div>
 
-<!-- ████ STACKPRO ANALYTICS ████ -->
+<!-- ████ KLIERD ANALYTICS ████ -->
 <div id="panel-analytics" class="panel">
   <div class="sh"><div><div class="st">KLIERD Analytics</div><div class="sub">Live financial tracking — all data calculated from your pipeline in real time</div></div>
   <div style="display:flex;gap:7px;flex-wrap:wrap">
@@ -3171,7 +3171,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
         <div class="fld"><label>Default Fee</label><input type="text" id="set-fee" placeholder="$1,497"/></div>
         <div class="fld"><label>Monthly Goal ($)</label><input type="number" id="set-goal" placeholder="50000" oninput="updGoal()"/></div>
         <div class="fld"><label>Phone</label><input type="text" id="set-phone" placeholder="(555) 000-0000"/></div>
-        <div class="fld"><label>Email</label><input type="email" id="set-email" placeholder="you@stackpro.com"/></div>
+        <div class="fld"><label>Email</label><input type="email" id="set-email" placeholder="you@klierd.com"/></div>
         <button class="btn bg" onclick="saveSettings()">Save Settings</button>
       </div>
       <!-- SERVICE PACKAGES -->
@@ -3338,8 +3338,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
             <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px">⚡ Option 1 — Fastest (5 min, free)</div>
             <div style="font-size:11px;color:var(--dim);line-height:1.8">
               1. Go to <a href="https://tiiny.host" target="_blank" style="color:var(--blue)">tiiny.host</a><br>
-              2. Drag and drop <strong style="color:var(--text)">stackpro_v3.html</strong><br>
-              3. Get a live URL like <code style="background:var(--dark);padding:1px 6px;border-radius:3px;color:var(--gold)">stackpro.tiiny.site</code><br>
+              2. Drag and drop <strong style="color:var(--text)">klierd_v3.html</strong><br>
+              3. Get a live URL like <code style="background:var(--dark);padding:1px 6px;border-radius:3px;color:var(--gold)">klierd.tiiny.site</code><br>
               4. Share with staff — they open it in any browser
             </div>
           </div>
@@ -3348,7 +3348,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
             <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px">⭐ Option 2 — Recommended (own domain + password, ~10 min)</div>
             <div style="font-size:11px;color:var(--dim);line-height:1.8">
               1. Sign up free at <a href="https://netlify.com" target="_blank" style="color:var(--blue)">netlify.com</a><br>
-              2. Drag <strong style="color:var(--text)">stackpro_v3.html</strong> into deploy box → live instantly<br>
+              2. Drag <strong style="color:var(--text)">klierd_v3.html</strong> into deploy box → live instantly<br>
               3. Go to <strong style="color:var(--text)">Site Settings → Access Control → Password Protection</strong><br>
               4. Set one master password (protects client SSN data)<br>
               5. Buy domain at <a href="https://namecheap.com" target="_blank" style="color:var(--blue)">namecheap.com</a> once state approves your name (~$12/yr)<br>
@@ -3359,10 +3359,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
           <div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px">
             <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:6px">📋 Files to deploy</div>
             <div style="font-size:11px;color:var(--dim);line-height:1.8">
-              • <strong style="color:var(--text)">stackpro_v3.html</strong> — Main staff tool (this file)<br>
-              • <strong style="color:var(--text)">stackpro_intake.html</strong> — Public client intake form (share link with prospects)<br>
-              • <strong style="color:var(--text)">stackpro_ai_reader.html</strong> — AI credit report reader<br>
-              • <strong style="color:var(--text)">stackpro_credit_report.html</strong> — Client offer document
+              • <strong style="color:var(--text)">klierd_v3.html</strong> — Main staff tool (this file)<br>
+              • <strong style="color:var(--text)">klierd_intake.html</strong> — Public client intake form (share link with prospects)<br>
+              • <strong style="color:var(--text)">klierd_ai_reader.html</strong> — AI credit report reader<br>
+              • <strong style="color:var(--text)">klierd_credit_report.html</strong> — Client offer document
             </div>
           </div>
 
@@ -5685,8 +5685,8 @@ function renderImpPreview(){
 }
 function confirmImport(){if(!importQ.length){toast('⚠ No clients in queue');return;}clients.unshift(...importQ);document.getElementById('st-total').textContent=clients.length;updRptSel();toast('✓ '+importQ.length+' clients imported');importQ=[];renderImpPreview();}
 function clearQueue(){importQ=[];renderImpPreview();}
-function dlTemplate(){const csv='First,Last,Email,Phone,Score,SSN,EIN,DUNS,Income,Entity\nMarcus,Thompson,mt@email.com,5550001234,710,XXX-XX-XXXX,XX-XXXXXXX,12-345-6789,75000,LLC';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='stackpro_template.csv';a.click();toast('✓ Template downloaded');}
-function exportCSV(){const rows=['First,Last,Email,Phone,Score,Biz Range,Pers Range,Fee,Status,Date'];clients.forEach(c=>rows.push([c.first,c.last,c.email,c.phone||'',c.score,c.biz,c.pers,c.fee,c.status,c.date].join(',')));const b=new Blob([rows.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='stackpro_pipeline_'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('✓ Exported (no sensitive data in export)');}
+function dlTemplate(){const csv='First,Last,Email,Phone,Score,SSN,EIN,DUNS,Income,Entity\nMarcus,Thompson,mt@email.com,5550001234,710,XXX-XX-XXXX,XX-XXXXXXX,12-345-6789,75000,LLC';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='klierd_template.csv';a.click();toast('✓ Template downloaded');}
+function exportCSV(){const rows=['First,Last,Email,Phone,Score,Biz Range,Pers Range,Fee,Status,Date'];clients.forEach(c=>rows.push([c.first,c.last,c.email,c.phone||'',c.score,c.biz,c.pers,c.fee,c.status,c.date].join(',')));const b=new Blob([rows.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='klierd_pipeline_'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('✓ Exported (no sensitive data in export)');}
 
 // ═══════════════════════════════════════════════
 //  AGREEMENT
@@ -6926,8 +6926,8 @@ nav = function(id, el){
 // ═══════════════════════════════════════════════
 // RAILWAY API CONFIGURATION
 // ═══════════════════════════════════════════════
-const API_URL = 'https://stackpro-api-production.up.railway.app/api';
-const API_KEY = 'stackpro_secure_2026';
+const API_URL = 'https://klierd-api-production.up.railway.app/api';
+const API_KEY = 'klierd_secure_2026';
 
 async function apiCall(endpoint, method = 'GET', body = null) {
   try {
@@ -6949,10 +6949,10 @@ async function apiCall(endpoint, method = 'GET', body = null) {
   }
 }
 
-const LS_CLIENTS  = 'stackpro_clients';
-const LS_REPORTS  = 'stackpro_reports';
-const LS_SETTINGS = 'stackpro_settings';
-const LS_NOTES    = 'stackpro_notes';
+const LS_CLIENTS  = 'klierd_clients';
+const LS_REPORTS  = 'klierd_reports';
+const LS_SETTINGS = 'klierd_settings';
+const LS_NOTES    = 'klierd_notes';
 
 // ── SAVE TO RAILWAY API ──
 async function saveAll(){
@@ -7159,7 +7159,7 @@ async function clearAllData(){
 function getStorageSize(){
   let total = 0;
   for(let k in localStorage){
-    if(localStorage.hasOwnProperty(k) && k.startsWith('stackpro')){
+    if(localStorage.hasOwnProperty(k) && k.startsWith('klierd')){
       total += (localStorage.getItem(k)||'').length;
     }
   }
@@ -7464,8 +7464,8 @@ function renderFollowUpAlert(){
 //           Hami's provider clearance Tue 2026-05-26).
 // ═══════════════════════════════════════════════════════════
 // Railway API for monitoring subscription lifecycle (Coco 2026-05-28)
-const KLIERD_API = 'https://stackpro-api-production.up.railway.app';
-const KLIERD_API_KEY = 'stackpro_secure_2026';
+const KLIERD_API = 'https://klierd-api-production.up.railway.app';
+const KLIERD_API_KEY = 'klierd_secure_2026';
 
 async function klierdMonitoringAPI(path, body){
   try{
@@ -11121,7 +11121,7 @@ function exportActivityLog(){
   const blob = new Blob([csv], {type:'text/csv'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
-  a.href = url; a.download = `stackpro-activity-log-${new Date().toISOString().split('T')[0]}.csv`;
+  a.href = url; a.download = `klierd-activity-log-${new Date().toISOString().split('T')[0]}.csv`;
   a.click(); URL.revokeObjectURL(url);
   toast('✅ Activity log exported');
 }
@@ -11197,7 +11197,7 @@ function exportAllData(){
   const blob = new Blob([JSON.stringify(allData,null,2)],{type:'application/json'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
-  a.href=url; a.download=`stackpro-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.href=url; a.download=`klierd-backup-${new Date().toISOString().split('T')[0]}.json`;
   a.click(); URL.revokeObjectURL(url);
   logActivity('system','Data Export','Full system data exported to JSON');
   toast('✅ Full backup exported');
@@ -11268,7 +11268,7 @@ function exportAnalyticsCSV(){
     ...pipRows,
   ].join('\n');
 
-  downloadFile(csv, 'stackpro-analytics-'+date.replace(/\//g,'-')+'.csv', 'text/csv');
+  downloadFile(csv, 'klierd-analytics-'+date.replace(/\//g,'-')+'.csv', 'text/csv');
   logActivity('system','Analytics Exported','CSV export generated');
   toast('✅ Analytics exported to CSV');
 }
@@ -11313,7 +11313,7 @@ function exportAnalyticsJSON(){
     })),
   };
 
-  downloadFile(JSON.stringify(report, null, 2), 'stackpro-analytics-'+new Date().toISOString().split('T')[0]+'.json', 'application/json');
+  downloadFile(JSON.stringify(report, null, 2), 'klierd-analytics-'+new Date().toISOString().split('T')[0]+'.json', 'application/json');
   logActivity('system','Analytics Exported','JSON export generated');
   toast('✅ Analytics exported to JSON');
 }
@@ -12135,7 +12135,7 @@ function triggerFundingEngine(clientId){
   );
 
   // Send funding package to Railway backend for processing
-  const apiUrl=localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app';
+  const apiUrl=localStorage.getItem('sp_api_url')||'https://klierd-api-production.up.railway.app';
   const fundingPayload={
     clientId: c.id,
     name: (c.first||'')+' '+(c.last||''),
@@ -12186,7 +12186,7 @@ function triggerFundingEngine(clientId){
 function drainFundingQueue(){
   const queue=JSON.parse(localStorage.getItem('sp_funding_queue')||'[]');
   if(!queue.length)return;
-  const apiUrl=localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app';
+  const apiUrl=localStorage.getItem('sp_api_url')||'https://klierd-api-production.up.railway.app';
   const remaining=[];
   queue.forEach(job=>{
     fetch(apiUrl+'/funding/initiate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(job)})
@@ -12295,12 +12295,12 @@ function scheduleInvoiceReminders(inv){
 }
 
 function sendSystemEmail(to,subject,body){
-  fetch((localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app')+'/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,subject,body,from:'info@klierd.com'})}).catch(()=>{const q=JSON.parse(localStorage.getItem('sp_email_queue')||'[]');q.push({to,subject,body,queued:new Date().toLocaleString()});localStorage.setItem('sp_email_queue',JSON.stringify(q));});
+  fetch((localStorage.getItem('sp_api_url')||'https://klierd-api-production.up.railway.app')+'/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,subject,body,from:'info@klierd.com'})}).catch(()=>{const q=JSON.parse(localStorage.getItem('sp_email_queue')||'[]');q.push({to,subject,body,queued:new Date().toLocaleString()});localStorage.setItem('sp_email_queue',JSON.stringify(q));});
 }
 
 function sendSystemSMS(to,body){
   if(!to)return;
-  fetch((localStorage.getItem('sp_api_url')||'https://stackpro-api-production.up.railway.app')+'/send-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,body})}).catch(()=>{const q=JSON.parse(localStorage.getItem('sp_sms_queue')||'[]');q.push({to,body,queued:new Date().toLocaleString()});localStorage.setItem('sp_sms_queue',JSON.stringify(q));});
+  fetch((localStorage.getItem('sp_api_url')||'https://klierd-api-production.up.railway.app')+'/send-sms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,body})}).catch(()=>{const q=JSON.parse(localStorage.getItem('sp_sms_queue')||'[]');q.push({to,body,queued:new Date().toLocaleString()});localStorage.setItem('sp_sms_queue',JSON.stringify(q));});
 }
 
 function toggleClientCreditCard(clientId){
@@ -12338,7 +12338,7 @@ async function refreshIFTRuns(){
   let subsApproved = 0;
 
   try {
-    const apiBase = (window.KLIERD_API_BASE || 'https://stackpro-api-production.up.railway.app');
+    const apiBase = (window.KLIERD_API_BASE || 'https://klierd-api-production.up.railway.app');
     const r = await fetch(apiBase + '/api/ift/runs?limit=50');
     if (r.ok) {
       const data = await r.json();
@@ -12504,7 +12504,7 @@ const TB_DEFAULT_TASKS = [
   {id:8,text:'Build klierd.com enterprise landing page',owner:'Claude',priority:'active',done:false,ts:Date.now()},
   {id:9,text:'Import 7,000 client CSV',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
   {id:10,text:'KLIERD DBA registration',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
-  {id:11,text:'File STACKPRO trademark with Melony Frank',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
+  {id:11,text:'File KLIERD trademark with Melony Frank',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},
   {id:12,text:'Teka decides fee structure: Option A/B/C',owner:'Teka',priority:'urgent',done:false,ts:Date.now()},
   {id:13,text:'Confirm monitoring subscription prices ($97/$129/$149)',owner:'Teka',priority:'active',done:false,ts:Date.now()},
   {id:14,text:'DocuSign Developer account setup',owner:'Millicent',priority:'pending',done:false,ts:Date.now()},

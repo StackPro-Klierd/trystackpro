@@ -731,7 +731,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <script>
 let lang='en', currentApp=null;
-const API='https://stackpro-api-production.up.railway.app';
+const API='https://klierd-api-production.up.railway.app';
 
 const T={
   en:{
@@ -2173,7 +2173,7 @@ async function fetchMonitoringFromAPI(){
   if(!cid) return;
   try{
     const r = await fetch(API+'/api/monitoring/'+encodeURIComponent(cid), {
-      headers:{'x-api-key':'stackpro_secure_2026'}
+      headers:{'x-api-key':'klierd_secure_2026'}
     });
     if(!r.ok) return; // graceful — keep existing data
     const j = await r.json();
