@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KLIERD Client Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#C9A84C;--gold-light:#E8CB7A;--dark:#09090F;--dark2:#0f0f0f;--dark3:#161616;
+  --border:rgba(201,168,76,0.15);--border-hi:rgba(201,168,76,0.4);
+  --text:#F0EDE6;--dim:#9A9580;--muted:#5A5648;
+  --green:#27AE60;--red:#E74C3C;--blue:#2980B9;--orange:#E67E22;
+  --r:12px;--rs:8px;
+}
+body{background:var(--dark);color:var(--text);font-family:'Sora',sans-serif;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 80% 10%,rgba(201,168,76,0.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 28px;height:64px;background:rgba(9,9,15,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold);}
+.logo span{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;font-family:'Sora',sans-serif;font-weight:400;}
+.lang-toggle{display:flex;gap:6px;}
+.lang-btn{padding:4px 12px;border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .15s;font-family:'Sora',sans-serif;}
+.lang-btn.active{background:rgba(201,168,76,0.1);border-color:var(--border-hi);color:var(--gold);}
+.wrap{max-width:680px;margin:0 auto;padding:88px 20px 60px;position:relative;z-index:1;}
+.lookup{background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:40px 32px;text-align:center;}
+.lookup h1{font-family:'DM Serif Display',serif;font-size:28px;color:var(--gold);margin-bottom:8px;letter-spacing:-0.5px;}
+.lookup p{font-size:13px;color:var(--dim);margin-bottom:28px;line-height:1.7;font-family:'Sora',sans-serif;}
+.lookup-row{display:flex;gap:10px;margin-bottom:10px;}
+.lookup-row input{flex:1;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px 16px;color:var(--text);font-family:'DM Mono',monospace;font-size:15px;font-weight:600;letter-spacing:2px;outline:none;transition:border-color .15s;text-transform:uppercase;}
+.lookup-row input:focus{border-color:var(--gold);}
+.lookup-row input::placeholder{font-family:'Sora',sans-serif;font-size:12px;letter-spacing:0;font-weight:400;}
+.btn-primary{padding:12px 22px;background:var(--gold);color:var(--dark);font-family:'Sora',sans-serif;font-size:13px;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;white-space:nowrap;transition:all .15s;}
+.btn-primary:hover{background:var(--gold-light);}
+.btn-ghost{padding:9px 18px;border-radius:var(--rs);font-size:12px;font-weight:600;text-decoration:none;border:1px solid var(--border);color:var(--dim);background:var(--dark3);font-family:'Sora',sans-serif;transition:all .15s;cursor:pointer;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.error-msg{color:var(--red);font-size:12px;margin-top:4px;display:none;}
+.hint{font-size:11px;color:var(--muted);margin-top:10px;}
+.divider{border:none;border-top:1px solid var(--border);margin:24px 0;}
+.portal{display:none;}
+.portal.show{display:block;}
+.client-card{background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.client-name{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);}
+.client-id{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;margin-top:4px;}
+.badge{padding:5px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.badge-new{background:rgba(41,128,185,0.15);color:var(--blue);border:1px solid rgba(41,128,185,0.3);}
+.badge-review{background:rgba(230,126,34,0.15);color:var(--orange);border:1px solid rgba(230,126,34,0.3);}
+.badge-active{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
+.badge-funded{background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);}
+.badge-dispute{background:rgba(142,68,173,0.15);color:#9b59b6;border:1px solid rgba(142,68,173,0.3);}
+.tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.tab{padding:8px 16px;border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--dark2);color:var(--muted);transition:all .15s;font-family:'Sora',sans-serif;}
+.tab.active{background:rgba(201,168,76,0.1);border-color:var(--border-hi);color:var(--gold);}
+.card{background:var(--dark2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-weight:700;margin-bottom:14px;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.info-box{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:13px;}
+.info-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px;font-weight:700;}
+.info-val{font-size:13px;font-weight:600;color:var(--text);}
+.timeline{position:relative;padding-left:28px;}
+.timeline::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:var(--border);}
+.tl-step{position:relative;margin-bottom:18px;}
+.tl-step:last-child{margin-bottom:0;}
+.tl-dot{position:absolute;left:-24px;top:3px;width:16px;height:16px;border-radius:50%;border:2px solid var(--border);background:var(--dark);display:flex;align-items:center;justify-content:center;font-size:8px;}
+.tl-dot.done{border-color:var(--green);background:rgba(39,174,96,0.15);color:var(--green);}
+.tl-dot.active{border-color:var(--gold);background:rgba(201,168,76,0.15);}
+.tl-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.tl-label.active{color:var(--gold);}
+.tl-label.pending{color:var(--muted);}
+.tl-sub{font-size:11px;color:var(--muted);line-height:1.5;}
+.score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;}
+.score-box{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:13px;text-align:center;}
+.score-bureau{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.score-val{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--r);padding:28px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px;}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--gold);background:rgba(201,168,76,0.03);}
+.doc-list{display:flex;flex-direction:column;gap:8px;}
+.doc-item{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.doc-name{font-size:12px;color:var(--text);font-weight:600;flex:1;}
+.doc-status{font-size:10px;padding:3px 10px;border-radius:99px;font-weight:600;white-space:nowrap;}
+.doc-received{background:rgba(39,174,96,0.15);color:var(--green);}
+.doc-missing{background:rgba(231,76,60,0.15);color:var(--red);}
+.messages-wrap{max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;padding:4px;}
+.msg{max-width:82%;padding:11px 14px;border-radius:12px;font-size:13px;line-height:1.6;}
+.msg.advisor{background:var(--dark3);border:1px solid var(--border);border-radius:12px 12px 12px 0;color:var(--text);align-self:flex-start;}
+.msg.client{background:rgba(201,168,76,0.12);border:1px solid var(--border-hi);border-radius:12px 12px 0 12px;color:var(--text);align-self:flex-end;}
+.msg-time{font-size:10px;color:var(--muted);margin-top:3px;}
+.msg-row{display:flex;gap:8px;}
+.msg-input{flex:1;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:13px;outline:none;transition:border-color .15s;}
+.msg-input:focus{border-color:var(--gold);}
+.next-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.next-item:last-child{margin-bottom:0;}
+.next-icon{font-size:18px;flex-shrink:0;}
+.next-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.next-body{font-size:12px;color:var(--dim);line-height:1.6;}
+.contact-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
+.back-btn{font-size:12px;color:var(--muted);cursor:pointer;margin-bottom:18px;display:inline-flex;align-items:center;gap:6px;background:none;border:none;font-family:'Sora',sans-serif;}
+.back-btn:hover{color:var(--gold);}
+.footer{text-align:center;padding:28px;font-size:10px;color:var(--muted);border-top:1px solid var(--border);position:relative;z-index:1;}
+@media(max-width:600px){
+  .wrap{padding:80px 14px 50px;}
+  .lookup{padding:28px 18px;}
+  .lookup-row{flex-direction:column;}
+  .info-grid{grid-template-columns:1fr;}
+  .client-card{flex-direction:column;align-items:flex-start;}
+}
+
+/* LANGUAGE LABEL */
+.lang-label{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-right:8px;font-weight:600;align-self:center;}
+
+/* NEXT ACTION BANNER */
+.next-action{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(201,168,76,0.10),rgba(201,168,76,0.03));border:1px solid var(--border-hi);border-radius:var(--r);padding:14px 18px;margin-bottom:14px;animation:fadeUp .35s ease;}
+.na-icon{font-size:24px;flex-shrink:0;}
+.na-text{flex:1;}
+.na-label{font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:3px;}
+.na-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3;}
+.na-body{font-size:11.5px;color:var(--dim);line-height:1.5;}
+.na-cta{padding:8px 16px;background:var(--gold);color:var(--dark);font-family:'Sora',sans-serif;font-size:11.5px;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .15s;}
+.na-cta:hover{background:var(--gold-light);}
+.na-cta.done{background:rgba(39,174,96,0.18);color:var(--green);border:1px solid rgba(39,174,96,0.4);cursor:default;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* WELCOME CARD */
+.welcome-card{background:linear-gradient(135deg,var(--dark2),rgba(201,168,76,0.04));border:1px solid var(--border);}
+.welcome-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold);margin-bottom:12px;line-height:1.2;}
+.welcome-body{font-size:13px;color:var(--dim);line-height:1.75;font-family:'Sora',sans-serif;}
+.welcome-body p{margin-bottom:10px;}
+.welcome-body p:last-child{margin-bottom:0;}
+.welcome-body strong{color:var(--text);font-weight:600;}
+
+/* PROGRESS BAR */
+.progress-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.progress-pct{font-family:'DM Mono',monospace;font-size:22px;color:var(--gold);font-weight:600;}
+.progress-detail{font-size:11px;color:var(--muted);}
+.progress-track{width:100%;height:8px;background:var(--dark3);border-radius:99px;overflow:hidden;border:1px solid var(--border);}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:99px;transition:width .5s ease;}
+
+/* YOUR INFO CARD */
+.ci-grid{display:flex;flex-direction:column;gap:8px;}
+.ci-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);}
+.ci-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+.ci-val{font-size:12.5px;color:var(--text);font-weight:500;text-align:right;}
+.ci-edit{display:inline-block;margin-top:12px;font-size:11px;color:var(--gold);text-decoration:none;font-weight:600;}
+.ci-edit:hover{text-decoration:underline;}
+
+/* DOC TOOLTIP */
+.doc-item{flex-direction:column;align-items:stretch !important;}
+.doc-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.doc-why{font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.5;font-style:italic;}
+
+
+/* MILESTONES CARD */
+.ms-list{display:flex;flex-direction:column;gap:8px;}
+.ms-row{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);transition:all .3s ease;}
+.ms-row.complete{border-color:rgba(39,174,96,0.35);background:rgba(39,174,96,0.06);}
+.ms-icon{font-size:24px;flex-shrink:0;width:36px;text-align:center;}
+.ms-text{flex:1;}
+.ms-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.3;}
+.ms-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* PROGRESS BAR SHIMMER AT 100% */
+.progress-fill.complete{
+  background:linear-gradient(90deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);
+  background-size:200% 100%;
+  animation:shimmer 2.5s linear infinite;
+  box-shadow:0 0 12px rgba(201,168,76,0.5);
+}
+@keyframes shimmer{from{background-position:200% 0;}to{background-position:-200% 0;}}
+
+/* SOFT GLOW ON PROGRESS BAR THAT INTENSIFIES */
+.progress-fill{box-shadow:0 0 6px rgba(201,168,76,0.25);}
+
+/* PULSE ON NEXT ACTION CTA */
+.na-cta:not(.done){
+  animation:cta-pulse 2.6s ease-in-out infinite;
+}
+@keyframes cta-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0.45);}
+  50%{box-shadow:0 0 0 8px rgba(201,168,76,0);}
+}
+
+/* DOC UPLOAD CELEBRATION */
+.doc-item.just-uploaded{animation:doc-celebrate 1.4s ease;border-color:rgba(39,174,96,0.55);background:rgba(39,174,96,0.05);}
+@keyframes doc-celebrate{
+  0%{transform:scale(1);box-shadow:0 0 0 0 rgba(39,174,96,0.4);}
+  35%{transform:scale(1.02);box-shadow:0 0 0 6px rgba(39,174,96,0.2);}
+  100%{transform:scale(1);box-shadow:0 0 0 0 rgba(39,174,96,0);}
+}
+
+/* TOAST */
+.toast-wrap{position:fixed;top:78px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast{background:var(--dark2);border:1px solid var(--border-hi);border-radius:var(--rs);padding:10px 18px;font-size:13px;font-weight:600;color:var(--gold);box-shadow:0 8px 24px rgba(0,0,0,0.45);animation:toast-in .4s ease,toast-out .4s ease 3.6s forwards;display:flex;align-items:center;gap:8px;}
+.toast.success{color:var(--green);border-color:rgba(39,174,96,0.4);}
+@keyframes toast-in{from{opacity:0;transform:translateY(-12px) scale(0.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes toast-out{to{opacity:0;transform:translateY(-12px) scale(0.95);}}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;width:8px;height:14px;top:-20px;z-index:300;border-radius:1px;pointer-events:none;animation:confetti-fall 2.6s linear forwards;}
+
+@keyframes confetti-fall{
+  0%{opacity:1;transform:translateY(0) rotate(0deg);}
+  100%{opacity:0;transform:translateY(110vh) rotate(720deg);}
+}
+
+
+/* AGREEMENTS TAB */
+.ag-list{display:flex;flex-direction:column;gap:10px;}
+.ag-row{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:all .2s;}
+.ag-row.signed{border-color:rgba(39,174,96,0.4);background:rgba(39,174,96,0.04);}
+.ag-row.awaiting{border-color:rgba(230,126,34,0.4);background:rgba(230,126,34,0.04);}
+.ag-head{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ag-name{font-size:13px;font-weight:600;color:var(--text);flex:1;}
+.ag-status-badge{font-size:10px;padding:3px 10px;border-radius:99px;font-weight:600;white-space:nowrap;}
+.ag-status-not{background:rgba(154,149,128,0.15);color:var(--dim);}
+.ag-status-awaiting{background:rgba(230,126,34,0.15);color:var(--orange);}
+.ag-status-signed{background:rgba(39,174,96,0.15);color:var(--green);}
+.ag-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.ag-actions{display:flex;gap:8px;margin-top:4px;}
+.ag-btn{padding:6px 12px;border-radius:var(--rs);font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--dark2);color:var(--gold);font-family:'Sora',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+.ag-btn:hover{border-color:var(--gold);background:rgba(201,168,76,0.06);}
+.ag-btn.primary{background:var(--gold);color:var(--dark);border-color:var(--gold);}
+
+/* MY ANALYSIS TAB */
+.an-card{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:16px;margin-bottom:12px;}
+.an-card.ready{border-color:rgba(39,174,96,0.35);background:rgba(39,174,96,0.04);}
+.an-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.an-title{font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px;}
+.an-status{font-size:10px;padding:3px 10px;border-radius:99px;font-weight:600;}
+.an-status.notstarted{background:rgba(154,149,128,0.15);color:var(--dim);}
+.an-status.inprogress{background:rgba(41,128,185,0.18);color:var(--blue);}
+.an-status.ready{background:rgba(39,174,96,0.18);color:var(--green);}
+.an-desc{font-size:12px;color:var(--dim);line-height:1.65;margin-bottom:10px;}
+.an-empty{text-align:center;padding:20px;color:var(--muted);font-size:12px;font-style:italic;}
+.an-actions{display:flex;gap:8px;}
+
+/* BILLING TAB (v3.0) */
+.billing-hero{background:linear-gradient(135deg,var(--dark2),rgba(201,168,76,0.04));border:1px solid var(--border);}
+.bh-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.bh-col{flex:1;min-width:140px;}
+.bh-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);font-weight:700;margin-bottom:6px;}
+.bh-val{font-family:'DM Mono',monospace;font-size:32px;color:var(--gold);font-weight:600;line-height:1;}
+.bh-status{text-align:right;}
+.bill-badge{display:inline-block;padding:4px 12px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.bill-badge.paid{background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);}
+.bill-badge.due{background:rgba(230,126,34,0.15);color:var(--orange);border:1px solid rgba(230,126,34,0.3);}
+.bill-badge.overdue{background:rgba(231,76,60,0.15);color:var(--red);border:1px solid rgba(231,76,60,0.3);}
+.bill-badge.partial{background:rgba(41,128,185,0.18);color:var(--blue);border:1px solid rgba(41,128,185,0.3);}
+.bh-next{font-size:11px;color:var(--dim);margin-top:6px;}
+.bill-pay-btn{font-size:13px;animation:cta-pulse 2.6s ease-in-out infinite;}
+.bill-line-items{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.bill-li{background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.bill-li-info{flex:1;}
+.bill-li-name{font-size:12.5px;font-weight:600;color:var(--text);line-height:1.3;}
+.bill-li-desc{font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.5;}
+.bill-li-amt{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;}
+.bill-totals{border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:6px;}
+.bill-tot-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--dim);}
+.bill-tot-row.bill-tot-total{font-size:14px;font-weight:600;color:var(--text);padding-top:6px;border-top:1px solid var(--border);margin-top:4px;}
+.bill-tot-val{font-family:'DM Mono',monospace;font-weight:600;}
+.bill-pm-row{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);}
+.bill-pm-icon{font-size:24px;}
+.bill-pm-info{flex:1;}
+.bill-pm-line1{font-size:13px;color:var(--text);font-weight:600;}
+.bill-pm-line2{font-size:11px;color:var(--muted);margin-top:2px;}
+.bill-pm-edit{font-size:11px;color:var(--gold);text-decoration:none;font-weight:600;}
+.bill-pm-edit:hover{text-decoration:underline;}
+.bill-history{display:flex;flex-direction:column;gap:8px;}
+.bill-hist-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:12px;}
+.bill-hist-info{flex:1;}
+.bill-hist-date{color:var(--muted);font-size:10.5px;font-family:'DM Mono',monospace;}
+.bill-hist-method{color:var(--text);font-weight:600;margin-top:2px;}
+.bill-hist-amt{font-family:'DM Mono',monospace;font-weight:600;color:var(--green);}
+.bill-hist-empty{text-align:center;padding:20px;color:var(--muted);font-size:12px;font-style:italic;}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">KLIERD<span id="lbl-portal-tag">Client Portal</span></div>
+  <div class="lang-toggle">
+    <span class="lang-label">Idioma / Language</span>
+    <button class="lang-btn active" onclick="setLang('en',this)">🇺🇸 EN</button>
+    <button class="lang-btn" onclick="setLang('es',this)">🇪🇸 ES</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- LOOKUP -->
+  <div id="lookupScreen">
+    <div class="lookup">
+      <h1 id="lbl-title">Welcome to Your Portal</h1>
+      <p id="lbl-subtitle">Please enter your Tracking ID to view your application status, upload documents, and message your KLIERD Funding Manager.</p>
+      <div class="lookup-row">
+        <input type="text" id="tracking-input" placeholder="CBG-XXXXXXXX" maxlength="12"
+          oninput="this.value=this.value.toUpperCase()"
+          onkeydown="if(event.key==='Enter')lookup()"/>
+        <button class="btn-primary" onclick="lookup()" id="btn-lookup">Check Status</button>
+      </div>
+      <div class="error-msg" id="lookup-error"></div>
+      <p class="hint" id="lbl-hint">Your Tracking ID was in your welcome email and text. Format: CBG-XXXXXXXX</p>
+    </div>
+  </div>
+
+  <!-- PORTAL -->
+  <div class="portal" id="portalScreen">
+    <button class="back-btn" onclick="goBack()">← <span id="lbl-back">Back</span></button>
+
+    <!-- NEXT ACTION BANNER -->
+    <div class="next-action" id="next-action-banner" style="display:none">
+      <div class="na-icon" id="na-icon">⚡</div>
+      <div class="na-text">
+        <div class="na-label" id="lbl-na">Your Next Action</div>
+        <div class="na-title" id="na-title">—</div>
+        <div class="na-body" id="na-body">—</div>
+      </div>
+      <button class="na-cta" id="na-cta" onclick="naAction()">—</button>
+    </div>
+
+    <div class="client-card">
+      <div>
+        <div class="client-name" id="p-name">—</div>
+        <div class="client-id" id="p-id">—</div>
+      </div>
+      <div class="badge" id="p-badge">New</div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('status',this)">📊 <span id="lbl-tab-status">Status</span></button>
+      <button class="tab" onclick="showTab('docs',this)">📎 <span id="lbl-tab-docs">Documents</span></button>
+      <button class="tab" onclick="showTab('messages',this)">💬 <span id="lbl-tab-msgs">Messages</span></button>
+      <button class="tab" onclick="showTab('analysis',this)">📊 <span id="lbl-tab-analysis">My Analysis</span></button>
+      <button class="tab" onclick="showTab('agreements',this)">✍ <span id="lbl-tab-agreements">Agreements</span></button>
+      <button class="tab" onclick="showTab('billing',this)" id="tab-btn-billing" style="display:none">💳 <span id="lbl-tab-billing">Billing</span></button>
+      <button class="tab" onclick="showTab('monitoring',this)" id="tab-btn-monitoring" style="display:none">🛡 <span id="lbl-tab-monitoring">Monitoring</span></button>
+      <button class="tab" onclick="showTab('scores',this)">📈 <span id="lbl-tab-scores">Credit Profile</span></button>
+    </div>
+
+    <!-- STATUS TAB -->
+    <div id="tab-status">
+
+      <!-- WELCOME CARD -->
+      <div class="card welcome-card">
+        <div class="welcome-title" id="welcome-title">—</div>
+        <div class="welcome-body" id="welcome-body">—</div>
+      </div>
+
+      <!-- YOUR ACTION PLAN — service-specific checklist that drives what client does next -->
+      <div class="card" id="action-plan-card">
+        <div class="card-title" id="lbl-action-plan">🎯 Your KLIERD Action Plan</div>
+        <div id="action-plan-body" style="font-size:13px;color:var(--dim);line-height:1.6"></div>
+      </div>
+
+      <!-- YOUR KLIERD EMAIL — assigned email for lender response routing -->
+      <div class="card" id="klierd-email-card" style="display:none">
+        <div class="card-title" id="lbl-klierd-email">📬 Your KLIERD Email Address</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-klierd-email-body">
+          When you apply for funding through KLIERD, use this email address on your applications. Responses route directly into your KLIERD portal so nothing gets lost.
+        </p>
+        <div style="background:var(--dark3);border:1px solid var(--gold);border-radius:var(--rs);padding:12px 16px;margin-top:10px;font-family:monospace;font-size:15px;color:var(--gold);word-break:break-all" id="klierd-email-value">—</div>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px" id="lbl-klierd-email-note">Coming soon — your dedicated email will be assigned once Cece's email-per-client routing is live.</p>
+      </div>
+
+      <!-- YOUR ANALYSIS — shows dispute opportunities + score summary -->
+      <div class="card" id="analysis-card" style="display:none">
+        <div class="card-title" id="lbl-analysis">🧠 Your KLIERD Smart Analysis</div>
+        <div id="analysis-body" style="font-size:13px;color:var(--dim);line-height:1.6"></div>
+      </div>
+
+      <!-- IDENTITY VERIFICATION — Persona (withpersona.com). Two flows: SSN (gov ID + selfie + liveness) and ITIN (passport + selfie + liveness, no SSN field). -->
+      <div class="card" id="verify-card" style="display:none;border:1px solid var(--gold);background:linear-gradient(180deg,var(--dark2) 0%,rgba(201,168,76,0.04) 100%)">
+        <div class="card-title" id="lbl-verify">🛡 Identity Verification</div>
+        <div id="verify-body" style="font-size:13px;color:var(--dim);line-height:1.6"></div>
+        <div id="verify-consent" style="display:none;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-top:14px">
+          <p style="font-size:12px;color:var(--text);line-height:1.6;margin-bottom:10px" id="lbl-verify-consent-body">
+            I consent to KLIERD verifying my identity through Persona (withpersona.com), including capturing a government-issued ID, a live selfie with liveness check, and an immutable audit record of this session (timestamp, IP, device, and document images). I understand this is required to proceed with my application.
+          </p>
+          <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer">
+            <input type="checkbox" id="verify-consent-cb" style="margin-top:3px;accent-color:var(--gold)"/>
+            <span style="font-size:12px;color:var(--text);line-height:1.5" id="lbl-verify-consent-check">I have read and agree to the identity verification consent above.</span>
+          </label>
+          <button onclick="launchPersona()" id="btn-launch-persona" disabled style="margin-top:12px;background:var(--gold);color:#000;border:none;border-radius:6px;padding:10px 18px;font-size:12px;font-weight:700;cursor:not-allowed;letter-spacing:0.5px;text-transform:uppercase;opacity:0.5">
+            Start Verification →
+          </button>
+        </div>
+      </div>
+
+      <!-- PRE-FUNDING SERVICES — system recommends based on analysis, client chooses, each invoiced separately -->
+      <div class="card" id="prefunding-card" style="display:none">
+        <div class="card-title" id="lbl-prefunding">⚡ Recommended Services</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:12px" id="lbl-prefunding-intro">
+          Based on your analysis, these services strengthen your file before funding submissions. Each is invoiced separately and paid before service begins.
+        </p>
+        <div id="prefunding-list" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+
+      <!-- SUBMISSIONS STATUS — anonymized status timeline. NO lender names until decisions return. -->
+      <div class="card" id="submissions-card" style="display:none">
+        <div class="card-title" id="lbl-submissions">🚀 Your Submissions</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:12px" id="lbl-submissions-intro">
+          Real-time tracking of your funding submissions. Lender details are confidential until decisions return.
+        </p>
+        <div id="submissions-list" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+
+      <!-- PROGRESS BAR -->
+      <div class="card">
+        <div class="card-title" id="lbl-progress-bar">Your Progress</div>
+        <div class="progress-meta">
+          <span class="progress-pct" id="progress-pct">0%</span>
+          <span class="progress-detail" id="progress-detail">—</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      </div>
+
+      <!-- MILESTONES CARD -->
+      <div class="card">
+        <div class="card-title" id="lbl-milestones">Milestones</div>
+        <div class="ms-list" id="ms-list"></div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-box"><div class="info-label" id="lbl-submitted">Submitted</div><div class="info-val" id="p-submitted">—</div></div>
+        <div class="info-box"><div class="info-label" id="lbl-app-type">Application Type</div><div class="info-val" id="p-type">—</div></div>
+        <div class="info-box"><div class="info-label" id="lbl-goal">Funding Goal</div><div class="info-val" id="p-goal">—</div></div>
+        <div class="info-box"><div class="info-label" id="lbl-lang-pref">Language</div><div class="info-val" id="p-lang">—</div></div>
+      </div>
+
+      <!-- YOUR INFO CARD -->
+      <div class="card">
+        <div class="card-title" id="lbl-your-info">Your Information</div>
+        <div class="ci-grid">
+          <div class="ci-row"><span class="ci-label" id="ci-lbl-email">Email</span><span class="ci-val" id="ci-email">—</span></div>
+          <div class="ci-row"><span class="ci-label" id="ci-lbl-phone">Phone</span><span class="ci-val" id="ci-phone">—</span></div>
+          <div class="ci-row"><span class="ci-label" id="ci-lbl-biz">Business Name</span><span class="ci-val" id="ci-biz">—</span></div>
+        </div>
+        <a href="mailto:info@klierd.com?subject=Update%20my%20information" class="ci-edit" id="ci-edit-link">✎ Need to update your information? Message us →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title" id="lbl-progress">Application Progress</div>
+        <div class="timeline" id="p-timeline"></div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="lbl-next">What Happens Next</div>
+        <div id="p-next"></div>
+      </div>
+      <div class="card" style="text-align:center">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px" id="lbl-contact">Have questions? We are here to help.</p>
+        <div class="contact-row">
+          <a href="mailto:info@klierd.com" class="btn-ghost">✉ info@klierd.com</a>
+          <a href="tel:+1" class="btn-ghost" id="lbl-call">📞 Call Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCS TAB -->
+    <div id="tab-docs" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-upload">Upload Documents</div>
+        <div class="upload-zone" id="upload-zone"
+          onclick="document.getElementById('file-input').click()"
+          ondragover="event.preventDefault();this.classList.add('dragover')"
+          ondragleave="this.classList.remove('dragover')"
+          ondrop="handleDrop(event)">
+          <input type="file" id="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="handleFiles(this.files)" style="display:none"/>
+          <div style="font-size:32px;margin-bottom:8px">📎</div>
+          <div style="font-size:13px;color:var(--dim);margin-bottom:4px" id="lbl-drop">Click to upload or drag and drop</div>
+          <div style="font-size:11px;color:var(--muted)" id="lbl-file-types">PDF, JPG, PNG, DOC — Max 10MB per file</div>
+        </div>
+        <div id="upload-status" style="display:none;padding:10px 14px;background:rgba(39,174,96,0.08);border:1px solid rgba(39,174,96,0.3);border-radius:var(--rs);font-size:12px;color:var(--green);margin-bottom:12px"></div>
+        <div class="card-title" id="lbl-checklist">Document Checklist</div>
+        <div class="doc-list" id="doc-list"></div>
+      </div>
+    </div>
+
+    <!-- MESSAGES TAB -->
+    <div id="tab-messages" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-msgs-title">Messages with Your KLIERD Funding Manager</div>
+        <div class="messages-wrap" id="messages-wrap"></div>
+        <div class="msg-row">
+          <input type="text" class="msg-input" id="msg-input" id="lbl-msg-placeholder"
+            placeholder="Type your message..."
+            onkeydown="if(event.key==='Enter')sendMsg()"/>
+          <button class="btn-primary" onclick="sendMsg()" id="btn-send">Send</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- MY ANALYSIS TAB -->
+    <div id="tab-analysis" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-analysis-title">Your Analysis</div>
+        <p style="font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.6" id="lbl-analysis-intro"></p>
+
+        <div class="an-card" id="an-credit">
+          <div class="an-head">
+            <div class="an-title">📋 <span id="lbl-an-credit-title">Credit Analysis</span></div>
+            <span class="an-status notstarted" id="an-credit-status">Not yet started</span>
+          </div>
+          <div class="an-desc" id="lbl-an-credit-desc">A complete review of your credit profile prepared by our team.</div>
+          <div class="an-actions" id="an-credit-actions"></div>
+        </div>
+
+        <div class="an-card" id="an-funding">
+          <div class="an-head">
+            <div class="an-title">💼 <span id="lbl-an-funding-title">Funding Analysis</span></div>
+            <span class="an-status notstarted" id="an-funding-status">Not yet started</span>
+          </div>
+          <div class="an-desc" id="lbl-an-funding-desc">Your personalized funding strategy prepared by our team.</div>
+          <div class="an-actions" id="an-funding-actions"></div>
+        </div>
+
+        <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-analysis-note">Powered by KLIERD Intelligent Funding Technology</div>
+      </div>
+    </div>
+
+    <!-- AGREEMENTS TAB -->
+    <div id="tab-agreements" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-agreements-title">Signed Agreements</div>
+        <p style="font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.6" id="lbl-agreements-intro">These legal documents are required before we can fully engage. KLIERD will automatically send each one for your electronic signature.</p>
+        <div class="ag-list" id="ag-list"></div>
+        <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-agreements-note">Powered by DocuSign · Your signatures are legally binding and securely stored.</div>
+      </div>
+    </div>
+
+    <!-- BILLING TAB (v3.0) -->
+    <div id="tab-billing" style="display:none">
+
+      <!-- BALANCE HERO CARD -->
+      <div class="card billing-hero">
+        <div class="bh-row">
+          <div class="bh-col">
+            <div class="bh-label" id="lbl-balance-due">Balance Due</div>
+            <div class="bh-val" id="bill-balance">$0.00</div>
+          </div>
+          <div class="bh-status">
+            <span class="bill-badge" id="bill-status-badge">—</span>
+            <div class="bh-next" id="bill-next-line"></div>
+          </div>
+        </div>
+        <button class="btn-primary bill-pay-btn" id="btn-make-payment" onclick="makePayment()" style="display:none;width:100%;margin-top:14px">💳 <span id="lbl-make-payment">Make a Payment</span></button>
+      </div>
+
+      <!-- INVOICE SUMMARY -->
+      <div class="card">
+        <div class="card-title" id="lbl-invoice-summary">Invoice Summary</div>
+        <div class="bill-line-items" id="bill-line-items"></div>
+        <div class="bill-totals">
+          <div class="bill-tot-row"><span id="lbl-subtotal">Subtotal</span><span class="bill-tot-val" id="bill-subtotal">$0.00</span></div>
+          <div class="bill-tot-row"><span id="lbl-paid">Paid to date</span><span class="bill-tot-val" id="bill-paid" style="color:var(--green)">$0.00</span></div>
+          <div class="bill-tot-row bill-tot-total"><span id="lbl-balance">Balance</span><span class="bill-tot-val" id="bill-balance-line" style="color:var(--gold)">$0.00</span></div>
+        </div>
+      </div>
+
+      <!-- PAYMENT METHOD ON FILE -->
+      <div class="card" id="bill-pm-card" style="display:none">
+        <div class="card-title" id="lbl-payment-method">Payment Method on File</div>
+        <div class="bill-pm-row">
+          <div class="bill-pm-icon">💳</div>
+          <div class="bill-pm-info">
+            <div class="bill-pm-line1" id="bill-pm-line1">—</div>
+            <div class="bill-pm-line2" id="bill-pm-line2">—</div>
+          </div>
+          <a href="mailto:info@klierd.com?subject=Update%20payment%20method" class="bill-pm-edit" id="lbl-pm-update">Update →</a>
+        </div>
+      </div>
+
+      <!-- PAYMENT HISTORY -->
+      <div class="card">
+        <div class="card-title" id="lbl-payment-history">Payment History</div>
+        <div class="bill-history" id="bill-history"></div>
+      </div>
+
+      <!-- BILLING DISCLAIMER -->
+      <div style="margin-top:14px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);font-size:11px;color:var(--muted);line-height:1.6" id="lbl-billing-note">Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your KLIERD Funding Manager anytime.</div>
+
+    </div>
+
+    <!-- MONITORING TAB (Program 3 — KLIERD Monitoring) -->
+    <div id="tab-monitoring" style="display:none">
+
+      <!-- SETUP STATE (shown until activated by staff) -->
+      <div class="card" id="mon-setup-card" style="display:none">
+        <div class="card-title" id="lbl-mon-setup-title">🛡 KLIERD Monitoring</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-mon-setup-body">Your KLIERD Monitoring is being set up. You will receive an email within 24 hours.</p>
+      </div>
+
+      <!-- UPLOAD CREDIT REPORT (FICO only, < 30 days — interim until auto-bureau-pull live) -->
+      <div class="card" id="mon-upload-card" style="display:none">
+        <div class="card-title" id="lbl-mon-upload-title">📄 Upload Your Credit Report</div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.6" id="lbl-mon-upload-body">
+          Optional — gives you a head start while we activate your full monitoring. Upload a recent credit report that includes <strong>FICO scores</strong>. KLIERD's Smart Technology reads your report and updates your monitoring within 60 seconds.
+        </p>
+
+        <div style="background:var(--dark3);border:1px solid var(--gold);border-radius:var(--rs);padding:10px 12px;margin-top:10px;font-size:12px">
+          <div style="font-weight:700;color:var(--gold);margin-bottom:6px" id="lbl-mon-upload-rules-title">Two strict rules:</div>
+          <div style="color:var(--dim);line-height:1.6" id="lbl-mon-upload-rules-body">
+            <div>1. Must be <strong>FICO</strong> — from myFICO.com, Experian.com (FICO product), Discover Credit Scorecard, or your bank if it says FICO. <span style="color:var(--red)">Credit Karma, CreditWise, and Vantage-only reports will be rejected.</span></div>
+            <div style="margin-top:6px">2. Must be pulled <strong>within the last 30 days</strong>. Older reports will be rejected.</div>
+          </div>
+        </div>
+
+        <input type="file" id="mon-upload-input" accept="application/pdf,image/png,image/jpeg" style="display:none" onchange="klierdUploadCreditReport(this.files[0])"/>
+        <button class="btn-primary" onclick="document.getElementById('mon-upload-input').click()" id="lbl-mon-upload-btn" style="margin-top:12px;width:100%">Upload Credit Report PDF</button>
+        <div id="mon-upload-status" style="margin-top:10px;font-size:12px;display:none"></div>
+      </div>
+
+      <!-- PLAN TIER + BILLING STATUS -->
+      <div class="card" id="mon-plan-card" style="display:none">
+        <div class="card-title" id="lbl-mon-plan-title">Your Plan</div>
+        <div class="bh-row">
+          <div class="bh-col">
+            <div class="bh-label" id="lbl-mon-tier">Current Tier</div>
+            <div class="bh-val" id="mon-tier-name" style="font-size:22px">—</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px" id="mon-tier-price">—</div>
+          </div>
+          <div class="bh-status">
+            <span class="bill-badge" id="mon-status-badge">—</span>
+            <div class="bh-next" id="mon-next-bill"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+          <button class="btn-ghost" onclick="monChangeTier('up')" id="btn-mon-upgrade">⬆ <span id="lbl-mon-upgrade">Upgrade</span></button>
+          <button class="btn-ghost" onclick="monChangeTier('down')" id="btn-mon-downgrade">⬇ <span id="lbl-mon-downgrade">Downgrade</span></button>
+          <button class="btn-ghost" onclick="monManageBilling()" id="btn-mon-billing">💳 <span id="lbl-mon-billing">Manage Billing</span></button>
+        </div>
+      </div>
+
+      <!-- CURRENT SCORE -->
+      <!-- CURRENT SCORE — 3-bureau FICO grid -->
+      <div class="card" id="mon-score-card" style="display:none">
+        <div class="card-title" id="lbl-mon-score-title">Your FICO Scores</div>
+        <div class="score-grid" style="margin-top:12px">
+          <div class="score-box">
+            <div class="score-bureau" style="color:#41a0e8" id="lbl-mon-tu">TransUnion</div>
+            <div class="score-val" style="color:#41a0e8" id="mon-score-tu">—</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px" id="mon-score-tu-delta"></div>
+          </div>
+          <div class="score-box">
+            <div class="score-bureau" style="color:#27AE60" id="lbl-mon-eq">Equifax</div>
+            <div class="score-val" style="color:#27AE60" id="mon-score-eq">—</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px" id="mon-score-eq-delta"></div>
+          </div>
+          <div class="score-box">
+            <div class="score-bureau" style="color:var(--gold)" id="lbl-mon-ex">Experian</div>
+            <div class="score-val" style="color:var(--gold)" id="mon-score-ex">—</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px" id="mon-score-ex-delta"></div>
+          </div>
+        </div>
+        <div id="mon-score-updated" style="font-size:10px;color:var(--muted);text-align:center;margin-top:10px">—</div>
+        <div id="mon-score-freshness-banner" style="display:none;margin-top:10px;padding:8px 12px;border-radius:var(--rs);font-size:11px;text-align:center"></div>
+      </div>
+
+      <!-- SMART CREDIT INTELLIGENCE -->
+      <div class="card" id="mon-readiness-card" style="display:none">
+        <div class="card-title" id="lbl-mon-readiness-title">🛡 Smart Credit Intelligence</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px" id="lbl-mon-readiness-sub">Powered by KLIERD Smart Technology. Whether you are building credit, monitoring your credit, working toward the KLIERD Card, or need funding — your current tier and progression projection. Specific external lenders are matched and disclosed only when KLIERD executes funding on your behalf.</div>
+        <div id="mon-readiness-tier" style="background:var(--dark3);border:1px solid var(--gold);border-radius:var(--rs);padding:12px 14px;margin-top:8px">
+          <div style="font-size:10px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;font-weight:700">Current Tier</div>
+          <div id="mon-readiness-tier-name" style="font-family:'DM Serif Display',serif;font-size:18px;color:#fff;margin-top:4px">—</div>
+          <div id="mon-readiness-tier-range" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--gold);margin-top:2px">—</div>
+          <div id="mon-readiness-tier-note" style="font-size:11px;color:var(--dim);margin-top:6px;line-height:1.5">—</div>
+        </div>
+        <div id="mon-readiness-next" style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-top:8px">
+          <div style="font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;font-weight:700">Next Tier — projected eligibility</div>
+          <div id="mon-readiness-next-name" style="font-size:14px;color:#fff;margin-top:4px">—</div>
+          <div id="mon-readiness-next-range" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--gold);margin-top:2px">—</div>
+          <div id="mon-readiness-next-eta" style="font-size:11px;color:var(--dim);margin-top:6px">—</div>
+        </div>
+      </div>
+
+      <!-- SCORE HISTORY — per-bureau lines -->
+      <div class="card" id="mon-history-card" style="display:none">
+        <div class="card-title" id="lbl-mon-history-title">Score History</div>
+        <div id="mon-history-chart" style="height:140px;display:flex;align-items:flex-end;justify-content:space-around;gap:6px;padding:10px 4px;border-bottom:1px solid var(--border)"></div>
+        <div id="mon-history-labels" style="display:flex;justify-content:space-around;gap:6px;padding:6px 4px 0;font-size:10px;color:var(--muted)"></div>
+        <div style="display:flex;justify-content:center;gap:14px;margin-top:8px;font-size:10px;color:var(--muted)">
+          <span><span style="display:inline-block;width:8px;height:8px;background:#41a0e8;border-radius:2px;margin-right:4px"></span>TU</span>
+          <span><span style="display:inline-block;width:8px;height:8px;background:#27AE60;border-radius:2px;margin-right:4px"></span>EQ</span>
+          <span><span style="display:inline-block;width:8px;height:8px;background:var(--gold);border-radius:2px;margin-right:4px"></span>EX</span>
+        </div>
+      </div>
+
+      <!-- ALERT LOG -->
+      <div class="card" id="mon-alerts-card" style="display:none">
+        <div class="card-title" id="lbl-mon-alerts-title">Alert Log</div>
+        <div id="mon-alerts-list"></div>
+      </div>
+
+    </div>
+
+    <!-- SCORES TAB -->
+    <div id="tab-scores" style="display:none">
+      <div class="card">
+        <div class="card-title" id="lbl-scores">Your Credit Scores</div>
+        <div class="score-grid">
+          <div class="score-box"><div class="score-bureau" style="color:#41a0e8">TransUnion</div><div class="score-val" style="color:#41a0e8" id="p-tu">—</div></div>
+          <div class="score-box"><div class="score-bureau" style="color:#27AE60">Equifax</div><div class="score-val" style="color:#27AE60" id="p-eq">—</div></div>
+          <div class="score-box"><div class="score-bureau" style="color:var(--gold)">Experian</div><div class="score-val" style="color:var(--gold)" id="p-ex">—</div></div>
+        </div>
+        <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px" id="lbl-scores-note">Scores appear here once KLIERD Smart Credit Technology processes your credit profile.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" id="lbl-funding-range">Estimated Funding Range</div>
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="info-label" id="lbl-personal-range">Personal Funding</div>
+            <div class="info-val" id="p-range-personal" style="color:var(--gold);font-size:20px;font-family:'DM Mono',monospace">—</div>
+          </div>
+          <div class="info-box">
+            <div class="info-label" id="lbl-biz-range">Business Funding</div>
+            <div class="info-val" id="p-range-biz" style="color:var(--blue);font-size:20px;font-family:'DM Mono',monospace">—</div>
+          </div>
+        </div>
+        <p style="font-size:10px;color:var(--muted);margin-top:6px" id="lbl-disclaimer">Estimates based on your profile. Results are not typical and may vary.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  <div id="lbl-footer-text">KLIERD © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.</div>
+  <div id="lbl-footer-croa" style="margin-top:8px;font-size:9px;color:var(--muted)">This is not a credit repair service. Results are not typical and may vary.</div>
+</div>
+
+<script>
+let lang='en', currentApp=null;
+const API='https://stackpro-api-production.up.railway.app';
+
+const T={
+  en:{
+    'lbl-title':'Welcome to Your Portal',
+    'lbl-subtitle':'Please enter your Tracking ID to view your application status, upload documents, and message your KLIERD Funding Manager.',
+    'btn-lookup':'Check Status',
+    'lbl-hint':'Your Tracking ID was in your confirmation. Format: CBG-XXXXXXXX',
+    'lbl-back':'Back',
+    'lbl-tab-status':'Status','lbl-tab-docs':'Documents','lbl-tab-msgs':'Messages','lbl-tab-scores':'Credit Profile',
+    'lbl-submitted':'Submitted','lbl-app-type':'Application Type','lbl-goal':'Funding Goal','lbl-lang-pref':'Language',
+    'lbl-progress':'Application Progress','lbl-next':'What Happens Next',
+    'lbl-contact':'Have questions? We are here to help.',
+    'lbl-call':'📞 Call Us',
+    'lbl-mon-upload-title':'📄 Upload Your Credit Report',
+    'lbl-mon-upload-body':"Optional — gives you a head start while we activate your full monitoring. Upload a recent credit report that includes <strong>FICO scores</strong>. KLIERD's Smart Technology reads your report and updates your monitoring within 60 seconds.",
+    'lbl-mon-upload-rules-title':'Two strict rules:',
+    'lbl-mon-upload-rules-body':'<div>1. Must be <strong>FICO</strong> — from myFICO.com, Experian.com (FICO product), Discover Credit Scorecard, or your bank if it says FICO. <span style="color:var(--red)">Credit Karma, CreditWise, and Vantage-only reports will be rejected.</span></div><div style="margin-top:6px">2. Must be pulled <strong>within the last 30 days</strong>. Older reports will be rejected.</div>',
+    'lbl-mon-upload-btn':'Upload Credit Report PDF',
+    'lbl-upload':'Upload Documents','lbl-drop':'Click to upload or drag and drop',
+    'lbl-file-types':'PDF, JPG, PNG, DOC — Max 10MB per file',
+    'lbl-checklist':'Document Checklist',
+    'lbl-msgs-title':'Messages with Your KLIERD Funding Manager','btn-send':'Send',
+    'lbl-scores':'Your Credit Scores',
+    'lbl-scores-note':'Scores appear here once KLIERD Smart Credit Technology processes your credit profile.',
+    'lbl-funding-range':'Estimated Funding Range',
+    'lbl-personal-range':'Personal Funding','lbl-biz-range':'Business Funding',
+    'lbl-disclaimer':'Estimates based on your profile. Results are not typical and may vary.',
+    'lookup-error':'Tracking ID not found. Please check and try again.',
+    'lbl-portal-tag':'Client Portal',
+    'lbl-footer-text':'KLIERD © 2026 · Powered by KLIERD Intelligent Funding Technology · We are KLIERing your path.',
+    'lbl-footer-croa':'This is not a credit repair service. Results are not typical and may vary.',
+    'lbl-na':'Your Next Action',
+    'lbl-progress-bar':'Your Progress',
+    'lbl-your-info':'Your Information',
+    'ci-lbl-email':'Email',
+    'ci-lbl-phone':'Phone',
+    'ci-lbl-biz':'Business Name',
+    'ci-edit-link':'✎ Need to update your information? Message us →',
+    'lbl-tab-analysis':'My Analysis',
+    'lbl-tab-agreements':'Agreements',
+    'lbl-analysis-title':'Your Analysis',
+    'lbl-analysis-intro':'After you submit your documents, KLIERD Intelligent Funding Technology processes your profile. Your personalized analysis appears here when ready.',
+    'lbl-an-credit-title':'Credit Analysis',
+    'lbl-an-credit-desc':'A complete review of your credit profile prepared by our team.',
+    'lbl-an-funding-title':'Funding Analysis',
+    'lbl-an-funding-desc':'Your personalized funding strategy prepared by our team.',
+    'lbl-analysis-note':'Powered by KLIERD Intelligent Funding Technology',
+    'lbl-agreements-title':'Signed Agreements',
+    'lbl-agreements-intro':'These legal documents are required before we can fully engage. KLIERD will automatically send each one for your electronic signature.',
+    'lbl-agreements-note':'Powered by DocuSign · Your signatures are legally binding and securely stored.',
+    'lbl-milestones':'Milestones',
+    'lbl-tab-billing':'Billing',
+    'lbl-balance-due':'Balance Due',
+    'lbl-make-payment':'Make a Payment',
+    'lbl-invoice-summary':'Invoice Summary',
+    'lbl-subtotal':'Subtotal',
+    'lbl-paid':'Paid to date',
+    'lbl-balance':'Balance',
+    'lbl-payment-method':'Payment Method on File',
+    'lbl-pm-update':'Update →',
+    'lbl-payment-history':'Payment History',
+    'lbl-billing-note':'Charges are for consulting services only. We never charge upfront fees for credit repair under CROA. Questions? Email your KLIERD Funding Manager anytime.',
+    'bill-paid':'Paid in full',
+    'bill-due':'Balance due',
+    'bill-partial':'Partially paid',
+    'bill-overdue':'Overdue',
+    'bill-no-charges':'No charges',
+    'bill-next-due':'Next payment due:',
+    'bill-no-items':'No charges yet. Line items appear once your funding strategy is confirmed.',
+    'bill-no-history':'No payments yet.',
+    'lbl-tab-monitoring':'Monitoring',
+    'lbl-mon-setup-title':'🛡 KLIERD Monitoring',
+    'lbl-mon-setup-body':'Your KLIERD Monitoring is being set up. You will receive an email within 24 hours.',
+    'lbl-mon-plan-title':'Your Plan',
+    'lbl-mon-tier':'Current Tier',
+    'lbl-mon-upgrade':'Upgrade',
+    'lbl-mon-downgrade':'Downgrade',
+    'lbl-mon-billing':'Manage Billing',
+    'lbl-mon-score-title':'Current Score',
+    'lbl-mon-score-pending':'Score will populate once monitoring is fully connected.',
+    'lbl-mon-history-title':'Score History',
+    'lbl-mon-history-note':'Chart populates once monitoring data is connected.',
+    'lbl-mon-alerts-title':'Alert Log',
+  },
+  es:{
+    'lbl-title':'Bienvenido a Su Portal',
+    'lbl-subtitle':'Por favor ingrese su ID de seguimiento para ver su solicitud, cargar documentos y enviar mensajes a su Gerente de Financiamiento KLIERD.',
+    'btn-lookup':'Verificar Estado',
+    'lbl-hint':'Su ID de seguimiento estaba en su correo y mensaje de texto de bienvenida. Formato: CBG-XXXXXXXX',
+    'lbl-back':'Regresar',
+    'lbl-tab-status':'Estado','lbl-tab-docs':'Documentos','lbl-tab-msgs':'Mensajes','lbl-tab-scores':'Perfil de Crédito',
+    'lbl-submitted':'Enviado','lbl-app-type':'Tipo de Solicitud','lbl-goal':'Meta de Financiamiento','lbl-lang-pref':'Idioma',
+    'lbl-progress':'Progreso de Solicitud','lbl-next':'Próximos Pasos',
+    'lbl-contact':'¿Preguntas? Estamos aquí para ayudar.',
+    'lbl-call':'📞 Llámenos',
+    'lbl-mon-upload-title':'📄 Subir Su Reporte de Crédito',
+    'lbl-mon-upload-body':'Opcional — le da una ventaja mientras activamos su monitoreo completo. Suba un reporte de crédito reciente que incluya <strong>puntajes FICO</strong>. La Tecnología Inteligente de KLIERD lee su reporte y actualiza su monitoreo en 60 segundos.',
+    'lbl-mon-upload-rules-title':'Dos reglas estrictas:',
+    'lbl-mon-upload-rules-body':'<div>1. Debe ser <strong>FICO</strong> — de myFICO.com, Experian.com (producto FICO), Discover Credit Scorecard, o su banco si dice FICO. <span style="color:var(--red)">Credit Karma, CreditWise y reportes solo VantageScore serán rechazados.</span></div><div style="margin-top:6px">2. Debe estar emitido en los <strong>últimos 30 días</strong>. Reportes más antiguos serán rechazados.</div>',
+    'lbl-mon-upload-btn':'Subir Reporte de Crédito en PDF',
+    'lbl-upload':'Cargar Documentos','lbl-drop':'Haga clic para cargar o arrastre y suelte',
+    'lbl-file-types':'PDF, JPG, PNG, DOC — Máximo 10MB por archivo',
+    'lbl-checklist':'Lista de Documentos Requeridos',
+    'lbl-msgs-title':'Mensajes con Su Gerente de Financiamiento KLIERD','btn-send':'Enviar',
+    'lbl-scores':'Sus Puntajes de Crédito',
+    'lbl-scores-note':'Los puntajes aparecen aquí una vez que KLIERD Smart Credit Technology procese su perfil.',
+    'lbl-funding-range':'Rango de Financiamiento Estimado',
+    'lbl-personal-range':'Financiamiento Personal','lbl-biz-range':'Financiamiento Empresarial',
+    'lbl-disclaimer':'Estimados basados en su perfil. Los resultados no son típicos y pueden variar.',
+    'lookup-error':'ID de seguimiento no encontrado. Por favor verifique e intente de nuevo.',
+    'lbl-portal-tag':'Portal del Cliente',
+    'lbl-footer-text':'KLIERD © 2026 · Con tecnología KLIERD Intelligent Funding Technology · Estamos despejando su camino.',
+    'lbl-footer-croa':'Este no es un servicio de reparación de crédito. Los resultados no son típicos y pueden variar.',
+    'lbl-na':'Su Próxima Acción',
+    'lbl-progress-bar':'Su Progreso',
+    'lbl-your-info':'Su Información',
+    'ci-lbl-email':'Correo',
+    'ci-lbl-phone':'Teléfono',
+    'ci-lbl-biz':'Nombre del Negocio',
+    'ci-edit-link':'✎ ¿Necesita actualizar su información? Escríbanos →',
+    'lbl-tab-analysis':'Mi Análisis',
+    'lbl-tab-agreements':'Acuerdos',
+    'lbl-analysis-title':'Su Análisis',
+    'lbl-analysis-intro':'Después de que envíe sus documentos, KLIERD Intelligent Funding Technology procesa su perfil. Su análisis personalizado aparece aquí cuando esté listo.',
+    'lbl-an-credit-title':'Análisis de Crédito',
+    'lbl-an-credit-desc':'Una revisión completa de su perfil de crédito preparada por nuestro equipo.',
+    'lbl-an-funding-title':'Análisis de Financiamiento',
+    'lbl-an-funding-desc':'Su estrategia personalizada de financiamiento preparada por nuestro equipo.',
+    'lbl-analysis-note':'Con tecnología KLIERD Intelligent Funding Technology',
+    'lbl-agreements-title':'Acuerdos Firmados',
+    'lbl-agreements-intro':'Estos documentos legales son necesarios para nuestra contratación completa. KLIERD enviará automáticamente cada uno para su firma electrónica.',
+    'lbl-agreements-note':'Con tecnología DocuSign · Sus firmas son legalmente válidas y se guardan de forma segura.',
+    'lbl-tab-billing':'Facturación',
+    'lbl-balance-due':'Saldo Pendiente',
+    'lbl-make-payment':'Hacer un Pago',
+    'lbl-invoice-summary':'Resumen de Factura',
+    'lbl-subtotal':'Subtotal',
+    'lbl-paid':'Pagado a la fecha',
+    'lbl-balance':'Saldo',
+    'lbl-payment-method':'Método de Pago en Archivo',
+    'lbl-pm-update':'Actualizar →',
+    'lbl-payment-history':'Historial de Pagos',
+    'lbl-billing-note':'Los cargos son únicamente por servicios de consultoría. Nunca cobramos tarifas por adelantado por reparación de crédito bajo CROA. ¿Preguntas? Envíe un correo a su Gerente de Financiamiento KLIERD en cualquier momento.',
+    'bill-paid':'Pagado en su totalidad',
+    'bill-due':'Saldo Pendiente',
+    'bill-partial':'Parcialmente Pagado',
+    'bill-overdue':'Vencido',
+    'bill-no-charges':'Sin cargos',
+    'bill-next-due':'Próximo pago vence:',
+    'bill-no-items':'Sin cargos aún. Los conceptos aparecen una vez confirmada su estrategia de financiamiento.',
+    'bill-no-history':'Aún sin pagos.',
+    'lbl-milestones':'Hitos',
+    'lbl-tab-monitoring':'Monitoreo',
+    'lbl-mon-setup-title':'🛡 Monitoreo KLIERD',
+    'lbl-mon-setup-body':'Su Monitoreo KLIERD se está configurando. Recibirá un correo electrónico dentro de 24 horas.',
+    'lbl-mon-plan-title':'Su Plan',
+    'lbl-mon-tier':'Nivel Actual',
+    'lbl-mon-upgrade':'Aumentar',
+    'lbl-mon-downgrade':'Reducir',
+    'lbl-mon-billing':'Gestionar Facturación',
+    'lbl-mon-score-title':'Puntaje Actual',
+    'lbl-mon-score-pending':'El puntaje aparecerá una vez que el monitoreo esté completamente conectado.',
+    'lbl-mon-history-title':'Historial de Puntajes',
+    'lbl-mon-history-note':'El gráfico se completa una vez que los datos de monitoreo estén conectados.',
+    'lbl-mon-alerts-title':'Registro de Alertas',
+  }
+};
+
+function setLang(l,btn){
+  lang=l;
+  localStorage.setItem('cbg_lang_pref',l);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  // sync active state by data-lang value when called from button or programmatically
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    if((l==='en'&&b.textContent.includes('EN'))||(l==='es'&&b.textContent.includes('ES')))b.classList.add('active');
+  });
+  if(btn)btn.classList.add('active');
+  Object.keys(T[l]).forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=T[l][id];});
+  if(currentApp)renderPortal(currentApp);
+}
+
+function lookup(){
+  const id=document.getElementById('tracking-input').value.trim().toUpperCase();
+  if(!id)return;
+  const errEl=document.getElementById('lookup-error');
+  const lookupBtn=document.querySelector('.lookup .btn-primary');
+  const isEs = lang === 'es';
+  errEl.style.display='none';
+
+  // Loading state — tell user something is happening
+  if (lookupBtn) {
+    lookupBtn.disabled = true;
+    lookupBtn.dataset.original = lookupBtn.textContent;
+    lookupBtn.textContent = isEs ? 'Buscando…' : 'Looking up…';
+    lookupBtn.style.opacity = '0.6';
+    lookupBtn.style.cursor = 'wait';
+  }
+
+  // Helper to restore button state
+  const restoreBtn = () => {
+    if (lookupBtn) {
+      lookupBtn.disabled = false;
+      lookupBtn.textContent = lookupBtn.dataset.original || lookupBtn.textContent;
+      lookupBtn.style.opacity = '';
+      lookupBtn.style.cursor = '';
+    }
+  };
+
+  let found=null;
+  try{
+    const q=JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');
+    found=q.find(a=>a.trackingId===id);
+    if(!found){const my=JSON.parse(localStorage.getItem('my_applications')||'[]');found=my.find(a=>a.trackingId===id);}
+  }catch(e){}
+  if(found){ restoreBtn(); showPortal(found); return; }
+
+  // 15-second timeout — no infinite hang on dead backend
+  const ctrl = new AbortController();
+  const timeoutId = setTimeout(() => ctrl.abort(), 15000);
+
+  // Try Railway API — public lookup endpoint with full client+monitoring+activity rollup
+  fetch(`${API}/api/clients/lookup?trackingId=${encodeURIComponent(id)}`, { signal: ctrl.signal })
+    .then(r => { clearTimeout(timeoutId); return r.json().then(d => ({ status: r.status, data: d })); })
+    .then(({status, data}) => {
+      restoreBtn();
+      if(status === 404){
+        errEl.style.display='block';
+        errEl.textContent='❌ '+(isEs ? 'No encontramos su cuenta con ese ID. Revise el ID en su correo de bienvenida o llámenos al info@klierd.com.' : 'We could not find your account with that ID. Double-check the ID in your welcome email or contact info@klierd.com.');
+        return;
+      }
+      if(!data || !data.success || !data.client){
+        errEl.style.display='block';
+        errEl.textContent='❌ '+(isEs ? 'Hubo un problema con la búsqueda. Intente de nuevo en unos segundos.' : 'There was a problem with the lookup. Please try again in a few seconds.');
+        return;
+      }
+      // Normalize backend response to the shape the rest of the portal expects + render
+      const c = data.client;
+      const app = {
+        trackingId: c.tracking_id || id,
+        id: c.id,
+        first: c.first_name, last: c.last_name,
+        email: c.email, phone: c.phone, lang: c.lang || 'en',
+        clientType: c.client_type, fundingType: c.funding_type,
+        lane: (c.funding_type || '').toLowerCase(),
+        services: c.services || [],
+        primary_service: c.primary_service,
+        status: c.status, submitted: c.created_at,
+        goalPersonal: c.personal_goal, goalBusiness: c.business_goal,
+        useOfFunds: c.use_of_funds, urgency: c.timeline,
+        monitoring_tier: data.monitoring?.tier || null,
+        monitoring_active: !!(data.monitoring && data.monitoring.status === 'active'),
+        monitoring_start_date: data.monitoring?.started_at || null,
+        is_itin: !!c.is_itin,
+        identity_type: c.is_itin ? 'itin' : 'ssn',
+        assigned_email: c.assigned_email || '',
+        verification_status: c.verification_status || 'pending',
+        broker_code: c.broker_code || null,
+        ift_eligible: !!c.ift_eligible,
+        submissions: data.submissions || [],
+        prefunding_requested: (data.prefunding || []).map(p => p.service_id),
+        scores_latest: data.scores_latest || null,
+        dispute_opportunities: data.dispute_opportunities || null,
+        analyses: data.analyses || null,
+        agreements: data.agreements || null,
+      };
+      showPortal(app);
+    })
+    .catch(err => {
+      clearTimeout(timeoutId);
+      restoreBtn();
+      errEl.style.display='block';
+      if (err && err.name === 'AbortError') {
+        errEl.textContent='⏱ '+(isEs ? 'La conexión está tardando demasiado. Por favor intente de nuevo o contáctenos en info@klierd.com.' : 'The connection is taking too long. Please try again or contact info@klierd.com.');
+      } else {
+        errEl.textContent='⚠ '+(isEs ? 'No podemos conectarnos en este momento. Revise su conexión e intente de nuevo, o contáctenos en info@klierd.com.' : 'We cannot connect right now. Please check your connection and try again, or contact info@klierd.com.');
+      }
+    });
+}
+
+// Auto-login from URL ?id=CBG-XXXXXXXX — when client clicks portal link in welcome email/SMS
+(function autoLoginFromUrl(){
+  try{
+    const params = new URLSearchParams(window.location.search);
+    const idFromUrl = (params.get('id') || params.get('trackingId') || '').trim().toUpperCase();
+    if(idFromUrl){
+      const tin = document.getElementById('tracking-input');
+      if(tin) tin.value = idFromUrl;
+      // Defer to ensure DOM ready
+      setTimeout(()=>{ try { lookup(); } catch(e){ console.error('auto-login failed:', e); } }, 100);
+    }
+  }catch(e){ /* graceful */ }
+})();
+
+function showPortal(app){
+  currentApp=app;
+  document.getElementById('lookupScreen').style.display='none';
+  document.getElementById('portalScreen').classList.add('show');
+  renderPortal(app);
+  maybeShowBillingTab();
+  maybeShowMonitoringTab();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderPortal(app){
+  const first=app.first||app.firstName||'';
+  const last=app.last||app.lastName||'';
+  document.getElementById('p-name').textContent=first+' '+last;
+  document.getElementById('p-id').textContent=app.trackingId||'—';
+
+  const status=app.status||'new';
+  const badge=document.getElementById('p-badge');
+  const bMapClass={new:'badge-new',review:'badge-review',active:'badge-active',funded:'badge-funded',dispute:'badge-dispute'};
+  const bLabelEN={new:'Application Received',review:'Under Review',active:'In Progress',funded:'Funded ✅',dispute:'Dispute Resolution'};
+  const bLabelES={new:'Solicitud Recibida',review:'En Revisión',active:'En Proceso',funded:'Financiado ✅',dispute:'Resolución de Disputas'};
+  badge.className='badge '+(bMapClass[status]||'badge-new');
+  badge.textContent=(lang==='es'?bLabelES:bLabelEN)[status]||status;
+
+  const typeEN={personal:'Personal Funding',business:'Business Funding',both:'Both Personal + Business',itin:'ITIN Client',dispute:'Dispute Resolution'};
+  const typeES={personal:'Financiamiento Personal',business:'Financiamiento Empresarial',both:'Personal + Empresarial',itin:'Cliente ITIN',dispute:'Resolución de Disputas'};
+  document.getElementById('p-submitted').textContent=app.submitted||'—';
+  document.getElementById('p-type').textContent=(lang==='es'?typeES:typeEN)[app.fundingType||app.clientType]||app.fundingType||'—';
+  const goalAmt=app.goalPersonal?'$'+parseInt(app.goalPersonal).toLocaleString():app.goalBusiness?'$'+parseInt(app.goalBusiness).toLocaleString():app.goal||'—';
+  document.getElementById('p-goal').textContent=goalAmt;
+  document.getElementById('p-lang').textContent=(app.preferredLang||app.lang)==='es'?'Español':'English';
+
+  // === WELCOME LETTER (Draft B, bilingual) ===
+  const welcomeTitleEN = `Welcome to KLIERD, ${first}.`;
+  const welcomeTitleES = `Bienvenido(a) a KLIERD, ${first}.`;
+  const welcomeBodyEN = `<p>Thank you for trusting our team with your funding journey. Your application has been received and your profile is now in our review queue.</p>
+    <p><strong>What happens next:</strong> KLIERD Intelligent Funding Technology starts processing your profile the moment your identity verification and documents land. Your KLIERD Funding Manager confirms the strategy within 24–48 business hours. To accelerate the process, please use the Documents tab to upload your identification, recent bank statements, and credit monitoring access.</p>
+    <p>If at any point you have questions, use the Messages tab. Our team responds in English and Spanish within one business day.</p>
+    <p>KLIERD is committed to serving every entrepreneur with transparent, compliant funding strategies powered by KLIERD Intelligent Funding Technology.</p>
+    <p>— The KLIERD Team</p>`;
+  const welcomeBodyES = `<p>Gracias por confiar en nuestro equipo con su camino hacia el financiamiento. Su solicitud ha sido recibida y su perfil está en nuestra cola de revisión.</p>
+    <p><strong>Lo que sigue:</strong> KLIERD Intelligent Funding Technology comienza a procesar su perfil en el momento que su verificación de identidad y documentos lleguen. Su Gerente de Financiamiento KLIERD confirma la estrategia dentro de 24–48 horas hábiles. Para acelerar el proceso, por favor use la pestaña Documentos para cargar su identificación, estados de cuenta recientes y acceso a monitoreo de crédito.</p>
+    <p>Si tiene preguntas en cualquier momento, use la pestaña Mensajes. Nuestro equipo responde en inglés y español dentro de un día hábil.</p>
+    <p>KLIERD está comprometido con servir a cada emprendedor con estrategias de financiamiento transparentes y conformes, impulsadas por la Tecnología de Financiamiento Inteligente KLIERD.</p>
+    <p>— El Equipo de KLIERD</p>`;
+  document.getElementById('welcome-title').textContent = lang==='es' ? welcomeTitleES : welcomeTitleEN;
+  document.getElementById('welcome-body').innerHTML = lang==='es' ? welcomeBodyES : welcomeBodyEN;
+
+  // === YOUR INFORMATION CARD ===
+  document.getElementById('ci-email').textContent = app.email || '—';
+  document.getElementById('ci-phone').textContent = app.phone || '—';
+  document.getElementById('ci-biz').textContent = app.bizName || app.businessName || (lang==='es' ? 'No aplica' : 'N/A');
+
+  // === YOUR KLIERD ACTION PLAN — service-specific next steps checklist ===
+  (function renderActionPlan(){
+    const services = (app.services || []).map(s => String(s).toLowerCase());
+    const isEs = lang === 'es';
+    const STEP_LIBRARY = {
+      monitoring: {
+        en: [
+          { icon:'📄', title:'Upload your most recent FICO credit report', body:'Go to the Monitoring tab and upload a PDF from myFICO, Experian.com, Discover Credit Scorecard, or your bank — must be FICO (not VantageScore) and under 30 days old.' },
+          { icon:'🔔', title:'Confirm alert preferences', body:'You will receive email and text alerts the moment your score changes or a new item appears on your file.' },
+          { icon:'📊', title:'Review your 3-bureau dashboard', body:'See Experian, TransUnion, and Equifax side by side with score history charts and KLIERD Smart Credit Intelligence signals.' },
+        ],
+        es: [
+          { icon:'📄', title:'Suba su reporte de crédito FICO más reciente', body:'Vaya a la pestaña Monitoreo y suba un PDF de myFICO, Experian.com, Discover Credit Scorecard, o su banco — debe ser FICO (no VantageScore) y de menos de 30 días.' },
+          { icon:'🔔', title:'Confirme sus preferencias de alertas', body:'Recibirá alertas por correo y mensaje en el momento que su puntaje cambie o aparezca un nuevo elemento en su archivo.' },
+          { icon:'📊', title:'Revise su panel de 3 burós', body:'Vea Experian, TransUnion y Equifax lado a lado con gráficos de historial y señales de KLIERD Smart Credit Intelligence.' },
+        ],
+      },
+      dispute: {
+        en: [
+          { icon:'✍️', title:'Sign your Dispute Resolution Services Agreement', body:'Check your email — Hami sent you the Agreement via DocuSign. Sign it to begin dispute work on your file.' },
+          { icon:'📄', title:'Upload your credit report', body:'Go to the Monitoring tab and upload a recent FICO credit report so KLIERD can identify your highest-leverage dispute opportunities.' },
+          { icon:'🧠', title:'Review your Smart Analysis', body:'Within minutes of upload, KLIERD ranks every disputable item by likely score lift and removal probability.' },
+          { icon:'📬', title:'Mail your dispute letters', body:'KLIERD generates each letter for you — you mail them from your address (FCRA requirement). Tracking lives in this portal.' },
+          { icon:'⏱️', title:'30 to 60 day window', body:'Most resolutions complete within 30–60 days; many finish sooner. Bureau responses route automatically to your file.' },
+        ],
+        es: [
+          { icon:'✍️', title:'Firme su Acuerdo de Resolución de Disputas', body:'Revise su correo — Hami le envió el Acuerdo vía DocuSign. Fírmelo para comenzar el trabajo de disputas.' },
+          { icon:'📄', title:'Suba su reporte de crédito', body:'Vaya a la pestaña Monitoreo y suba un reporte FICO reciente para que KLIERD identifique sus disputas de mayor impacto.' },
+          { icon:'🧠', title:'Revise su Smart Analysis', body:'Minutos después de subir, KLIERD clasifica cada elemento disputable por impacto probable y probabilidad de eliminación.' },
+          { icon:'📬', title:'Envíe sus cartas de disputa', body:'KLIERD genera cada carta — usted las envía desde su dirección (requisito FCRA). El seguimiento vive en este portal.' },
+          { icon:'⏱️', title:'Ventana de 30 a 60 días', body:'La mayoría de las resoluciones se completan en 30–60 días; muchas terminan antes.' },
+        ],
+      },
+      funding: {
+        en: [
+          { icon:'✍️', title:'Sign your Funding Engagement Letter', body:'Check your email for the engagement letter from Hami via DocuSign.' },
+          { icon:'🪪', title:'Upload your ID and income docs', body:'Go to the Documents tab and upload: driver license or passport, two most recent pay stubs (or W2 / 1099), and proof of address.' },
+          { icon:'💼', title:'Business clients: add your EIN docs', body:'If pursuing business funding, upload Articles of Organization, EIN letter, and last 3 months of business bank statements.' },
+          { icon:'🧠', title:'KLIERD Smart Technology builds your strategy', body:'Within 24 hours, KLIERD Intelligent Funding Technology ranks every lender by approval probability and your KLIERD Funding Manager confirms the strategy.' },
+          { icon:'🚀', title:'Approve and submit', body:'You approve the strategy in this portal. KLIERD submits the applications. Responses route to your KLIERD Email above.' },
+        ],
+        es: [
+          { icon:'✍️', title:'Firme su Carta de Compromiso de Financiamiento', body:'Revise su correo — Hami le envió la carta vía DocuSign.' },
+          { icon:'🪪', title:'Suba su identificación y comprobantes', body:'Vaya a la pestaña Documentos y suba: licencia o pasaporte, dos talones recientes (o W2 / 1099), y comprobante de domicilio.' },
+          { icon:'💼', title:'Clientes empresariales: agregue documentos de EIN', body:'Si busca financiamiento empresarial, suba Artículos de Organización, carta de EIN, y los últimos 3 meses de estados bancarios.' },
+          { icon:'🧠', title:'KLIERD Smart Technology construye su estrategia', body:'En 24 horas, KLIERD Intelligent Funding Technology clasifica cada prestamista por probabilidad de aprobación y su Gerente de Financiamiento KLIERD confirma la estrategia.' },
+          { icon:'🚀', title:'Aprobar y enviar', body:'Usted aprueba la estrategia en este portal. KLIERD envía las solicitudes. Las respuestas se dirigen a su correo KLIERD arriba.' },
+        ],
+      },
+      card: {
+        en: [
+          { icon:'⏳', title:'KLIERD Card — coming soon', body:'You are early on the KLIERD Card waitlist. The secured and unsecured KLIERD Card builds your credit through monthly bureau tradeline reporting. We will notify you the moment it launches.' },
+        ],
+        es: [
+          { icon:'⏳', title:'KLIERD Card — pronto', body:'Está en la lista de espera de la KLIERD Card. La tarjeta asegurada y no asegurada construye su crédito con reportes mensuales a los burós. Le avisaremos en el momento del lanzamiento.' },
+        ],
+      },
+    };
+    let steps = [];
+    if (services.includes('dispute'))    steps = steps.concat(STEP_LIBRARY.dispute[isEs ? 'es' : 'en']);
+    if (services.includes('funding'))    steps = steps.concat(STEP_LIBRARY.funding[isEs ? 'es' : 'en']);
+    if (services.includes('monitoring')) steps = steps.concat(STEP_LIBRARY.monitoring[isEs ? 'es' : 'en']);
+    if (services.includes('card'))       steps = steps.concat(STEP_LIBRARY.card[isEs ? 'es' : 'en']);
+    if (steps.length === 0) {
+      steps = STEP_LIBRARY.monitoring[isEs ? 'es' : 'en'];
+    }
+    const body = document.getElementById('action-plan-body');
+    if (body) {
+      body.innerHTML = '<ol style="margin:0;padding-left:0;list-style:none">' + steps.map((s,i) => `
+        <li style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+          <div style="flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--dark3);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px">${s.icon}</div>
+          <div>
+            <div style="font-weight:700;color:var(--text);font-size:13px;margin-bottom:2px">${i+1}. ${s.title}</div>
+            <div style="font-size:12px;color:var(--dim);line-height:1.55">${s.body}</div>
+          </div>
+        </li>
+      `).join('') + '</ol>';
+    }
+
+    // KLIERD Assigned Email — show ONLY when (a) client has funding service AND (b) assigned email exists
+    // No "coming soon" placeholder — card stays hidden until backend assigns the email
+    const emailCard = document.getElementById('klierd-email-card');
+    if (emailCard) {
+      const assignedEmail = app.assigned_email || app.klierd_email || '';
+      if (services.includes('funding') && assignedEmail) {
+        emailCard.style.display = 'block';
+        const val = document.getElementById('klierd-email-value');
+        const note = document.getElementById('lbl-klierd-email-note');
+        if (val) val.textContent = assignedEmail;
+        if (note) note.textContent = isEs
+          ? 'Use este correo en todas sus solicitudes. Las respuestas llegan aquí automáticamente.'
+          : 'Use this email on all your applications. Responses arrive here automatically.';
+      } else {
+        emailCard.style.display = 'none';
+      }
+    }
+
+    // KLIERD Smart Analysis — shows dispute opportunities if available in app.dispute_opportunities or fetched separately
+    const analysisCard = document.getElementById('analysis-card');
+    const analysisBody = document.getElementById('analysis-body');
+    if (analysisCard && analysisBody) {
+      const opps = app.dispute_opportunities || null;
+      const scoresLatest = app.scores_latest || null;
+      const hasAny = (opps && opps.count > 0) || scoresLatest;
+      if (hasAny) {
+        analysisCard.style.display = 'block';
+        let html = '';
+        if (scoresLatest) {
+          html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">';
+          ['eq','ex','tu'].forEach(b => {
+            const score = scoresLatest[b] || '—';
+            const label = b === 'eq' ? 'Equifax' : (b === 'ex' ? 'Experian' : 'TransUnion');
+            html += `<div style="background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);padding:10px;text-align:center"><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">${label}</div><div style="font-size:22px;font-weight:700;color:var(--gold);margin-top:4px">${score}</div></div>`;
+          });
+          html += '</div>';
+        }
+        if (opps && opps.count > 0) {
+          html += `<div style="font-weight:700;color:var(--text);font-size:13px;margin-bottom:6px">${isEs ? 'Oportunidades de disputa identificadas:' : 'Dispute opportunities identified:'} <span style="color:var(--gold)">${opps.count}</span></div>`;
+          html += '<ul style="margin:0;padding-left:18px;font-size:12px;color:var(--dim)">';
+          (opps.top_3 || []).forEach(o => {
+            const t = o.item_type || o.type || 'item';
+            const tpl = o.template || '';
+            html += `<li style="margin-bottom:4px"><strong style="color:var(--text)">${t}</strong>${tpl ? ' — ' + tpl : ''}</li>`;
+          });
+          html += '</ul>';
+          html += `<p style="font-size:11px;color:var(--muted);margin-top:10px">${isEs ? 'KLIERD genera cada carta de disputa para que usted las envíe (requisito FCRA).' : 'KLIERD generates each dispute letter for you to mail (FCRA requirement).'}</p>`;
+        }
+        analysisBody.innerHTML = html || `<p style="font-size:13px;color:var(--dim)">${isEs ? 'Suba su reporte de crédito para ver su análisis.' : 'Upload your credit report to see your analysis.'}</p>`;
+      } else {
+        analysisCard.style.display = 'none';
+      }
+    }
+  })();
+
+  // PRE-FUNDING SERVICES — render recommended services by lane (Personal/Business)
+  // System recommends, client chooses, each invoiced separately, fixed fee paid before service begins
+  (function renderPreFunding(){
+    const isEs = lang === 'es';
+    const lane = (app.lane || app.funding_type || '').toLowerCase();
+    const services = (app.services || []).map(s => String(s).toLowerCase());
+    // Show for funding clients OR clients with both personal+business needs
+    const showCard = services.includes('funding') || lane === 'personal' || lane === 'business' || lane === 'both';
+    const card = document.getElementById('prefunding-card');
+    const list = document.getElementById('prefunding-list');
+    if (!card || !list) return;
+    if (!showCard) { card.style.display = 'none'; return; }
+
+    const PREFUNDING = {
+      personal: [
+        { id:'au_tradelines',  icon:'💳', en:{t:'Authorized User Tradelines',          d:'Be added as authorized user on seasoned high-limit accounts to lift your score before applications.'},
+                                          es:{t:'Tradelines como Usuario Autorizado',     d:'Sea agregado como usuario autorizado en cuentas establecidas con límites altos para subir su puntaje antes de aplicar.'} },
+        { id:'dispute_resolution', icon:'⚖️', en:{t:'Dispute Resolution Services',     d:'KLIERD identifies and challenges every inaccurate item on your credit file. The platform runs the full workflow — classification, packets, certified mail, response tracking.'},
+                                              es:{t:'Servicios de Resolución de Disputas', d:'KLIERD identifica y desafía cada elemento inexacto en su archivo. La plataforma ejecuta el flujo completo — clasificación, paquetes, correo certificado, seguimiento de respuestas.'} },
+        { id:'monitoring',     icon:'🛡️', en:{t:'Credit Monitoring Activation',       d:'3-bureau monitoring with real-time alerts. Detect changes the moment they happen.'},
+                                          es:{t:'Activación de Monitoreo de Crédito',     d:'Monitoreo de 3 burós con alertas en tiempo real. Detecte cambios al instante.'} },
+        { id:'address_verify', icon:'📍', en:{t:'Address Verification',                 d:'Confirm your file address matches across all 3 bureaus — critical for lender approvals.'},
+                                          es:{t:'Verificación de Domicilio',              d:'Confirme que su domicilio coincide en los 3 burós — crítico para aprobaciones de prestamistas.'} },
+        { id:'nova_credit_translation', icon:'🌎', itinOnly:true,
+          en:{t:'International Credit History Translation', d:'If you have credit history in Mexico, India, UK, Canada, Australia, Brazil, Dominican Republic, Kenya, Nigeria, Philippines, or South Korea — KLIERD partners with Nova Credit to translate your home-country credit into US-readable history. Unlocks premium lenders (Amex and others) that you would otherwise be denied for thin file.'},
+          es:{t:'Traducción de Historial de Crédito Internacional', d:'Si tiene historial de crédito en México, India, Reino Unido, Canadá, Australia, Brasil, República Dominicana, Kenia, Nigeria, Filipinas, o Corea del Sur — KLIERD se asocia con Nova Credit para traducir su historial de crédito de origen al formato US. Desbloquea prestamistas premium (Amex y otros) que de otro modo le rechazarían por archivo delgado.'} },
+      ],
+      business: [
+        { id:'biz_tradelines', icon:'💳', en:{t:'Business Tradelines',                  d:'Build business credit through verified Net-30 vendors and revolving tradelines that report to D&B, Experian Business, and Equifax Business.'},
+                                          es:{t:'Tradelines Empresariales',              d:'Construya crédito empresarial con vendedores Net-30 verificados y tradelines que reportan a D&B, Experian Business y Equifax Business.'} },
+        { id:'biz_compliance', icon:'🏢', en:{t:'Business Compliance Setup',            d:'Phone, email, website, virtual office — KLIERD sets up everything lenders verify, for a fixed fee.'},
+                                          es:{t:'Configuración de Cumplimiento Empresarial', d:'Teléfono, correo, sitio web, oficina virtual — KLIERD configura todo lo que los prestamistas verifican, por una tarifa fija.'} },
+        { id:'tax_prep',       icon:'📋', en:{t:'Tax Preparation',                      d:'Bring filings current — required for most business funding products.'},
+                                          es:{t:'Preparación de Impuestos',              d:'Ponga al día sus declaraciones — requerido para la mayoría de productos de financiamiento empresarial.'} },
+        { id:'biz_eval',       icon:'🧠', en:{t:'Business Evaluation',                  d:'Full readiness review: SOS, NAV, UCC, D&B, financials — every blocker identified before submission.'},
+                                          es:{t:'Evaluación Empresarial',                d:'Revisión completa de preparación: SOS, NAV, UCC, D&B, finanzas — cada obstáculo identificado antes del envío.'} },
+        { id:'shelf_corp',     icon:'🏛️', en:{t:'Shelf Corporation',                    d:'Acquire an aged, seasoned shelf corporation for premium business funding access.'},
+                                          es:{t:'Corporación de Estante',                d:'Adquiera una corporación de estante establecida para acceso a financiamiento empresarial premium.'} },
+        { id:'biz_monitoring', icon:'🛡️', en:{t:'Business Credit Monitoring',          d:'Personal + business monitoring with real-time alerts across all bureaus.'},
+                                          es:{t:'Monitoreo de Crédito Empresarial',      d:'Monitoreo personal + empresarial con alertas en tiempo real en todos los burós.'} },
+      ],
+    };
+
+    const showPersonal = lane === 'personal' || lane === 'both' || services.includes('funding');
+    const showBusiness = lane === 'business' || lane === 'both';
+    const isITINClient = !!app.is_itin;
+    const items = [];
+    if (showPersonal) PREFUNDING.personal.forEach(s => {
+      // Filter ITIN-only services (e.g., Nova Credit international credit translation)
+      if (s.itinOnly && !isITINClient) return;
+      items.push({ ...s, laneTag: isEs ? 'Personal' : 'Personal' });
+    });
+    if (showBusiness) PREFUNDING.business.forEach(s => {
+      if (s.itinOnly && !isITINClient) return;
+      items.push({ ...s, laneTag: isEs ? 'Empresarial' : 'Business' });
+    });
+
+    const requestedSet = new Set((app.prefunding_requested || []).map(x => String(x)));
+    const ctaReq = isEs ? 'Solicitar Cotización' : 'Request Quote';
+    const ctaRequested = isEs ? '✓ Solicitado' : '✓ Requested';
+    const feeNote = isEs ? 'Tarifa mostrada al confirmar' : 'Fee shown on quote';
+
+    list.innerHTML = items.map(s => {
+      const copy = s[isEs ? 'es' : 'en'];
+      const reqd = requestedSet.has(s.id);
+      return `
+        <div style="display:flex;gap:12px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);align-items:flex-start">
+          <div style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--dark2);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px">${s.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px">
+              <span style="font-weight:700;color:var(--text);font-size:13px">${copy.t}</span>
+              <span style="font-size:9px;color:var(--gold);background:var(--dark2);border:1px solid var(--gold);border-radius:999px;padding:2px 8px;letter-spacing:0.5px;text-transform:uppercase">${s.laneTag}</span>
+            </div>
+            <div style="font-size:12px;color:var(--dim);line-height:1.55;margin-bottom:8px">${copy.d}</div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <span style="font-size:10px;color:var(--muted)">${feeNote}</span>
+              <button onclick="requestPreFunding('${s.id}', this)" ${reqd ? 'disabled' : ''} style="background:${reqd?'var(--dark2)':'var(--gold)'};color:${reqd?'var(--muted)':'#000'};border:none;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:${reqd?'default':'pointer'};letter-spacing:0.3px;text-transform:uppercase">${reqd ? ctaRequested : ctaReq}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    card.style.display = 'block';
+  })();
+
+  // SUBMISSIONS STATUS — anonymized status timeline. NO lender names until decisions return.
+  (function renderSubmissions(){
+    const isEs = lang === 'es';
+    const submissions = Array.isArray(app.submissions) ? app.submissions : [];
+    const card = document.getElementById('submissions-card');
+    const list = document.getElementById('submissions-list');
+    if (!card || !list) return;
+    if (submissions.length === 0) { card.style.display = 'none'; return; }
+
+    const STATUS = {
+      submitted:  { icon:'✅', en:'Submission Success', es:'Envío Exitoso',     color:'var(--green)' },
+      pending:    { icon:'⏳', en:'Pending',           es:'Pendiente',           color:'var(--gold)'  },
+      processing: { icon:'🔄', en:'Processing',        es:'En Proceso',          color:'var(--gold)'  },
+      approved:   { icon:'✅', en:'Approved',          es:'Aprobado',            color:'var(--green)' },
+      declined:   { icon:'❌', en:'Declined',          es:'Rechazado',           color:'#E74C3C'      },
+    };
+
+    list.innerHTML = submissions.map(s => {
+      const st = STATUS[String(s.status||'').toLowerCase()] || STATUS.pending;
+      const label = isEs ? st.es : st.en;
+      // Pre-decision: NO lender name. Post-decision (approved/declined): show lender + amount.
+      const isDecided = s.status === 'approved' || s.status === 'declined';
+      const ref = s.ref_id || s.id || '—';
+      const submittedAt = s.submitted_at ? new Date(s.submitted_at).toLocaleDateString() : '—';
+      let detail = '';
+      if (isDecided) {
+        const lender = s.lender_name || (isEs ? 'Detalles pendientes' : 'Details pending');
+        const amount = s.approved_amount ? '$' + Number(s.approved_amount).toLocaleString() : '';
+        detail = `
+          <div style="font-size:12px;color:var(--text);margin-top:4px">
+            <strong>${lender}</strong>${amount ? ' — <span style="color:var(--gold);font-weight:700">' + amount + '</span>' : ''}
+          </div>
+        `;
+      } else {
+        detail = `
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;font-style:italic">
+            ${isEs ? 'Detalles del prestamista visibles cuando regrese la decisión' : 'Lender details visible when decision returns'}
+          </div>
+        `;
+      }
+      return `
+        <div style="display:flex;gap:12px;padding:12px;background:var(--dark3);border:1px solid var(--border);border-radius:var(--rs);align-items:flex-start">
+          <div style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--dark2);border:2px solid ${st.color};display:flex;align-items:center;justify-content:center;font-size:18px">${st.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:2px">
+              <span style="font-weight:700;color:${st.color};font-size:13px">${label}</span>
+              <span style="font-size:10px;color:var(--muted)">${isEs ? 'Ref' : 'Ref'} #${ref}</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted)">${isEs ? 'Enviado' : 'Submitted'}: ${submittedAt}</div>
+            ${detail}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    card.style.display = 'block';
+  })();
+
+  // IDENTITY VERIFICATION — Persona scaffold (Teka 2026-05-30 spec lock)
+  // Two flows: SSN (government ID + selfie + liveness) | ITIN (passport + selfie + liveness, no SSN field)
+  (function renderVerification(){
+    const isEs = lang === 'es';
+    const idType = (app.is_itin || app.identity_type === 'itin') ? 'itin' : 'ssn';
+    const status = (app.verification_status || app.persona_status || 'pending').toLowerCase();
+    const card = document.getElementById('verify-card');
+    const body = document.getElementById('verify-body');
+    const consent = document.getElementById('verify-consent');
+    if (!card || !body) return;
+
+    // Only show card if verification is not yet complete
+    if (status === 'verified' || status === 'approved') {
+      body.innerHTML = `
+        <div style="display:flex;gap:12px;align-items:center;padding:12px;background:rgba(39,174,96,0.08);border:1px solid var(--green);border-radius:var(--rs)">
+          <div style="font-size:28px">✅</div>
+          <div>
+            <div style="font-weight:700;color:var(--green);font-size:14px">${isEs ? 'Identidad Verificada' : 'Identity Verified'}</div>
+            <div style="font-size:11px;color:var(--dim);margin-top:2px">${isEs ? 'Su identidad fue verificada con éxito.' : 'Your identity has been successfully verified.'}</div>
+          </div>
+        </div>
+      `;
+      card.style.display = 'block';
+      return;
+    }
+
+    if (status === 'in_review' || status === 'review') {
+      body.innerHTML = `
+        <div style="display:flex;gap:12px;align-items:center;padding:12px;background:rgba(230,126,34,0.08);border:1px solid var(--orange);border-radius:var(--rs)">
+          <div style="font-size:28px">⏳</div>
+          <div>
+            <div style="font-weight:700;color:var(--orange);font-size:14px">${isEs ? 'Verificación en Revisión' : 'Verification in Review'}</div>
+            <div style="font-size:11px;color:var(--dim);margin-top:2px">${isEs ? 'Su envío está siendo revisado. Le notificaremos en 24 horas.' : 'Your submission is being reviewed. We will notify you within 24 hours.'}</div>
+          </div>
+        </div>
+      `;
+      card.style.display = 'block';
+      return;
+    }
+
+    // Pending — show flow-specific instructions + consent
+    const flowDocs = idType === 'itin'
+      ? (isEs ? ['Pasaporte vigente','Selfie en vivo con verificación de vida'] : ['Valid passport','Live selfie with liveness check'])
+      : (isEs ? ['Licencia de conducir o identificación estatal (frente y reverso)','Selfie en vivo con verificación de vida'] : ['Driver license or state ID (front and back)','Live selfie with liveness check']);
+
+    const flowLabel = idType === 'itin'
+      ? (isEs ? 'ITIN — Verificación con Pasaporte' : 'ITIN — Passport Verification')
+      : (isEs ? 'SSN — Verificación con Identificación' : 'SSN — Government ID Verification');
+
+    body.innerHTML = `
+      <div style="font-weight:700;color:var(--text);font-size:14px;margin-bottom:6px">${isEs ? 'Verifique su identidad para continuar' : 'Verify your identity to proceed'}</div>
+      <p style="font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:12px">${isEs ? 'KLIERD usa Persona, una plataforma líder de verificación de identidad, para confirmar su identidad de forma segura. Toda la sesión se registra de forma inmutable para cumplimiento y auditoría.' : 'KLIERD uses Persona, an industry-leading identity verification platform, to securely confirm your identity. The full session is recorded immutably for compliance and audit.'}</p>
+      <div style="background:var(--dark3);border:1px solid var(--gold);border-radius:var(--rs);padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:700;margin-bottom:6px">${isEs ? 'Su flujo' : 'Your flow'}</div>
+        <div style="font-weight:700;color:var(--text);font-size:13px;margin-bottom:8px">${flowLabel}</div>
+        <ul style="margin:0;padding-left:18px;font-size:12px;color:var(--dim);line-height:1.7">
+          ${flowDocs.map(d => `<li>${d}</li>`).join('')}
+        </ul>
+      </div>
+      <p style="font-size:11px;color:var(--muted);line-height:1.5">${isEs ? '🔒 Cifrado de extremo a extremo. La sesión es registrada de forma inmutable (marca de tiempo, IP, dispositivo, imágenes de documentos).' : '🔒 End-to-end encrypted. Session is recorded immutably (timestamp, IP, device, document images).'}</p>
+    `;
+    if (consent) consent.style.display = 'block';
+    card.style.display = 'block';
+  })();
+
+  // E-sign consent gating — only enable Start button when checkbox is checked
+  document.addEventListener('change', function(e){
+    if (e.target && e.target.id === 'verify-consent-cb') {
+      const btn = document.getElementById('btn-launch-persona');
+      if (btn) {
+        btn.disabled = !e.target.checked;
+        btn.style.opacity = e.target.checked ? '1' : '0.5';
+        btn.style.cursor = e.target.checked ? 'pointer' : 'not-allowed';
+      }
+    }
+  });
+
+  // Launch Persona flow — calls backend to create Inquiry, redirects to Persona
+  window.launchPersona = async function(){
+    const trackingId = (app.tracking_id || '').toUpperCase();
+    if (!trackingId) return;
+    const idType = (app.is_itin || app.identity_type === 'itin') ? 'itin' : 'ssn';
+    const btn = document.getElementById('btn-launch-persona');
+    btn.disabled = true;
+    btn.textContent = lang === 'es' ? 'Iniciando…' : 'Starting…';
+    try {
+      const r = await fetch((window.API_BASE||'') + '/api/persona/init', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ tracking_id: trackingId, flow: idType, consent_timestamp: new Date().toISOString() })
+      });
+      if (r.ok) {
+        const data = await r.json();
+        if (data.inquiry_url) { window.location.href = data.inquiry_url; return; }
+      }
+      btn.disabled = false;
+      btn.textContent = lang === 'es' ? 'Reintentar Verificación →' : 'Retry Verification →';
+      alert(lang === 'es' ? 'No se pudo iniciar la verificación. Por favor intente de nuevo o contacte a KLIERD.' : 'Could not start verification. Please try again or contact KLIERD.');
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = lang === 'es' ? 'Reintentar Verificación →' : 'Retry Verification →';
+    }
+  };
+
+  // Pre-funding request handler — stub that calls backend (or shows confirmation in Phase 1)
+  window.requestPreFunding = async function(serviceId, btn){
+    const isEs = lang === 'es';
+    const trackingId = (app.tracking_id || '').toUpperCase();
+    if (!trackingId) return;
+    btn.disabled = true;
+    btn.style.background = 'var(--dark2)';
+    btn.style.color = 'var(--muted)';
+    btn.style.cursor = 'default';
+    btn.textContent = isEs ? '✓ Solicitado' : '✓ Requested';
+    try {
+      await fetch((window.API_BASE||'') + '/api/clients/' + encodeURIComponent(trackingId) + '/prefunding/request', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ service_id: serviceId })
+      });
+    } catch(e) { /* Phase 1: UI confirmation only; backend wires in next pass */ }
+  };
+
+  // Timeline
+  const stepsEN=[
+    {label:'Application Received',sub:'Your application was successfully submitted'},
+    {label:'Under Review',sub:'Our team is reviewing your credit profile'},
+    {label:'Strategy in Progress',sub:'KLIERD Intelligent Funding Technology is building your personalized funding strategy'},
+    {label:'Completed',sub:'Funding approved or dispute resolution complete'},
+  ];
+  const stepsES=[
+    {label:'Solicitud Recibida',sub:'Su solicitud fue enviada exitosamente'},
+    {label:'Bajo Revisión',sub:'Nuestro equipo está revisando su perfil crediticio'},
+    {label:'Estrategia en Proceso',sub:'KLIERD Intelligent Funding Technology está construyendo su estrategia personalizada'},
+    {label:'Completado',sub:'Financiamiento aprobado o resolución completa'},
+  ];
+  const steps=lang==='es'?stepsES:stepsEN;
+  const order=['new','review','active','funded'];
+  const idx=Math.max(0,order.indexOf(status));
+  document.getElementById('p-timeline').innerHTML=steps.map((s,i)=>{
+    const done=i<idx,active=i===idx;
+    return`<div class="tl-step"><div class="tl-dot ${done?'done':active?'active':''}">${done?'✓':active?'●':''}</div><div class="tl-label ${active?'active':done?'':'pending'}">${s.label}</div><div class="tl-sub">${s.sub}</div></div>`;
+  }).join('');
+
+  // Next steps
+  const nextEN=[
+    {icon:'📞',title:'Expect a confirmation call within 24–48 hours',body:'Your KLIERD Funding Manager reaches out to confirm the strategy the technology produced and answer any questions.'},
+    {icon:'📎',title:'Upload your documents',body:'Click the Documents tab above to upload your ID, bank statements, pay stubs, and credit monitoring login.'},
+    {icon:'💬',title:'Message us anytime',body:'Use the Messages tab to ask questions. We speak English and Spanish and reply within 24 hours.'},
+  ];
+  const nextES=[
+    {icon:'📞',title:'Espere una llamada de confirmación en 24–48 horas',body:'Su Gerente de Financiamiento KLIERD se comunicará para confirmar la estrategia que produjo la tecnología y responder cualquier pregunta.'},
+    {icon:'📎',title:'Cargue sus documentos',body:'Haga clic en la pestaña Documentos para cargar su identificación, estados de cuenta, talones de pago y acceso a monitoreo de crédito.'},
+    {icon:'💬',title:'Escríbanos en cualquier momento',body:'Use la pestaña Mensajes para hacer preguntas. Hablamos inglés y español y respondemos en 24 horas.'},
+  ];
+  const next=lang==='es'?nextES:nextEN;
+  document.getElementById('p-next').innerHTML=next.map(n=>`<div class="next-item"><div class="next-icon">${n.icon}</div><div><div class="next-title">${n.title}</div><div class="next-body">${n.body}</div></div></div>`).join('');
+
+  // Doc checklist
+  const isITIN=(app.fundingType||app.clientType)==='itin';
+  const isBiz=['business','both'].includes(app.fundingType||app.clientType);
+  const docsEN=[
+    {name:'Government-issued Photo ID',key:'id'},
+    isITIN?{name:'ITIN Letter (IRS CP565)',key:'itin'}:{name:'Social Security Card',key:'ssn'},
+    {name:'Last 3 Months Bank Statements',key:'bank'},
+    {name:'Most Recent Pay Stubs (last 2)',key:'paystubs'},
+    {name:'KLIERD Monitoring Login',key:'monitoring'},
+    {name:'Voided Check',key:'check'},
+    ...(isBiz?[
+      {name:'EIN Confirmation Letter (IRS CP575)',key:'ein'},
+      {name:'Business Formation Documents',key:'biz_docs'},
+      {name:'Last 3 Months Business Bank Statements',key:'biz_bank'},
+      {name:'NAV.com Account ($79.99/mo plan)',key:'nav'},
+    ]:[]),
+  ];
+  const docsES=[
+    {name:'Identificación oficial con foto',key:'id'},
+    isITIN?{name:'Carta de ITIN (IRS CP565)',key:'itin'}:{name:'Tarjeta de Seguro Social',key:'ssn'},
+    {name:'Estados de cuenta (últimos 3 meses)',key:'bank'},
+    {name:'Talones de pago más recientes (últimos 2)',key:'paystubs'},
+    {name:'Acceso a monitoreo de crédito',key:'monitoring'},
+    {name:'Cheque anulado',key:'check'},
+    ...(isBiz?[
+      {name:'Carta de EIN (IRS CP575)',key:'ein'},
+      {name:'Documentos de formación empresarial',key:'biz_docs'},
+      {name:'Estados de cuenta empresarial (3 meses)',key:'biz_bank'},
+      {name:'Cuenta NAV.com (plan $79.99/mes)',key:'nav'},
+    ]:[]),
+  ];
+  const docs=lang==='es'?docsES:docsEN;
+  const uploaded=JSON.parse(localStorage.getItem('docs_'+app.trackingId)||'{}');
+  document.getElementById('doc-list').innerHTML=docs.map(d=>{
+    const got=!!uploaded[d.key];
+    const lblEN=got?'Received ✅':'Not Yet Received';
+    const lblES=got?'Recibido ✅':'Aún no recibido';
+    const why = (lang==='es'?whyES:whyEN)[d.key] || '';
+    return`<div class="doc-item"><div class="doc-row"><div class="doc-name">${d.name}</div><div class="doc-status ${got?'doc-received':'doc-missing'}">${lang==='es'?lblES:lblEN}</div></div>${why?`<div class="doc-why">💡 ${why}</div>`:''}</div>`;
+  }).join('');
+
+  // Scores
+  if(app.scoreTU){document.getElementById('p-tu').textContent=app.scoreTU;}
+  if(app.scoreEQ){document.getElementById('p-eq').textContent=app.scoreEQ;}
+  if(app.scoreEX){document.getElementById('p-ex').textContent=app.scoreEX;}
+  if(app.pers){document.getElementById('p-range-personal').textContent=app.pers;}
+  if(app.biz){document.getElementById('p-range-biz').textContent=app.biz;}
+
+  // Messages
+  const msgs=JSON.parse(localStorage.getItem('msgs_'+app.trackingId)||'[]');
+  if(msgs.length===0){
+    const wEN=`Hi ${first}! Welcome to KLIERD. Your application has been received and our team will review your profile within 24–48 hours. Please upload your documents in the Documents tab and feel free to message us anytime. We are KLIERing your path! — KLIERD Team`;
+    const wES=`¡Hola ${first}! Bienvenido a KLIERD. Su solicitud ha sido recibida y nuestro equipo revisará su perfil en 24–48 horas. Por favor cargue sus documentos en la pestaña Documentos y escríbanos cuando tenga preguntas. ¡Estamos despejando su camino! — Equipo KLIERD`;
+    msgs.push({from:'advisor',text:lang==='es'?wES:wEN,time:new Date().toLocaleString()});
+    localStorage.setItem('msgs_'+app.trackingId,JSON.stringify(msgs));
+  }
+  // === SMART PROGRESS BAR ===
+  const totalSteps = docs.length + 3; // docs + (manager review/system scoring/strategy) approximations
+  const docsUploaded = docs.filter(d => !!uploaded[d.key]).length;
+  let statusBonus = 0;
+  if(['review','active','funded'].includes(status))statusBonus = 1;
+  if(['active','funded'].includes(status))statusBonus = 2;
+  if(status === 'funded')statusBonus = 3;
+  const completed = docsUploaded + statusBonus;
+  const pct = Math.min(100, Math.round((completed / totalSteps) * 100));
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  const missingDocs = docs.length - docsUploaded;
+  const detailEN = pct === 100 ? 'All steps complete' : missingDocs > 0 ? `${missingDocs} document${missingDocs===1?'':'s'} remaining` : 'Awaiting Funding Manager review';
+  const detailES = pct === 100 ? 'Todos los pasos completos' : missingDocs > 0 ? `${missingDocs} documento${missingDocs===1?'':'s'} pendiente${missingDocs===1?'':'s'}` : 'Esperando revisión del Gerente de Financiamiento';
+  document.getElementById('progress-detail').textContent = lang==='es' ? detailES : detailEN;
+
+  // === MILESTONES CARD ===
+  const totalDocs = docs.length;
+  const msList = [];
+  // Profile completion milestone
+  msList.push({
+    icon: pct >= 100 ? '🏁' : pct >= 75 ? '🎯' : pct >= 50 ? '📈' : '🌱',
+    title_en: pct >= 100 ? 'Profile 100% complete' : `Profile ${pct}% complete`,
+    title_es: pct >= 100 ? 'Perfil 100% completo' : `Perfil ${pct}% completo`,
+    sub_en: pct >= 100 ? 'All steps complete' : pct >= 80 ? "You're almost there" : pct >= 50 ? 'Halfway there' : pct >= 25 ? 'Great start' : 'Just getting started',
+    sub_es: pct >= 100 ? 'Todos los pasos completos' : pct >= 80 ? 'Casi listo' : pct >= 50 ? 'A mitad de camino' : pct >= 25 ? 'Buen comienzo' : 'Comenzando',
+    complete: pct >= 100
+  });
+  // Documents milestone
+  msList.push({
+    icon: docsUploaded === totalDocs && totalDocs > 0 ? '✅' : '📋',
+    title_en: `${docsUploaded} of ${totalDocs} documents received`,
+    title_es: `${docsUploaded} de ${totalDocs} documentos recibidos`,
+    sub_en: docsUploaded === totalDocs && totalDocs > 0 ? 'All documents in' : `${totalDocs - docsUploaded} still pending`,
+    sub_es: docsUploaded === totalDocs && totalDocs > 0 ? 'Todos los documentos recibidos' : `${totalDocs - docsUploaded} pendientes`,
+    complete: docsUploaded === totalDocs && totalDocs > 0
+  });
+  // Ready for review milestone (when all docs in)
+  if (docsUploaded === totalDocs && totalDocs > 0) {
+    msList.push({
+      icon: '🏆',
+      title_en: 'Ready for Funding Manager review',
+      title_es: 'Listo para revisión del Gerente de Financiamiento',
+      sub_en: 'Your KLIERD Funding Manager will confirm within 24 business hours',
+      sub_es: 'Su Gerente de Financiamiento KLIERD le confirmará en 24 horas hábiles',
+      complete: ['active','funded'].includes(status)
+    });
+  }
+  // Funded milestone
+  if (status === 'funded') {
+    msList.push({
+      icon: '🎉',
+      title_en: 'Funding approved',
+      title_es: 'Financiamiento aprobado',
+      sub_en: 'Congratulations',
+      sub_es: '¡Felicidades!',
+      complete: true
+    });
+  }
+  document.getElementById('ms-list').innerHTML = msList.map(m => {
+    const title = lang === 'es' ? m.title_es : m.title_en;
+    const sub = lang === 'es' ? m.sub_es : m.sub_en;
+    return `<div class="ms-row ${m.complete?'complete':''}"><div class="ms-icon">${m.icon}</div><div class="ms-text"><div class="ms-title">${title}</div><div class="ms-sub">${sub}</div></div></div>`;
+  }).join('');
+
+  // === PROGRESS BAR SHIMMER AT 100% ===
+  const pf = document.getElementById('progress-fill');
+  if (pct >= 100) pf.classList.add('complete'); else pf.classList.remove('complete');
+
+  // === CONFETTI TRIGGER AT MILESTONE THRESHOLDS ===
+  const lastPct = parseInt(localStorage.getItem('cbg_last_pct_' + app.trackingId) || '0');
+  const thresholds = [25, 50, 75, 100];
+  const crossed = thresholds.find(t => lastPct < t && pct >= t);
+  if (crossed) {
+    fireConfetti();
+    const msgEN = crossed === 100 ? '🎉 Profile complete!' : `🎯 Milestone unlocked: ${crossed}%`;
+    const msgES = crossed === 100 ? '🎉 ¡Perfil completo!' : `🎯 Hito desbloqueado: ${crossed}%`;
+    showToast(lang === 'es' ? msgES : msgEN, 'success');
+  }
+  localStorage.setItem('cbg_last_pct_' + app.trackingId, pct);
+  // === SERVICE DETECTION (clients can have one OR both) ===
+  const svc = app.fundingType || app.clientType || '';
+  // Dispute service: explicit fundingType='dispute' OR flagged by Funding Manager for dispute work
+  const hasDispute = svc === 'dispute' || app.disputeFlag === true || app.needsDispute === true;
+  // Funding service: anything other than dispute-only (or explicitly flagged)
+  const hasFunding = svc !== 'dispute' || app.fundingFlag === true;
+  const svcIsITIN = svc === 'itin';
+  // Legacy alias used in agreements push below
+  const svcIsDispute = hasDispute;
+
+  // === SIGNED AGREEMENTS (service-conditional) ===
+  const baseEN = [
+    {key:'application',name:'Application Form',desc:'Your signed funding application'},
+    {key:'fee_agreement',name:'Fee Agreement',desc:'Engagement terms, fee schedule, and scope of services'},
+    {key:'credit_auth',name:'Credit Pull Authorization',desc:'Permission to review your reports across all three bureaus'}
+  ];
+  const baseES = [
+    {key:'application',name:'Formulario de Solicitud',desc:'Su solicitud de financiamiento firmada'},
+    {key:'fee_agreement',name:'Acuerdo de Honorarios',desc:'Términos de contratación, honorarios y alcance de servicios'},
+    {key:'credit_auth',name:'Autorización para Verificar Crédito',desc:'Permiso para revisar sus reportes en los tres burós'}
+  ];
+  let agreements = lang==='es' ? [...baseES] : [...baseEN];
+  if (svcIsDispute) {
+    agreements.push(lang==='es'
+      ? {key:'croa_disclosure',name:'Divulgación CROA',desc:'Aviso federal CROA — sus derechos, nuestros límites, y aviso de rescisión de 3 días'}
+      : {key:'croa_disclosure',name:'CROA Disclosure',desc:'Federal CROA notice — your rights, our limits, and 3-day rescission notice'}
+    );
+  }
+  if (svcIsITIN) {
+    agreements.push(lang==='es'
+      ? {key:'itin_attestation',name:'Atestación de ITIN',desc:'Confirma su estatus de ITIN para enrutamiento a prestamistas'}
+      : {key:'itin_attestation',name:'ITIN Attestation',desc:'Confirms your ITIN status for lender routing'}
+    );
+  }
+  const agStatus = JSON.parse(localStorage.getItem('agreements_'+app.trackingId)||'{}');
+  const agListEl = document.getElementById('ag-list');
+  if (agListEl) {
+    agListEl.innerHTML = agreements.map(a=>{
+      const st = agStatus[a.key] || 'not_sent';
+      const statusLblEN = st==='signed'?'Signed ✓':st==='awaiting'?'Awaiting signature':'Not yet sent';
+      const statusLblES = st==='signed'?'Firmado ✓':st==='awaiting'?'Esperando firma':'Aún no enviado';
+      const statusClass = st==='signed'?'ag-status-signed':st==='awaiting'?'ag-status-awaiting':'ag-status-not';
+      const rowClass = st==='signed'?'signed':st==='awaiting'?'awaiting':'';
+      const actions = st==='signed'
+        ? `<a class="ag-btn" href="#" onclick="viewAgreement('${a.key}');return false;">📄 ${lang==='es'?'Ver documento':'View document'}</a>`
+        : st==='awaiting'
+          ? `<a class="ag-btn primary" href="#" onclick="signAgreement('${a.key}');return false;">✎ ${lang==='es'?'Firmar ahora':'Sign now'}</a>`
+          : `<span style="font-size:10px;color:var(--muted);font-style:italic">${lang==='es'?'Será enviado pronto':'Will be sent shortly'}</span>`;
+      return `<div class="ag-row ${rowClass}"><div class="ag-head"><div class="ag-name">${a.name}</div><span class="ag-status-badge ${statusClass}">${lang==='es'?statusLblES:statusLblEN}</span></div><div class="ag-desc">${a.desc}</div><div class="ag-actions">${actions}</div></div>`;
+    }).join('');
+  }
+
+  // Set service-appropriate intro (3 cases: dispute-only, funding-only, both)
+  const introEl = document.getElementById('lbl-analysis-intro');
+  if (introEl) {
+    const showCredit_pre = hasDispute;
+    const showFunding_pre = hasFunding;
+    if (showCredit_pre && showFunding_pre) {
+      introEl.textContent = lang==='es'
+        ? 'Le proporcionaremos sus análisis personalizados en breve. KLIERD Intelligent Funding Technology está procesando su solicitud.'
+        : "We'll provide your personalized analyses shortly. KLIERD Intelligent Funding Technology is processing your submission now.";
+    } else if (showCredit_pre) {
+      introEl.textContent = lang==='es'
+        ? 'Le proporcionaremos su Análisis de Crédito detallado en breve. KLIERD Intelligent Funding Technology está procesando su solicitud.'
+        : "We'll provide your detailed Credit Analysis shortly. KLIERD Intelligent Funding Technology is processing your submission now.";
+    } else {
+      introEl.textContent = lang==='es'
+        ? 'Le proporcionaremos su Análisis de Financiamiento detallado en breve. KLIERD Intelligent Funding Technology está procesando su solicitud.'
+        : "We'll provide your detailed Funding Analysis shortly. KLIERD Intelligent Funding Technology is processing your submission now.";
+    }
+  }
+
+  // === MY ANALYSIS (service-conditional) ===
+  // Funding clients (personal/business/both/itin) → Funding Analysis only
+  // Dispute Resolution clients → Credit Analysis only
+  const analysis = JSON.parse(localStorage.getItem('analysis_'+app.trackingId)||'{}');
+  const showCredit = hasDispute;
+  const showFunding = hasFunding;
+  // Hide the card that doesn't apply
+  const creditCard = document.getElementById('an-credit');
+  const fundingCard = document.getElementById('an-funding');
+  if (creditCard) creditCard.style.display = showCredit ? '' : 'none';
+  if (fundingCard) fundingCard.style.display = showFunding ? '' : 'none';
+  // Render only the applicable card(s)
+  const applicableKinds = [];
+  if (showCredit) applicableKinds.push('credit');
+  if (showFunding) applicableKinds.push('funding');
+  applicableKinds.forEach(kind => {
+    const st = analysis[kind] || 'notstarted';
+    const stEl = document.getElementById('an-'+kind+'-status');
+    const actEl = document.getElementById('an-'+kind+'-actions');
+    const cardEl = document.getElementById('an-'+kind);
+    if (!stEl || !actEl || !cardEl) return;
+    cardEl.classList.remove('ready');
+    stEl.classList.remove('notstarted','inprogress','ready');
+    if (st === 'ready') {
+      cardEl.classList.add('ready');
+      stEl.classList.add('ready');
+      stEl.textContent = lang==='es' ? 'Listo para ver ✓' : 'Ready to view ✓';
+      actEl.innerHTML = `<a class="ag-btn primary" href="#" onclick="viewAnalysis('${kind}');return false;">📄 ${lang==='es'?'Ver análisis':'View analysis'}</a>`;
+    } else if (st === 'inprogress') {
+      stEl.classList.add('inprogress');
+      stEl.textContent = lang==='es' ? 'En proceso con la tecnología' : 'In progress with KLIERD Technology';
+      actEl.innerHTML = `<span style="font-size:11px;color:var(--muted);font-style:italic">${lang==='es'?'KLIERD está procesando su solicitud — su análisis viene pronto':'KLIERD is processing your submission — your analysis is on the way'}</span>`;
+    } else {
+      stEl.classList.add('notstarted');
+      stEl.textContent = lang==='es' ? 'Aún no iniciado' : 'Not yet started';
+      actEl.innerHTML = `<span style="font-size:11px;color:var(--muted);font-style:italic">${lang==='es'?'Comienza después de que KLIERD procese su solicitud':'Begins after KLIERD processes your submission'}</span>`;
+    }
+  });
+  // === ANALYSIS WOW MOMENT ===
+  // Detect transition from not-ready to ready — fire confetti only for the applicable kind
+  const lastAnalysisState = JSON.parse(localStorage.getItem('analysis_last_'+app.trackingId)||'{}');
+  applicableKinds.forEach(kind => {
+    const wasReady = lastAnalysisState[kind] === 'ready';
+    const isReady = (analysis[kind] || 'notstarted') === 'ready';
+    if (!wasReady && isReady) {
+      fireConfetti();
+      const titleMap = {
+        credit: {en:'Your Credit Analysis is ready ✨', es:'Su Análisis de Crédito está listo ✨'},
+        funding: {en:'Your Funding Analysis is ready 🎯', es:'Su Análisis de Financiamiento está listo 🎯'}
+      };
+      showToast(lang==='es' ? titleMap[kind].es : titleMap[kind].en, 'success');
+    }
+  });
+  localStorage.setItem('analysis_last_'+app.trackingId, JSON.stringify(analysis));
+
+
+
+  // === NEXT ACTION BANNER ===
+  const banner = document.getElementById('next-action-banner');
+  const naTitle = document.getElementById('na-title');
+  const naBody = document.getElementById('na-body');
+  const naCta = document.getElementById('na-cta');
+  const naIcon = document.getElementById('na-icon');
+  const missing = docs.find(d => !uploaded[d.key]);
+  if(missing){
+    naIcon.textContent = '📎';
+    naTitle.textContent = lang==='es' ? `Cargue: ${missing.name}` : `Upload: ${missing.name}`;
+    naBody.textContent = lang==='es' ? (whyES[missing.key] || 'Necesario para procesar su solicitud.') : (whyEN[missing.key] || 'Required to process your application.');
+    naCta.textContent = lang==='es' ? 'Cargar ahora →' : 'Upload now →';
+    naCta.classList.remove('done');
+    window._naMode = 'upload';
+    banner.style.display = 'flex';
+  } else if(status === 'new' || status === 'review'){
+    naIcon.textContent = '📞';
+    naTitle.textContent = lang==='es' ? 'Espere la llamada de su Gerente de Financiamiento KLIERD' : 'Expect your KLIERD Funding Manager\'s call';
+    naBody.textContent = lang==='es' ? 'Todos los documentos recibidos. Su Gerente de Financiamiento KLIERD le llamará dentro de 24–48 horas hábiles.' : 'All documents received. Your KLIERD Funding Manager will call within 24–48 business hours.';
+    naCta.textContent = lang==='es' ? 'Escribirnos →' : 'Message us →';
+    naCta.classList.remove('done');
+    window._naMode = 'messages';
+    banner.style.display = 'flex';
+  } else if(status === 'funded'){
+    naIcon.textContent = '🎉';
+    naTitle.textContent = lang==='es' ? '¡Felicidades — su financiamiento está aprobado!' : 'Congratulations — your funding is approved!';
+    naBody.textContent = lang==='es' ? 'Revise su perfil de crédito y comuníquese con su Gerente de Financiamiento KLIERD sobre los próximos pasos.' : 'Review your credit profile and message your KLIERD Funding Manager about next steps.';
+    naCta.textContent = '✅';
+    naCta.classList.add('done');
+    banner.style.display = 'flex';
+  } else {
+    naIcon.textContent = '⚡';
+    naTitle.textContent = lang==='es' ? 'KLIERD está construyendo su estrategia' : 'KLIERD is building your strategy';
+    naBody.textContent = lang==='es' ? 'No se requiere acción de su parte ahora mismo.' : 'No action needed from you right now.';
+    naCta.textContent = lang==='es' ? 'Mensajes' : 'Messages';
+    naCta.classList.remove('done');
+    window._naMode = 'messages';
+    banner.style.display = 'flex';
+  }
+
+  renderMessages(msgs);
+}
+
+function showToast(text, kind){
+  const wrap = document.getElementById('toast-wrap');
+  if(!wrap) return;
+  const t = document.createElement('div');
+  t.className = 'toast' + (kind ? ' ' + kind : '');
+  t.textContent = text;
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), 4200);
+}
+
+function fireConfetti(){
+  const colors = ['#C9A84C','#E8CB7A','#27AE60','#2980B9','#E67E22'];
+  for(let i = 0; i < 60; i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = (Math.random() * 100) + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = (Math.random() * 0.6) + 's';
+    piece.style.animationDuration = (2.2 + Math.random() * 1.4) + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4000);
+  }
+}
+
+function viewAnalysis(kind){
+  // If backend provides analysis PDF URL on the client record, open it. Otherwise show next-step message.
+  const url = (currentApp && (currentApp.analyses && currentApp.analyses[kind]) ) || '';
+  if (url) { window.open(url, '_blank', 'noopener'); return; }
+  const subject = encodeURIComponent('Analysis request — ' + (currentApp?.trackingId || ''));
+  const body = encodeURIComponent(
+    (lang==='es'
+      ? 'Hola, me gustaría revisar mi análisis cuando esté listo.\n\nID: '
+      : 'Hi, I would like to review my analysis when it is ready.\n\nTracking ID: ')
+    + (currentApp?.trackingId || '')
+  );
+  showToast(
+    lang==='es'
+      ? '📄 Su análisis será entregado dentro de 24–48 horas hábiles.'
+      : '📄 Your analysis will be delivered within 24–48 business hours.',
+    'success'
+  );
+  setTimeout(()=>{ window.location.href = 'mailto:info@klierd.com?subject=' + subject + '&body=' + body; }, 600);
+}
+function viewAgreement(key){
+  // Open the signed agreement PDF if it has been uploaded back to the portal. Otherwise, show explainer.
+  const ag = (currentApp && currentApp.agreements && currentApp.agreements[key]) || null;
+  if (ag && ag.signed_url) { window.open(ag.signed_url, '_blank', 'noopener'); return; }
+  showToast(
+    lang==='es'
+      ? '📄 Su copia firmada aparecerá aquí una vez completada por todas las partes.'
+      : '📄 Your signed copy will appear here once countersigned by all parties.',
+    'success'
+  );
+}
+function signAgreement(key){
+  // Phase 1.5 — system sends agreement via DocuSign automatically when triggered. Funding Manager confirms it landed.
+  // Until DocuSign integration is live, surface the next step clearly + offer to ping the Funding Manager.
+  const subject = encodeURIComponent('Send my agreement for signature — ' + (currentApp?.trackingId || ''));
+  const body = encodeURIComponent(
+    (lang==='es'
+      ? 'Hola, por favor envíenme el acuerdo (' + key + ') para firmar.\n\nID: '
+      : 'Hi, please send me the agreement (' + key + ') for e-signature.\n\nTracking ID: ')
+    + (currentApp?.trackingId || '')
+  );
+  showToast(
+    lang==='es'
+      ? '✎ El enlace de firma electrónica será enviado dentro de 1 día hábil. Revise su correo.'
+      : '✎ The e-signature link will be sent within 1 business day. Watch your email.',
+    'success'
+  );
+  setTimeout(()=>{ window.location.href = 'mailto:info@klierd.com?subject=' + subject + '&body=' + body; }, 800);
+}
+
+function naAction(){
+  const mode = window._naMode || 'messages';
+  if(mode === 'upload'){
+    showTab('docs', document.querySelectorAll('.tab')[1]);
+  } else {
+    showTab('messages', document.querySelectorAll('.tab')[2]);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// "Why we need this" tooltips — bilingual
+const whyEN = {
+  id: 'Required to verify your identity. Most lenders won\'t process without it.',
+  ssn: 'Used for soft credit pulls and identity confirmation.',
+  itin: 'Your IRS-issued ITIN letter lets us route you to lenders who accept ITIN profiles.',
+  bank: 'Shows lenders your monthly cash flow — one of the biggest factors in approval.',
+  paystubs: 'Confirms your stated income. Two recent stubs is the standard request.',
+  monitoring: 'Lets us see all three bureau reports so we can target the right lenders.',
+  check: 'Used to set up direct deposit of approved funding.',
+  ein: 'Confirms your business is registered with the IRS.',
+  biz_docs: 'Articles of Organization or Formation — proves your business is real.',
+  biz_bank: 'Shows business cash flow — required for any business funding above ~$10K.',
+  nav: 'NAV.com pulls all three business credit reports — critical for business funding strategy.'
+};
+const whyES = {
+  id: 'Necesaria para verificar su identidad. La mayoría de prestamistas no procesan sin ella.',
+  ssn: 'Se usa para verificaciones suaves de crédito y confirmación de identidad.',
+  itin: 'Su carta de ITIN del IRS nos permite dirigirle a prestamistas que aceptan perfiles con ITIN.',
+  bank: 'Muestra a los prestamistas su flujo de efectivo mensual — uno de los mayores factores de aprobación.',
+  paystubs: 'Confirma sus ingresos declarados. Dos talones recientes es el estándar.',
+  monitoring: 'Nos permite ver los tres reportes de buró para dirigirle a los prestamistas correctos.',
+  check: 'Se usa para configurar el depósito directo del financiamiento aprobado.',
+  ein: 'Confirma que su negocio está registrado con el IRS.',
+  biz_docs: 'Artículos de Organización o Formación — comprueba que su negocio es real.',
+  biz_bank: 'Muestra el flujo de efectivo del negocio — requerido para financiamiento empresarial sobre ~$10K.',
+  nav: 'NAV.com extrae los tres reportes de crédito empresarial — crítico para la estrategia de financiamiento.'
+};
+
+function renderMessages(msgs){
+  const wrap=document.getElementById('messages-wrap');
+  if(!wrap)return;
+  wrap.innerHTML=msgs.map(m=>`<div style="display:flex;flex-direction:column;align-items:${m.from==='advisor'?'flex-start':'flex-end'}"><div class="msg ${m.from}">${m.text}</div><div class="msg-time">${m.time}</div></div>`).join('');
+  wrap.scrollTop=wrap.scrollHeight;
+}
+
+function sendMsg(){
+  if(!currentApp)return;
+  const input=document.getElementById('msg-input');
+  const text=input.value.trim();
+  if(!text)return;
+  const msgs=JSON.parse(localStorage.getItem('msgs_'+currentApp.trackingId)||'[]');
+  msgs.push({from:'client',text,time:new Date().toLocaleString()});
+  localStorage.setItem('msgs_'+currentApp.trackingId,JSON.stringify(msgs));
+  input.value='';
+  renderMessages(msgs);
+  // Send to Railway
+  fetch(`${API}/messages`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({trackingId:currentApp.trackingId,from:'client',text,time:new Date().toLocaleString()})}).catch(()=>{});
+  setTimeout(()=>{
+    const autoEN='Thank you for your message! Your KLIERD Funding Manager will respond within 24 hours. — KLIERD Team';
+    const autoES='¡Gracias por su mensaje! Su Gerente de Financiamiento KLIERD responderá en 24 horas. — Equipo KLIERD';
+    msgs.push({from:'advisor',text:lang==='es'?autoES:autoEN,time:new Date().toLocaleString()});
+    localStorage.setItem('msgs_'+currentApp.trackingId,JSON.stringify(msgs));
+    renderMessages(msgs);
+  },1000);
+}
+
+function handleFiles(files){
+  if(!currentApp||!files.length)return;
+  const uploaded=JSON.parse(localStorage.getItem('docs_'+currentApp.trackingId)||'{}');
+  const statusEl=document.getElementById('upload-status');
+  Array.from(files).forEach(f=>{
+    const key=f.name.toLowerCase().replace(/[^a-z0-9]/g,'_');
+    uploaded[key]=true;
+    // Auto-match common doc types
+    if(f.name.toLowerCase().includes('id')||f.name.toLowerCase().includes('passport')||f.name.toLowerCase().includes('license'))uploaded['id']=true;
+    if(f.name.toLowerCase().includes('bank')||f.name.toLowerCase().includes('statement'))uploaded['bank']=true;
+    if(f.name.toLowerCase().includes('pay')||f.name.toLowerCase().includes('stub'))uploaded['paystubs']=true;
+    if(f.name.toLowerCase().includes('ssn')||f.name.toLowerCase().includes('social'))uploaded['ssn']=true;
+    if(f.name.toLowerCase().includes('itin'))uploaded['itin']=true;
+    if(f.name.toLowerCase().includes('ein'))uploaded['ein']=true;
+    if(f.name.toLowerCase().includes('void')||f.name.toLowerCase().includes('check'))uploaded['check']=true;
+  });
+  localStorage.setItem('docs_'+currentApp.trackingId,JSON.stringify(uploaded));
+  statusEl.style.display='block';
+  statusEl.textContent='✅ '+(lang==='es'?`${files.length} documento(s) cargado(s) exitosamente`:`${files.length} document(s) uploaded successfully`);
+  // Refresh checklist
+  setTimeout(()=>{
+    renderPortal(currentApp);
+    // Pulse newly received doc rows
+    setTimeout(()=>{
+      document.querySelectorAll('.doc-item').forEach(el=>{
+        const status = el.querySelector('.doc-status');
+        if(status && status.classList.contains('doc-received')){
+          el.classList.add('just-uploaded');
+          setTimeout(()=>el.classList.remove('just-uploaded'), 1500);
+        }
+      });
+    }, 100);
+    showToast(lang==='es' ? '✓ Documento(s) recibido(s)' : '✓ Document(s) received', 'success');
+  },500);
+  // Notify Railway
+  fetch(`${API}/documents`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({trackingId:currentApp.trackingId,files:Array.from(files).map(f=>f.name)})}).catch(()=>{});
+}
+
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+}
+
+function showTab(tab,btn){
+  ['status','docs','messages','analysis','agreements','billing','monitoring','scores'].forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(el)el.style.display=t===tab?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(tab==='billing')renderBilling();
+  if(tab==='monitoring'){
+    // Hydrate from API first (graceful fallback to existing data on error), then render
+    fetchMonitoringFromAPI().then(()=>{
+      maybeShowMonitoringTab();
+      renderMonitoring();
+    });
+  }
+}
+
+// ═══ BILLING TAB (v3.0) ═══
+function renderBilling(){
+  if(!currentApp)return;
+  const b=currentApp.billing||{};
+  const items=b.lineItems||[];
+  const paid=Number(b.paidToDate||0);
+  const subtotal=items.reduce((s,i)=>s+Number(i.amount||0),0);
+  const balance=Math.max(0,subtotal-paid);
+  const fmt=v=>'$'+Number(v).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+
+  // Hero values
+  document.getElementById('bill-balance').textContent=fmt(balance);
+
+  // Status badge
+  const badge=document.getElementById('bill-status-badge');
+  let status='due';
+  if(subtotal===0){status='paid';badge.textContent=T[lang]['bill-no-charges']||'No charges';}
+  else if(balance===0){status='paid';badge.textContent=T[lang]['bill-paid']||'Paid';}
+  else if(paid>0&&balance>0){status='partial';badge.textContent=T[lang]['bill-partial']||'Partial';}
+  else if(b.overdue){status='overdue';badge.textContent=T[lang]['bill-overdue']||'Overdue';}
+  else badge.textContent=T[lang]['bill-due']||'Balance Due';
+  badge.className='bill-badge '+status;
+
+  // Next payment line
+  const nextLine=document.getElementById('bill-next-line');
+  if(b.nextDueDate&&balance>0){
+    nextLine.textContent=(T[lang]['bill-next-due']||'Next payment due:')+' '+b.nextDueDate;
+  }else nextLine.textContent='';
+
+  // Make payment button
+  document.getElementById('btn-make-payment').style.display=(balance>0)?'block':'none';
+
+  // Line items
+  const liWrap=document.getElementById('bill-line-items');
+  if(items.length===0){
+    liWrap.innerHTML='<div class="bill-hist-empty">'+(T[lang]['bill-no-items']||'No charges yet. Line items appear once your funding strategy is confirmed.')+'</div>';
+  }else{
+    liWrap.innerHTML=items.map(i=>'<div class="bill-li"><div class="bill-li-info"><div class="bill-li-name">'+(i.name||'')+'</div>'+(i.desc?'<div class="bill-li-desc">'+i.desc+'</div>':'')+'</div><div class="bill-li-amt">'+fmt(i.amount||0)+'</div></div>').join('');
+  }
+
+  // Totals
+  document.getElementById('bill-subtotal').textContent=fmt(subtotal);
+  document.getElementById('bill-paid').textContent=fmt(paid);
+  document.getElementById('bill-balance-line').textContent=fmt(balance);
+
+  // Payment method
+  const pmCard=document.getElementById('bill-pm-card');
+  if(b.paymentMethod){
+    pmCard.style.display='block';
+    document.getElementById('bill-pm-line1').textContent=b.paymentMethod.line1||'—';
+    document.getElementById('bill-pm-line2').textContent=b.paymentMethod.line2||'';
+  }else pmCard.style.display='none';
+
+  // History
+  const hist=b.history||[];
+  const histWrap=document.getElementById('bill-history');
+  if(hist.length===0){
+    histWrap.innerHTML='<div class="bill-hist-empty">'+(T[lang]['bill-no-history']||'No payments yet.')+'</div>';
+  }else{
+    histWrap.innerHTML=hist.map(h=>'<div class="bill-hist-row"><div class="bill-hist-info"><div class="bill-hist-date">'+(h.date||'')+'</div><div class="bill-hist-method">'+(h.method||'')+'</div></div><div class="bill-hist-amt">+'+fmt(h.amount||0)+'</div></div>').join('');
+  }
+}
+
+function makePayment(){
+  // Phase 1 — UI only. Phase 2 will integrate Stripe/payment processor.
+  const subject=encodeURIComponent('Make a payment — '+(currentApp?.trackingId||''));
+  const body=encodeURIComponent((lang==='es'?'Hola, quiero hacer un pago en mi cuenta.':'Hi, I would like to make a payment on my account.')+'\n\nTracking ID: '+(currentApp?.trackingId||''));
+  window.location.href='mailto:info@klierd.com?subject='+subject+'&body='+body;
+}
+
+// Show Billing tab button only if client has billing data
+function maybeShowBillingTab(){
+  const btn=document.getElementById('tab-btn-billing');
+  if(!btn)return;
+  const hasBilling=currentApp&&currentApp.billing&&(((currentApp.billing.lineItems||[]).length>0)||currentApp.billing.paidToDate>0);
+  btn.style.display=hasBilling?'inline-flex':'none';
+}
+
+// ═══ MONITORING TAB (Program 3 — KLIERD Monitoring) ═══
+// Tier dictionary — canonical snake_case keys match Supabase schema
+// $99 Monitor entry tier dropped 2026-05-28. Offering starts at $129.99.
+const KLIERD_MON_TIERS={
+  monitor_mid:{name:'KLIERD Monitor+',        price:129.99,kind:'personal'},
+  monitor_pro:{name:'KLIERD Monitor Pro',     price:149.99,kind:'personal'},
+  monitor_biz:{name:'KLIERD Business Monitor',price:169.99,kind:'business'}
+};
+
+// Client uploads their FICO credit report — Cecil's parser extracts scores + alerts
+async function klierdUploadCreditReport(file){
+  if(!file) return;
+  if(!currentApp){ alert('Please log in first.'); return; }
+  const cid = currentApp.trackingId || currentApp.id;
+  if(!cid){ alert('Client ID not found.'); return; }
+  const statusEl = document.getElementById('mon-upload-status');
+  const btnEl = document.getElementById('lbl-mon-upload-btn');
+  const isES = currentLang === 'es';
+
+  if(file.size > 18 * 1024 * 1024){
+    statusEl.style.display='block';
+    statusEl.style.color='var(--red)';
+    statusEl.innerHTML = isES ? '⚠ Archivo demasiado grande (máximo 18MB).' : '⚠ File too large (max 18MB).';
+    return;
+  }
+
+  statusEl.style.display='block';
+  statusEl.style.color='var(--muted)';
+  statusEl.innerHTML = isES ? '⏳ Leyendo su reporte con tecnología KLIERD...' : '⏳ KLIERD Smart Technology is reading your report...';
+  btnEl.disabled = true;
+  if(btnEl) btnEl.style.opacity = '0.6';
+
+  try {
+    const buf = await file.arrayBuffer();
+    const b64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+
+    const r = await fetch(API+'/api/monitoring/upload-report', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ client_id: cid, file_base64: b64, filename: file.name })
+    });
+    const j = await r.json();
+
+    if(j.success){
+      statusEl.style.color='var(--gold)';
+      const scoreText = (j.score_summary || []).join(', ');
+      statusEl.innerHTML = isES
+        ? `✓ Procesado. Puntajes encontrados: ${scoreText || j.scores_recorded}. ${j.alerts_recorded||0} alertas. Su portal se actualizará pronto.`
+        : `✓ Processed. Scores found: ${scoreText || j.scores_recorded}. ${j.alerts_recorded||0} alerts. Your portal will refresh shortly.`;
+      // Refresh monitoring data
+      setTimeout(()=>{ fetchMonitoringFromAPI().then(()=>updateMonitoringUI && updateMonitoringUI()); }, 2000);
+    } else {
+      statusEl.style.color='var(--red)';
+      let msg = j.error || (isES ? 'Falló el procesamiento.' : 'Processing failed.');
+      if(j.message) msg += '<br><span style="font-size:11px;color:var(--muted)">' + j.message + '</span>';
+      statusEl.innerHTML = '⚠ ' + msg;
+    }
+  } catch(e){
+    statusEl.style.color='var(--red)';
+    statusEl.innerHTML = (isES ? '⚠ Error de red: ' : '⚠ Network error: ') + e.message;
+  } finally {
+    btnEl.disabled = false;
+    if(btnEl) btnEl.style.opacity = '1';
+  }
+}
+
+// Fetch live monitoring state from Railway API + populate currentApp.monitoring_*
+async function fetchMonitoringFromAPI(){
+  if(!currentApp) return;
+  const cid = currentApp.trackingId || currentApp.id;
+  if(!cid) return;
+  try{
+    const r = await fetch(API+'/api/monitoring/'+encodeURIComponent(cid), {
+      headers:{'x-api-key':'stackpro_secure_2026'}
+    });
+    if(!r.ok) return; // graceful — keep existing data
+    const j = await r.json();
+    if(j.subscription){
+      currentApp.monitoring_active       = (j.subscription.status==='active');
+      currentApp.monitoring_tier         = j.subscription.tier_key;
+      currentApp.monitoring_status       = j.subscription.status;
+      currentApp.monitoring_start_date   = j.subscription.start_date;
+      currentApp.monitoring_next_billing = j.subscription.next_billing;
+    }
+    if(j.scores_latest){
+      currentApp.monitoring_scores         = j.scores_latest;
+      currentApp.monitoring_scores_prior   = j.scores_prior || {};
+      currentApp.monitoring_scores_updated = j.scores_latest.updated || null;
+    }
+    if(j.scores_history) currentApp.monitoring_score_history = j.scores_history;
+    if(j.alerts) currentApp.monitoring_alerts = j.alerts;
+  }catch(e){ console.warn('monitoring fetch failed:', e); }
+}
+
+// Show Monitoring tab button only if client has monitoring_active = true
+function maybeShowMonitoringTab(){
+  const btn=document.getElementById('tab-btn-monitoring');
+  if(!btn)return;
+  const active=!!(currentApp&&currentApp.monitoring_active);
+  btn.style.display=active?'inline-flex':'none';
+}
+
+// Smart Funding-Readiness tier bands (per Rule 6h + Rule #9 extension — qualifier ranges only, no lender names)
+// Returns { name, range, note, nextName, nextRange, nextEta } based on best score across 3 bureaus
+function klierdReadinessTier(scoreTU, scoreEQ, scoreEX, isItin, isBusiness){
+  const best = Math.max(parseInt(scoreTU)||0, parseInt(scoreEQ)||0, parseInt(scoreEX)||0);
+  const isES = (lang==='es');
+  const T = {
+    entry:   { name:isES?'Entrada / Construcción de Crédito (Tarjetas Seguras + Iniciales)':'Entry / Credit Building (Secured + Starter Cards)',
+               range:isBusiness?'$5K–$25K':'$1K–$10K' },
+    mid:     { name:isES?'Recompensas Medias':'Mid-Tier Rewards',
+               range:isBusiness?'$25K–$100K':'$10K–$50K' },
+    premium: { name:isES?'Premium / Nivel 1':'Premium / Tier 1',
+               range:isBusiness?'$100K–$500K':'$50K–$250K' },
+    combined:{ name:isES?'Combinado Premium':'Combined Premium Stack',
+               range:isBusiness?'up to $500K':'up to $250K' }
+  };
+  // ETA reflects KLIERD Smart Technology acceleration: dispute resolution (30-45d
+  // for negative item removal) + tradeline boost (20-50 pts in 30d) + utilization
+  // fixes (10-30 pts next reporting) + system-driven bureau sequencing.
+  // Aggressive — matches the Smart Technology marketing voice — capped at 120 days max.
+  let cur, next, etaDays;
+  if(best >= 750){
+    cur = T.combined;
+    next = null;
+    etaDays = 0;
+  } else if(best >= 680){
+    cur = T.premium;
+    next = T.combined;
+    etaDays = 14 + Math.floor((750-best)/4);  // 14-30 days
+  } else if(best >= 620){
+    cur = T.mid;
+    next = T.premium;
+    etaDays = 30 + Math.floor((680-best)/2);  // 30-60 days
+  } else if(best >= 580){
+    cur = T.entry;
+    next = T.mid;
+    etaDays = 45 + Math.floor((620-best)*1.1); // 45-90 days
+  } else {
+    cur = T.entry;
+    next = T.mid;
+    etaDays = Math.min(120, 60 + Math.floor((580-best)*1.0)); // 60-120 days cap
+  }
+  if(etaDays > 120) etaDays = 120;
+  const etaText = etaDays === 0
+    ? (isES?'Estás en el rango superior — listo para ejecutar el stack':'You are at the top — ready to execute the stack')
+    : (isES?'~'+etaDays+' días con Tecnología Inteligente KLIERD':'~'+etaDays+' days with KLIERD Smart Technology');
+  return { ...cur, nextName: next?next.name:null, nextRange: next?next.range:null, nextEta: etaText };
+}
+
+function renderMonitoring(){
+  if(!currentApp)return;
+  const fmt=v=>'$'+Number(v).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+
+  const setupCard=document.getElementById('mon-setup-card');
+  const planCard=document.getElementById('mon-plan-card');
+  const uploadCard=document.getElementById('mon-upload-card');
+  const scoreCard=document.getElementById('mon-score-card');
+  const readinessCard=document.getElementById('mon-readiness-card');
+  const histCard=document.getElementById('mon-history-card');
+  const alertsCard=document.getElementById('mon-alerts-card');
+
+  const tierKey=currentApp.monitoring_tier;
+  const isActive=!!currentApp.monitoring_active;
+
+  // Show upload card whenever monitoring is active (regardless of whether we have scores yet)
+  if(uploadCard) uploadCard.style.display = isActive ? 'block' : 'none';
+
+  // Setup state — active but no tier yet
+  if(!isActive || !tierKey){
+    setupCard.style.display='block';
+    planCard.style.display='none';
+    scoreCard.style.display='none';
+    if(readinessCard) readinessCard.style.display='none';
+    histCard.style.display='none';
+    alertsCard.style.display='none';
+    return;
+  }
+
+  setupCard.style.display='none';
+  planCard.style.display='block';
+  scoreCard.style.display='block';
+  if(readinessCard) readinessCard.style.display='block';
+  histCard.style.display='block';
+  alertsCard.style.display='block';
+
+  // Plan tier + price
+  const tier=KLIERD_MON_TIERS[tierKey]||KLIERD_MON_TIERS.monitor_mid;
+  document.getElementById('mon-tier-name').textContent=tier.name;
+  document.getElementById('mon-tier-price').textContent=fmt(tier.price)+'/mo';
+
+  // Status badge
+  const badge=document.getElementById('mon-status-badge');
+  const statusLabelsEN={active:'Active',paused:'Paused',cancelled:'Cancelled',pending:'Pending'};
+  const statusLabelsES={active:'Activo',paused:'Pausado',cancelled:'Cancelado',pending:'Pendiente'};
+  const st=currentApp.monitoring_status||'active';
+  badge.textContent=(lang==='es'?statusLabelsES:statusLabelsEN)[st]||st;
+  badge.className='bill-badge '+(st==='active'?'paid':(st==='cancelled'?'overdue':'partial'));
+
+  // Next bill line
+  const nb=document.getElementById('mon-next-bill');
+  if(currentApp.monitoring_next_billing){
+    nb.textContent=(lang==='es'?'Próximo cargo: ':'Next charge: ')+currentApp.monitoring_next_billing+' · '+fmt(tier.price);
+  }else nb.textContent='';
+
+  // ── 3-BUREAU FICO SCORES ──
+  const scores = currentApp.monitoring_scores || {};
+  const tu = scores.tu||scores.TU||currentApp.scoreTU||'—';
+  const eq = scores.eq||scores.EQ||currentApp.scoreEQ||'—';
+  const ex = scores.ex||scores.EX||currentApp.scoreEX||'—';
+  document.getElementById('mon-score-tu').textContent=tu;
+  document.getElementById('mon-score-eq').textContent=eq;
+  document.getElementById('mon-score-ex').textContent=ex;
+
+  // Score deltas (vs prior pull)
+  const prior = currentApp.monitoring_scores_prior || {};
+  function deltaText(curr, prev){
+    if(!curr||!prev||curr==='—'||prev==='—') return '';
+    const d = parseInt(curr)-parseInt(prev);
+    if(d===0) return (lang==='es'?'sin cambio':'no change');
+    return (d>0?'▲ +':'▼ ')+Math.abs(d)+(lang==='es'?' pts':' pts');
+  }
+  document.getElementById('mon-score-tu-delta').textContent=deltaText(tu,prior.tu);
+  document.getElementById('mon-score-eq-delta').textContent=deltaText(eq,prior.eq);
+  document.getElementById('mon-score-ex-delta').textContent=deltaText(ex,prior.ex);
+
+  // Last updated + freshness banner (Rule 6e — 7-day preferred, 30-day cap)
+  const updated = currentApp.monitoring_scores_updated || currentApp.credit_report_date;
+  const updatedEl = document.getElementById('mon-score-updated');
+  const freshEl = document.getElementById('mon-score-freshness-banner');
+  if(updated){
+    updatedEl.textContent=(lang==='es'?'Actualizado: ':'Updated: ')+updated;
+    const daysOld = Math.floor((Date.now() - new Date(updated).getTime())/(1000*60*60*24));
+    if(daysOld <= 7){
+      freshEl.style.display='block';
+      freshEl.style.background='rgba(39,174,96,0.12)';
+      freshEl.style.border='1px solid rgba(39,174,96,0.35)';
+      freshEl.style.color='var(--green)';
+      freshEl.textContent=(lang==='es'?'✓ Datos frescos ':'✓ Fresh data — ')+daysOld+(lang==='es'?' días':' days old');
+    } else if(daysOld <= 30){
+      freshEl.style.display='block';
+      freshEl.style.background='rgba(201,168,76,0.10)';
+      freshEl.style.border='1px solid rgba(201,168,76,0.30)';
+      freshEl.style.color='var(--gold)';
+      freshEl.textContent=(lang==='es'?'⚠ ':'⚠ ')+daysOld+(lang==='es'?' días — datos envejeciendo':' days old — data aging');
+    } else {
+      freshEl.style.display='block';
+      freshEl.style.background='rgba(231,76,60,0.10)';
+      freshEl.style.border='1px solid rgba(231,76,60,0.30)';
+      freshEl.style.color='var(--red)';
+      freshEl.textContent=(lang==='es'?'❌ ':'❌ ')+daysOld+(lang==='es'?' días — solicita un informe nuevo':' days old — request fresh report');
+    }
+  } else {
+    updatedEl.textContent='';
+    freshEl.style.display='none';
+  }
+
+  // ── SMART FUNDING-READINESS (qualifier band, no lender names per Rule #9) ──
+  const isBiz = (currentApp.fundingType==='business' || currentApp.fundingType==='both' || tierKey==='monitor_biz');
+  const isItin = !!currentApp.is_itin;
+  const readiness = klierdReadinessTier(tu, eq, ex, isItin, isBiz);
+  document.getElementById('mon-readiness-tier-name').textContent=readiness.name;
+  document.getElementById('mon-readiness-tier-range').textContent=readiness.range+(lang==='es'?' rango':' range');
+  document.getElementById('mon-readiness-tier-note').textContent=lang==='es'
+    ? 'Rangos reflejan el potencial total de stack en este nivel. Los prestamistas específicos se divulgan cuando KLIERD ejecuta.'
+    : 'Ranges reflect total stack potential at this tier. Specific lenders disclosed when KLIERD executes.';
+  if(readiness.nextName){
+    document.getElementById('mon-readiness-next').style.display='block';
+    document.getElementById('mon-readiness-next-name').textContent=readiness.nextName;
+    document.getElementById('mon-readiness-next-range').textContent=readiness.nextRange+(lang==='es'?' rango':' range');
+    document.getElementById('mon-readiness-next-eta').textContent=readiness.nextEta;
+  } else {
+    document.getElementById('mon-readiness-next').style.display='none';
+  }
+
+  // Score history — simple inline bar chart (reads monitoring_score_history array on client)
+  const chart=document.getElementById('mon-history-chart');
+  const labels=document.getElementById('mon-history-labels');
+  const hist=Array.isArray(currentApp.monitoring_score_history)?currentApp.monitoring_score_history:[];
+  if(hist.length===0){
+    chart.innerHTML='<div style="color:var(--muted);font-size:11px;align-self:center">'+(lang==='es'?'Sin datos aún':'No data yet')+'</div>';
+    labels.innerHTML='';
+  }else{
+    const max=Math.max(...hist.map(h=>h.score||0),850);
+    // 3-bureau multi-line chart (per Phase 2 — Smart Credit Intelligence shows all 3 bureaus)
+    // Each history point: { date, tu, eq, ex } — supports legacy { date, score } shape too
+    const allScores = [];
+    hist.forEach(h => {
+      ['tu','eq','ex','score'].forEach(k => { if(h[k] && parseInt(h[k])) allScores.push(parseInt(h[k])); });
+    });
+    const minS = Math.min(...allScores, 850);
+    const maxS = Math.max(...allScores, 300);
+    const span = Math.max(1, maxS - minS);
+    const W = 100; // percentage width per data point
+    function colHTML(label, val, color){
+      if(!val) return '<div style="flex:1"></div>';
+      const pct = Math.round(((parseInt(val)-minS)/span)*80)+15;
+      return '<div style="flex:1;display:flex;align-items:flex-end;justify-content:center"><div style="width:6px;background:'+color+';height:'+pct+'%;border-radius:2px;position:relative" title="'+label+': '+val+'"></div></div>';
+    }
+    chart.innerHTML = hist.map(h => {
+      // For each history point, draw 3 mini-bars (TU/EQ/EX) clustered
+      const tuv = h.tu||h.TU||(h.score && h.bureau==='TU'?h.score:null);
+      const eqv = h.eq||h.EQ||(h.score && h.bureau==='EQ'?h.score:null);
+      const exv = h.ex||h.EX||(h.score && h.bureau==='EX'?h.score:null);
+      return '<div style="flex:1;display:flex;flex-direction:row;justify-content:center;gap:2px;align-items:flex-end;height:100%">'
+        + colHTML('TU', tuv, '#41a0e8')
+        + colHTML('EQ', eqv, '#27AE60')
+        + colHTML('EX', exv, '#D4AF37')
+        + '</div>';
+    }).join('');
+    labels.innerHTML=hist.map(h=>'<div style="flex:1;text-align:center">'+(h.alert_date||h.date||'')+'</div>').join('');
+  }
+
+  // Alert log — reads monitoring_alerts array (Phase 2 will hydrate from Supabase monitoring_alerts table)
+  const alertsList=document.getElementById('mon-alerts-list');
+  const alerts=Array.isArray(currentApp.monitoring_alerts)?currentApp.monitoring_alerts:[];
+  if(alerts.length===0){
+    alertsList.innerHTML='<div class="bill-hist-empty">'+(lang==='es'?'Sin alertas. Las nuevas indagaciones, cuentas y cambios de puntaje aparecerán aquí.':'No alerts. New inquiries, new accounts, and score changes will appear here.')+'</div>';
+  }else{
+    const iconMap={new_inquiry:'🔍',new_account:'➕',score_change:'📈',score_drop:'📉',derogatory:'⚠️'};
+    alertsList.innerHTML=alerts.map(a=>{
+      const icon=iconMap[a.alert_type]||'🔔';
+      const status=(a.status||'new').toUpperCase();
+      return '<div class="bill-hist-row"><div class="bill-hist-info"><div class="bill-hist-date">'+icon+' '+(a.description||a.alert_type||'')+'</div><div class="bill-hist-method">'+(a.alert_date||'')+(a.bureau?' · '+a.bureau:'')+'</div></div><div style="font-family:\'DM Mono\',monospace;font-size:10px;padding:3px 8px;border-radius:4px;background:'+(status==='NEW'?'rgba(201,168,76,0.12)':'rgba(100,100,100,0.1)')+';color:'+(status==='NEW'?'var(--gold)':'var(--muted)')+'">'+status+'</div></div>';
+    }).join('');
+  }
+}
+
+function monChangeTier(direction){
+  const subject=encodeURIComponent((direction==='up'?'Upgrade':'Downgrade')+' my KLIERD Monitoring — '+(currentApp?.trackingId||''));
+  const body=encodeURIComponent((lang==='es'?'Hola, me gustaría '+(direction==='up'?'actualizar':'reducir')+' mi plan de monitoreo KLIERD.':'Hi, I would like to '+(direction==='up'?'upgrade':'downgrade')+' my KLIERD Monitoring plan.')+'\n\nTracking ID: '+(currentApp?.trackingId||''));
+  window.location.href='mailto:info@klierd.com?subject='+subject+'&body='+body;
+}
+
+function monManageBilling(){
+  // Phase 1 — UI only. Phase 2 will wire to Authorize.net ARB subscription portal.
+  const subject=encodeURIComponent('Manage monitoring billing — '+(currentApp?.trackingId||''));
+  const body=encodeURIComponent((lang==='es'?'Hola, necesito gestionar la facturación de mi monitoreo de crédito.':'Hi, I need to manage my credit monitoring billing.')+'\n\nTracking ID: '+(currentApp?.trackingId||''));
+  window.location.href='mailto:info@klierd.com?subject='+subject+'&body='+body;
+}
+
+function goBack(){
+  document.getElementById('portalScreen').classList.remove('show');
+  document.getElementById('lookupScreen').style.display='block';
+  currentApp=null;
+}
+
+// Auto-lookup from URL or session + restore language preference
+window.addEventListener('DOMContentLoaded',()=>{
+  // Restore language preference
+  const savedLang = localStorage.getItem('cbg_lang_pref');
+  if(savedLang && (savedLang==='en' || savedLang==='es')){
+    setLang(savedLang);
+  }
+  const params=new URLSearchParams(window.location.search);
+  const id=params.get('id')||params.get('trackingId')||sessionStorage.getItem('lastTrackingId');
+  if(id){document.getElementById('tracking-input').value=id.toUpperCase();lookup();}
+});
+</script>
+<div class="toast-wrap" id="toast-wrap"></div>
+</body>
+</html>

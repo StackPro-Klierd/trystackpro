@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KLIERD — Apply for Funding</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#09090F;color:#E8E8F0;font-family:'Inter',-apple-system,sans-serif;min-height:100vh;padding:24px;}
+.wrap{max-width:700px;margin:0 auto;}
+.header{text-align:center;padding:32px 20px 24px;border-bottom:1px solid #1E1E2E;margin-bottom:28px;}
+.logo{font-size:28px;font-weight:800;color:#C9A84C;letter-spacing:-1px;}
+.tagline{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-top:6px;}
+.form-title{font-size:15px;color:#aaa;margin-top:10px;}
+.lang-bar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:20px;}
+.lang-btn{background:none;border:1px solid #2a2a3a;color:#888;border-radius:5px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .2s;}
+.lang-btn.active{border-color:#C9A84C;color:#C9A84C;}
+.type-toggle{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
+.type-btn{padding:12px 8px;border-radius:8px;border:1px solid #2a2a3a;background:#12121C;color:#aaa;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;}
+.type-btn.active{background:#C9A84C;color:#09090F;border-color:#C9A84C;}
+.itin-toggle{display:flex;gap:8px;margin-bottom:24px;}
+.itin-btn{padding:6px 16px;border-radius:6px;border:1px solid #2a2a3a;background:#12121C;color:#888;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;}
+.itin-btn.active{border-color:#C9A84C;color:#C9A84C;background:rgba(201,168,76,0.08);}
+.section-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#C9A84C;font-weight:700;margin:24px 0 14px;padding-bottom:8px;border-bottom:1px solid #1E1E2E;width:100%;}
+
+/* THE LAYOUT FIX */
+.row{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.row.full{grid-template-columns:1fr;}
+.row.three{grid-template-columns:1fr 1fr 1fr;}
+.f{width:100%;display:flex;flex-direction:column;gap:6px;}
+.f label{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;width:100%;}
+.f input,.f select,.f textarea{width:100%;background:#12121C;border:1px solid #2a2a3a;border-radius:7px;padding:11px 13px;color:#E8E8F0;font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:#C9A84C;}
+.f select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23666' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;}
+.f select option{background:#12121C;}
+.f textarea{min-height:80px;resize:vertical;}
+.f input[type=password]{letter-spacing:3px;}
+.hint{font-size:10px;color:#555;margin-top:2px;}
+.req{color:#C9A84C;}
+.req-note{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:6px;padding:10px 14px;font-size:11px;color:#C9A84C;margin-bottom:16px;display:none;width:100%;}
+.nav-box{background:#0d1a2a;border:1px solid rgba(41,128,185,0.4);border-radius:9px;padding:18px;margin-bottom:20px;width:100%;}
+.nav-title{font-size:10px;font-weight:700;color:#2980B9;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.nav-desc{font-size:12px;color:#aaa;line-height:1.7;margin-bottom:14px;}
+.nav-link{display:inline-block;padding:9px 20px;background:#2980B9;color:#fff;font-size:12px;font-weight:700;border-radius:6px;text-decoration:none;}
+.nav-hint{font-size:10px;color:#555;margin-top:8px;}
+.submit-btn{width:100%;padding:15px;background:#C9A84C;color:#09090F;font-weight:800;font-size:15px;border:none;border-radius:9px;cursor:pointer;margin-top:8px;font-family:inherit;letter-spacing:.5px;transition:background .2s;}
+.submit-btn:hover{background:#E8CB7A;}
+.disclaimer{font-size:10px;color:#444;text-align:center;margin-top:14px;line-height:1.7;}
+.required-note{font-size:10px;color:#666;margin-bottom:20px;}
+.thankyou{display:none;text-align:center;padding:60px 20px;}
+.thankyou h2{color:#C9A84C;font-size:24px;margin-bottom:14px;}
+.thankyou p{color:#aaa;font-size:13px;line-height:1.9;}
+@media(max-width:560px){.row,.row.three{grid-template-columns:1fr;}.type-toggle{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('en',this)">🇺🇸 English</button>
+    <button class="lang-btn" onclick="setLang('es',this)">🇪🇸 Español</button>
+  </div>
+  <div class="header">
+    <div class="logo">CBG FUNDS</div>
+    <div class="tagline">Powered by KLIERD</div>
+    <div class="form-title" id="form-title">Client Intake Form — Confidential</div>
+  </div>
+
+  <div id="form-body">
+    <p class="required-note"><span class="req">*</span> Required fields</p>
+
+    <div class="section-label">I Am Applying For</div>
+    <div class="type-toggle">
+      <button class="type-btn active" id="btn-personal" onclick="setFundingType('personal',this)">Personal Funding</button>
+      <button class="type-btn" id="btn-business" onclick="setFundingType('business',this)">Business Funding</button>
+      <button class="type-btn" id="btn-both" onclick="setFundingType('both',this)">Both Personal + Business</button>
+      <button class="type-btn" id="btn-dispute" onclick="setFundingType('dispute',this)">Dispute Resolution</button>
+    </div>
+    <div class="itin-toggle">
+      <button class="itin-btn active" id="btn-ssn" onclick="setClientType('ssn',this)">🇺🇸 SSN — U.S. Citizen</button>
+      <button class="itin-btn" id="btn-itin" onclick="setClientType('itin',this)">🌎 ITIN — Immigrant / No SSN</button>
+    </div>
+
+    <div class="section-label" id="lbl-personal-info">Personal Information</div>
+    <div class="row">
+      <div class="f"><label>First Name <span class="req">*</span></label><input type="text" id="i-first" required/></div>
+      <div class="f"><label>Last Name <span class="req">*</span></label><input type="text" id="i-last" required/></div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Email <span class="req">*</span></label><input type="email" id="i-email" required/></div>
+      <div class="f"><label>Phone <span class="req">*</span></label><input type="tel" id="i-phone" placeholder="(000) 000-0000" required/></div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Date of Birth</label><input type="text" id="i-dob" placeholder="MM/DD/YYYY"/></div>
+      <div class="f"><label>State</label><input type="text" id="i-state"/></div>
+    </div>
+    <div class="row full">
+      <div class="f"><label>Address</label><input type="text" id="i-addr"/></div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Social Security Number <span class="req">*</span></label><input type="password" id="i-ssn" placeholder="XXX-XX-XXXX"/><div class="hint">Required for all funding products</div></div>
+      <div class="f" id="itin-field" style="display:none"><label>ITIN Number</label><input type="password" id="i-itin" placeholder="9XX-XX-XXXX"/><div class="hint">Begins with 9 — issued by IRS Form W-7</div></div>
+      <div class="f" id="ssn-spacer"></div>
+    </div>
+
+    <div class="section-label" id="lbl-credit">Credit Profile — All 3 Bureaus</div>
+    <div class="row three">
+      <div class="f"><label style="color:#41a0e8">TransUnion Score</label><input type="number" id="i-score-tu" placeholder="300–850" min="300" max="850"/></div>
+      <div class="f"><label style="color:#27AE60">Equifax Score</label><input type="number" id="i-score-eq" placeholder="300–850" min="300" max="850"/></div>
+      <div class="f"><label style="color:#C9A84C">Experian Score</label><input type="number" id="i-score-ex" placeholder="300–850" min="300" max="850"/></div>
+    </div>
+    <div class="row full">
+      <div class="f"><label>Don't Know Exact Scores? Estimate Below</label>
+        <select id="i-score-est">
+          <option value="">-- Estimate Only --</option>
+          <option value="750">750+ — Excellent</option>
+          <option value="720">720–749 — Very Good</option>
+          <option value="700">700–719 — Good</option>
+          <option value="680">680–699 — Good</option>
+          <option value="660">660–679 — Fair</option>
+          <option value="640">640–659 — Fair</option>
+          <option value="620">620–639 — Below Average</option>
+          <option value="580">580–619 — Poor</option>
+          <option value="0">Below 580 / Unknown</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-label" id="lbl-financial">Financial Profile</div>
+    <div class="row">
+      <div class="f"><label>Housing Status</label>
+        <select id="i-housing">
+          <option value="">-- Select --</option>
+          <option>Own — Paid Off</option><option>Own — Mortgage</option><option>Renting</option><option>With Family</option>
+        </select>
+      </div>
+      <div class="f"><label>Monthly Housing Payment</label><input type="text" id="i-housing-pmt" placeholder="$0"/></div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Employment Status</label>
+        <select id="i-employment">
+          <option value="">-- Select --</option>
+          <option>Employed Full-Time</option><option>Self-Employed</option><option>Business Owner</option><option>Retired</option><option>Other</option>
+        </select>
+      </div>
+      <div class="f"><label>Annual Income</label>
+        <select id="i-income">
+          <option value="">-- Select --</option>
+          <option>Under $25,000</option><option>$25,000 – $50,000</option><option>$50,000 – $75,000</option><option>$75,000 – $100,000</option><option>$100,000 – $150,000</option><option>Over $150,000</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Monthly Debt Payments</label>
+        <select id="i-monthly-debt">
+          <option value="">-- Select --</option>
+          <option>$0 — None</option><option>Under $500</option><option>$500 – $1,000</option><option>$1,000 – $2,000</option><option>Over $2,000</option>
+        </select>
+      </div>
+      <div class="f"><label>Open Credit Accounts</label>
+        <select id="i-open-accounts">
+          <option value="">-- Select --</option>
+          <option>0</option><option>1–3</option><option>4–6</option><option>7–10</option><option>10+</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Late Payments (Last 12 Mo)?</label>
+        <select id="i-late-payments">
+          <option value="">-- Select --</option>
+          <option value="no">No — Clean history</option><option value="yes_1">Yes — 1 late payment</option><option value="yes_2">Yes — 2+ late payments</option>
+        </select>
+      </div>
+      <div class="f"><label>Collections on File?</label>
+        <select id="i-collections">
+          <option value="">-- Select --</option>
+          <option value="no">No</option><option value="yes_medical">Yes — Medical only</option><option value="yes_other">Yes — Other</option><option value="yes_multiple">Yes — Multiple</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Bankruptcy History?</label>
+        <select id="i-bankruptcy">
+          <option value="">-- Select --</option>
+          <option value="no">No</option><option value="yes_discharged">Yes — Discharged</option><option value="yes_recent">Yes — Within last 2 years</option><option value="yes_active">Yes — Currently active</option>
+        </select>
+      </div>
+      <div class="f"><label>Co-Borrower?</label>
+        <select id="i-coborrower">
+          <option value="">-- Select --</option>
+          <option value="no">No</option><option value="yes">Yes</option><option value="maybe">Possibly</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Filed Taxes Last 2 Years?</label>
+        <select id="i-taxes">
+          <option value="">-- Select --</option>
+          <option value="yes_both">Yes — Both years</option><option value="yes_1">Yes — 1 of 2 years</option><option value="no">No — Not filed</option><option value="extension">Filed extension</option><option value="itin">ITIN filer</option>
+        </select>
+      </div>
+      <div class="f"><label>US Bank Account?</label>
+        <select id="i-usbank">
+          <option value="">-- Select --</option>
+          <option value="yes">Yes</option><option value="no">No</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-label" id="lbl-identity">Identity &amp; Compliance</div>
+    <div class="row">
+      <div class="f"><label>Government ID Type</label>
+        <select id="i-id-type">
+          <option value="">-- Select --</option>
+          <option>Driver's License</option><option>State ID</option><option>Passport</option><option>Military ID</option><option>Permanent Resident Card</option>
+        </select>
+      </div>
+      <div class="f"><label>ID Issuing State / Country</label><input type="text" id="i-id-state" placeholder="e.g. Georgia, Jamaica"/></div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Residency Status</label>
+        <select id="i-residency">
+          <option value="">-- Select --</option>
+          <option value="citizen">U.S. Citizen</option><option value="permanent_resident">Permanent Resident</option><option value="visa">Visa Holder</option><option value="itin_only">ITIN Only</option><option value="other">Other</option>
+        </select>
+      </div>
+      <div class="f"><label>Visa Type (if applicable)</label><input type="text" id="i-visa-type" placeholder="e.g. H1B, B1, TN, OPT"/></div>
+    </div>
+
+    <div class="section-label" id="lbl-funding">Funding Details</div>
+    <div class="row">
+      <div class="f" id="personal-goal-wrap"><label>Personal Funding Amount</label>
+        <select id="i-goal-personal">
+          <option value="">-- Select Amount --</option>
+          <option value="5000">$5,000</option><option value="10000">$10,000</option><option value="25000">$25,000</option><option value="50000">$50,000</option><option value="75000">$75,000</option><option value="100000">$100,000+</option>
+        </select>
+      </div>
+      <div class="f" id="business-goal-wrap" style="display:none"><label>Business Funding Amount</label>
+        <select id="i-goal-business">
+          <option value="">-- Select Amount --</option>
+          <option value="25000">$25,000</option><option value="50000">$50,000</option><option value="100000">$100,000</option><option value="250000">$250,000</option><option value="500000">$500,000</option><option value="1000000">$1,000,000+</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Funding Timeline</label>
+        <select id="i-urgency">
+          <option value="">-- Select --</option>
+          <option value="immediate">Immediately — ASAP</option><option value="30days">Within 30 days</option><option value="90days">Within 90 days</option><option value="planning">Just planning ahead</option>
+        </select>
+      </div>
+      <div class="f"><label>Use of Funds</label>
+        <select id="i-use-of-funds">
+          <option value="">-- Select --</option>
+          <option>Working Capital</option><option>Equipment Purchase</option><option>Real Estate</option><option>Payroll</option><option>Business Expansion</option><option>Inventory</option><option>Debt Consolidation</option><option>Personal Expenses</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="f"><label>Previously Declined?</label>
+        <select id="i-declined">
+          <option value="">-- Select --</option>
+          <option value="no">No</option><option value="yes_once">Yes — Once</option><option value="yes_multiple">Yes — Multiple times</option>
+        </select>
+      </div>
+      <div class="f"><label>Credit Services Needed?</label>
+        <select id="i-credit-services">
+          <option value="">-- Select --</option>
+          <option value="no">No — Credit is ready</option><option value="yes_dispute">Dispute Resolution Services</option><option value="yes_enhance">Credit Enhancement</option><option value="yes_build">Credit Builder Services</option><option value="unsure">Not sure — Need assessment</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ITIN EXTRA -->
+    <div id="itin-extra" style="display:none">
+      <div class="section-label" id="lbl-itin-section">ITIN — Additional Information</div>
+      <div class="row">
+        <div class="f"><label>Filed US Taxes with ITIN?</label>
+          <select id="i-taxes-itin">
+            <option value="">-- Select --</option>
+            <option>Yes — filed with ITIN</option><option>No — not yet</option><option>Need help filing</option>
+          </select>
+        </div>
+        <div class="f"><label>Years in the US</label>
+          <select id="i-years-us">
+            <option value="">-- Select --</option>
+            <option>Less than 1 year</option><option>1–3 years</option><option>3–5 years</option><option>5–10 years</option><option>10+ years</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUSINESS SECTIONS -->
+    <div id="all-biz-sections" style="display:none">
+      <div class="req-note" id="biz-required-note">⚡ Business Funding selected — please complete all business fields below</div>
+      <div class="section-label" id="lbl-biz">Business Information</div>
+      <div class="row">
+        <div class="f"><label>Business Name</label><input type="text" id="i-biz-name"/></div>
+        <div class="f"><label>EIN Number</label><input type="text" id="i-ein" placeholder="XX-XXXXXXX" maxlength="10" oninput="fmtEIN(this)"/></div>
+      </div>
+      <div class="row">
+        <div class="f"><label>Business Type</label><input type="text" id="i-biz-type" placeholder="e.g. Landscaping, Trucking, Salon"/></div>
+        <div class="f"><label>Entity Type</label>
+          <select id="i-entity">
+            <option value="">-- Select --</option>
+            <option>LLC</option><option>Corporation (C-Corp)</option><option>Corporation (S-Corp)</option><option>Sole Proprietor</option><option>Partnership</option><option>No entity yet</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="f"><label>Time in Business</label>
+          <select id="i-time-biz">
+            <option value="">-- Select --</option>
+            <option>Less than 6 months</option><option>6–12 months</option><option>1–2 years</option><option>2+ years</option>
+          </select>
+        </div>
+        <div class="f"><label>Monthly Revenue</label>
+          <select id="i-monthly-rev">
+            <option value="">-- Select --</option>
+            <option>$0 — Pre-revenue</option><option>Under $5,000</option><option>$5,000 – $15,000</option><option>$15,000 – $50,000</option><option>$50,000 – $100,000</option><option>Over $100,000</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="f"><label>Is This a Startup?</label>
+          <select id="i-startup" onchange="toggleStartupDate(this.value)">
+            <option value="">-- Select --</option>
+            <option value="yes">Yes — Startup</option><option value="no">No — Established</option>
+          </select>
+        </div>
+        <div class="f" id="startup-date-wrap" style="display:none"><label>Startup / Launch Date</label><input type="date" id="i-startup-date"/></div>
+        <div class="f" id="startup-spacer"></div>
+      </div>
+      <div class="row">
+        <div class="f"><label>Business Address</label><input type="text" id="i-biz-addr" placeholder="Street, City, State, ZIP"/></div>
+        <div class="f"><label>Business Phone</label><input type="tel" id="i-biz-phone" placeholder="(000) 000-0000" oninput="fmtBizPhone(this)"/></div>
+      </div>
+      <div class="row">
+        <div class="f"><label>Date Incorporated</label><input type="date" id="i-biz-start-date"/></div>
+        <div class="f"><label>Number of Employees</label>
+          <select id="i-employees">
+            <option value="">-- Select --</option>
+            <option>Just me</option><option>2–5</option><option>6–10</option><option>11–25</option><option>25+</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="f"><label>Business Bank Account?</label>
+          <select id="i-biz-bank">
+            <option value="">-- Select --</option>
+            <option value="yes_old">Yes — Open 2+ years</option><option value="yes_new">Yes — Under 2 years</option><option value="no">No</option>
+          </select>
+        </div>
+        <div class="f"><label>Outstanding Business Debt?</label>
+          <select id="i-biz-debt">
+            <option value="">-- Select --</option>
+            <option value="no">No</option><option value="yes_small">Yes — Under $50,000</option><option value="yes_mid">Yes — $50K–$250K</option><option value="yes_large">Yes — Over $250,000</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="f"><label>D&B PAYDEX Score (if known)</label><input type="number" id="i-paydex" placeholder="0–100" min="0" max="100"/></div>
+        <div class="f"><label>SBA Loan History?</label>
+          <select id="i-sba">
+            <option value="">-- Select --</option>
+            <option value="no">No</option><option value="yes_paid">Yes — Paid off</option><option value="yes_active">Yes — Active</option><option value="yes_default">Yes — Defaulted</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="f"><label>Industry</label><input type="text" id="i-industry" placeholder="e.g. Construction, Healthcare, Retail"/></div>
+        <div class="f"><label>Business Credit Score (if known)</label><input type="text" id="i-biz-score" placeholder="e.g. Experian 72, Equifax 285"/></div>
+      </div>
+
+      <div class="nav-box">
+        <div class="nav-title">NAV.com Business Credit — Required</div>
+        <div class="nav-desc">Business clients must set up a NAV.com account so we can review your business credit profile. Please select the <strong style="color:#2980B9">$79.99/month plan</strong> and log in to review your profile before your consultation.</div>
+        <div class="row">
+          <div class="f"><label>NAV.com Account Status <span class="req">*</span></label>
+            <select id="i-nav-status" required>
+              <option value="">-- Select --</option>
+              <option value="setup_done">✅ Set up — ready for review</option>
+              <option value="setting_up">⏳ Setting up now</option>
+              <option value="need_help">Need help setting up</option>
+            </select>
+          </div>
+          <div class="f"><label>NAV Login Email</label><input type="email" id="i-nav-email" placeholder="Email used to log in to NAV"/></div>
+        </div>
+        <a href="https://nav.nkwcmr.net/c/7057968/1813107/2410" target="_blank" class="nav-link">Set Up NAV.com — Select $79.99 Plan →</a>
+      </div>
+    </div>
+
+    <div class="section-label" id="lbl-additional">Additional Information</div>
+    <div class="row full">
+      <div class="f"><label>Anything else we should know?</label><textarea id="i-notes" placeholder="Tell us about your goals, questions, or specific situation..."></textarea></div>
+    </div>
+    <div class="row">
+      <div class="f"><label>How did you hear about us?</label>
+        <select id="i-referral">
+          <option value="">-- Select --</option>
+          <option>Friend / Family Referral</option><option>Facebook / Instagram</option><option>TikTok</option><option>YouTube</option><option>Google Search</option><option>Webinar / Event</option><option>Other</option>
+        </select>
+      </div>
+      <div class="f"><label>Preferred Language</label>
+        <select id="i-preferred-lang">
+          <option value="en">English</option><option value="es">Español</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitIntake()">Submit Application →</button>
+    <p class="disclaimer">By submitting this form you consent to being contacted by KLIERD regarding your application. All information is kept strictly confidential. This is not a credit repair service. Results are not typical and may vary. © 2026 KLIERD — Powered by KLIERD Intelligent Funding Technology.</p>
+  </div>
+
+  <div class="thankyou" id="thankyou">
+    <div style="font-size:52px;margin-bottom:16px">✅</div>
+    <h2>Application Received!</h2>
+    <p id="ty-body">Thank you — please check your portal with the access info we just sent via <strong>email and text</strong>. You can start working with KLIERD immediately.<br><br><strong style="color:#C9A84C">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong></p>
+  </div>
+</div>
+
+<script>
+let clientType='ssn', fundingType='personal', currentLang='en';
+
+const LANG = {
+  en:{
+    'form-title':'Client Intake Form — Confidential',
+    'lbl-applying':'I Am Applying For',
+    'btn-personal-text':'Personal Funding',
+    'btn-business-text':'Business Funding',
+    'btn-both-text':'Both Personal + Business',
+    'btn-dispute-text':'Dispute Resolution',
+    'btn-ssn-text':'🇺🇸 SSN — U.S. Citizen',
+    'btn-itin-text':'🌎 ITIN — Immigrant / No SSN',
+    'lbl-personal-info':'Personal Information',
+    'lbl-first':'First Name *','lbl-last':'Last Name *',
+    'lbl-email':'Email *','lbl-phone':'Phone *',
+    'lbl-dob':'Date of Birth','lbl-state':'State','lbl-addr':'Address',
+    'lbl-ssn':'Social Security Number *','lbl-itin-num':'ITIN Number',
+    'lbl-credit':'Credit Profile — All 3 Bureaus',
+    'lbl-financial':'Financial Profile',
+    'lbl-identity':'Identity & Compliance',
+    'lbl-funding':'Funding Details',
+    'lbl-itin-section':'ITIN — Additional Information',
+    'lbl-biz':'Business Information',
+    'lbl-additional':'Additional Information',
+    'lbl-notes':'Anything else we should know?',
+    'lbl-referral':'How did you hear about us?',
+    'lbl-preferred-lang-label':'Preferred Language',
+    'submit-btn':'Submit Application →',
+    'disclaimer-text':'By submitting this form you consent to being contacted by KLIERD regarding your application. All information is kept strictly confidential. This is not a credit repair service. Results are not typical and may vary. © 2026 KLIERD — Powered by KLIERD Intelligent Funding Technology.',
+    'ty-title':'Application Received!',
+    'ty-body':'Thank you — our team will review your information and reach out within <strong>24–48 hours</strong> to discuss your funding options.<br><br><strong style="color:#C9A84C">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong>',
+  },
+  es:{
+    'form-title':'Formulario de Solicitud — Confidencial',
+    'lbl-applying':'Estoy Solicitando',
+    'btn-personal-text':'Financiamiento Personal',
+    'btn-business-text':'Financiamiento Empresarial',
+    'btn-dispute-text':'Resolución de Disputas',
+    'btn-both-text':'Ambos — Personal + Empresarial',
+    'btn-ssn-text':'🇺🇸 SSN — Ciudadano EE.UU.',
+    'btn-itin-text':'🌎 ITIN — Inmigrante / Sin SSN',
+    'lbl-personal-info':'Información Personal',
+    'lbl-first':'Nombre *','lbl-last':'Apellido *',
+    'lbl-email':'Correo Electrónico *','lbl-phone':'Teléfono *',
+    'lbl-dob':'Fecha de Nacimiento','lbl-state':'Estado','lbl-addr':'Dirección',
+    'lbl-ssn':'Número de Seguro Social *','lbl-itin-num':'Número ITIN',
+    'lbl-credit':'Perfil de Crédito — Los 3 Burós',
+    'lbl-financial':'Perfil Financiero',
+    'lbl-identity':'Identidad y Cumplimiento',
+    'lbl-funding':'Detalles de Financiamiento',
+    'lbl-itin-section':'ITIN — Información Adicional',
+    'lbl-biz':'Información del Negocio',
+    'lbl-additional':'Información Adicional',
+    'lbl-notes':'¿Algo más que debamos saber?',
+    'lbl-referral':'¿Cómo nos encontró?',
+    'lbl-preferred-lang-label':'Idioma Preferido',
+    'submit-btn':'Enviar Solicitud →',
+    'disclaimer-text':'Al enviar este formulario, acepta ser contactado por KLIERD. Toda la información es estrictamente confidencial. Este no es un servicio de reparación de crédito. Los resultados no son típicos y pueden variar. © 2026 KLIERD — Con tecnología KLIERD.',
+    'ty-title':'¡Solicitud Recibida!',
+    'ty-body':'Gracias — nuestro equipo revisará su información y se comunicará en <strong>24–48 horas</strong> para hablar sobre sus opciones de financiamiento.<br><br><strong style="color:#C9A84C">KLIERD — Con tecnología KLIERD Intelligent Funding Technology</strong>',
+  }
+};
+
+function setLang(lang,btn){
+  currentLang=lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('i-preferred-lang').value=lang;
+  const t=LANG[lang];
+  // Update all labeled elements
+  Object.keys(t).forEach(key=>{
+    if(key==='btn-personal-text'){const el=document.getElementById('btn-personal');if(el)el.textContent=t[key];return;}
+    if(key==='btn-business-text'){const el=document.getElementById('btn-business');if(el)el.textContent=t[key];return;}
+    if(key==='btn-both-text'){const el=document.getElementById('btn-both');if(el)el.textContent=t[key];return;}
+    if(key==='btn-dispute-text'){const el=document.getElementById('btn-dispute');if(el)el.textContent=t[key];return;}
+    if(key==='btn-ssn-text'){const el=document.getElementById('btn-ssn');if(el)el.textContent=t[key];return;}
+    if(key==='btn-itin-text'){const el=document.getElementById('btn-itin');if(el)el.textContent=t[key];return;}
+    if(key==='submit-btn'){const el=document.querySelector('.submit-btn');if(el)el.textContent=t[key];return;}
+    if(key==='disclaimer-text'){const el=document.querySelector('.disclaimer');if(el)el.textContent=t[key];return;}
+    if(key==='ty-title'){const el=document.querySelector('.thankyou h2');if(el)el.textContent=t[key];return;}
+    if(key==='ty-body'){const el=document.querySelector('.thankyou p');if(el)el.innerHTML=t[key];return;}
+    const el=document.getElementById(key);
+    if(el)el.textContent=t[key];
+  });
+  // Update all section labels by data attribute
+  document.querySelectorAll('.section-label[data-en]').forEach(el=>{
+    el.textContent=lang==='es'?(el.dataset.es||el.dataset.en):el.dataset.en;
+  });
+  // Update all labels by data attribute
+  document.querySelectorAll('label[data-en]').forEach(el=>{
+    el.innerHTML=lang==='es'?(el.dataset.es||el.dataset.en):el.dataset.en;
+  });
+}
+
+function setFundingType(type,btn){
+  fundingType=type;
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  // Dispute-only flow hides ALL funding-amount + business sections (client doesn't need them)
+  const isDispute = type==='dispute';
+  document.getElementById('all-biz-sections').style.display=(type==='business'||type==='both')?'':'none';
+  document.getElementById('personal-goal-wrap').style.display=(!isDispute && (type==='personal'||type==='both'))?'':'none';
+  document.getElementById('business-goal-wrap').style.display=(!isDispute && (type==='business'||type==='both'))?'':'none';
+  document.getElementById('biz-required-note').style.display=(type==='business'||type==='both')?'block':'none';
+  ['i-biz-name','i-ein','i-biz-type','i-entity','i-time-biz','i-monthly-rev'].forEach(id=>{const el=document.getElementById(id);if(el)el.required=(type==='business'||type==='both');});
+  // When client picks Dispute Resolution, auto-set the credit services dropdown so server-side
+  // services[] array gets 'dispute' instead of 'funding'. Saves the client an extra click.
+  if (isDispute) {
+    const csEl = document.getElementById('i-credit-services');
+    if (csEl) csEl.value = 'yes_dispute';
+  }
+}
+
+function setClientType(type,btn){
+  clientType=type;
+  document.querySelectorAll('.itin-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('itin-field').style.display=type==='itin'?'':'none';
+  document.getElementById('ssn-spacer').style.display=type==='itin'?'none':'block';
+  document.getElementById('itin-extra').style.display=type==='itin'?'':'none';
+}
+
+function toggleStartupDate(val){
+  document.getElementById('startup-date-wrap').style.display=val==='yes'?'':'none';
+  document.getElementById('startup-spacer').style.display=val==='yes'?'none':'block';
+}
+
+function fmtEIN(inp){let v=inp.value.replace(/\D/g,'');if(v.length>9)v=v.slice(0,9);inp.value=v.length>2?v.slice(0,2)+'-'+v.slice(2):v;}
+function fmtBizPhone(inp){let v=inp.value.replace(/\D/g,'');if(v.length>10)v=v.slice(0,10);if(v.length>6)inp.value='('+v.slice(0,3)+') '+v.slice(3,6)+'-'+v.slice(6);else if(v.length>3)inp.value='('+v.slice(0,3)+') '+v.slice(3);else if(v.length>0)inp.value='('+v;}
+
+function submitIntake(){
+  const first=document.getElementById('i-first').value.trim();
+  const last=document.getElementById('i-last').value.trim();
+  const email=document.getElementById('i-email').value.trim();
+  const phone=document.getElementById('i-phone').value.trim();
+  if(!first||!last||!email||!phone){alert('Please fill in all required fields (*).');return;}
+  const scores=['i-score-tu','i-score-eq','i-score-ex'].map(id=>parseInt(document.getElementById(id)?.value)||0).filter(s=>s>0);
+  const lowestScore=scores.length?Math.min(...scores):parseInt(document.getElementById('i-score-est')?.value)||0;
+  const g=id=>document.getElementById(id)?.value||'';
+  const data={fundingType,clientType,lang:currentLang,first,last,email,phone,
+    dob:g('i-dob'),state:g('i-state'),address:g('i-addr'),ssn:g('i-ssn'),itin:g('i-itin'),
+    scoreTU:g('i-score-tu'),scoreEQ:g('i-score-eq'),scoreEX:g('i-score-ex'),scoreEst:g('i-score-est'),score:lowestScore,
+    housing:g('i-housing'),housingPmt:g('i-housing-pmt'),employment:g('i-employment'),income:g('i-income'),
+    monthlyDebt:g('i-monthly-debt'),openAccounts:g('i-open-accounts'),latePayments:g('i-late-payments'),
+    collections:g('i-collections'),bankruptcy:g('i-bankruptcy'),coborrower:g('i-coborrower'),
+    taxes:g('i-taxes'),usBank:g('i-usbank'),idType:g('i-id-type'),idState:g('i-id-state'),
+    residency:g('i-residency'),visaType:g('i-visa-type'),
+    goalPersonal:g('i-goal-personal'),goalBusiness:g('i-goal-business'),
+    urgency:g('i-urgency'),useOfFunds:g('i-use-of-funds'),declined:g('i-declined'),creditServices:g('i-credit-services'),
+    bizName:g('i-biz-name'),ein:g('i-ein'),bizType:g('i-biz-type'),entity:g('i-entity'),
+    timeBiz:g('i-time-biz'),monthlyRev:g('i-monthly-rev'),isStartup:g('i-startup'),startupDate:g('i-startup-date'),
+    bizAddr:g('i-biz-addr'),bizPhone:g('i-biz-phone'),bizStartDate:g('i-biz-start-date'),
+    employees:g('i-employees'),bizBank:g('i-biz-bank'),bizDebt:g('i-biz-debt'),
+    paydex:g('i-paydex'),sba:g('i-sba'),industry:g('i-industry'),bizScore:g('i-biz-score'),
+    navStatus:g('i-nav-status'),navEmail:g('i-nav-email'),
+    notes:g('i-notes'),referral:g('i-referral'),
+    submitted:new Date().toLocaleString(),status:'new',source:'web_intake_form'};
+  // Map intake form fields to the public intake endpoint contract
+  const payload = {
+    first: data.first, last: data.last, email: data.email, phone: data.phone,
+    lang: data.lang, clientType: data.clientType, fundingType: data.fundingType,
+    creditServices: data.creditServices,
+    personalGoal: data.goalPersonal, businessGoal: data.goalBusiness,
+    useOfFunds: data.useOfFunds, timeline: data.urgency,
+    raw: data
+  };
+  // Mirror to localStorage for offline-safety (so the form never feels broken)
+  try{const q=JSON.parse(localStorage.getItem('sp_intake_queue')||'[]');q.unshift(data);localStorage.setItem('sp_intake_queue',JSON.stringify(q));}catch(e){}
+
+  const isEs = (typeof lang !== 'undefined' && lang === 'es');
+
+  // Disable submit + show loading state — prevents double-submit and tells client something is happening
+  const submitBtn = document.querySelector('.submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.dataset.original = submitBtn.textContent;
+    submitBtn.textContent = isEs ? 'Enviando…' : 'Submitting…';
+    submitBtn.style.opacity = '0.6';
+    submitBtn.style.cursor = 'wait';
+  }
+
+  // 30-second timeout so a slow/dead backend doesn't hang the client forever
+  const ctrl = new AbortController();
+  const timeoutId = setTimeout(() => ctrl.abort(), 30000);
+
+  // POST to the PUBLIC intake endpoint — auto-creates portal, fires welcome email
+  fetch('https://stackpro-api-production.up.railway.app/api/intake/public',{
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload),
+    signal: ctrl.signal,
+  })
+  .then(r => r.json())
+  .then(resp => {
+    clearTimeout(timeoutId);
+    if (resp && resp.success) {
+      const tid = resp.tracking_id || resp.trackingId || '';
+      const tidBlock = tid ? `
+        <div style="background:#161616;border:2px solid #C9A84C;border-radius:8px;padding:24px;margin:20px 0;text-align:center;box-shadow:0 0 24px rgba(201,168,76,0.15)">
+          <div style="font-size:11px;color:#C9A84C;text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:10px">${isEs ? 'Su ID de Seguimiento' : 'Your Tracking ID'}</div>
+          <div style="font-family:'DM Mono','Courier New',monospace;font-size:32px;color:#C9A84C;font-weight:700;letter-spacing:3px;line-height:1.2">${tid}</div>
+          <div style="font-size:13px;color:#F0EDE6;margin-top:14px;line-height:1.5">${isEs ? '<strong>Guarde este ID</strong> — lo necesitará para acceder a su portal.' : '<strong>Save this ID</strong> — you will use it to access your portal.'}</div>
+        </div>
+        <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:6px;padding:12px 16px;margin:14px 0;font-size:12px;color:#9A9580;line-height:1.6">
+          ${isEs ? '📧 Revise su correo y mensaje de texto en los próximos 60 segundos — le enviaremos el enlace directo a su portal.' : '📧 Check your email and text messages in the next 60 seconds — we are sending the direct link to your portal.'}
+        </div>` : '';
+
+      const headerMsg = resp.message || (isEs ? '¡Gracias! Su solicitud ha sido recibida.' : 'Thank you! Your application has been received.');
+      const tyMsg = document.getElementById('ty-body');
+      if (tyMsg) tyMsg.innerHTML = headerMsg + tidBlock + '<div style="margin-top:18px;text-align:center"><strong style="color:#C9A84C;font-size:13px">KLIERD — Powered by KLIERD Intelligent Funding Technology</strong></div>';
+
+      // Reveal thank-you only on confirmed success
+      document.getElementById('form-body').style.display='none';
+      document.getElementById('thankyou').style.display='block';
+      // Restore submit button (in case client returns to form)
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = submitBtn.dataset.original || submitBtn.textContent; submitBtn.style.opacity = ''; submitBtn.style.cursor = ''; }
+    } else {
+      // Server returned a non-success payload — show error state with retry + backup contact
+      showSubmitError(isEs, resp && resp.error ? resp.error : null);
+    }
+  })
+  .catch((err) => {
+    clearTimeout(timeoutId);
+    // Network failure, timeout, or bad JSON — show error state with retry + backup contact path
+    showSubmitError(isEs, err && err.name === 'AbortError' ? 'timeout' : 'network');
+  });
+}
+
+function showSubmitError(isEs, reason) {
+  const tyMsg = document.getElementById('ty-body');
+  if (tyMsg) {
+    const reasonNote = reason === 'timeout'
+      ? (isEs ? 'La conexión tardó demasiado.' : 'The connection took too long.')
+      : (isEs ? 'No pudimos conectarnos al servidor en este momento.' : 'We could not connect to the server at this moment.');
+
+    tyMsg.innerHTML = `
+      <div style="background:rgba(231,76,60,0.08);border:2px solid #E74C3C;border-radius:8px;padding:24px;margin:20px 0;text-align:left">
+        <div style="font-size:18px;color:#E74C3C;font-weight:700;margin-bottom:10px">${isEs ? '⚠ No pudimos procesar su solicitud' : '⚠ We could not process your submission'}</div>
+        <div style="font-size:13px;color:#F0EDE6;line-height:1.7;margin-bottom:14px">
+          ${reasonNote} ${isEs ? 'Su información se guardó localmente en este navegador, pero aún no se envió a KLIERD.' : 'Your information was saved locally in this browser but has not yet reached KLIERD.'}
+        </div>
+        <div style="font-size:13px;color:#F0EDE6;line-height:1.7;margin-bottom:18px">
+          <strong style="color:#C9A84C">${isEs ? 'Qué hacer ahora:' : 'What to do now:'}</strong><br>
+          ${isEs ? '1. Intente enviar de nuevo en unos segundos.' : '1. Try submitting again in a few seconds.'}<br>
+          ${isEs ? '2. Si el problema persiste, envíenos su solicitud a info@klierd.com con la palabra "INTAKE" en el asunto.' : '2. If the problem persists, email your application to info@klierd.com with "INTAKE" in the subject line.'}<br>
+          ${isEs ? '3. O llámenos directamente — un Gerente de Financiamiento KLIERD le atenderá.' : '3. Or call us directly — a KLIERD Funding Manager will assist you.'}
+        </div>
+        <button onclick="retrySubmit()" style="background:#C9A84C;color:#09090F;border:none;padding:12px 24px;border-radius:6px;font-weight:700;cursor:pointer;font-size:13px;letter-spacing:1px;text-transform:uppercase">${isEs ? '↻ Reintentar' : '↻ Try Again'}</button>
+        <a href="mailto:info@klierd.com?subject=INTAKE&body=${encodeURIComponent('Hello KLIERD,\n\nMy online application did not submit successfully. Please contact me to complete the intake.\n\nThank you.')}" style="background:transparent;color:#C9A84C;border:1px solid #C9A84C;padding:12px 24px;border-radius:6px;font-weight:700;text-decoration:none;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-left:10px;display:inline-block">✉ ${isEs ? 'Enviar por Correo' : 'Email Us'}</a>
+      </div>
+    `;
+  }
+  document.getElementById('form-body').style.display = 'none';
+  document.getElementById('thankyou').style.display = 'block';
+}
+
+function retrySubmit() {
+  // Restore form view, restore submit button, let user try again
+  document.getElementById('thankyou').style.display = 'none';
+  document.getElementById('form-body').style.display = '';
+  const submitBtn = document.querySelector('.submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = submitBtn.dataset.original || submitBtn.textContent;
+    submitBtn.style.opacity = '';
+    submitBtn.style.cursor = '';
+  }
+  // Scroll to top so user sees the form
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+setFundingType('personal',document.getElementById('btn-personal'));
+setClientType('ssn',document.getElementById('btn-ssn'));
+</script>
+</body>
+</html>
